@@ -47,6 +47,7 @@ export default defineConfig({
 						{ label: 'Design Tokens', slug: 'foundations/tokens' },
 						{ label: 'Colors', slug: 'foundations/colors' },
 						{ label: 'Borders', slug: 'foundations/borders' },
+						{ label: 'Breakpoints', slug: 'foundations/breakpoints' },
 						{ label: 'Typography', slug: 'foundations/typography' },
 						{ label: 'Spacing', slug: 'foundations/spacing' },
 						{ label: 'Animations', slug: 'foundations/animations' },
