@@ -48,6 +48,7 @@ export default defineConfig({
 						{ label: 'Colors', slug: 'foundations/colors' },
 						{ label: 'Borders', slug: 'foundations/borders' },
 						{ label: 'Breakpoints', slug: 'foundations/breakpoints' },
+						{ label: 'Elevations', slug: 'foundations/elevations' },
 						{ label: 'Typography', slug: 'foundations/typography' },
 						{ label: 'Spacing', slug: 'foundations/spacing' },
 						{ label: 'Animations', slug: 'foundations/animations' },
