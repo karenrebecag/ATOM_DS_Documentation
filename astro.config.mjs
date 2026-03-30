@@ -6,19 +6,88 @@ import starlight from '@astrojs/starlight';
 export default defineConfig({
 	integrations: [
 		starlight({
-			title: 'My Docs',
-			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
+			title: '',
+			logo: {
+				src: './public/atomchat-logo.png',
+				alt: 'AtomChat',
+				replacesTitle: true,
+			},
+			customCss: [
+				'@atomchat.io/tokens/css',
+				'./src/styles/custom-accent.css',
+			],
+			description: 'Official documentation for AtomChat DS - A monorepo design system with W3C DTCG tokens, GSAP animations, and pure CSS',
+			social: [
+				{
+					icon: 'github',
+					label: 'GitHub',
+					href: 'https://github.com/karenrebecag/ATOM_DS'
+				}
+			],
 			sidebar: [
 				{
-					label: 'Guides',
+					label: 'Getting Started',
 					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'Example Guide', slug: 'guides/example' },
+						{ label: 'Introduction', slug: 'getting-started/introduction' },
+						{ label: 'Installation', slug: 'getting-started/installation' },
+						{ label: 'Quick Start', slug: 'getting-started/quick-start' },
 					],
 				},
 				{
-					label: 'Reference',
-					autogenerate: { directory: 'reference' },
+					label: 'Architecture',
+					items: [
+						{ label: 'Overview', slug: 'architecture/overview' },
+						{ label: 'Packages', slug: 'architecture/packages' },
+						{ label: 'Token Layers', slug: 'architecture/token-layers' },
+					],
+				},
+				{
+					label: 'Foundations',
+					items: [
+						{ label: 'Design Tokens', slug: 'foundations/tokens' },
+						{ label: 'Colors', slug: 'foundations/colors' },
+						{ label: 'Borders', slug: 'foundations/borders' },
+						{ label: 'Typography', slug: 'foundations/typography' },
+						{ label: 'Spacing', slug: 'foundations/spacing' },
+						{ label: 'Animations', slug: 'foundations/animations' },
+					],
+				},
+				{
+					label: 'Components',
+					items: [
+						{
+							label: 'Buttons',
+							autogenerate: { directory: 'components/buttons' },
+						},
+						{
+							label: 'Selection Controls',
+							autogenerate: { directory: 'components/selection-controls' },
+						},
+						{
+							label: 'Indicators & Status',
+							autogenerate: { directory: 'components/indicators-status' },
+						},
+						{
+							label: 'Content Display',
+							autogenerate: { directory: 'components/content-display' },
+						},
+						{
+							label: 'Text',
+							autogenerate: { directory: 'components/text' },
+						},
+						{
+							label: 'Layout',
+							autogenerate: { directory: 'components/layout' },
+						},
+						{
+							label: 'Molecules',
+							autogenerate: { directory: 'components/molecules' },
+						},
+					],
+				},
+				{
+					label: 'Utilities',
+					autogenerate: { directory: 'utilities' },
 				},
 			],
 		}),
