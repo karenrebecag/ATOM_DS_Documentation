@@ -49,6 +49,7 @@ export default defineConfig({
 						{ label: 'Borders', slug: 'foundations/borders' },
 						{ label: 'Breakpoints', slug: 'foundations/breakpoints' },
 						{ label: 'Elevations', slug: 'foundations/elevations' },
+						{ label: 'Opacity', slug: 'foundations/opacity' },
 						{ label: 'Typography', slug: 'foundations/typography' },
 						{ label: 'Spacing', slug: 'foundations/spacing' },
 						{ label: 'Animations', slug: 'foundations/animations' },
