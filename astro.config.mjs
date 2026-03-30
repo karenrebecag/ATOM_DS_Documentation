@@ -46,6 +46,7 @@ export default defineConfig({
 					items: [
 						{ label: 'Design Tokens', slug: 'foundations/tokens' },
 						{ label: 'Colors', slug: 'foundations/colors' },
+						{ label: 'Semantic Colors', slug: 'foundations/semantic-colors' },
 						{ label: 'Borders', slug: 'foundations/borders' },
 						{ label: 'Breakpoints', slug: 'foundations/breakpoints' },
 						{ label: 'Elevations', slug: 'foundations/elevations' },
