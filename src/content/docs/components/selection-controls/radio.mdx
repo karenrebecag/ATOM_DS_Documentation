@@ -1,0 +1,1145 @@
+---
+title: Radio
+description: Single-selection control within a group of mutually exclusive options.
+---
+
+## Overview
+
+The Radio component is a single-selection control that allows users to choose exactly one option from a mutually exclusive set. It extends beyond basic radio input with built-in support for descriptive labels, supporting text, size variants, and error messaging.
+
+**Key Features:**
+- Single selection within a group (mutually exclusive)
+- 2 size options (s, m) for compact and standard layouts
+- Supporting text for additional context
+- Native error state with error messages
+- SVG error icon indicator
+- Supports custom label and helper content
+- Responsive to parent container sizing
+- Full keyboard accessibility
+- Conditional rendering (simple or extended field)
+- Fully token-driven styling
+- Accessible with semantic HTML and ARIA labels
+
+---
+
+## Demo
+
+:::tip[Interactive Playground]
+**[Open Radio Playground →](/playground/radio)**
+
+View all Radio states, sizes, and error handling in an isolated environment.
+:::
+
+---
+
+## Installation
+
+```bash
+# Install component package
+pnpm add @atomchat.io/components-astro
+
+# Install required dependencies
+pnpm add @atomchat.io/css @atomchat.io/tokens
+
+# Optional: For animations
+pnpm add @atomchat.io/animations gsap
+```
+
+**CSS Import (required):**
+```astro
+---
+// In your layout or page
+import '@atomchat.io/css';
+---
+```
+
+---
+
+## Anatomy
+
+The Radio component has two rendering modes:
+
+### Simple Mode (no label, text, or error)
+
+```
+┌──────────────────┐
+│  <label>         │  ← Radio wrapper
+│  ┌────────────┐  │
+│  │ <input/>   │  │  ← Hidden native input
+│  └────────────┘  │
+│  ┌────────────┐  │
+│  │ <span>     │  │  ← Custom circle indicator
+│  │ .radio__   │  │
+│  │ circle     │  │
+│  │ ┌────────┐ │  │
+│  │ │ <span> │ │  │  ← Animated dot
+│  │ │ .radio │ │  │
+│  │ │ __dot  │ │  │
+│  │ └────────┘ │  │
+│  └────────────┘  │
+└──────────────────┘
+```
+
+### Extended Mode (with label, text, or error)
+
+```
+┌──────────────────────────────┐
+│  <div> .radio-field          │  ← Field wrapper
+│  ┌────────────────────────┐  │
+│  │  <div> .radio-field__  │  │  ← Row container
+│  │  row                   │  │
+│  │  ┌──────────────────┐  │  │
+│  │  │ <div> .selector  │  │  │  ← Radio control
+│  │  │ <label> .radio   │  │  │
+│  │  │ <input/>         │  │  │
+│  │  │ <span> circle    │  │  │
+│  │  │ <span> dot       │  │  │
+│  │  └──────────────────┘  │  │
+│  │  ┌──────────────────┐  │  │
+│  │  │ <div> .text      │  │  │  ← Label & text
+│  │  │ <label> title    │  │  │
+│  │  │ <span> supportive│  │  │
+│  │  └──────────────────┘  │  │
+│  └────────────────────────┘  │
+│  ┌────────────────────────┐  │
+│  │ <div> .error          │  │  ← Error (if present)
+│  │ <svg> error-icon      │  │
+│  │ <span> error-text     │  │
+│  └────────────────────────┘  │
+└──────────────────────────────┘
+```
+
+**DOM Structure (Simple):**
+```html
+<label class="radio radio--s" for="option-1" data-radio>
+  <input
+    class="radio__input"
+    type="radio"
+    id="option-1"
+    name="choice"
+    value="option-1"
+  />
+  <span class="radio__circle" aria-hidden="true" data-radio-circle>
+    <span class="radio__dot" data-radio-dot></span>
+  </span>
+</label>
+```
+
+**DOM Structure (Extended with error):**
+```html
+<div class="radio-field radio-field--m radio-field--error">
+  <div class="radio-field__row">
+    <div class="radio-field__selector">
+      <label class="radio radio--m" for="option-1" data-radio>
+        <input
+          class="radio__input"
+          type="radio"
+          id="option-1"
+          name="choice"
+          value="option-1"
+        />
+        <span class="radio__circle" aria-hidden="true" data-radio-circle>
+          <span class="radio__dot" data-radio-dot></span>
+        </span>
+      </label>
+    </div>
+    <div class="radio-field__text">
+      <label class="radio-field__title" for="option-1">
+        Option Label
+      </label>
+      <span class="radio-field__supportive">
+        Helper text describing the option
+      </span>
+    </div>
+  </div>
+  <div class="radio-field__error">
+    <svg class="radio-field__error-icon" viewBox="0 0 16 16" fill="currentColor">
+      <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm-.75 4a.75.75 0 0 1 1.5 0v3.5a.75.75 0 0 1-1.5 0V5Zm.75 7a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/>
+    </svg>
+    <span class="radio-field__error-text">
+      Please select a valid option
+    </span>
+  </div>
+</div>
+```
+
+---
+
+## Framework Support
+
+The Radio component is available for multiple frameworks with shared design tokens, styles, and behavior.
+
+import FrameworkSwitcher from '../../../../components/FrameworkSwitcher.astro';
+
+<FrameworkSwitcher
+  frameworks={[
+    { name: 'astro', label: 'Astro', icon: 'https://svgl.app/library/astro-icon-dark.svg' },
+    { name: 'react', label: 'React', icon: 'https://svgl.app/library/react_dark.svg' },
+    { name: 'nextjs', label: 'Next.js', icon: 'https://svgl.app/library/nextjs_icon_dark.svg' },
+    { name: 'vue', label: 'Vue', icon: 'https://svgl.app/library/vue.svg' },
+    { name: 'angular', label: 'Angular', icon: 'https://svgl.app/library/angular.svg' },
+  ]}
+>
+  <div data-framework="astro" data-active="true">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-astro @atomchat.io/css
+```
+
+### Usage
+
+```astro
+---
+import { Radio } from '@atomchat.io/components-astro';
+import '@atomchat.io/css';
+---
+
+<fieldset>
+  <legend>Select an option</legend>
+
+  <Radio name="choice" value="option1" size="m">
+    Option 1
+  </Radio>
+
+  <Radio name="choice" value="option2" size="m" supportiveText="This option includes extra features">
+    Option 2
+  </Radio>
+
+  <Radio
+    name="choice"
+    value="option3"
+    size="m"
+    error
+    errorText="This option is unavailable"
+  >
+    Option 3 (Unavailable)
+  </Radio>
+</fieldset>
+```
+
+  </div>
+
+  <div data-framework="react">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+import { Radio } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+import { useState } from 'react';
+
+function Example() {
+  const [selected, setSelected] = useState('option1');
+
+  return (
+    <fieldset>
+      <legend>Select an option</legend>
+
+      <Radio
+        name="choice"
+        value="option1"
+        size="m"
+        checked={selected === 'option1'}
+        onChange={(e) => setSelected(e.target.value)}
+      >
+        Option 1
+      </Radio>
+
+      <Radio
+        name="choice"
+        value="option2"
+        size="m"
+        supportiveText="This option includes extra features"
+        checked={selected === 'option2'}
+        onChange={(e) => setSelected(e.target.value)}
+      >
+        Option 2
+      </Radio>
+
+      <Radio
+        name="choice"
+        value="option3"
+        size="m"
+        error
+        errorText="This option is unavailable"
+        checked={selected === 'option3'}
+        onChange={(e) => setSelected(e.target.value)}
+      >
+        Option 3 (Unavailable)
+      </Radio>
+    </fieldset>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="nextjs">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+'use client';
+
+import { Radio } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+import { useState } from 'react';
+
+export default function Example() {
+  const [selected, setSelected] = useState('option1');
+
+  return (
+    <fieldset>
+      <legend>Select an option</legend>
+
+      <Radio
+        name="choice"
+        value="option1"
+        size="m"
+        checked={selected === 'option1'}
+        onChange={(e) => setSelected(e.target.value)}
+      >
+        Option 1
+      </Radio>
+
+      <Radio
+        name="choice"
+        value="option2"
+        size="m"
+        supportiveText="This option includes extra features"
+        checked={selected === 'option2'}
+        onChange={(e) => setSelected(e.target.value)}
+      >
+        Option 2
+      </Radio>
+
+      <Radio
+        name="choice"
+        value="option3"
+        size="m"
+        error
+        errorText="This option is unavailable"
+        checked={selected === 'option3'}
+        onChange={(e) => setSelected(e.target.value)}
+      >
+        Option 3 (Unavailable)
+      </Radio>
+    </fieldset>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="vue">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-vue @atomchat.io/css
+```
+
+### Usage
+
+```vue
+<script setup>
+import { Radio } from '@atomchat.io/components-vue';
+import '@atomchat.io/css';
+import { ref } from 'vue';
+
+const selected = ref('option1');
+</script>
+
+<template>
+  <fieldset>
+    <legend>Select an option</legend>
+
+    <Radio
+      name="choice"
+      value="option1"
+      size="m"
+      :checked="selected === 'option1'"
+      @change="selected = 'option1'"
+    >
+      Option 1
+    </Radio>
+
+    <Radio
+      name="choice"
+      value="option2"
+      size="m"
+      supportiveText="This option includes extra features"
+      :checked="selected === 'option2'"
+      @change="selected = 'option2'"
+    >
+      Option 2
+    </Radio>
+
+    <Radio
+      name="choice"
+      value="option3"
+      size="m"
+      error
+      errorText="This option is unavailable"
+      :checked="selected === 'option3'"
+      @change="selected = 'option3'"
+    >
+      Option 3 (Unavailable)
+    </Radio>
+  </fieldset>
+</template>
+```
+
+  </div>
+
+  <div data-framework="angular">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-angular @atomchat.io/css
+```
+
+### Usage
+
+```typescript
+import { RadioComponent } from '@atomchat.io/components-angular';
+import '@atomchat.io/css';
+import { Component, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  imports: [RadioComponent, FormsModule],
+  template: `
+    <fieldset>
+      <legend>Select an option</legend>
+
+      <atom-radio
+        name="choice"
+        value="option1"
+        size="m"
+        [(ngModel)]="selected"
+      >
+        Option 1
+      </atom-radio>
+
+      <atom-radio
+        name="choice"
+        value="option2"
+        size="m"
+        supportiveText="This option includes extra features"
+        [(ngModel)]="selected"
+      >
+        Option 2
+      </atom-radio>
+
+      <atom-radio
+        name="choice"
+        value="option3"
+        size="m"
+        [error]="true"
+        errorText="This option is unavailable"
+        [(ngModel)]="selected"
+      >
+        Option 3 (Unavailable)
+      </atom-radio>
+    </fieldset>
+  `
+})
+export class ExampleComponent {
+  selected = signal('option1');
+}
+```
+
+  </div>
+</FrameworkSwitcher>
+
+---
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `string` | — | Radio group name (required) |
+| `value` | `string?` | — | Option value (required for groups) |
+| `size` | `"s" \| "m"` | `"s"` | Indicator size (compact or standard) |
+| `checked` | `boolean?` | `false` | Initial selected state |
+| `disabled` | `boolean?` | `false` | Disables interaction |
+| `supportiveText` | `string?` | — | Helper text below label |
+| `error` | `boolean?` | `false` | Indicates validation error |
+| `errorText` | `string?` | — | Error message (only shown if `error=true`) |
+| `class` | `string?` | — | Additional CSS classes |
+
+### Slots
+
+| Slot | Description |
+|------|-------------|
+| `default` | Radio label text |
+
+**Slot Usage:**
+```astro
+<Radio name="choice" value="option1" size="m">
+  Label text for this option
+</Radio>
+```
+
+---
+
+## Variants
+
+### Size Variants
+
+| Size | Circle Diameter | Use Case |
+|------|-----------------|----------|
+| **s** | `16px` | Compact forms, dense layouts, mobile |
+| **m** | `20px` | Standard forms, desktop, default UI |
+
+**Size Token:**
+```css
+--radio-size-s: 16px;
+--radio-size-m: 20px;
+```
+
+### State Variants
+
+| State | Behavior | Visual Change |
+|-------|----------|---------------|
+| **Unchecked** | Interactive | Empty circle indicator |
+| **Checked** | Selected in group | Animated dot appears |
+| **Hover** | On mouse over | Subtle background highlight |
+| **Focus** | On keyboard focus | Focus ring outline |
+| **Disabled** | Non-interactive | Gray circle + `cursor: not-allowed` |
+| **Error** | Validation failed | Red border + error message + icon |
+| **Success** | Valid selection | Green checkmark (optional) |
+
+### Rendering Modes
+
+| Mode | Trigger | Structure |
+|------|---------|-----------|
+| **Simple** | No label, supportive text, or error | Single `<label>` wrapper |
+| **Extended** | Has label/text/error | `<div class="radio-field">` wrapper |
+
+---
+
+## Usage Examples
+
+### Basic Radio Group
+
+```astro
+---
+import { Radio } from '@atomchat.io/components-astro';
+---
+
+<fieldset>
+  <legend>Choose your preference</legend>
+  <Radio name="pref" value="opt1" size="m">Option 1</Radio>
+  <Radio name="pref" value="opt2" size="m">Option 2</Radio>
+  <Radio name="pref" value="opt3" size="m">Option 3</Radio>
+</fieldset>
+```
+
+### With Supporting Text
+
+```astro
+<fieldset>
+  <legend>Select shipping method</legend>
+
+  <Radio
+    name="shipping"
+    value="standard"
+    size="m"
+    supportiveText="Delivery in 5-7 business days"
+  >
+    Standard Shipping
+  </Radio>
+
+  <Radio
+    name="shipping"
+    value="express"
+    size="m"
+    supportiveText="Delivery in 2-3 business days (+$10)"
+  >
+    Express Shipping
+  </Radio>
+
+  <Radio
+    name="shipping"
+    value="overnight"
+    size="m"
+    supportiveText="Delivery next business day (+$25)"
+  >
+    Overnight Shipping
+  </Radio>
+</fieldset>
+```
+
+### With Error State
+
+```astro
+<fieldset>
+  <legend>Select an option</legend>
+
+  <Radio
+    name="choice"
+    value="available"
+    size="m"
+  >
+    Available Option
+  </Radio>
+
+  <Radio
+    name="choice"
+    value="unavailable"
+    size="m"
+    error
+    errorText="This option is out of stock"
+  >
+    Out of Stock Option
+  </Radio>
+</fieldset>
+```
+
+### Compact Size
+
+```astro
+<div style="display: flex; gap: var(--xs);">
+  <Radio name="view" value="list" size="s">List</Radio>
+  <Radio name="view" value="grid" size="s">Grid</Radio>
+  <Radio name="view" value="table" size="s">Table</Radio>
+</div>
+```
+
+### Disabled Option
+
+```astro
+<fieldset>
+  <legend>Payment method</legend>
+
+  <Radio name="payment" value="card" size="m">
+    Credit/Debit Card
+  </Radio>
+
+  <Radio
+    name="payment"
+    value="bank"
+    size="m"
+    disabled
+    supportiveText="Coming soon"
+  >
+    Bank Transfer
+  </Radio>
+
+  <Radio name="payment" value="paypal" size="m">
+    PayPal
+  </Radio>
+</fieldset>
+```
+
+### Form Submission
+
+```astro
+<form method="POST">
+  <fieldset>
+    <legend>Select an option</legend>
+    <Radio name="option" value="yes" size="m">Yes</Radio>
+    <Radio name="option" value="no" size="m">No</Radio>
+  </fieldset>
+  <button type="submit">Submit</button>
+</form>
+```
+
+---
+
+## Structure Tokens
+
+### Size Tokens
+
+```css
+/* Indicator sizes */
+--radio-size-s: 16px;
+--radio-size-m: 20px;
+
+/* Circle border radius */
+--radio-border-radius: 50%;
+
+/* Dot size relative to circle */
+--radio-dot-scale: 0.6;
+```
+
+### Spacing Tokens
+
+```css
+/* Between radio and label text */
+--radio-field-gap: 8px;
+
+/* Between label and supporting text */
+--radio-field-text-gap: 4px;
+
+/* Between error icon and text */
+--radio-error-icon-gap: 6px;
+```
+
+### Typography
+
+```css
+--radio-field-title-font-size: 14px;      /* Label text */
+--radio-field-title-font-weight: 500;     /* Label weight */
+
+--radio-field-supportive-font-size: 12px; /* Helper text */
+--radio-field-supportive-font-weight: 400; /* Helper weight */
+
+--radio-field-error-font-size: 12px;      /* Error text */
+--radio-field-error-font-weight: 400;     /* Error weight */
+```
+
+---
+
+## Dependencies
+
+### Required Packages
+- `@atomchat.io/css` — Component styles and tokens
+- `@atomchat.io/tokens` — Design token definitions
+
+### Optional Packages
+- `@atomchat.io/animations` — Dot animation effects
+- `gsap` — Animation library (required by animations package)
+
+### Semantic Tokens Used
+
+**Background:**
+```css
+--radio-bg-enabled          /* Unchecked circle background */
+--radio-bg-checked          /* Checked state background */
+--radio-bg-hovered          /* Hover state background */
+--radio-bg-focused          /* Focus state background */
+--radio-bg-disabled         /* Disabled state background */
+--radio-field-bg-error      /* Error state background */
+```
+
+**Foreground:**
+```css
+--radio-fg-dot              /* Dot color when checked */
+--radio-fg-disabled         /* Disabled text color */
+--radio-field-fg-supportive /* Supporting text color */
+--radio-field-fg-error      /* Error text color */
+--radio-field-fg-error-icon /* Error icon color */
+```
+
+**Border:**
+```css
+--radio-border-enabled      /* Unchecked circle border */
+--radio-border-checked      /* Checked circle border */
+--radio-border-focused      /* Focus ring border */
+--radio-border-error        /* Error state border */
+```
+
+---
+
+## Animations
+
+The Radio component integrates with the **ATOM animation system** for **dot animation** effects.
+
+### Dot Animation
+
+**What it does:**
+When a radio button is selected, the dot animates into the circle with scale and fade effects.
+
+**Data attributes:**
+```html
+<label class="radio" data-radio>
+  <input type="radio" class="radio__input" />
+  <span class="radio__circle" data-radio-circle>
+    <span class="radio__dot" data-radio-dot></span>
+  </span>
+</label>
+```
+
+**Animation Behavior:**
+- **On Check:** Dot scales from 0 to 1 and fades in (200ms)
+- **On Uncheck:** Dot scales from 1 to 0 and fades out (200ms)
+- **Easing:** `ease-out` (smooth deceleration)
+
+**GSAP Timeline:**
+
+```typescript
+// When radio is selected
+gsap.to('[data-radio-dot]', {
+  scale: 1,
+  opacity: 1,
+  duration: 0.2,
+  ease: 'atom'
+});
+
+// When radio is deselected
+gsap.to('[data-radio-dot]', {
+  scale: 0,
+  opacity: 0,
+  duration: 0.2,
+  ease: 'atom'
+});
+```
+
+### Initialization
+
+**Global initialization (recommended):**
+
+```astro
+<!-- Astro Layout.astro -->
+<script>
+  import { initAllAnimations } from '@atomchat.io/animations';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initAllAnimations();
+  });
+
+  document.addEventListener('astro:page-load', () => {
+    initAllAnimations();
+  });
+</script>
+```
+
+**Respects Motion Preferences:**
+```css
+@media (prefers-reduced-motion: reduce) {
+  [data-radio-dot] {
+    animation-duration: 1s;
+  }
+}
+```
+
+---
+
+## Accessibility
+
+### ARIA Attributes
+
+The Radio component includes built-in accessibility features:
+
+```html
+<!-- Unchecked radio -->
+<label class="radio" for="option-1" data-radio>
+  <input
+    type="radio"
+    id="option-1"
+    name="choice"
+    value="option-1"
+    aria-label="Option 1"
+  />
+  <span class="radio__circle" aria-hidden="true">
+    <span class="radio__dot"></span>
+  </span>
+</label>
+
+<!-- Checked radio -->
+<label class="radio" for="option-2" data-radio>
+  <input
+    type="radio"
+    id="option-2"
+    name="choice"
+    value="option-2"
+    checked
+    aria-label="Option 2 (selected)"
+  />
+  <span class="radio__circle" aria-hidden="true">
+    <span class="radio__dot"></span>
+  </span>
+</label>
+
+<!-- Radio with error -->
+<div class="radio-field radio-field--error">
+  <div class="radio-field__row">
+    <label class="radio" for="invalid" data-radio>
+      <input
+        type="radio"
+        id="invalid"
+        name="choice"
+        value="invalid"
+        aria-invalid="true"
+        aria-describedby="error-msg"
+      />
+      <span class="radio__circle" aria-hidden="true">
+        <span class="radio__dot"></span>
+      </span>
+    </label>
+  </div>
+  <div class="radio-field__error" id="error-msg" role="alert">
+    <svg aria-hidden="true"><!-- Error icon --></svg>
+    <span>This option is unavailable</span>
+  </div>
+</div>
+
+<!-- Radio group -->
+<fieldset>
+  <legend>Select your preference</legend>
+  <Radio name="pref" value="1">Option 1</Radio>
+  <Radio name="pref" value="2">Option 2</Radio>
+</fieldset>
+```
+
+**Automatic behaviors:**
+- Native `<input type="radio">` for semantic HTML
+- `<fieldset>` and `<legend>` for grouping
+- Radio buttons with same `name` are automatically grouped
+- Error icon hidden with `aria-hidden="true"`
+- Error messages with `role="alert"`
+- `aria-invalid="true"` for validation errors
+
+### Best Practices
+
+**Use fieldset and legend:**
+```astro
+<fieldset>
+  <legend>Shipping Method</legend>
+  <Radio name="shipping" value="standard">Standard</Radio>
+  <Radio name="shipping" value="express">Express</Radio>
+</fieldset>
+```
+
+**Provide clear labels:**
+```astro
+<Radio name="agree" value="yes">
+  I agree to the Terms of Service
+</Radio>
+```
+
+**Use supporting text for clarity:**
+```astro
+<Radio
+  name="option"
+  value="premium"
+  supportiveText="Includes priority support and updates"
+>
+  Premium Plan
+</Radio>
+```
+
+**Show error messages clearly:**
+```astro
+<Radio
+  name="choice"
+  value="unavailable"
+  error
+  errorText="This option is temporarily unavailable"
+>
+  Unavailable Option
+</Radio>
+```
+
+**Don't rely on visual cues alone:**
+```astro
+<!-- Bad: No label text -->
+<Radio name="agree" value="yes" />
+
+<!-- Good: Descriptive label -->
+<Radio name="agree" value="yes">
+  I agree to proceed
+</Radio>
+```
+
+---
+
+## Composition Patterns
+
+### Survey Form
+
+```astro
+<form>
+  <h2>How satisfied are you with our service?</h2>
+  <fieldset>
+    <legend>Satisfaction Rating</legend>
+
+    <Radio
+      name="satisfaction"
+      value="very-satisfied"
+      size="m"
+      supportiveText="Would recommend to others"
+    >
+      Very Satisfied
+    </Radio>
+
+    <Radio
+      name="satisfaction"
+      value="satisfied"
+      size="m"
+      supportiveText="Met expectations"
+    >
+      Satisfied
+    </Radio>
+
+    <Radio
+      name="satisfaction"
+      value="neutral"
+      size="m"
+      supportiveText="No strong feelings"
+    >
+      Neutral
+    </Radio>
+
+    <Radio
+      name="satisfaction"
+      value="dissatisfied"
+      size="m"
+      supportiveText="Below expectations"
+    >
+      Dissatisfied
+    </Radio>
+  </fieldset>
+</form>
+```
+
+### Plan Selection
+
+```astro
+<form>
+  <fieldset>
+    <legend>Choose Your Plan</legend>
+
+    <Radio
+      name="plan"
+      value="starter"
+      size="m"
+      supportiveText="$9/month • Perfect for getting started"
+    >
+      Starter Plan
+    </Radio>
+
+    <Radio
+      name="plan"
+      value="professional"
+      size="m"
+      supportiveText="$29/month • Everything you need"
+    >
+      Professional Plan
+    </Radio>
+
+    <Radio
+      name="plan"
+      value="enterprise"
+      size="m"
+      supportiveText="$99/month • Full power unlocked"
+    >
+      Enterprise Plan
+    </Radio>
+  </fieldset>
+</form>
+```
+
+### Conditional Validation
+
+```astro
+<fieldset>
+  <legend>Delivery Location</legend>
+
+  <Radio name="location" value="home" size="m">
+    Ship to home address
+  </Radio>
+
+  <Radio name="location" value="work" size="m">
+    Ship to work address
+  </Radio>
+
+  <Radio
+    name="location"
+    value="pickup"
+    size="m"
+    supportiveText="Available for in-store pickup only"
+  >
+    Pick up in store
+  </Radio>
+</fieldset>
+```
+
+### Settings Panel
+
+```astro
+<section>
+  <h3>Email Notifications</h3>
+
+  <fieldset>
+    <legend>Frequency</legend>
+
+    <Radio name="frequency" value="immediate" size="m">
+      Immediately
+    </Radio>
+
+    <Radio name="frequency" value="daily" size="m">
+      Daily Digest
+    </Radio>
+
+    <Radio name="frequency" value="weekly" size="m">
+      Weekly Summary
+    </Radio>
+
+    <Radio
+      name="frequency"
+      value="never"
+      size="m"
+      supportiveText="You won't receive any notifications"
+    >
+      Never
+    </Radio>
+  </fieldset>
+</section>
+```
+
+---
+
+## Design Tokens in Action
+
+### Token-First Philosophy
+
+Every visual property of the Radio component is controlled by design tokens:
+
+- **Global consistency** — All radios use the same size and color scale
+- **Easy theming** — Switch themes by updating token values
+- **State management** — Hover/focus/active/error states via tokens
+- **Maintainability** — Update once, reflect everywhere
+
+### Token Override Example
+
+```css
+/* Custom radio variant for premium selection */
+.radio--premium {
+  --radio-border-enabled: var(--primitive-gold-400);
+  --radio-border-checked: var(--primitive-gold-600);
+  --radio-fg-dot: var(--primitive-gold-600);
+  --radio-bg-checked: var(--primitive-gold-50);
+}
+
+.radio--premium:hover {
+  --radio-bg-hovered: var(--primitive-gold-100);
+}
+```
+
+**Usage:**
+```astro
+<Radio name="plan" value="premium" class="radio--premium">
+  Premium Plan
+</Radio>
+```
+
+---
+
+## Build this Component with AI
+
+Use this pre-built prompt to generate a complete showcase of this component in your preferred framework. The AI will create a working form with all radio patterns and proper token usage.
+
+**What you get:**
+- Complete component setup with proper imports
+- Multiple radio groups and sizes
+- Supporting text examples
+- Error state demonstrations
+- Form validation patterns
+- Accessible fieldset structures
+- Token-first styling (no hardcoded values)

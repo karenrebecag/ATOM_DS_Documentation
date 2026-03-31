@@ -1,0 +1,840 @@
+---
+title: Link Button
+description: Button-styled navigation link for consistent UI across navigation elements.
+---
+
+## Overview
+
+The LinkButton component renders semantic `<a>` elements styled as buttons, providing a consistent navigation experience throughout your application. It supports the same visual variants and sizes as the Button component, making it ideal for primary navigation, breadcrumbs, pagination, and action links.
+
+**Key Features:**
+- 6 visual variants (Primary, Secondary, Tertiary, Destructive variants)
+- 5 size options (xs, s, m, l, xl)
+- Semantic HTML `<a>` tags for SEO and accessibility
+- Icon support (left, right, or both)
+- Hover rotation animation with GSAP
+- Disabled state styling (via class)
+- Fully token-driven styling
+- Accessible with ARIA labels and semantic HTML
+
+---
+
+## Demo
+
+:::tip[Interactive Playground]
+**[Open LinkButton Playground →](/playground/link-button)**
+
+View all LinkButton variants with live hover animations and different icon arrangements in an isolated environment.
+:::
+
+---
+
+## Installation
+
+```bash
+# Install component package
+pnpm add @atomchat.io/components-astro
+
+# Install required dependencies
+pnpm add @atomchat.io/css @atomchat.io/tokens
+
+# Optional: For GSAP animations
+pnpm add @atomchat.io/animations gsap
+```
+
+**CSS Import (required):**
+```astro
+---
+// In your layout or page
+import '@atomchat.io/css';
+---
+```
+
+---
+
+## Anatomy
+
+The LinkButton component is structurally similar to the Button component but always renders as an `<a>` element:
+
+```
+┌──────────────────────────┐
+│  .link-button (link)     │  ← Base <a> element
+│  ┌────────────────────┐  │
+│  │ .link-button__label-wrap│  ← Grid for hover rotation animation
+│  │  ┌──────────────┐  │  │
+│  │  │ __label      │  │  │  ← Original label (visible)
+│  │  │ __label--clone│ │  │  ← Cloned label (hidden, for animation)
+│  │  └──────────────┘  │  │
+│  └────────────────────┘  │
+└──────────────────────────┘
+```
+
+**DOM Structure:**
+```html
+<a class="link-button link-button--primary link-button--m" href="/about">
+  <span class="link-button__label-wrap">
+    <span class="link-button__label" data-button-label>
+      Learn More
+    </span>
+    <span class="link-button__label link-button__label--clone" data-button-label-clone aria-hidden="true">
+      Learn More
+    </span>
+  </span>
+</a>
+```
+
+---
+
+## Framework Support
+
+The LinkButton component is available for multiple frameworks with shared design tokens, styles, and behavior.
+
+import FrameworkSwitcher from '../../../../components/FrameworkSwitcher.astro';
+
+<FrameworkSwitcher
+  frameworks={[
+    { name: 'astro', label: 'Astro', icon: 'https://svgl.app/library/astro-icon-dark.svg' },
+    { name: 'react', label: 'React', icon: 'https://svgl.app/library/react_dark.svg' },
+    { name: 'nextjs', label: 'Next.js', icon: 'https://svgl.app/library/nextjs_icon_dark.svg' },
+    { name: 'vue', label: 'Vue', icon: 'https://svgl.app/library/vue.svg' },
+    { name: 'angular', label: 'Angular', icon: 'https://svgl.app/library/angular.svg' },
+  ]}
+>
+  <div data-framework="astro" data-active="true">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-astro @atomchat.io/css
+```
+
+### Usage
+
+```astro
+---
+import { LinkButton } from '@atomchat.io/components-astro';
+import '@atomchat.io/css';
+---
+
+<LinkButton variant="Primary" size="m" href="/about">
+  Learn More
+</LinkButton>
+
+<LinkButton variant="Secondary" size="l" href="/contact">
+  Get in Touch
+</LinkButton>
+
+<LinkButton variant="Tertiary" size="s" href="/docs">
+  Documentation
+</LinkButton>
+```
+
+  </div>
+
+  <div data-framework="react">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+import { LinkButton } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+
+function Example() {
+  return (
+    <>
+      <LinkButton variant="Primary" size="m" href="/about">
+        Learn More
+      </LinkButton>
+
+      <LinkButton variant="Secondary" size="l" href="/contact">
+        Get in Touch
+      </LinkButton>
+
+      <LinkButton variant="Tertiary" size="s" href="/docs">
+        Documentation
+      </LinkButton>
+    </>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="nextjs">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+'use client';
+
+import { LinkButton } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+import Link from 'next/link';
+
+export default function Example() {
+  return (
+    <>
+      <LinkButton variant="Primary" size="m" href="/about" as={Link}>
+        Learn More
+      </LinkButton>
+
+      <LinkButton variant="Secondary" size="l" href="/contact" as={Link}>
+        Get in Touch
+      </LinkButton>
+
+      <LinkButton variant="Tertiary" size="s" href="/docs" as={Link}>
+        Documentation
+      </LinkButton>
+    </>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="vue">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-vue @atomchat.io/css
+```
+
+### Usage
+
+```vue
+<script setup>
+import { LinkButton } from '@atomchat.io/components-vue';
+import '@atomchat.io/css';
+</script>
+
+<template>
+  <LinkButton variant="Primary" size="m" href="/about">
+    Learn More
+  </LinkButton>
+
+  <LinkButton variant="Secondary" size="l" href="/contact">
+    Get in Touch
+  </LinkButton>
+
+  <LinkButton variant="Tertiary" size="s" href="/docs">
+    Documentation
+  </LinkButton>
+</template>
+```
+
+  </div>
+
+  <div data-framework="angular">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-angular @atomchat.io/css
+```
+
+### Usage
+
+```typescript
+import { LinkButtonComponent } from '@atomchat.io/components-angular';
+import '@atomchat.io/css';
+import { RouterModule } from '@angular/router';
+
+@Component({
+  imports: [LinkButtonComponent, RouterModule],
+  template: `
+    <atom-link-button variant="Primary" size="m" [href]="'/about'">
+      Learn More
+    </atom-link-button>
+
+    <atom-link-button variant="Secondary" size="l" [href]="'/contact'">
+      Get in Touch
+    </atom-link-button>
+
+    <atom-link-button variant="Tertiary" size="s" [href]="'/docs'">
+      Documentation
+    </atom-link-button>
+  `
+})
+export class ExampleComponent {}
+```
+
+  </div>
+</FrameworkSwitcher>
+
+---
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `href` | `string` | — | Navigation URL (required) |
+| `variant` | `"Primary" \| "Secondary" \| "Tertiary" \| "Destructive Primary" \| "Destructive Secondary" \| "Destructive Tertiary"` | `"Primary"` | Visual style variant |
+| `size` | `"xs" \| "s" \| "m" \| "l" \| "xl"` | `"m"` | Size of the link |
+| `target` | `"_self" \| "_blank" \| "_parent" \| "_top"` | `"_self"` | Link target attribute |
+| `rel` | `string?` | — | Relationship attribute (e.g., `"noopener noreferrer"` for `target="_blank"`) |
+| `disabled` | `boolean?` | `false` | Disables link styling and interaction (applies `link-button--disabled` class) |
+| `class` | `string?` | — | Additional CSS classes |
+
+### Slots
+
+| Slot | Description |
+|------|-------------|
+| `default` | Link label text (required) |
+| `icon-left` | Icon placed before the label |
+| `icon-right` | Icon placed after the label |
+
+**Slot Usage:**
+```astro
+<LinkButton variant="Primary" size="m" href="/about">
+  <svg slot="icon-left">...</svg>
+  Learn More
+  <svg slot="icon-right">...</svg>
+</LinkButton>
+```
+
+---
+
+## Variants
+
+### Size Variants
+
+| Size | Padding (Y × X) | Font Size | Use Case |
+|------|-----------------|-----------|----------|
+| **xs** | `var(--xxs) × var(--xs)` | `--text-label-regular` | Compact UIs, inline actions, breadcrumbs |
+| **s** | `var(--xs) × var(--s)` | `--text-label-regular` | Dense layouts, toolbars, secondary nav |
+| **m** | `var(--sm) × var(--m)` | `--text-label-regular` | Default link size, primary navigation |
+| **l** | `var(--m) × var(--l)` | `--text-body-regular` | Prominent navigation links |
+| **xl** | `var(--l) × var(--xl)` | `--text-body-large` | Hero sections, CTAs, main navigation |
+
+### Visual Variants
+
+| Variant | Background | Border | Text Color | Use Case |
+|---------|------------|--------|------------|----------|
+| **Primary** | `--link-button-bg-primary-enabled` | None | `--link-button-fg-primary-enabled` | Main navigation links |
+| **Secondary** | `--link-button-bg-secondary-enabled` | `--link-button-border-secondary-enabled` | `--link-button-fg-secondary-enabled` | Secondary navigation |
+| **Tertiary** | `--link-button-bg-tertiary-enabled` | None | `--link-button-fg-tertiary-enabled` | Subtle navigation, breadcrumbs |
+| **Destructive Primary** | `--link-button-bg-danger-primary-enabled` | None | `--link-button-fg-danger-primary-enabled` | Destructive links (unsubscribe, delete account) |
+| **Destructive Secondary** | `--link-button-bg-danger-secondary-enabled` | `--link-button-border-danger-secondary-enabled` | `--link-button-fg-danger-secondary-enabled` | Secondary destructive links |
+| **Destructive Tertiary** | `--link-button-bg-danger-tertiary-enabled` | None | `--link-button-fg-danger-tertiary-enabled` | Subtle destructive links |
+
+### State Variants
+
+| State | Behavior | Visual Change |
+|-------|----------|---------------|
+| **Default** | Clickable, interactive | Standard appearance |
+| **Hover** | On mouse over | Background → `--link-button-bg-hover`, text rotates |
+| **Focus** | On keyboard focus | Border + shadow (`:focus-visible`) |
+| **Active** | Currently active page | Background → `--link-button-bg-active` |
+| **Disabled** | Non-interactive | Gray background + `cursor: not-allowed` |
+| **Visited** | After navigation | Optional color change via `--link-button-fg-visited` |
+
+---
+
+## Usage Examples
+
+### Basic Navigation Link
+
+```astro
+---
+import { LinkButton } from '@atomchat.io/components-astro';
+---
+
+<LinkButton variant="Primary" size="m" href="/about">
+  Learn More
+</LinkButton>
+```
+
+### External Link with Icon
+
+```astro
+<LinkButton variant="Secondary" size="l" href="https://github.com" target="_blank" rel="noopener noreferrer">
+  <svg slot="icon-left" viewBox="0 0 24 24">
+    <path d="M12 0c-6.627 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v 3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+  </svg>
+  GitHub
+</LinkButton>
+```
+
+### Breadcrumb Navigation
+
+```astro
+<nav aria-label="breadcrumbs">
+  <LinkButton variant="Tertiary" size="xs" href="/">
+    Home
+  </LinkButton>
+  <span>/</span>
+  <LinkButton variant="Tertiary" size="xs" href="/docs">
+    Documentation
+  </LinkButton>
+  <span>/</span>
+  <span class="breadcrumb-current">Components</span>
+</nav>
+```
+
+### Pagination Links
+
+```astro
+<div style="display: flex; gap: var(--s); justify-content: center; margin: var(--m);">
+  <LinkButton variant="Secondary" size="m" href="/page/1">
+    Previous
+  </LinkButton>
+  <span style="align-self: center;">Page 5 of 10</span>
+  <LinkButton variant="Secondary" size="m" href="/page/7">
+    Next
+  </LinkButton>
+</div>
+```
+
+### Link with Both Icons
+
+```astro
+<LinkButton variant="Primary" size="l" href="/documentation">
+  <svg slot="icon-left"><!-- Arrow Icon --></svg>
+  Read Documentation
+  <svg slot="icon-right"><!-- External Link Icon --></svg>
+</LinkButton>
+```
+
+### Active Navigation State
+
+```astro
+<nav>
+  <LinkButton variant="Primary" size="m" href="/about" class="link-button--active">
+    About
+  </LinkButton>
+  <LinkButton variant="Primary" size="m" href="/services">
+    Services
+  </LinkButton>
+  <LinkButton variant="Primary" size="m" href="/contact">
+    Contact
+  </LinkButton>
+</nav>
+```
+
+---
+
+## Structure Tokens
+
+### Size Tokens
+
+LinkButton uses spacing tokens for consistent sizing:
+
+```css
+/* XS */
+padding: var(--xxs) var(--xs);  /* ~4px 8px */
+
+/* S */
+padding: var(--xs) var(--s);    /* ~8px 12px */
+
+/* M */
+padding: var(--sm) var(--m);    /* ~12px 16px */
+
+/* L */
+padding: var(--m) var(--l);     /* ~16px 24px */
+
+/* XL */
+padding: var(--l) var(--xl);    /* ~24px 32px */
+```
+
+### Border & Radius
+
+```css
+--stroke-xs: 1px;               /* Border width */
+--s: 8px;                       /* Border radius */
+```
+
+### Typography
+
+```css
+--text-label-regular: 14px;     /* xs, s, m */
+--text-body-regular: 16px;      /* l */
+--text-body-large: 18px;        /* xl */
+--font-weight-medium: 500;      /* All link buttons */
+```
+
+### Icon Size
+
+```css
+--icon-s: 16px;                 /* Icon dimensions */
+```
+
+---
+
+## Dependencies
+
+### Required Packages
+- `@atomchat.io/css` — Component styles and tokens
+- `@atomchat.io/tokens` — Design token definitions
+
+### Optional Packages
+- `@atomchat.io/animations` — Hover rotation effects
+- `gsap` — Animation library (required by animations package)
+
+### Semantic Tokens Used
+
+**Background:**
+```css
+--link-button-bg-primary-enabled        /* Primary link background */
+--link-button-bg-primary-hovered        /* Primary hover state */
+--link-button-bg-primary-focused        /* Primary focus state */
+--link-button-bg-primary-active         /* Primary active state */
+--link-button-bg-secondary-enabled      /* Secondary link background */
+--link-button-bg-tertiary-enabled       /* Tertiary link background */
+--link-button-bg-danger-primary-enabled /* Destructive link background */
+--bg-disabled                           /* Disabled state (all variants) */
+```
+
+**Foreground:**
+```css
+--link-button-fg-primary-enabled        /* Primary text color */
+--link-button-fg-primary-visited        /* Visited state color */
+--link-button-fg-secondary-enabled      /* Secondary text color */
+--link-button-fg-tertiary-enabled       /* Tertiary text color */
+--link-button-fg-danger-primary-enabled /* Destructive text color */
+--fg-disabled                           /* Disabled text color */
+```
+
+**Border:**
+```css
+--link-button-border-secondary-enabled   /* Secondary border */
+--link-button-border-primary-focused     /* Primary focus border */
+--link-button-border-danger-secondary-enabled /* Destructive Secondary border */
+```
+
+**Shadow:**
+```css
+--link-button-shadow-focus               /* Focus ring (primary/secondary/tertiary) */
+--link-button-shadow-focus-danger        /* Focus ring (destructive variants) */
+```
+
+---
+
+## Animations
+
+The LinkButton component integrates with the **ATOM animation system** (`@atomchat.io/animations`) for **hover rotation** effects.
+
+### Hover Rotation Animation
+
+**What it does:**
+On hover, the link label rotates out while a clone label rotates in, creating a smooth flip effect.
+
+**Data attributes:**
+```html
+<a class="link-button" data-button data-hover-rotate href="/about">
+  <span class="link-button__label-wrap">
+    <span class="link-button__label" data-button-label>
+      Learn More
+    </span>
+    <span class="link-button__label link-button__label--clone" data-button-label-clone aria-hidden="true">
+      Learn More
+    </span>
+  </span>
+</a>
+```
+
+**Customization:**
+
+```css
+/* Override rotation angle */
+.link-button--subtle-rotate {
+  --r: 10deg;
+}
+
+/* Disable hover animation for specific links */
+.link-button--no-animation {
+  --r: 0deg;
+}
+```
+
+### Initialization
+
+**Global initialization (recommended):**
+
+```astro
+<!-- Astro Layout.astro -->
+<script>
+  import { initAllAnimations } from '@atomchat.io/animations';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initAllAnimations();
+  });
+
+  document.addEventListener('astro:page-load', () => {
+    initAllAnimations();
+  });
+</script>
+```
+
+**Respects Motion Preferences:**
+```css
+@media (prefers-reduced-motion: reduce) {
+  .link-button {
+    --r: 0deg; /* No rotation on reduced motion */
+  }
+}
+```
+
+---
+
+## Accessibility
+
+### ARIA Attributes
+
+The LinkButton component includes built-in accessibility features:
+
+```html
+<!-- Standard navigation link -->
+<a
+  class="link-button link-button--primary"
+  href="/about"
+>
+  Learn More
+</a>
+
+<!-- Disabled link (prevent navigation) -->
+<a
+  class="link-button link-button--disabled"
+  aria-disabled="true"
+  role="link"
+>
+  Coming Soon
+</a>
+
+<!-- External link with proper labeling -->
+<a
+  class="link-button link-button--secondary"
+  href="https://example.com"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Visit Example (opens in new window)"
+>
+  <svg slot="icon-right"><!-- External icon --></svg>
+  Learn More
+</a>
+
+<!-- Active navigation indicator -->
+<a
+  class="link-button link-button--primary link-button--active"
+  href="/about"
+  aria-current="page"
+>
+  About
+</a>
+```
+
+**Automatic behaviors:**
+- Semantic `<a>` tags for proper navigation
+- `aria-disabled="true"` for disabled links
+- Clone label has `aria-hidden="true"` to avoid duplication
+- `aria-current="page"` for active navigation
+- `rel="noopener noreferrer"` for external links with `target="_blank"`
+
+### Best Practices
+
+**Use semantic HTML for navigation:**
+```astro
+<nav>
+  <LinkButton variant="Primary" size="m" href="/about">
+    About
+  </LinkButton>
+  <LinkButton variant="Primary" size="m" href="/services">
+    Services
+  </LinkButton>
+</nav>
+```
+
+**Provide descriptive labels:**
+```astro
+<LinkButton variant="Secondary" href="https://example.com" target="_blank">
+  <svg slot="icon-right"><!-- External --></svg>
+  Visit Example (opens in new window)
+</LinkButton>
+```
+
+**Mark active navigation with `aria-current`:**
+```astro
+<LinkButton
+  variant="Primary"
+  href="/current-page"
+  aria-current="page"
+  class="link-button--active"
+>
+  Current Page
+</LinkButton>
+```
+
+**Use proper `rel` attribute for external links:**
+```astro
+<LinkButton
+  variant="Secondary"
+  href="https://external.com"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  External Site
+</LinkButton>
+```
+
+**Don't use generic link text:**
+```astro
+<!-- Bad -->
+<LinkButton variant="Primary" href="/docs">
+  Click Here
+</LinkButton>
+```
+
+**Don't nest interactive elements:**
+```astro
+<!-- Bad -->
+<LinkButton variant="Primary" href="/link">
+  <button>Button inside link</button>
+</LinkButton>
+```
+
+**Don't open new tabs without warning:**
+```astro
+<!-- Bad -->
+<LinkButton variant="Secondary" href="https://example.com" target="_blank">
+  Visit Example
+</LinkButton>
+```
+
+---
+
+## Composition Patterns
+
+### Navigation Menu
+
+```astro
+<nav class="main-nav">
+  <LinkButton variant="Primary" size="m" href="/">
+    Home
+  </LinkButton>
+  <LinkButton variant="Primary" size="m" href="/products">
+    Products
+  </LinkButton>
+  <LinkButton variant="Primary" size="m" href="/about">
+    About
+  </LinkButton>
+  <LinkButton variant="Secondary" size="m" href="/contact">
+    Contact
+  </LinkButton>
+</nav>
+```
+
+### Pagination
+
+```astro
+<div class="pagination">
+  <LinkButton variant="Secondary" size="m" href="/page/1">
+    <svg slot="icon-left"><!-- Previous --></svg>
+    Previous
+  </LinkButton>
+
+  <div class="pagination-numbers">
+    <LinkButton variant="Tertiary" size="s" href="/page/3">3</LinkButton>
+    <LinkButton variant="Tertiary" size="s" href="/page/4">4</LinkButton>
+    <LinkButton variant="Primary" size="s" href="/page/5" aria-current="page">5</LinkButton>
+    <LinkButton variant="Tertiary" size="s" href="/page/6">6</LinkButton>
+  </div>
+
+  <LinkButton variant="Secondary" size="m" href="/page/9">
+    Next
+    <svg slot="icon-right"><!-- Next --></svg>
+  </LinkButton>
+</div>
+```
+
+### Breadcrumb Navigation
+
+```astro
+<nav aria-label="Breadcrumb" class="breadcrumb">
+  <ol>
+    <li>
+      <LinkButton variant="Tertiary" size="xs" href="/">
+        Home
+      </LinkButton>
+    </li>
+    <li aria-current="page">
+      <span>Products</span>
+    </li>
+  </ol>
+</nav>
+```
+
+### Footer Links
+
+```astro
+<footer>
+  <div class="footer-section">
+    <h3>Company</h3>
+    <LinkButton variant="Tertiary" size="s" href="/about">About</LinkButton>
+    <LinkButton variant="Tertiary" size="s" href="/team">Team</LinkButton>
+    <LinkButton variant="Tertiary" size="s" href="/careers">Careers</LinkButton>
+  </div>
+
+  <div class="footer-section">
+    <h3>Resources</h3>
+    <LinkButton variant="Tertiary" size="s" href="/docs">Documentation</LinkButton>
+    <LinkButton variant="Tertiary" size="s" href="/blog">Blog</LinkButton>
+    <LinkButton variant="Tertiary" size="s" href="/api">API Reference</LinkButton>
+  </div>
+</footer>
+```
+
+---
+
+## Design Tokens in Action
+
+### Token-First Philosophy
+
+Every visual property of the LinkButton component is controlled by design tokens. This ensures:
+
+- **Global consistency** — All links use the same size and color scale
+- **Easy theming** — Change tokens to update all navigation
+- **Visited state management** — Track user journey via tokens
+- **Maintainability** — Update once, reflect everywhere
+
+### Token Override Example
+
+```css
+/* Custom navigation variant */
+.link-button--nav {
+  --link-button-bg-primary-enabled: transparent;
+  --link-button-fg-primary-enabled: var(--primitive-neutral-600);
+  --link-button-bg-primary-hovered: var(--primitive-neutral-50);
+  --link-button-border-primary-focused: var(--primitive-primary-500);
+}
+```
+
+**Usage:**
+```astro
+<LinkButton variant="Primary" class="link-button--nav" href="/about">
+  About
+</LinkButton>
+```
+
+---
+
+## Build this Component with AI
+
+Use this pre-built prompt to generate a complete showcase of this component in your preferred framework. The AI will create a working navigation system with all variants, animations, and proper token usage.
+
+**What you get:**
+- Complete component setup with proper imports
+- All 6 variants + 5 sizes demonstrated
+- Navigation patterns (menu, breadcrumbs, pagination)
+- Icon usage (left, right, both)
+- External link handling with proper attributes
+- Active state styling
+- Token-first styling (no hardcoded values)

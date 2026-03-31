@@ -1,0 +1,8 @@
+/* Custom accent color override - Black for text accent */
+:root {
+	--sl-color-text-accent: #000000;
+}
+
+:root[data-theme='dark'] {
+	--sl-color-text-accent: #ffffff;
+}

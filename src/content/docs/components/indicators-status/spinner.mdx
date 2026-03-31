@@ -1,0 +1,764 @@
+---
+title: Spinner
+description: Loading indicator for async operations with performant continuous rotation.
+---
+
+## Overview
+
+The Spinner component is a loading indicator that displays continuous rotation animation to indicate ongoing async operations. It uses CSS @keyframes for optimal performance and supports 5 size variants for flexible layout integration. Ideal for form submissions, data fetching, file uploads, and any asynchronous action feedback.
+
+**Key Features:**
+- 5 size variants (xs, s, m, l, xl) for flexible layouts
+- Continuous smooth rotation animation via CSS @keyframes
+- Performant animation (no JavaScript overhead)
+- Track + indicator dual-layer design
+- Semantic status role with ARIA labels
+- Data attributes for animation hooks
+- Works seamlessly in buttons, loading screens, and overlays
+- Respects `prefers-reduced-motion` for accessibility
+- Fully token-driven styling
+- Lightweight and self-contained
+
+---
+
+## Demo
+
+:::tip[Interactive Playground]
+**[Open Spinner Playground →](/playground/spinner)**
+
+View all Spinner sizes and animation behaviors in an isolated environment.
+:::
+
+---
+
+## Installation
+
+```bash
+# Install component package
+pnpm add @atomchat.io/components-astro
+
+# Install required dependencies
+pnpm add @atomchat.io/css @atomchat.io/tokens
+```
+
+**CSS Import (required):**
+```astro
+---
+// In your layout or page
+import '@atomchat.io/css';
+---
+```
+
+---
+
+## Anatomy
+
+The Spinner component has a simple two-layer structure for rotation effect:
+
+```
+┌────────────────────┐
+│  <span> spinner    │  ← Container
+│  ┌──────────────┐  │
+│  │ <span> track │  │  ← Background track
+│  │ ┌──────────┐ │  │
+│  │ │ indicator│ │  │  ← Rotating indicator
+│  │ └──────────┘ │  │
+│  └──────────────┘  │
+└────────────────────┘
+```
+
+**DOM Structure:**
+```html
+<span
+  class="spinner spinner--m"
+  role="status"
+  aria-label="Loading"
+  data-spinner
+>
+  <span class="spinner__track"></span>
+  <span class="spinner__indicator" data-spinner-indicator></span>
+</span>
+```
+
+**Animation:**
+```css
+@keyframes spinner-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spinner__indicator {
+  animation: spinner-rotate 1s linear infinite;
+}
+```
+
+---
+
+## Framework Support
+
+The Spinner component is available for multiple frameworks with shared design tokens, styles, and behavior.
+
+import FrameworkSwitcher from '../../../../components/FrameworkSwitcher.astro';
+
+<FrameworkSwitcher
+  frameworks={[
+    { name: 'astro', label: 'Astro', icon: 'https://svgl.app/library/astro-icon-dark.svg' },
+    { name: 'react', label: 'React', icon: 'https://svgl.app/library/react_dark.svg' },
+    { name: 'nextjs', label: 'Next.js', icon: 'https://svgl.app/library/nextjs_icon_dark.svg' },
+    { name: 'vue', label: 'Vue', icon: 'https://svgl.app/library/vue.svg' },
+    { name: 'angular', label: 'Angular', icon: 'https://svgl.app/library/angular.svg' },
+  ]}
+>
+  <div data-framework="astro" data-active="true">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-astro @atomchat.io/css
+```
+
+### Usage
+
+```astro
+---
+import { Spinner } from '@atomchat.io/components-astro';
+import '@atomchat.io/css';
+---
+
+<Spinner size="m" />
+
+<Spinner size="xs" />
+
+<Spinner size="xl" />
+
+<div style="display: flex; gap: var(--m);">
+  <Spinner size="s" />
+  <span>Loading data...</span>
+</div>
+```
+
+  </div>
+
+  <div data-framework="react">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+import { Spinner } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+import { useState } from 'react';
+
+function Example() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  return (
+    <>
+      <Spinner size="m" />
+
+      <Spinner size="xs" />
+
+      <Spinner size="xl" />
+
+      <div style={{ display: 'flex', gap: '1rem' }}>
+        <Spinner size="s" />
+        <span>Loading data...</span>
+      </div>
+    </>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="nextjs">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+'use client';
+
+import { Spinner } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+import { useState } from 'react';
+
+export default function Example() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  return (
+    <>
+      <Spinner size="m" />
+
+      <Spinner size="xs" />
+
+      <Spinner size="xl" />
+
+      <div style={{ display: 'flex', gap: '1rem' }}>
+        <Spinner size="s" />
+        <span>Loading data...</span>
+      </div>
+    </>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="vue">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-vue @atomchat.io/css
+```
+
+### Usage
+
+```vue
+<script setup>
+import { Spinner } from '@atomchat.io/components-vue';
+import '@atomchat.io/css';
+import { ref } from 'vue';
+
+const isLoading = ref(false);
+</script>
+
+<template>
+  <Spinner size="m" />
+
+  <Spinner size="xs" />
+
+  <Spinner size="xl" />
+
+  <div style="display: flex; gap: 1rem;">
+    <Spinner size="s" />
+    <span>Loading data...</span>
+  </div>
+</template>
+```
+
+  </div>
+
+  <div data-framework="angular">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-angular @atomchat.io/css
+```
+
+### Usage
+
+```typescript
+import { SpinnerComponent } from '@atomchat.io/components-angular';
+import '@atomchat.io/css';
+import { Component, signal } from '@angular/core';
+
+@Component({
+  imports: [SpinnerComponent],
+  template: `
+    <atom-spinner size="m"></atom-spinner>
+
+    <atom-spinner size="xs"></atom-spinner>
+
+    <atom-spinner size="xl"></atom-spinner>
+
+    <div style="display: flex; gap: 1rem;">
+      <atom-spinner size="s"></atom-spinner>
+      <span>Loading data...</span>
+    </div>
+  `
+})
+export class ExampleComponent {
+  isLoading = signal(false);
+}
+```
+
+  </div>
+</FrameworkSwitcher>
+
+---
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `"xs" \| "s" \| "m" \| "l" \| "xl"` | `"m"` | Spinner size variant |
+| `class` | `string?` | — | Additional CSS classes |
+
+---
+
+## Variants
+
+### Size Variants
+
+| Size | Diameter | Use Case |
+|------|----------|----------|
+| **xs** | `16px` | Inline spinners, small indicators |
+| **s** | `24px` | Form fields, compact loading |
+| **m** | `32px` | Standard loading, default UI |
+| **l** | `40px` | Prominent loading states |
+| **xl** | `48px` | Full-page loading, hero sections |
+
+**Size Tokens:**
+```css
+--spinner-size-xs: 16px;
+--spinner-size-s: 24px;
+--spinner-size-m: 32px;
+--spinner-size-l: 40px;
+--spinner-size-xl: 48px;
+```
+
+### Animation Behavior
+
+| Property | Value | Description |
+|----------|-------|-------------|
+| **Duration** | `1s` | Complete rotation time |
+| **Timing** | `linear` | Constant speed rotation |
+| **Direction** | `infinite` | Continuous loop |
+| **Motion** | `prefers-reduced-motion` | Respects accessibility preference |
+
+---
+
+## Usage Examples
+
+### Basic Spinner
+
+```astro
+---
+import { Spinner } from '@atomchat.io/components-astro';
+---
+
+<Spinner size="m" />
+```
+
+### Inline with Text
+
+```astro
+<div style="display: flex; gap: var(--s); align-items: center;">
+  <Spinner size="s" />
+  <span>Loading data...</span>
+</div>
+```
+
+### In Button
+
+```astro
+<button disabled style="display: flex; gap: var(--xs); align-items: center;">
+  <Spinner size="xs" />
+  Saving...
+</button>
+```
+
+### Full Page Loading
+
+```astro
+<div style="
+  display: grid;
+  place-items: center;
+  height: 100vh;
+  min-height: 100vh;
+">
+  <div style="text-align: center;">
+    <Spinner size="xl" />
+    <p style="margin-top: var(--m);">Loading your dashboard...</p>
+  </div>
+</div>
+```
+
+### Loading Overlay
+
+```astro
+{isLoading && (
+  <div style="
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: grid;
+    place-items: center;
+    z-index: 1000;
+  ">
+    <div style="background: white; padding: var(--l); border-radius: var(--radius-md);">
+      <Spinner size="l" />
+      <p style="margin-top: var(--m);">Processing...</p>
+    </div>
+  </div>
+)}
+```
+
+### Size Showcase
+
+```astro
+<div style="display: flex; gap: var(--m); align-items: center;">
+  <Spinner size="xs" />
+  <Spinner size="s" />
+  <Spinner size="m" />
+  <Spinner size="l" />
+  <Spinner size="xl" />
+</div>
+```
+
+### Skeleton with Spinner
+
+```astro
+<div style="display: flex; gap: var(--m);">
+  <div style="width: 64px; height: 64px; background: var(--bg-secondary); border-radius: 8px;"></div>
+  <div style="flex: 1;">
+    <div style="height: 16px; background: var(--bg-secondary); border-radius: 4px; margin-bottom: var(--xs);"></div>
+    <div style="display: flex; gap: var(--xs); align-items: center;">
+      <Spinner size="s" />
+      <span style="font-size: 12px; color: var(--fg-secondary);">Loading content...</span>
+    </div>
+  </div>
+</div>
+```
+
+### Loading with Timeout Message
+
+```astro
+{isLoading && (
+  <div style="text-align: center;">
+    {showTimeout ? (
+      <>
+        <p style="color: var(--fg-warning); margin-bottom: var(--s);">
+          This is taking longer than expected...
+        </p>
+        <button>Cancel</button>
+      </>
+    ) : (
+      <>
+        <Spinner size="m" />
+        <p style="margin-top: var(--s);">Loading...</p>
+      </>
+    )}
+  </div>
+)}
+```
+
+---
+
+## Structure Tokens
+
+### Size Tokens
+
+```css
+/* Spinner diameters */
+--spinner-size-xs: 16px;
+--spinner-size-s: 24px;
+--spinner-size-m: 32px;
+--spinner-size-l: 40px;
+--spinner-size-xl: 48px;
+
+/* Indicator width */
+--spinner-indicator-width-xs: 2px;
+--spinner-indicator-width-s: 2px;
+--spinner-indicator-width-m: 3px;
+--spinner-indicator-width-l: 3px;
+--spinner-indicator-width-xl: 4px;
+```
+
+### Animation Tokens
+
+```css
+/* Rotation speed */
+--spinner-duration: 1s;
+--spinner-timing: linear;
+
+/* Track styling */
+--spinner-track-opacity: 0.2;
+--spinner-indicator-opacity: 1;
+```
+
+### Typography (if spinner contains text)
+
+```css
+--spinner-text-font-size: 14px;
+--spinner-text-gap: 8px;        /* Gap between spinner and text */
+```
+
+---
+
+## Dependencies
+
+### Required Packages
+- `@atomchat.io/css` — Component styles and tokens
+- `@atomchat.io/tokens` — Design token definitions
+
+### Semantic Tokens Used
+
+**Colors:**
+```css
+--spinner-color-primary       /* Primary rotation color */
+--spinner-color-secondary     /* Track/background color */
+--spinner-color-disabled      /* Disabled spinner color */
+```
+
+**Animation:**
+```css
+--spinner-animation-duration  /* Rotation duration */
+--spinner-animation-timing    /* Rotation timing function */
+```
+
+---
+
+## Animation Details
+
+### CSS Keyframes
+
+The Spinner uses a simple 360-degree rotation animation:
+
+```css
+@keyframes spinner-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner__indicator {
+  animation: spinner-rotate var(--spinner-duration, 1s) linear infinite;
+}
+```
+
+### Performance Characteristics
+
+- **GPU Accelerated:** Uses `transform: rotate()` for optimal performance
+- **No JavaScript:** Pure CSS animation, zero runtime overhead
+- **Respects Preferences:** Automatically respects `prefers-reduced-motion`
+- **Smooth:** 60fps animation on modern browsers
+
+### Accessibility Animation
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  .spinner__indicator {
+    animation-duration: 3s;  /* Slower for accessibility */
+  }
+}
+```
+
+---
+
+## Accessibility
+
+### Semantic Markup
+
+The Spinner uses the `role="status"` to indicate dynamic content updates:
+
+```html
+<span
+  class="spinner spinner--m"
+  role="status"
+  aria-label="Loading"
+  data-spinner
+>
+  <span class="spinner__track"></span>
+  <span class="spinner__indicator"></span>
+</span>
+```
+
+### ARIA Labels
+
+- `role="status"` — Announces spinner as status/state indicator
+- `aria-label="Loading"` — Provides context for screen readers
+- Spinner track marked as `aria-hidden` (decorative)
+
+### Screen Reader Support
+
+Screen readers announce the spinner as:
+- "Loading, status" (announces the role and purpose)
+- No unnecessary repetition of content
+- Ideal when spinner is the sole loading indicator
+
+### Best Practices
+
+**Use with loading text:**
+```astro
+<div style="display: flex; gap: var(--s); align-items: center;">
+  <Spinner size="s" />
+  <span>Processing your request...</span>
+</div>
+```
+
+**Use descriptive aria-label:**
+```astro
+<Spinner size="m" aria-label="Loading user profile..." />
+```
+
+**Combine with error states:**
+```astro
+{isLoading ? (
+  <Spinner size="m" />
+) : isError ? (
+  <p role="alert">Failed to load. Please try again.</p>
+) : (
+  <Content />
+)}
+```
+
+**Don't hide spinners from screen readers:**
+```astro
+<!-- Bad: Hidden from all users -->
+<Spinner size="m" aria-hidden="true" />
+
+<!-- Good: Visible and announced -->
+<Spinner size="m" />
+```
+
+---
+
+## Composition Patterns
+
+### Loading State in Button
+
+```astro
+<button disabled={isSubmitting} style="display: flex; gap: var(--xs); align-items: center;">
+  {isSubmitting ? (
+    <>
+      <Spinner size="xs" />
+      <span>Submitting...</span>
+    </>
+  ) : (
+    <span>Submit Form</span>
+  )}
+</button>
+```
+
+### Skeleton Loading
+
+```astro
+<div class="content-skeleton">
+  <div style="height: 200px; background: var(--bg-secondary); border-radius: 8px; margin-bottom: var(--m); display: grid; place-items: center;">
+    <Spinner size="l" />
+  </div>
+  <div style="height: 16px; background: var(--bg-secondary); border-radius: 4px; margin-bottom: var(--s);"></div>
+  <div style="height: 16px; background: var(--bg-secondary); border-radius: 4px; width: 80%;"></div>
+</div>
+```
+
+### Modal Loading
+
+```astro
+{isLoading && (
+  <div role="alertdialog" aria-modal="true" aria-label="Loading" style="
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: grid;
+    place-items: center;
+    z-index: 1000;
+  ">
+    <div style="
+      background: white;
+      padding: var(--l);
+      border-radius: var(--radius-lg);
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+    ">
+      <Spinner size="l" />
+      <h2 style="margin-top: var(--m);">Loading Data</h2>
+      <p style="color: var(--fg-secondary); margin-top: var(--s);">
+        Please wait while we process your request...
+      </p>
+    </div>
+  </div>
+)}
+```
+
+### Inline List Loading
+
+```astro
+<ul>
+  {items.map(item => (
+    <li key={item.id}>{item.name}</li>
+  ))}
+  {hasMore && (
+    <li style="display: flex; gap: var(--s); align-items: center; padding: var(--m);">
+      <Spinner size="s" />
+      <span>Loading more items...</span>
+    </li>
+  )}
+</ul>
+```
+
+### Progressive Loading with Status
+
+```astro
+<div style="text-align: center;">
+  {status === 'loading' && (
+    <>
+      <Spinner size="l" />
+      <p style="margin-top: var(--m);">
+        {progress}% Complete
+      </p>
+      <div style="width: 200px; height: 4px; background: var(--bg-secondary); border-radius: 2px; margin: var(--m) auto;">
+        <div style="height: 100%; width: {progress}%; background: var(--fg-primary); border-radius: 2px; transition: width 0.3s;"></div>
+      </div>
+    </>
+  )}
+</div>
+```
+
+---
+
+## Design Tokens in Action
+
+### Token-First Philosophy
+
+Every visual property of the Spinner is controlled by design tokens:
+
+- **Global consistency** — All spinners use the same rotation speed
+- **Easy theming** — Change spinner color by updating token
+- **Accessibility** — Motion preferences automatically respected
+- **Maintainability** — Update once, reflect everywhere
+
+### Token Override Example
+
+```css
+/* Brand-colored spinner */
+.spinner--brand {
+  --spinner-color-primary: var(--primitive-brand-500);
+  --spinner-color-secondary: var(--primitive-brand-100);
+}
+
+/* Slower spinner for accessibility */
+.spinner--slow {
+  --spinner-animation-duration: 2s;
+}
+
+/* Error state spinner */
+.spinner--error {
+  --spinner-color-primary: var(--primitive-error-500);
+}
+```
+
+**Usage:**
+```astro
+<Spinner size="m" class="spinner--brand" />
+<Spinner size="m" class="spinner--slow" />
+<Spinner size="m" class="spinner--error" />
+```
+
+---
+
+## Build this Component with AI
+
+Use this pre-built prompt to generate a complete showcase of this component in your preferred framework. The AI will create a working loading interface with all spinner patterns and proper token usage.
+
+**What you get:**
+- Complete component setup with proper imports
+- All 5 size variants demonstrated
+- Loading state patterns (button, overlay, modal, skeleton)
+- Combined with text/progress indicators
+- Accessibility best practices
+- Token-first styling (no hardcoded values)

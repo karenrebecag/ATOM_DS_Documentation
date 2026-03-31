@@ -1,0 +1,876 @@
+---
+title: Badge
+description: Notification badge with smart overflow logic and context-aware capping.
+---
+
+## Overview
+
+The Badge component is a notification indicator that displays count information with intelligent overflow handling. It automatically adjusts display values based on context-specific rules and hides when count is zero. Ideal for notification counters, unread messages, and status indicators.
+
+**Key Features:**
+- Smart overflow capping with context-aware rules
+- 3 visual types (neutral, inbox, info) for different use cases
+- 3 visual states (default, focused, subtle) for emphasis control
+- Automatic hiding when count is zero
+- Dynamic ARIA labels for screen readers
+- Data attributes for animations and styling
+- Flexible context rules (default: 1-99 then "99+", inbox: 1-49 then "+50")
+- Semantic status role with accessibility
+- Fully token-driven styling
+- Compact and self-contained design
+
+---
+
+## Demo
+
+:::tip[Interactive Playground]
+**[Open Badge Playground →](/playground/badge)**
+
+View all Badge types, states, and overflow behavior in an isolated environment.
+:::
+
+---
+
+## Installation
+
+```bash
+# Install component package
+pnpm add @atomchat.io/components-astro
+
+# Install required dependencies
+pnpm add @atomchat.io/css @atomchat.io/tokens
+```
+
+**CSS Import (required):**
+```astro
+---
+// In your layout or page
+import '@atomchat.io/css';
+---
+```
+
+---
+
+## Anatomy
+
+The Badge component is a self-contained, minimal indicator:
+
+```
+┌────────────────┐
+│ <span> badge   │  ← Badge container
+│ ┌────────────┐ │
+│ │ <span>     │ │  ← Badge text (count or overflow)
+│ │ .badge__   │ │
+│ │ text       │ │
+│ └────────────┘ │
+└────────────────┘
+```
+
+**DOM Structure:**
+```html
+<span
+  class="badge badge--neutral badge--default"
+  role="status"
+  aria-label="45 notifications"
+  data-badge
+  data-count="45"
+  data-context="default"
+  data-state="default"
+>
+  <span class="badge__text" data-badge-text>45</span>
+</span>
+```
+
+**DOM Structure (Inbox overflow):**
+```html
+<span
+  class="badge badge--inbox badge--focused"
+  role="status"
+  aria-label="150 notifications"
+  data-badge
+  data-count="150"
+  data-context="inbox"
+  data-state="focused"
+>
+  <span class="badge__text" data-badge-text">+50</span>
+</span>
+```
+
+**DOM Structure (Zero count - not rendered):**
+```html
+<!-- Badge returns null, nothing is rendered -->
+```
+
+---
+
+## Framework Support
+
+The Badge component is available for multiple frameworks with shared design tokens, styles, and behavior.
+
+import FrameworkSwitcher from '../../../../components/FrameworkSwitcher.astro';
+
+<FrameworkSwitcher
+  frameworks={[
+    { name: 'astro', label: 'Astro', icon: 'https://svgl.app/library/astro-icon-dark.svg' },
+    { name: 'react', label: 'React', icon: 'https://svgl.app/library/react_dark.svg' },
+    { name: 'nextjs', label: 'Next.js', icon: 'https://svgl.app/library/nextjs_icon_dark.svg' },
+    { name: 'vue', label: 'Vue', icon: 'https://svgl.app/library/vue.svg' },
+    { name: 'angular', label: 'Angular', icon: 'https://svgl.app/library/angular.svg' },
+  ]}
+>
+  <div data-framework="astro" data-active="true">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-astro @atomchat.io/css
+```
+
+### Usage
+
+```astro
+---
+import { Badge } from '@atomchat.io/components-astro';
+import '@atomchat.io/css';
+---
+
+<Badge count={5} type="neutral" />
+
+<Badge count={45} type="inbox" context="inbox" state="focused" />
+
+<Badge count={150} type="info" context="default" />
+
+<Badge count={0} type="neutral" />
+```
+
+  </div>
+
+  <div data-framework="react">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+import { Badge } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+import { useState } from 'react';
+
+function Example() {
+  const [unreadCount, setUnreadCount] = useState(45);
+
+  return (
+    <>
+      <Badge count={5} type="neutral" />
+
+      <Badge count={unreadCount} type="inbox" context="inbox" state="focused" />
+
+      <Badge count={150} type="info" context="default" />
+
+      <Badge count={0} type="neutral" />
+    </>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="nextjs">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+'use client';
+
+import { Badge } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+import { useState } from 'react';
+
+export default function Example() {
+  const [unreadCount, setUnreadCount] = useState(45);
+
+  return (
+    <>
+      <Badge count={5} type="neutral" />
+
+      <Badge count={unreadCount} type="inbox" context="inbox" state="focused" />
+
+      <Badge count={150} type="info" context="default" />
+
+      <Badge count={0} type="neutral" />
+    </>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="vue">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-vue @atomchat.io/css
+```
+
+### Usage
+
+```vue
+<script setup>
+import { Badge } from '@atomchat.io/components-vue';
+import '@atomchat.io/css';
+import { ref } from 'vue';
+
+const unreadCount = ref(45);
+</script>
+
+<template>
+  <Badge :count="5" type="neutral" />
+
+  <Badge :count="unreadCount" type="inbox" context="inbox" state="focused" />
+
+  <Badge :count="150" type="info" context="default" />
+
+  <Badge :count="0" type="neutral" />
+</template>
+```
+
+  </div>
+
+  <div data-framework="angular">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-angular @atomchat.io/css
+```
+
+### Usage
+
+```typescript
+import { BadgeComponent } from '@atomchat.io/components-angular';
+import '@atomchat.io/css';
+import { Component, signal } from '@angular/core';
+
+@Component({
+  imports: [BadgeComponent],
+  template: `
+    <atom-badge [count]="5" type="neutral"></atom-badge>
+
+    <atom-badge
+      [count]="unreadCount()"
+      type="inbox"
+      context="inbox"
+      state="focused"
+    ></atom-badge>
+
+    <atom-badge [count]="150" type="info" context="default"></atom-badge>
+
+    <atom-badge [count]="0" type="neutral"></atom-badge>
+  `
+})
+export class ExampleComponent {
+  unreadCount = signal(45);
+}
+```
+
+  </div>
+</FrameworkSwitcher>
+
+---
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `count` | `number` | `0` | Notification count to display |
+| `context` | `"default" \| "inbox"` | `"default"` | Overflow rule context |
+| `type` | `"neutral" \| "inbox" \| "info"` | `"neutral"` | Visual type variant |
+| `state` | `"default" \| "focused" \| "subtle"` | `"default"` | Visual state variant |
+| `class` | `string?` | — | Additional CSS classes |
+
+### Return Value
+
+- **Rendered:** When `count > 0`
+- **Hidden (null):** When `count <= 0`
+
+---
+
+## Overflow Rules
+
+The Badge component implements smart overflow capping based on context:
+
+### Default Context
+
+```
+Count Input → Display Output
+1-99        → Exact number (1, 5, 45, 99)
+100+        → "99+"
+0 or neg    → Hidden (null)
+```
+
+**Use case:** General notifications, unread counts, generic counters
+
+**Examples:**
+```astro
+<Badge count={1} context="default" />        <!-- Shows: 1 -->
+<Badge count={45} context="default" />       <!-- Shows: 45 -->
+<Badge count={99} context="default" />       <!-- Shows: 99 -->
+<Badge count={100} context="default" />      <!-- Shows: 99+ -->
+<Badge count={500} context="default" />      <!-- Shows: 99+ -->
+<Badge count={0} context="default" />        <!-- Hidden -->
+```
+
+### Inbox Context
+
+```
+Count Input → Display Output
+1-49        → Exact number (1, 25, 49)
+50+         → "+50"
+0 or neg    → Hidden (null)
+```
+
+**Use case:** Email inbox, message counts, capacity-limited contexts
+
+**Examples:**
+```astro
+<Badge count={1} context="inbox" />          <!-- Shows: 1 -->
+<Badge count={25} context="inbox" />         <!-- Shows: 25 -->
+<Badge count={49} context="inbox" />         <!-- Shows: 49 -->
+<Badge count={50} context="inbox" />         <!-- Shows: +50 -->
+<Badge count={500} context="inbox" />        <!-- Shows: +50 -->
+<Badge count={0} context="inbox" />          <!-- Hidden -->
+```
+
+---
+
+## Variants
+
+### Type Variants
+
+| Type | Background | Use Case |
+|------|------------|----------|
+| **neutral** | Gray/default color | General notifications, unread items |
+| **inbox** | Primary/accent color | Email, messages, important notifications |
+| **info** | Blue/info color | Information, updates, announcements |
+
+### State Variants
+
+| State | Visual Change | Use Case |
+|-------|---------------|----------|
+| **default** | Standard appearance | Normal notification display |
+| **focused** | Highlighted/emphasized | Active or priority notifications |
+| **subtle** | Muted/de-emphasized | Background notifications, secondary indicators |
+
+### Context Rules
+
+| Context | Display Rules | Use Case |
+|---------|---------------|----------|
+| **default** | 1-99 exact, 100+ shows "99+" | General counters, flexible capacity |
+| **inbox** | 1-49 exact, 50+ shows "+50" | Email, capacity-limited contexts |
+
+---
+
+## Usage Examples
+
+### Basic Badge
+
+```astro
+---
+import { Badge } from '@atomchat.io/components-astro';
+---
+
+<Badge count={5} type="neutral" />
+```
+
+### Unread Messages (Inbox)
+
+```astro
+<Badge count={45} type="inbox" context="inbox" state="focused" />
+```
+
+### Large Count (Default Context)
+
+```astro
+<!-- Shows "99+" instead of "500" -->
+<Badge count={500} type="info" context="default" />
+```
+
+### Inbox Overflow
+
+```astro
+<!-- Shows "+50" instead of "150" -->
+<Badge count={150} type="inbox" context="inbox" />
+```
+
+### Subtle Notification
+
+```astro
+<Badge count={3} type="neutral" state="subtle" />
+```
+
+### Zero Count (Hidden)
+
+```astro
+<!-- Returns null, renders nothing -->
+<Badge count={0} type="neutral" />
+```
+
+### In Navigation Item
+
+```astro
+<a href="/inbox" style="position: relative;">
+  <span>Inbox</span>
+  <Badge count={12} type="inbox" context="inbox" state="focused" />
+</a>
+```
+
+### Multiple Badges
+
+```astro
+<nav>
+  <a href="/inbox">
+    Inbox
+    <Badge count={12} type="inbox" context="inbox" />
+  </a>
+
+  <a href="/notifications">
+    Notifications
+    <Badge count={3} type="neutral" />
+  </a>
+
+  <a href="/messages">
+    Messages
+    <Badge count={45} type="info" />
+  </a>
+</nav>
+```
+
+### Dynamic Count Update
+
+```astro
+---
+import { Badge } from '@atomchat.io/components-astro';
+
+let unreadCount = 45;
+---
+
+<div>
+  <Badge count={unreadCount} type="inbox" context="inbox" state="focused" />
+</div>
+```
+
+---
+
+## Structure Tokens
+
+### Size Tokens
+
+```css
+/* Badge dimensions */
+--badge-size-small: 16px;              /* Smallest badge */
+--badge-size-default: 20px;            /* Standard badge */
+
+/* Text sizing */
+--badge-font-size: 11px;               /* Text inside badge */
+--badge-font-weight: 600;              /* Bold counter */
+
+/* Border radius */
+--badge-border-radius: 50%;            /* Circular badge */
+```
+
+### Spacing Tokens
+
+```css
+/* Padding inside badge */
+--badge-padding-x: 4px;                /* Horizontal padding */
+--badge-padding-y: 2px;                /* Vertical padding */
+```
+
+### Typography
+
+```css
+--badge-font-size: 11px;               /* Counter text size */
+--badge-font-weight: 600;              /* Bold weight */
+--badge-line-height: 1;                /* Tight line height */
+```
+
+---
+
+## Dependencies
+
+### Required Packages
+- `@atomchat.io/css` — Component styles and tokens
+- `@atomchat.io/tokens` — Design token definitions
+
+### Optional Packages
+- `@atomchat.io/animations` — Badge animation effects (optional)
+- `gsap` — Animation library (if using animations)
+
+### Semantic Tokens Used
+
+**Background:**
+```css
+--badge-bg-neutral          /* Neutral type background */
+--badge-bg-inbox            /* Inbox type background */
+--badge-bg-info             /* Info type background */
+--badge-bg-default          /* Default state background */
+--badge-bg-focused          /* Focused state background */
+--badge-bg-subtle           /* Subtle state background */
+```
+
+**Foreground:**
+```css
+--badge-fg-neutral          /* Neutral type text */
+--badge-fg-inbox            /* Inbox type text */
+--badge-fg-info             /* Info type text */
+--badge-fg-default          /* Default state text */
+--badge-fg-focused          /* Focused state text */
+--badge-fg-subtle           /* Subtle state text */
+```
+
+**Border:**
+```css
+--badge-border-neutral      /* Neutral border (if any) */
+--badge-border-inbox        /* Inbox border (if any) */
+--badge-border-info         /* Info border (if any) */
+```
+
+---
+
+## Animations
+
+The Badge component supports optional animation effects through the ATOM animation system.
+
+### Badge Appearance Animation
+
+**What it does:**
+When a badge first appears or updates, it can animate with a subtle scale and fade effect.
+
+**Data attributes:**
+```html
+<span class="badge" data-badge data-count="45">
+  <span class="badge__text" data-badge-text>45</span>
+</span>
+```
+
+**Animation Opportunities:**
+- **Entrance:** Scale from 0 to 1 with fade-in
+- **Update:** Pulse effect when count changes
+- **Exit:** Fade-out when count becomes zero
+
+**GSAP Timeline (optional):**
+
+```typescript
+// Entrance animation
+gsap.from('[data-badge]', {
+  scale: 0,
+  opacity: 0,
+  duration: 0.3,
+  ease: 'back.out'
+});
+
+// Update pulse
+gsap.to('[data-badge-text]', {
+  scale: 1.2,
+  duration: 0.2,
+  ease: 'power2.out',
+  yoyo: true,
+  repeat: 1
+});
+```
+
+### Initialization
+
+**Global initialization (optional):**
+
+```astro
+<!-- Astro Layout.astro -->
+<script>
+  import { initAllAnimations } from '@atomchat.io/animations';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initAllAnimations();
+  });
+
+  document.addEventListener('astro:page-load', () => {
+    initAllAnimations();
+  });
+</script>
+```
+
+**Respects Motion Preferences:**
+```css
+@media (prefers-reduced-motion: reduce) {
+  [data-badge] {
+    animation-duration: 1s;
+  }
+}
+```
+
+---
+
+## Accessibility
+
+### ARIA Attributes
+
+The Badge component includes built-in accessibility features:
+
+```html
+<!-- Standard badge -->
+<span
+  class="badge badge--neutral badge--default"
+  role="status"
+  aria-label="5 notifications"
+  data-badge
+  data-count="5"
+>
+  <span class="badge__text">5</span>
+</span>
+
+<!-- Single notification (singular form) -->
+<span
+  class="badge badge--inbox badge--focused"
+  role="status"
+  aria-label="1 notification"
+  data-badge
+  data-count="1"
+>
+  <span class="badge__text">1</span>
+</span>
+
+<!-- Overflow badge -->
+<span
+  class="badge badge--info badge--default"
+  role="status"
+  aria-label="150 notifications"
+  data-badge
+  data-count="150"
+>
+  <span class="badge__text">99+</span>
+</span>
+
+<!-- Zero count (not rendered) -->
+<!-- Nothing displayed, component returns null -->
+```
+
+**Automatic behaviors:**
+- `role="status"` announces badge as live region
+- `aria-label` reflects actual count, not display value (accurate for screen readers)
+- Dynamic singular/plural: "1 notification" vs "5 notifications"
+- Badge hidden when count is zero (no unnecessary announcements)
+
+### Best Practices
+
+**Use semantic positioning:**
+```astro
+<a href="/inbox" style="position: relative;">
+  <span>Inbox</span>
+  <Badge count={12} type="inbox" context="inbox" />
+</a>
+```
+
+**Provide context in aria-label:**
+```astro
+<!-- The component auto-generates descriptive labels -->
+<Badge count={5} type="neutral" />
+<!-- aria-label: "5 notifications" -->
+```
+
+**Don't duplicate information:**
+```astro
+<!-- Bad: Visual + text duplication -->
+<span>
+  Inbox (12)
+  <Badge count={12} type="inbox" />
+</span>
+
+<!-- Good: Let badge handle the indicator -->
+<span>
+  Inbox
+  <Badge count={12} type="inbox" />
+</span>
+```
+
+**Consider context hints:**
+```astro
+<!-- Clear what the badge represents -->
+<a href="/inbox" aria-label="Inbox">
+  <Icon name="inbox" />
+  <Badge count={12} type="inbox" context="inbox" />
+</a>
+```
+
+---
+
+## Composition Patterns
+
+### Navigation with Badges
+
+```astro
+<nav>
+  <a href="/" aria-label="Home">
+    <Icon name="home" />
+  </a>
+
+  <a href="/inbox" aria-label="Inbox">
+    <Icon name="inbox" />
+    <Badge count={5} type="inbox" context="inbox" state="focused" />
+  </a>
+
+  <a href="/notifications" aria-label="Notifications">
+    <Icon name="bell" />
+    <Badge count={3} type="neutral" />
+  </a>
+
+  <a href="/messages" aria-label="Messages">
+    <Icon name="message" />
+    <Badge count={12} type="info" />
+  </a>
+</nav>
+```
+
+### Tab with Unread Indicator
+
+```astro
+<div role="tablist">
+  <button role="tab" aria-selected="true">
+    General
+  </button>
+
+  <button role="tab">
+    <span>Messages</span>
+    <Badge count={7} type="inbox" context="inbox" state="focused" />
+  </button>
+
+  <button role="tab">
+    <span>Notifications</span>
+    <Badge count={2} type="neutral" />
+  </button>
+</div>
+```
+
+### User Menu with Activity Badge
+
+```astro
+<div class="user-menu">
+  <button aria-haspopup="true" aria-expanded="false">
+    <img src="avatar.jpg" alt="User account menu" />
+    <Badge count={3} type="info" state="focused" />
+  </button>
+
+  <div role="menu" hidden>
+    <a href="/profile">Profile</a>
+    <a href="/settings">Settings</a>
+    <a href="/activity">Activity <Badge count={3} type="info" /></a>
+  </div>
+</div>
+```
+
+### Chat Application
+
+```astro
+<div class="chat-list">
+  <div class="chat-item">
+    <span>Alice</span>
+    <Badge count={0} type="neutral" />
+  </div>
+
+  <div class="chat-item active">
+    <span>Bob</span>
+    <Badge count={5} type="inbox" context="inbox" state="focused" />
+  </div>
+
+  <div class="chat-item">
+    <span>Team Channel</span>
+    <Badge count={150} type="neutral" context="default" />
+    <!-- Shows: "99+" -->
+  </div>
+</div>
+```
+
+---
+
+## Design Tokens in Action
+
+### Token-First Philosophy
+
+Every visual property of the Badge is controlled by design tokens:
+
+- **Global consistency** — All badges use the same sizing and colors
+- **Easy theming** — Switch themes by updating token values
+- **Type/State combinations** — Different visual treatments via tokens
+- **Maintainability** — Update once, reflect everywhere
+
+### Token Override Example
+
+```css
+/* Critical notification badge */
+.badge--critical {
+  --badge-bg-neutral: var(--primitive-red-600);
+  --badge-fg-neutral: var(--primitive-neutral-0);
+  --badge-border-neutral: var(--primitive-red-700);
+}
+
+/* Pulse animation for critical */
+@keyframes critical-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.badge--critical {
+  animation: critical-pulse 2s ease-in-out infinite;
+}
+```
+
+**Usage:**
+```astro
+<Badge count={5} type="neutral" class="badge--critical" />
+```
+
+---
+
+## Zero Count Behavior
+
+An important feature of Badge is that it automatically hides when count is zero:
+
+```astro
+<Badge count={0} />     <!-- Returns null, nothing rendered -->
+<Badge count={1} />     <!-- Shows: 1 -->
+<Badge count={-5} />    <!-- Returns null, nothing rendered -->
+```
+
+This prevents empty badges from cluttering the UI and is particularly useful for dynamic counters:
+
+```astro
+---
+const unreadCount = 0;
+---
+
+<!-- No badge shown when unreadCount is 0 -->
+<a href="/inbox">
+  Inbox
+  <Badge count={unreadCount} />
+</a>
+```
+
+---
+
+## Build this Component with AI
+
+Use this pre-built prompt to generate a complete showcase of this component in your preferred framework. The AI will create a working interface with all badge patterns and proper token usage.
+
+**What you get:**
+- Complete component setup with proper imports
+- All type and state combinations demonstrated
+- Context-aware overflow examples
+- Navigation and tab patterns
+- Dynamic badge updates
+- Token-first styling (no hardcoded values)

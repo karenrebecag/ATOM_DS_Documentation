@@ -1,7 +1,7 @@
 {
-  "name": "sleepy-spiral",
+  "name": "atomchat-ds-documentation",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -11,7 +11,13 @@
   },
   "dependencies": {
     "@astrojs/starlight": "^0.38.2",
+    "@atomchat.io/animations": "^1.2.0",
+    "@atomchat.io/components-astro": "^2.0.2",
+    "@atomchat.io/css": "^0.2.2",
+    "@atomchat.io/tokens": "^1.0.2",
+    "@lucide/astro": "^1.7.0",
     "astro": "^6.0.1",
+    "gsap": "^3.14.2",
     "sharp": "^0.34.2"
   }
 }

@@ -1,0 +1,833 @@
+---
+title: Text
+description: Flexible body text component with truncation, text wrapping, and optional GSAP animations for body, captions, labels, and auxiliary text.
+---
+
+## Overview
+
+The Text component renders flexible typography elements for body text, captions, labels, and auxiliary content. It supports single-line truncation, multi-line clamping, text balancing, and optional GSAP animations.
+
+### Key Features
+
+- **Flexible Element Types**: Render as `<p>`, `<span>`, `<div>`, or `<li>` for semantic variety
+- **5 Size Options**: Body, caption, label, label-small, and footnote sizes
+- **3 Weight Options**: Regular, medium, and bold font weights
+- **Truncation Support**: Single-line with ellipsis or multi-line clamping
+- **Text Balancing**: Optional text-wrap: balance for improved readability
+- **6 GSAP Animations**: Masked text, fade, scramble, and highlight effects
+- **3 Alignment Options**: Left, center, right text alignment
+- **Custom Colors**: Support for CSS color values or inherit
+- **Lightweight**: Simple, flexible text wrapper component
+
+## Installation
+
+To use the Text component in your project, install it from the Atom Design System package:
+
+```bash
+npm install @atomchat.io/components-astro
+# or
+pnpm add @atomchat.io/components-astro
+```
+
+Then import and include the CSS tokens and GSAP library (for animations):
+
+```astro
+---
+import { Text } from '@atomchat.io/components-astro'
+import '@atomchat.io/components-astro/dist/tokens.css'
+
+// Optional: For animations
+import gsap from 'gsap'
+import SplitText from 'gsap/SplitText'
+gsap.registerPlugin(SplitText)
+---
+```
+
+## Anatomy
+
+The Text component renders a flexible element with typography modifiers:
+
+```html
+<p class="text text--body text--regular text--left" data-text>
+  Body text content
+</p>
+
+<!-- With truncation -->
+<p class="text text--body text--truncate" data-text style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+  Truncated text...
+</p>
+
+<!-- With animation -->
+<span class="text text--body text--regular" data-text data-text-animate="fade-up-load" data-text-trigger="load" data-text-split="lines">
+  Animated text
+</span>
+```
+
+**DOM Structure:**
+- `p`, `span`, `div`, or `li` - Flexible element (determined by `as` prop)
+- `.text` - Root component class
+- `.text--{size}` - Size modifier (body, caption, label, label-small, footnote)
+- `.text--{weight}` - Font weight modifier (regular, medium, bold)
+- `.text--{align}` - Text alignment modifier (left, center, right)
+- `.text--truncate` - Applied when truncate=true (single-line ellipsis)
+- `.text--clamp` - Applied when truncate is a number (multi-line clamp)
+- `.text--balance` - Applied when balance prop is true (text-wrap: balance)
+- `data-text` - Component identifier
+- `data-text-animate` - Animation type (if animate prop provided)
+- `data-text-trigger` - Animation trigger mode (scroll, load)
+- `data-text-split` - SplitText split type (always "lines")
+- `data-text-delay` - Animation delay in seconds
+- `style="--text-clamp-lines: N"` - Custom property for line clamping
+- `style="color: [value]"` - Applied for custom colors
+
+## Framework Support
+
+Text is available across multiple frameworks. Choose your preferred implementation:
+
+### Astro
+
+```astro
+---
+import { Text } from '@atomchat.io/components-astro'
+---
+
+<Text>Regular paragraph text.</Text>
+<Text size="caption" color="var(--fg-secondary)">Caption text</Text>
+<Text truncate={3}>Long text clamped to 3 lines...</Text>
+<Text as="span" animate="fade-up-load">Animated inline text</Text>
+```
+
+### React
+
+```jsx
+import { Text } from '@atomchat.io/components-astro/react'
+
+export function Article() {
+  return (
+    <>
+      <Text size="body">Main article content paragraph.</Text>
+      <Text size="caption" color="var(--fg-secondary)">
+        Metadata information
+      </Text>
+      <Text truncate={2}>Long description text...</Text>
+    </>
+  )
+}
+```
+
+### Next.js
+
+```tsx
+import { Text } from '@atomchat.io/components-astro'
+
+export default function Card() {
+  return (
+    <>
+      <Text size="body">Card description text.</Text>
+      <Text truncate as="span">Long title that might overflow...</Text>
+    </>
+  )
+}
+```
+
+### Vue
+
+```vue
+<template>
+  <div>
+    <Text size="body">Paragraph content</Text>
+    <Text as="span" size="caption">Secondary information</Text>
+    <Text truncate="{2}">Clamped to 2 lines</Text>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { Text } from '@atomchat.io/components-astro/vue'
+</script>
+```
+
+### Angular
+
+```typescript
+import { TextComponent } from '@atomchat.io/components-astro/angular'
+
+@Component({
+  selector: 'app-description',
+  template: `
+    <text size="body">Main description text</text>
+    <text as="span" size="caption">Auxiliary information</text>
+    <text [truncate]="3">Multi-line clamped text</text>
+  `,
+  imports: [TextComponent]
+})
+export class DescriptionComponent {}
+```
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `as` | `"p" \| "span" \| "div" \| "li"` | `"p"` | HTML element type |
+| `size` | `"body" \| "caption" \| "label" \| "label-small" \| "footnote"` | `"body"` | Text size for different contexts |
+| `weight` | `"regular" \| "medium" \| "bold"` | `"regular"` | Font weight emphasis |
+| `color` | `string` | `"inherit"` | Text color (CSS value or inherit) |
+| `align` | `"left" \| "center" \| "right"` | `"left"` | Text alignment |
+| `truncate` | `boolean \| number` | `false` | Truncation mode (true = single-line, number = line clamp) |
+| `balance` | `boolean` | `false` | Enable text-wrap: balance for readability |
+| `animate` | `"masked-lines" \| "masked-words" \| "fade-up-load" \| "scramble-load" \| "scramble-scroll" \| "highlight-scroll" \| false` | `false` | GSAP animation type |
+| `trigger` | `"scroll" \| "load"` | `"scroll"` | Animation trigger mode |
+| `delay` | `number` | `0` | Animation delay in seconds |
+| `class` | `string` | `""` | Additional CSS classes |
+
+### Slots
+
+| Slot | Description |
+|------|-------------|
+| `default` | Text content (required) |
+
+### Data Attributes
+
+| Attribute | Values | Purpose |
+|-----------|--------|---------|
+| `data-text` | Present (no value) | Component identifier |
+| `data-text-animate` | Animation type or undefined | Animation selector for GSAP |
+| `data-text-trigger` | "scroll", "load", or undefined | Animation trigger mode |
+| `data-text-split` | "lines" | SplitText split type |
+| `data-text-delay` | Delay in seconds or undefined | Animation delay value |
+
+## Variants
+
+### By Size
+
+5 size options for different text contexts:
+
+**Size Scale:**
+- **body** - Standard body text (default)
+- **caption** - Small caption text
+- **label** - Form label size
+- **label-small** - Compact label size
+- **footnote** - Extra small footnote text
+
+```astro
+---
+import { Text } from '@atomchat.io/components-astro'
+---
+
+<div class="size-examples">
+  <Text size="body">This is body text size</Text>
+  <Text size="caption">This is caption text size</Text>
+  <Text size="label">This is label text size</Text>
+  <Text size="label-small">This is small label size</Text>
+  <Text size="footnote">This is footnote size</Text>
+</div>
+
+<style>
+  .size-examples {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+</style>
+```
+
+### By Weight
+
+Font weight options for emphasis:
+
+```astro
+---
+import { Text } from '@atomchat.io/components-astro'
+---
+
+<div class="weight-variants">
+  <Text weight="regular">Regular weight text</Text>
+  <Text weight="medium">Medium weight text</Text>
+  <Text weight="bold">Bold weight text</Text>
+</div>
+
+<style>
+  .weight-variants {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+</style>
+```
+
+### Truncation
+
+Single-line ellipsis or multi-line clamping:
+
+```astro
+---
+import { Text } from '@atomchat.io/components-astro'
+---
+
+<div class="truncation-examples">
+  <!-- Single-line truncation -->
+  <Text truncate>
+    This very long text will be truncated with an ellipsis on a single line
+  </Text>
+
+  <!-- Multi-line clamping -->
+  <Text truncate={2}>
+    This is a longer paragraph of text that will be clamped to exactly two lines with an ellipsis at the end of the second line to indicate there is more content
+  </Text>
+
+  <Text truncate={3}>
+    This is another long paragraph that will be clamped to three lines. The text-truncation feature is useful for card components and list items where space is limited.
+  </Text>
+</div>
+
+<style>
+  .truncation-examples {
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+</style>
+```
+
+### Text Balancing
+
+Improved readability with balanced wrapping:
+
+```astro
+---
+import { Text } from '@atomchat.io/components-astro'
+---
+
+<div class="balanced-text">
+  <Text balance>
+    This longer text will wrap in a balanced way across multiple lines, making it easier to read with more even line lengths
+  </Text>
+</div>
+
+<style>
+  .balanced-text {
+    max-width: 400px;
+  }
+</style>
+```
+
+### Animations
+
+6 GSAP-powered animation options:
+
+```astro
+---
+import { Text } from '@atomchat.io/components-astro'
+---
+
+<Text animate="masked-lines" trigger="load">
+  Line-by-line reveal animation
+</Text>
+
+<Text animate="masked-words" trigger="load" delay={0.3}>
+  Word-by-word animation with delay
+</Text>
+
+<Text animate="fade-up-load">Fade up on page load</Text>
+
+<Text animate="scramble-load">Scramble effect on load</Text>
+
+<Text animate="scramble-scroll">Scramble as you scroll</Text>
+
+<Text animate="highlight-scroll">Highlight on scroll</Text>
+```
+
+### With Custom Colors
+
+Custom CSS colors or semantic color variables:
+
+```astro
+---
+import { Text } from '@atomchat.io/components-astro'
+---
+
+<Text color="var(--fg-secondary)">Muted secondary text</Text>
+<Text color="var(--fg-accent-danger)">Error or warning text</Text>
+<Text color="#ff6b6b">Custom red text</Text>
+<Text color="var(--fg-accent-success)">Success state text</Text>
+```
+
+## Usage Examples
+
+### Article Content
+
+```astro
+---
+import { Text } from '@atomchat.io/components-astro'
+---
+
+<article class="article">
+  <h1>Article Title</h1>
+
+  <div class="article-metadata">
+    <Text as="span" size="caption" color="var(--fg-secondary)">
+      By Author Name
+    </Text>
+    <Text as="span" size="caption" color="var(--fg-tertiary)">
+      Published January 15, 2024
+    </Text>
+  </div>
+
+  <Text size="body" balance>
+    This is the introductory paragraph of the article that provides context and overview of the content that follows. It should be engaging and informative.
+  </Text>
+
+  <Text size="body">
+    Additional paragraph content goes here with more details about the topic being discussed in the article.
+  </Text>
+
+  <Text size="caption" color="var(--fg-secondary)">
+    Last updated 2 hours ago
+  </Text>
+</article>
+
+<style>
+  .article {
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+
+  .article-metadata {
+    display: flex;
+    gap: var(--spacing-md);
+    margin: var(--spacing-lg) 0;
+  }
+
+  h1 {
+    margin-bottom: var(--spacing-md);
+  }
+</style>
+```
+
+### Card Component
+
+```astro
+---
+import { Text } from '@atomchat.io/components-astro'
+---
+
+<div class="card">
+  <div class="card-header">
+    <h3>Card Title</h3>
+  </div>
+
+  <div class="card-body">
+    <Text truncate={2}>
+      This card component demonstrates how text truncation works. The description text will be clamped to two lines with an ellipsis.
+    </Text>
+  </div>
+
+  <div class="card-footer">
+    <Text size="footnote" color="var(--fg-tertiary)">
+      Updated 1 hour ago
+    </Text>
+  </div>
+</div>
+
+<style>
+  .card {
+    background: var(--bg-primary);
+    border: 1px solid var(--stroke-default);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .card-header {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--stroke-default);
+  }
+
+  .card-header h3 {
+    margin: 0;
+  }
+
+  .card-body {
+    padding: var(--spacing-md);
+  }
+
+  .card-footer {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--stroke-default);
+  }
+</style>
+```
+
+### List with Descriptions
+
+```astro
+---
+import { Text } from '@atomchat.io/components-astro'
+
+const items = [
+  { title: 'Item A', description: 'A longer description of item A that might be truncated' },
+  { title: 'Item B', description: 'Description for item B goes here' },
+  { title: 'Item C', description: 'Item C has additional context and information' }
+]
+---
+
+<ul class="item-list">
+  {items.map(item => (
+    <li class="item">
+      <h4>{item.title}</h4>
+      <Text size="body" truncate={2}>
+        {item.description}
+      </Text>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .item-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .item {
+    padding: var(--spacing-md);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+  }
+
+  h4 {
+    margin: 0 0 var(--spacing-xs) 0;
+  }
+</style>
+```
+
+### Animated Content Section
+
+```astro
+---
+import { Text } from '@atomchat.io/components-astro'
+---
+
+<section class="feature-section">
+  <div class="feature-content">
+    <Text
+      as="div"
+      size="body"
+      animate="masked-lines"
+      trigger="load"
+      balance
+    >
+      This text animates in line by line when the page loads, creating an engaging visual effect that draws attention to the content.
+    </Text>
+
+    <Text
+      as="div"
+      size="caption"
+      color="var(--fg-secondary)"
+      animate="fade-up-load"
+      delay={0.3}
+    >
+      Supporting text that fades in with a slight delay
+    </Text>
+  </div>
+</section>
+
+<style>
+  .feature-section {
+    padding: var(--spacing-xl);
+    background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+  }
+
+  .feature-content {
+    max-width: 600px;
+  }
+</style>
+```
+
+### List Item Text
+
+```astro
+---
+import { Text } from '@atomchat.io/components-astro'
+---
+
+<ul class="task-list">
+  <li class="task-item">
+    <input type="checkbox" id="task1" />
+    <Text as="span" size="body">Complete project documentation</Text>
+  </li>
+  <li class="task-item">
+    <input type="checkbox" id="task2" />
+    <Text as="span" size="body">Review design system components</Text>
+  </li>
+  <li class="task-item completed">
+    <input type="checkbox" id="task3" checked />
+    <Text as="span" size="body" color="var(--fg-secondary)">
+      Deploy to production
+    </Text>
+  </li>
+</ul>
+
+<style>
+  .task-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .task-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) 0;
+  }
+
+  .task-item.completed :global(.text) {
+    text-decoration: line-through;
+  }
+</style>
+```
+
+## Structure Tokens
+
+The Text component uses these typography tokens:
+
+| Token | Purpose |
+|-------|---------|
+| `--font-size-body` | Body text size |
+| `--font-size-caption` | Caption size |
+| `--font-size-label` | Label size |
+| `--font-size-label-small` | Small label size |
+| `--font-size-footnote` | Footnote size |
+| `--line-height-normal` | Standard line height |
+| `--font-weight-regular` | Regular weight |
+| `--font-weight-medium` | Medium weight |
+| `--font-weight-bold` | Bold weight |
+
+## Dependencies
+
+The Text component has no required component dependencies. For animations, GSAP and SplitText plugin are optional:
+
+```bash
+npm install gsap
+```
+
+**Design Tokens Required:**
+- Font size tokens for all size variants
+- Line height tokens
+- Font weight tokens
+- Color tokens for custom colors
+
+**GSAP Plugins (for animations):**
+- `gsap/SplitText` - For masked-lines, masked-words animations
+- `gsap/ScrollTrigger` - For scroll-triggered animations
+
+## Accessibility
+
+### Semantic HTML
+
+- **Use correct elements**: `<p>` for paragraphs, `<span>` for inline, `<li>` for list items
+- **Respect semantics**: Don't use `<div>` for body text when `<p>` is appropriate
+- **Screen reader friendly**: Text content is always readable
+
+### Truncation Accessibility
+
+- **Truncated content**: Users should be able to access full content through other means (hover, expand, link to full content)
+- **Don't hide critical information**: Ensure essential content is not truncated
+
+### Animation Accessibility
+
+- **Respects prefers-reduced-motion**: Animations should be disabled for users with motion sensitivities
+- **Non-blocking**: Animations should not prevent content from being read immediately
+
+### Best Practices
+
+```html
+<!-- Good: Semantic paragraph -->
+<Text as="p">This is a paragraph of content</Text>
+
+<!-- Good: Inline with span -->
+<Text as="span">Inline text within a sentence</Text>
+
+<!-- Good: Truncate with accessible fallback -->
+<Text truncate={2} title="Full text content here">
+  Text that might be truncated...
+</Text>
+
+<!-- Avoid: Hiding critical info with truncation -->
+<Text truncate>Important information that should always be visible</Text>
+
+<!-- Avoid: Using div for body text unnecessarily -->
+<Text as="div">This should probably be a paragraph</Text>
+```
+
+## Composition Patterns
+
+### Paragraph with Metadata
+
+```astro
+---
+import { Text } from '@atomchat.io/components-astro'
+---
+
+<article class="post">
+  <h2>Post Title</h2>
+  <div class="post-meta">
+    <Text as="span" size="caption" color="var(--fg-secondary)">
+      January 15, 2024
+    </Text>
+    <Text as="span" size="caption" color="var(--fg-secondary)">
+      by Author
+    </Text>
+  </div>
+  <Text size="body" balance>
+    Main article content paragraph with balanced text wrapping for better readability.
+  </Text>
+</article>
+
+<style>
+  .post-meta {
+    display: flex;
+    gap: var(--spacing-md);
+    margin: var(--spacing-sm) 0;
+  }
+</style>
+```
+
+### Excerpt Card
+
+```astro
+---
+import { Text } from '@atomchat.io/components-astro'
+---
+
+<div class="excerpt-card">
+  <h3>Title</h3>
+  <Text truncate={3}>
+    Long excerpt text that will be clamped to three lines with an ellipsis at the end to indicate there is more content available when you click the read more link.
+  </Text>
+  <a href="#" class="read-more">Read More →</a>
+</div>
+
+<style>
+  .excerpt-card {
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    background: var(--bg-secondary);
+  }
+
+  .read-more {
+    display: inline-block;
+    margin-top: var(--spacing-sm);
+    color: var(--fg-accent-brand);
+    text-decoration: none;
+    font-weight: var(--font-weight-medium);
+  }
+</style>
+```
+
+## Design Tokens in Action
+
+The Text component consumes typography tokens:
+
+**Font Size System:**
+```css
+.text--body {
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-normal);
+}
+
+.text--caption {
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-normal);
+}
+
+/* etc. for all size variants */
+```
+
+**Weight System:**
+```css
+.text--regular {
+  font-weight: var(--font-weight-regular);
+}
+
+.text--medium {
+  font-weight: var(--font-weight-medium);
+}
+
+.text--bold {
+  font-weight: var(--font-weight-bold);
+}
+```
+
+**Alignment:**
+```css
+.text--left {
+  text-align: left;
+}
+
+.text--center {
+  text-align: center;
+}
+
+.text--right {
+  text-align: right;
+}
+```
+
+**Truncation:**
+```css
+.text--truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text--clamp {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--text-clamp-lines);
+  overflow: hidden;
+}
+
+.text--balance {
+  text-wrap: balance;
+}
+```
+
+## Build with AI
+
+Use this prompt to generate Text components with Claude Code:
+
+```
+Create a Text component in [framework].
+Setup: npm install @atomchat.io/components-astro gsap then import "@atomchat.io/components-astro/dist/tokens.css"
+
+Requirements:
+- Accepts as prop: "p" | "span" | "div" | "li" (default "p")
+- Accepts size prop: "body" | "caption" | "label" | "label-small" | "footnote" (default "body")
+- Accepts weight prop: "regular" | "medium" | "bold" (default "regular")
+- Accepts color prop: CSS color value or "inherit" (default "inherit")
+- Accepts align prop: "left" | "center" | "right" (default "left")
+- Accepts truncate prop: boolean | number (false = no truncate, true = single-line, number = line clamp)
+- Accepts balance prop: boolean (default false) - applies text-wrap: balance
+- Accepts animate prop: "masked-lines" | "masked-words" | "fade-up-load" | "scramble-load" | "scramble-scroll" | "highlight-scroll" | false
+- Accepts trigger prop: "scroll" | "load" (default "scroll")
+- Accepts delay prop: number in seconds (default 0)
+- Uses ONLY these CSS custom properties:
+  * --font-size-body, --font-size-caption, --font-size-label, --font-size-label-small, --font-size-footnote
+  * --line-height-normal
+  * --font-weight-regular, --font-weight-medium, --font-weight-bold
+  * --text-clamp-lines (for line clamping)
+- Implements data-text, data-text-animate, data-text-trigger, data-text-split, data-text-delay attributes
+- Smart handling: truncate=true for single-line ellipsis, truncate={number} for line clamping
+- No hardcoded colors, sizes, or weights
+- Export as named export
+```

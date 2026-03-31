@@ -13,7 +13,6 @@ export default defineConfig({
 				replacesTitle: true,
 			},
 			customCss: [
-				'@atomchat.io/tokens/css',
 				'./src/styles/custom-accent.css',
 			],
 			description: 'Official documentation for AtomChat DS - A monorepo design system with W3C DTCG tokens, GSAP animations, and pure CSS',

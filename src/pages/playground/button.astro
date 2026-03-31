@@ -1,0 +1,221 @@
+---
+import '@atomchat.io/tokens/css';
+import '@atomchat.io/css';
+import { Button } from '@atomchat.io/components-astro';
+
+const title = 'Button Playground';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <style>
+    body {
+      font-family: var(--font-body, system-ui, sans-serif);
+      padding: 2rem;
+      background: var(--bg-default, #fff);
+      color: var(--fg-default, #000);
+    }
+    .playground {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section {
+      margin-bottom: 3rem;
+      padding: 2rem;
+      background: var(--bg-subtle, #f9f9f9);
+      border-radius: 8px;
+    }
+    .section h2 {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+    .section h3 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+    }
+    .button-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .size-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--fg-muted, #666);
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="playground">
+    <h1>Button Component Playground</h1>
+
+    <div class="section">
+      <h2>All Variants (Size M)</h2>
+      <div class="button-grid">
+        <Button variant="Primary" size="m">Primary</Button>
+        <Button variant="Secondary" size="m">Secondary</Button>
+        <Button variant="Tertiary" size="m">Tertiary</Button>
+        <Button variant="Destructive Primary" size="m">Destructive Primary</Button>
+        <Button variant="Destructive Secondary" size="m">Destructive Secondary</Button>
+        <Button variant="Destructive Tertiary" size="m">Destructive Tertiary</Button>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>All Sizes (Primary Variant)</h2>
+      <div class="button-grid">
+        <Button variant="Primary" size="xs">XS Button</Button>
+        <Button variant="Primary" size="s">S Button</Button>
+        <Button variant="Primary" size="m">M Button</Button>
+        <Button variant="Primary" size="l">L Button</Button>
+        <Button variant="Primary" size="xl">XL Button</Button>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>States</h2>
+      <h3>Disabled</h3>
+      <div class="button-grid">
+        <Button variant="Primary" size="m" disabled>Disabled Primary</Button>
+        <Button variant="Secondary" size="m" disabled>Disabled Secondary</Button>
+        <Button variant="Tertiary" size="m" disabled>Disabled Tertiary</Button>
+      </div>
+
+      <h3>Loading</h3>
+      <div class="button-grid">
+        <Button variant="Primary" size="m" loading>Loading Primary</Button>
+        <Button variant="Secondary" size="m" loading>Loading Secondary</Button>
+        <Button variant="Tertiary" size="m" loading>Loading Tertiary</Button>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>With Icons</h2>
+
+      <h3>Icon Left</h3>
+      <div class="button-grid">
+        <Button variant="Primary" size="m">
+          <svg slot="icon-left" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+          </svg>
+          Add Item
+        </Button>
+
+        <Button variant="Secondary" size="m">
+          <svg slot="icon-left" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/>
+          </svg>
+          Quick Action
+        </Button>
+      </div>
+
+      <h3>Icon Right</h3>
+      <div class="button-grid">
+        <Button variant="Primary" size="m">
+          Continue
+          <svg slot="icon-right" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+          </svg>
+        </Button>
+
+        <Button variant="Secondary" size="m">
+          Download
+          <svg slot="icon-right" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+          </svg>
+        </Button>
+      </div>
+
+      <h3>Both Icons</h3>
+      <div class="button-grid">
+        <Button variant="Primary" size="m">
+          <svg slot="icon-left" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+          </svg>
+          Verified Action
+          <svg slot="icon-right" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+          </svg>
+        </Button>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Hover Animation Test</h2>
+      <p style="margin-bottom: 1rem; color: var(--fg-muted, #666);">
+        Hover over these buttons to see the rotation animation (requires @atomchat.io/animations)
+      </p>
+      <div class="button-grid">
+        <Button variant="Primary" size="m">Hover Me</Button>
+        <Button variant="Secondary" size="m">Hover Me</Button>
+        <Button variant="Tertiary" size="m">Hover Me</Button>
+      </div>
+    </div>
+
+    <p style="margin-top: 3rem; text-align: center; color: var(--fg-muted, #666);">
+      <a href="#" onclick="history.back(); return false;" style="color: var(--fg-link, #0066cc); cursor: pointer;">← Back to Documentation</a>
+    </p>
+  </div>
+
+  <script>
+    // v1.2.0 now exports individual modules properly!
+    import { initRotateClones, initRotateCalc, initHoverRotate } from '@atomchat.io/animations/hover';
+    import { initShimmerText } from '@atomchat.io/animations/loading';
+
+    console.log('[DEBUG] Script loaded, readyState:', document.readyState);
+
+    // Wait for DOM to be fully loaded
+    if (document.readyState === 'loading') {
+      console.log('[DEBUG] Waiting for DOMContentLoaded...');
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      console.log('[DEBUG] DOM already loaded, initializing now...');
+      init();
+    }
+
+    function init() {
+      console.log('[DEBUG] init() called');
+      console.log('[DEBUG] Elements with [data-hover-rotate]:', document.querySelectorAll('[data-hover-rotate]').length);
+      console.log('[DEBUG] Elements with [data-shimmer]:', document.querySelectorAll('[data-shimmer]').length);
+      console.log('[DEBUG] Button elements:', document.querySelectorAll('.button').length);
+
+      // Initialize in correct order (clones → calc → rotate)
+      console.log('[DEBUG] Calling initRotateClones()...');
+      const cleanup1 = initRotateClones();
+      console.log('[DEBUG] ✓ initRotateClones returned:', typeof cleanup1);
+
+      console.log('[DEBUG] Calling initRotateCalc()...');
+      const cleanup2 = initRotateCalc();
+      console.log('[DEBUG] ✓ initRotateCalc returned:', typeof cleanup2);
+
+      console.log('[DEBUG] Calling initHoverRotate()...');
+      const cleanup3 = initHoverRotate();
+      console.log('[DEBUG] ✓ initHoverRotate returned:', typeof cleanup3);
+
+      console.log('[DEBUG] Calling initShimmerText()...');
+      const cleanup4 = initShimmerText();
+      console.log('[DEBUG] ✓ initShimmerText returned:', typeof cleanup4);
+
+      console.log('[DEBUG] ✅ All animations initialized successfully');
+
+      // Check if clones were created
+      setTimeout(() => {
+        const clonesReady = document.querySelectorAll('[data-clones-ready]').length;
+        const clones = document.querySelectorAll('[aria-hidden="true"]').length;
+        console.log('[DEBUG] After init - Elements with [data-clones-ready]:', clonesReady);
+        console.log('[DEBUG] After init - Clone elements [aria-hidden="true"]:', clones);
+      }, 100);
+    }
+  </script>
+</body>
+</html>

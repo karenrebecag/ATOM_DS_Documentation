@@ -1,0 +1,383 @@
+---
+import '@atomchat.io/tokens/css';
+import '@atomchat.io/css';
+import { Badge } from '@atomchat.io/components-astro';
+
+const title = 'Badge Playground';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <style>
+    /* Fix: Override opacity tokens */
+    :root {
+      --opacity-0: 0;
+    }
+
+    body {
+      font-family: var(--font-body, system-ui, sans-serif);
+      padding: 2rem;
+      background: var(--bg-default, #fff);
+      color: var(--fg-default, #000);
+    }
+    .playground {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section {
+      margin-bottom: 3rem;
+      padding: 2rem;
+      background: var(--bg-subtle, #f9f9f9);
+      border-radius: 8px;
+    }
+    .section h2 {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+    .section h3 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+    }
+    .badge-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      align-items: flex-start;
+    }
+    .badge-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .badge-label {
+      font-size: 0.75rem;
+      color: var(--fg-muted, #666);
+      text-align: center;
+    }
+    .demo-card {
+      padding: 1.5rem;
+      background: var(--bg-default, #fff);
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle, #e5e5e5);
+      position: relative;
+    }
+    .demo-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--bg-subtle, #f5f5f5);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .badge-positioned {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+    }
+    .table-wrapper {
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-subtle, #e5e5e5);
+    }
+    th {
+      font-weight: 600;
+      background: var(--bg-default, #fff);
+    }
+    td {
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+  <div class="playground">
+    <h1>Badge Component Playground</h1>
+
+    <div class="section">
+      <h2>All Types</h2>
+      <p style="margin-bottom: 1.5rem; color: var(--fg-muted, #666); font-size: 0.875rem;">
+        Badge supports three visual types: neutral, inbox, and info
+      </p>
+      <div class="badge-grid">
+        <div class="badge-item">
+          <Badge count={5} type="neutral" state="default" />
+          <span class="badge-label">Neutral</span>
+        </div>
+        <div class="badge-item">
+          <Badge count={12} type="inbox" state="default" />
+          <span class="badge-label">Inbox</span>
+        </div>
+        <div class="badge-item">
+          <Badge count={3} type="info" state="default" />
+          <span class="badge-label">Info</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>All States</h2>
+      <p style="margin-bottom: 1.5rem; color: var(--fg-muted, #666); font-size: 0.875rem;">
+        Each type can have different states: default, focused, and subtle
+      </p>
+
+      <h3>Neutral Type</h3>
+      <div class="badge-grid">
+        <div class="badge-item">
+          <Badge count={8} type="neutral" state="default" />
+          <span class="badge-label">Default</span>
+        </div>
+        <div class="badge-item">
+          <Badge count={8} type="neutral" state="focused" />
+          <span class="badge-label">Focused</span>
+        </div>
+        <div class="badge-item">
+          <Badge count={8} type="neutral" state="subtle" />
+          <span class="badge-label">Subtle</span>
+        </div>
+      </div>
+
+      <h3>Inbox Type</h3>
+      <div class="badge-grid">
+        <div class="badge-item">
+          <Badge count={24} type="inbox" state="default" />
+          <span class="badge-label">Default</span>
+        </div>
+        <div class="badge-item">
+          <Badge count={24} type="inbox" state="focused" />
+          <span class="badge-label">Focused</span>
+        </div>
+        <div class="badge-item">
+          <Badge count={24} type="inbox" state="subtle" />
+          <span class="badge-label">Subtle</span>
+        </div>
+      </div>
+
+      <h3>Info Type</h3>
+      <div class="badge-grid">
+        <div class="badge-item">
+          <Badge count={7} type="info" state="default" />
+          <span class="badge-label">Default</span>
+        </div>
+        <div class="badge-item">
+          <Badge count={7} type="info" state="focused" />
+          <span class="badge-label">Focused</span>
+        </div>
+        <div class="badge-item">
+          <Badge count={7} type="info" state="subtle" />
+          <span class="badge-label">Subtle</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Overflow Rules</h2>
+      <p style="margin-bottom: 1.5rem; color: var(--fg-muted, #666); font-size: 0.875rem;">
+        Badge has smart overflow logic based on context
+      </p>
+
+      <h3>Default Context (99+ cap)</h3>
+      <p style="margin-bottom: 1rem; color: var(--fg-muted, #666); font-size: 0.875rem;">
+        Shows exact count 1-99, then "99+"
+      </p>
+      <div class="badge-grid">
+        <div class="badge-item">
+          <Badge count={1} context="default" type="neutral" />
+          <span class="badge-label">count: 1</span>
+        </div>
+        <div class="badge-item">
+          <Badge count={45} context="default" type="neutral" />
+          <span class="badge-label">count: 45</span>
+        </div>
+        <div class="badge-item">
+          <Badge count={99} context="default" type="neutral" />
+          <span class="badge-label">count: 99</span>
+        </div>
+        <div class="badge-item">
+          <Badge count={100} context="default" type="neutral" />
+          <span class="badge-label">count: 100 → "99+"</span>
+        </div>
+        <div class="badge-item">
+          <Badge count={999} context="default" type="neutral" />
+          <span class="badge-label">count: 999 → "99+"</span>
+        </div>
+      </div>
+
+      <h3>Inbox Context (+50 cap)</h3>
+      <p style="margin-bottom: 1rem; color: var(--fg-muted, #666); font-size: 0.875rem;">
+        Shows exact count 1-49, then "+50"
+      </p>
+      <div class="badge-grid">
+        <div class="badge-item">
+          <Badge count={1} context="inbox" type="inbox" />
+          <span class="badge-label">count: 1</span>
+        </div>
+        <div class="badge-item">
+          <Badge count={25} context="inbox" type="inbox" />
+          <span class="badge-label">count: 25</span>
+        </div>
+        <div class="badge-item">
+          <Badge count={49} context="inbox" type="inbox" />
+          <span class="badge-label">count: 49</span>
+        </div>
+        <div class="badge-item">
+          <Badge count={50} context="inbox" type="inbox" />
+          <span class="badge-label">count: 50 → "+50"</span>
+        </div>
+        <div class="badge-item">
+          <Badge count={150} context="inbox" type="inbox" />
+          <span class="badge-label">count: 150 → "+50"</span>
+        </div>
+      </div>
+
+      <h3>Zero Count (Hidden)</h3>
+      <p style="margin-bottom: 1rem; color: var(--fg-muted, #666); font-size: 0.875rem;">
+        Badge with count=0 returns null and doesn't render
+      </p>
+      <div class="demo-card">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <span>Badge with count=0:</span>
+          <Badge count={0} type="neutral" />
+          <span style="color: var(--fg-muted, #666); font-size: 0.875rem;">(Nothing renders)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Positioned on Icons</h2>
+      <p style="margin-bottom: 1.5rem; color: var(--fg-muted, #666); font-size: 0.875rem;">
+        Common pattern: Badge positioned on top-right of icon buttons
+      </p>
+      <div class="badge-grid">
+        <div class="demo-card">
+          <div class="demo-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <Badge count={5} type="neutral" state="default" class="badge-positioned" />
+          </div>
+          <span class="badge-label">Notifications</span>
+        </div>
+
+        <div class="demo-card">
+          <div class="demo-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <Badge count={12} type="info" state="focused" class="badge-positioned" />
+          </div>
+          <span class="badge-label">Calendar Events</span>
+        </div>
+
+        <div class="demo-card">
+          <div class="demo-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            <Badge count={99} type="inbox" state="default" class="badge-positioned" />
+          </div>
+          <span class="badge-label">Unread Messages</span>
+        </div>
+
+        <div class="demo-card">
+          <div class="demo-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 6v6l4 2"></path>
+            </svg>
+            <Badge count={150} context="inbox" type="inbox" state="focused" class="badge-positioned" />
+          </div>
+          <span class="badge-label">Pending Tasks</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Overflow Comparison Table</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Count</th>
+              <th>Default Context</th>
+              <th>Inbox Context</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>0</td>
+              <td>(hidden)</td>
+              <td>(hidden)</td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td><Badge count={1} context="default" type="neutral" /></td>
+              <td><Badge count={1} context="inbox" type="inbox" /></td>
+            </tr>
+            <tr>
+              <td>10</td>
+              <td><Badge count={10} context="default" type="neutral" /></td>
+              <td><Badge count={10} context="inbox" type="inbox" /></td>
+            </tr>
+            <tr>
+              <td>49</td>
+              <td><Badge count={49} context="default" type="neutral" /></td>
+              <td><Badge count={49} context="inbox" type="inbox" /></td>
+            </tr>
+            <tr>
+              <td>50</td>
+              <td><Badge count={50} context="default" type="neutral" /></td>
+              <td><Badge count={50} context="inbox" type="inbox" /></td>
+            </tr>
+            <tr>
+              <td>99</td>
+              <td><Badge count={99} context="default" type="neutral" /></td>
+              <td><Badge count={99} context="inbox" type="inbox" /></td>
+            </tr>
+            <tr>
+              <td>100</td>
+              <td><Badge count={100} context="default" type="neutral" /></td>
+              <td><Badge count={100} context="inbox" type="inbox" /></td>
+            </tr>
+            <tr>
+              <td>999</td>
+              <td><Badge count={999} context="default" type="neutral" /></td>
+              <td><Badge count={999} context="inbox" type="inbox" /></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <p style="margin-top: 3rem; text-align: center; color: var(--fg-muted, #666);">
+      <a href="#" onclick="history.back(); return false;" style="color: var(--fg-link, #0066cc); cursor: pointer;">← Back to Documentation</a>
+    </p>
+  </div>
+
+  <script>
+    console.log('[DEBUG] Badge playground script loaded');
+    console.log('[DEBUG] Badge elements:', document.querySelectorAll('[data-badge]').length);
+    console.log('[DEBUG] Badge text elements:', document.querySelectorAll('[data-badge-text]').length);
+  </script>
+</body>
+</html>

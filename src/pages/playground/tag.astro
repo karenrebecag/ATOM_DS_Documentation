@@ -1,0 +1,407 @@
+---
+import '@atomchat.io/tokens/css';
+import '@atomchat.io/css';
+import { Tag } from '@atomchat.io/components-astro';
+import { Check, AlertTriangle, X, Info, Star, Sparkles, User } from '@lucide/astro';
+
+const title = 'Tag Playground';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <style>
+    body {
+      font-family: var(--font-body, system-ui, sans-serif);
+      padding: 2rem;
+      background: var(--bg-default, #fff);
+      color: var(--fg-default, #000);
+    }
+    .playground {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section {
+      margin-bottom: 3rem;
+      padding: 2rem;
+      background: var(--bg-subtle, #f9f9f9);
+      border-radius: 8px;
+    }
+    .section h2 {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+    .section h3 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+    }
+    .tag-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .tag-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .tag-label {
+      font-size: 0.75rem;
+      color: var(--fg-muted, #666);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    th {
+      font-weight: 600;
+      background: var(--bg-default);
+    }
+  </style>
+</head>
+<body>
+  <div class="playground">
+    <h1>Tag Component Playground</h1>
+
+    <div class="section">
+      <h2>All States (Filled)</h2>
+      <p style="margin-bottom: 1.5rem; color: var(--fg-muted, #666); font-size: 0.875rem;">
+        Tag supports 7 semantic states with color-coded backgrounds
+      </p>
+      <div class="tag-grid">
+        <div class="tag-item">
+          <Tag state="success" type="filled">Success</Tag>
+          <span class="tag-label">Success</span>
+        </div>
+        <div class="tag-item">
+          <Tag state="warning" type="filled">Warning</Tag>
+          <span class="tag-label">Warning</span>
+        </div>
+        <div class="tag-item">
+          <Tag state="danger" type="filled">Danger</Tag>
+          <span class="tag-label">Danger</span>
+        </div>
+        <div class="tag-item">
+          <Tag state="info" type="filled">Info</Tag>
+          <span class="tag-label">Info</span>
+        </div>
+        <div class="tag-item">
+          <Tag state="neutral" type="filled">Neutral</Tag>
+          <span class="tag-label">Neutral</span>
+        </div>
+        <div class="tag-item">
+          <Tag state="brand" type="filled">Brand</Tag>
+          <span class="tag-label">Brand</span>
+        </div>
+        <div class="tag-item">
+          <Tag state="ai" type="filled">AI</Tag>
+          <span class="tag-label">AI</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>All States (Outlined)</h2>
+      <p style="margin-bottom: 1.5rem; color: var(--fg-muted, #666); font-size: 0.875rem;">
+        Outlined variant with border and transparent background
+      </p>
+      <div class="tag-grid">
+        <div class="tag-item">
+          <Tag state="success" type="outlined">Success</Tag>
+          <span class="tag-label">Success</span>
+        </div>
+        <div class="tag-item">
+          <Tag state="warning" type="outlined">Warning</Tag>
+          <span class="tag-label">Warning</span>
+        </div>
+        <div class="tag-item">
+          <Tag state="danger" type="outlined">Danger</Tag>
+          <span class="tag-label">Danger</span>
+        </div>
+        <div class="tag-item">
+          <Tag state="info" type="outlined">Info</Tag>
+          <span class="tag-label">Info</span>
+        </div>
+        <div class="tag-item">
+          <Tag state="neutral" type="outlined">Neutral</Tag>
+          <span class="tag-label">Neutral</span>
+        </div>
+        <div class="tag-item">
+          <Tag state="brand" type="outlined">Brand</Tag>
+          <span class="tag-label">Brand</span>
+        </div>
+        <div class="tag-item">
+          <Tag state="ai" type="outlined">AI</Tag>
+          <span class="tag-label">AI</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>With Status Dots</h2>
+      <p style="margin-bottom: 1.5rem; color: var(--fg-muted, #666); font-size: 0.875rem;">
+        Add a status dot indicator with hasDots prop
+      </p>
+
+      <h3>Filled with Dots</h3>
+      <div class="tag-grid">
+        <Tag state="success" type="filled" hasDots>Active</Tag>
+        <Tag state="warning" type="filled" hasDots>Pending</Tag>
+        <Tag state="danger" type="filled" hasDots>Error</Tag>
+        <Tag state="info" type="filled" hasDots>Processing</Tag>
+      </div>
+
+      <h3>Outlined with Dots</h3>
+      <div class="tag-grid">
+        <Tag state="success" type="outlined" hasDots>Active</Tag>
+        <Tag state="warning" type="outlined" hasDots>Pending</Tag>
+        <Tag state="danger" type="outlined" hasDots>Error</Tag>
+        <Tag state="info" type="outlined" hasDots>Processing</Tag>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>With Icons</h2>
+      <p style="margin-bottom: 1.5rem; color: var(--fg-muted, #666); font-size: 0.875rem;">
+        Tags can include icons (16px) via the icon slot
+      </p>
+
+      <h3>Filled with Icons</h3>
+      <div class="tag-grid">
+        <Tag state="success" type="filled">
+          <Check slot="icon" size={16} />
+          Completed
+        </Tag>
+        <Tag state="warning" type="filled">
+          <AlertTriangle slot="icon" size={16} />
+          Warning
+        </Tag>
+        <Tag state="danger" type="filled">
+          <X slot="icon" size={16} />
+          Failed
+        </Tag>
+        <Tag state="info" type="filled">
+          <Info slot="icon" size={16} />
+          Information
+        </Tag>
+        <Tag state="brand" type="filled">
+          <Star slot="icon" size={16} />
+          Featured
+        </Tag>
+        <Tag state="ai" type="filled">
+          <Sparkles slot="icon" size={16} />
+          AI Generated
+        </Tag>
+      </div>
+
+      <h3>Outlined with Icons</h3>
+      <div class="tag-grid">
+        <Tag state="success" type="outlined">
+          <Check slot="icon" size={16} />
+          Verified
+        </Tag>
+        <Tag state="warning" type="outlined">
+          <AlertTriangle slot="icon" size={16} />
+          Review Required
+        </Tag>
+        <Tag state="danger" type="outlined">
+          <X slot="icon" size={16} />
+          Rejected
+        </Tag>
+        <Tag state="info" type="outlined">
+          <Info slot="icon" size={16} />
+          Learn More
+        </Tag>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>With Icons and Dots</h2>
+      <div class="tag-grid">
+        <Tag state="success" type="filled" hasDots>
+          <Check slot="icon" size={16} />
+          Active Now
+        </Tag>
+        <Tag state="warning" type="outlined" hasDots>
+          <AlertTriangle slot="icon" size={16} />
+          Needs Attention
+        </Tag>
+        <Tag state="info" type="filled" hasDots>
+          <Info slot="icon" size={16} />
+          Live Status
+        </Tag>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Common Use Cases</h2>
+
+      <h3>Status Indicators</h3>
+      <div style="padding: 1.5rem; background: var(--bg-default); border-radius: 8px;">
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <span style="min-width: 150px;">Deployment Status:</span>
+            <Tag state="success" hasDots>Deployed</Tag>
+          </div>
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <span style="min-width: 150px;">Build Status:</span>
+            <Tag state="warning" hasDots>Building</Tag>
+          </div>
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <span style="min-width: 150px;">Test Status:</span>
+            <Tag state="danger" hasDots>Failed</Tag>
+          </div>
+        </div>
+      </div>
+
+      <h3>Issue Labels</h3>
+      <div style="padding: 1.5rem; background: var(--bg-default); border-radius: 8px;">
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <Tag state="danger" type="outlined">bug</Tag>
+          <Tag state="brand" type="outlined">enhancement</Tag>
+          <Tag state="success" type="outlined">good first issue</Tag>
+          <Tag state="warning" type="outlined">needs review</Tag>
+          <Tag state="info" type="outlined">documentation</Tag>
+        </div>
+      </div>
+
+      <h3>Priority Tags</h3>
+      <div style="padding: 1.5rem; background: var(--bg-default); border-radius: 8px;">
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <Tag state="danger" type="filled">
+            <AlertTriangle slot="icon" size={16} />
+            Critical
+          </Tag>
+          <Tag state="warning" type="filled">
+            <AlertTriangle slot="icon" size={16} />
+            High
+          </Tag>
+          <Tag state="info" type="filled">
+            <Info slot="icon" size={16} />
+            Medium
+          </Tag>
+          <Tag state="neutral" type="filled">Low</Tag>
+        </div>
+      </div>
+
+      <h3>Feature Tags</h3>
+      <div style="padding: 1.5rem; background: var(--bg-default); border-radius: 8px;">
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <Tag state="brand" type="filled">
+            <Star slot="icon" size={16} />
+            Premium
+          </Tag>
+          <Tag state="ai" type="filled">
+            <Sparkles slot="icon" size={16} />
+            AI Powered
+          </Tag>
+          <Tag state="success" type="outlined">
+            <Check slot="icon" size={16} />
+            Verified
+          </Tag>
+        </div>
+      </div>
+
+      <h3>User Roles</h3>
+      <div style="padding: 1.5rem; background: var(--bg-default); border-radius: 8px;">
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <span style="min-width: 120px; font-weight: 500;">John Doe</span>
+            <Tag state="brand" type="filled">Admin</Tag>
+          </div>
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <span style="min-width: 120px; font-weight: 500;">Jane Smith</span>
+            <Tag state="info" type="filled">Editor</Tag>
+          </div>
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <span style="min-width: 120px; font-weight: 500;">Bob Johnson</span>
+            <Tag state="neutral" type="outlined">Viewer</Tag>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>State Colors Reference</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>State</th>
+            <th>Use Case</th>
+            <th>Filled</th>
+            <th>Outlined</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Success</strong></td>
+            <td>Completed, active, verified</td>
+            <td><Tag state="success" type="filled">Success</Tag></td>
+            <td><Tag state="success" type="outlined">Success</Tag></td>
+          </tr>
+          <tr>
+            <td><strong>Warning</strong></td>
+            <td>Pending, review needed, caution</td>
+            <td><Tag state="warning" type="filled">Warning</Tag></td>
+            <td><Tag state="warning" type="outlined">Warning</Tag></td>
+          </tr>
+          <tr>
+            <td><strong>Danger</strong></td>
+            <td>Error, failed, critical</td>
+            <td><Tag state="danger" type="filled">Danger</Tag></td>
+            <td><Tag state="danger" type="outlined">Danger</Tag></td>
+          </tr>
+          <tr>
+            <td><strong>Info</strong></td>
+            <td>Information, processing, neutral positive</td>
+            <td><Tag state="info" type="filled">Info</Tag></td>
+            <td><Tag state="info" type="outlined">Info</Tag></td>
+          </tr>
+          <tr>
+            <td><strong>Neutral</strong></td>
+            <td>Default, inactive, low priority</td>
+            <td><Tag state="neutral" type="filled">Neutral</Tag></td>
+            <td><Tag state="neutral" type="outlined">Neutral</Tag></td>
+          </tr>
+          <tr>
+            <td><strong>Brand</strong></td>
+            <td>Premium, featured, highlighted</td>
+            <td><Tag state="brand" type="filled">Brand</Tag></td>
+            <td><Tag state="brand" type="outlined">Brand</Tag></td>
+          </tr>
+          <tr>
+            <td><strong>AI</strong></td>
+            <td>AI-generated, automated, smart</td>
+            <td><Tag state="ai" type="filled">AI</Tag></td>
+            <td><Tag state="ai" type="outlined">AI</Tag></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top: 3rem; text-align: center; color: var(--fg-muted, #666);">
+      <a href="#" onclick="history.back(); return false;" style="color: var(--fg-link, #0066cc); cursor: pointer;">← Back to Documentation</a>
+    </p>
+  </div>
+
+  <script>
+    console.log('[DEBUG] Tag playground loaded');
+    console.log('[DEBUG] Tag elements:', document.querySelectorAll('[data-tag]').length);
+    console.log('[DEBUG] Tag dots:', document.querySelectorAll('[data-tag-dot]').length);
+    console.log('[DEBUG] Tag text:', document.querySelectorAll('[data-tag-text]').length);
+  </script>
+</body>
+</html>

@@ -351,6 +351,168 @@ h4 {
 7. **Font loading**: Use system fonts for performance
 8. **Accessibility**: Test with screen readers and zoom
 
+## Semantic Typography Presets
+
+Beyond primitive tokens, Atom DS provides semantic typography presets that combine font-size and font-weight for common use cases:
+
+### Display Presets
+
+| Level | Regular | Medium | Bold |
+|-------|---------|--------|------|
+| DisplayXL | `--text-displayXL-regular` | `--text-displayXL-medium` | `--text-displayXL-bold` |
+| DisplayL | `--text-displayL-regular` | `--text-displayL-medium` | `--text-displayL-bold` |
+| DisplayM | `--text-displayM-regular` | `--text-displayM-medium` | `--text-displayM-bold` |
+| DisplayS | `--text-displayS-regular` | `--text-displayS-medium` | `--text-displayS-bold` |
+
+### Heading Presets
+
+| Level | Regular | Medium | Bold |
+|-------|---------|--------|------|
+| HugeTitle | `--text-hugetitle-regular` | `--text-hugetitle-medium` | `--text-hugetitle-bold` |
+| H1 | `--text-h1-regular` | `--text-h1-medium` | `--text-h1-bold` |
+| H2 | `--text-h2-regular` | `--text-h2-medium` | `--text-h2-bold` |
+| H3 | `--text-h3-regular` | `--text-h3-medium` | `--text-h3-bold` |
+| H4 | `--text-h4-regular` | `--text-h4-medium` | `--text-h4-bold` |
+| Heading | `--text-heading-regular` | `--text-heading-medium` | `--text-heading-bold` |
+
+### Body Presets
+
+| Level | Regular | Medium | Bold |
+|-------|---------|--------|------|
+| Body | `--text-body-regular` | `--text-body-medium` | `--text-body-bold` |
+| Caption | `--text-caption-regular` | `--text-caption-medium` | `--text-caption-bold` |
+| Label | `--text-label-regular` | `--text-label-medium` | `--text-label-bold` |
+| LabelSmall | `--text-labelSmall-regular` | `--text-labelSmall-medium` | `--text-labelSmall-bold` |
+| Footnote | `--text-footnote-regular` | `--text-footnote-medium` | `--text-footnote-bold` |
+
+### Using Typography Presets
+
+```css
+/* Using semantic presets */
+h1 {
+  font-size: var(--text-h1-bold);
+  line-height: var(--line-height-h1);
+}
+
+.body-lg {
+  font-size: var(--text-body-regular);
+  line-height: var(--line-height-body);
+}
+
+.label-medium {
+  font-size: var(--text-label-medium);
+  line-height: var(--line-height-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+}
+
+.caption-bold {
+  font-size: var(--text-caption-bold);
+  font-weight: var(--font-weight-displayXL-bold);
+  line-height: var(--line-height-caption);
+}
+```
+
+## Semantic Opacity Tokens
+
+Named opacity levels for semantic usage:
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--opacity-subtle` | 10% | Watermarks, very subtle elements |
+| `--opacity-light` | 25% | Light overlays, faded text |
+| `--opacity-medium` | 50% | Modal overlays, disabled states |
+| `--opacity-high` | 75% | Secondary content, hover states |
+| `--opacity-full` | 100% | Primary content |
+| `--opacity-disabled` | 40% | Disabled UI elements |
+| `--opacity-placeholder` | 50% | Placeholder text |
+| `--opacity-hover` | 80% | Hover state reduction |
+
+## Semantic Elevation Tokens
+
+Predefined shadow values for depth hierarchy:
+
+| Token | Usage |
+|-------|-------|
+| `--elevation-card` | Cards, panels, containers |
+| `--elevation-popover` | Dropdowns, tooltips, popovers |
+| `--elevation-dialog` | Modals, dialogs, blocking overlays |
+
+## Z-Index Hierarchy
+
+Predefined z-index values for layering:
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--z-base` | 0 | Normal stacking context |
+| `--z-dropdown` | 1000 | Dropdowns, select menus |
+| `--z-sticky` | 100 | Sticky headers, nav |
+| `--z-fixed` | 500 | Fixed positioning |
+| `--z-toast` | 5000 | Toast notifications |
+| `--z-tooltip` | 1100 | Tooltips, popovers |
+| `--z-transition` | 2000 | Transition overlays |
+| `--z-dialog-backdrop` | 2500 | Modal backdrops |
+| `--z-dialog` | 3000 | Modal dialogs |
+
+## Motion Tokens
+
+Animation timing and easing:
+
+### Duration
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--duration-quarter` | 75ms | Quick interactions |
+| `--duration-half` | 150ms | Standard transitions |
+| `--duration-default` | 300ms | Normal animations |
+| `--duration-onehalf` | 450ms | Longer transitions |
+| `--duration-double` | 600ms | Extended animations |
+| `--duration-shimmer` | 2s | Skeleton loading |
+
+### Easing Functions
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--ease-default` | cubic-bezier(0.4, 0, 0.2, 1) | Standard easing |
+| `--ease-standard` | cubic-bezier(0.2, 0, 0, 1) | Material Design easing |
+
+## Border & Radius Tokens
+
+### Stroke Weights
+
+| Token | Usage |
+|-------|-------|
+| `--stroke-2xs` | Hairline borders, dividers |
+| `--stroke-xs` | Thin borders |
+| `--stroke-s` | Standard borders |
+| `--stroke-m` | Medium borders |
+| `--stroke-weight` | Default border weight |
+| `--border-thin` | Thin line |
+| `--border-default` | Default 2px border |
+
+### Border Radius
+
+| Size | Token | Usage |
+|------|-------|-------|
+| None | `--radius-none` | Sharp corners |
+| XXS | `--radius-xxs` | Minimal rounding |
+| XS | `--radius-xs` | Subtle rounding |
+| S | `--radius-s` | Small rounding |
+| SM | `--radius-sm` | Standard rounding |
+| M | `--radius-m` | Medium rounding |
+| MD | `--radius-md` | Medium default |
+| L | `--radius-l` | Large rounding |
+| LG | `--radius-lg` | Large rounded |
+| XL | `--radius-xl` | Extra large |
+| XXL | `--radius-xxl` | Very large |
+| 2XL | `--radius-2xxl` | Extra large |
+| 3XL | `--radius-3xxl` | Very large |
+| 4XL | `--radius-4xxl` | Extra large |
+| 5XL | `--radius-5xxl` | Maximum |
+| Pill | `--radius-pill` | Pill-shaped (50%) |
+| Circle | `--radius-circle` | Circular (50%) |
+| Round | `--radius-round` | Rounded em-based |
+
 ## Responsive Typography
 
 ```css
@@ -373,6 +535,47 @@ h1 {
   h1 {
     font-size: var(--font-size-h1);
   }
+}
+```
+
+## Complete Example with Semantic Tokens
+
+```css
+/* Card with semantic tokens */
+.card {
+  padding: var(--spacing-md);
+  border-radius: var(--radius-m);
+  box-shadow: var(--elevation-card);
+  z-index: var(--z-base);
+}
+
+.card-title {
+  font-size: var(--text-heading-bold);
+  line-height: var(--line-height-heading);
+  color: var(--color-fg-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.card-description {
+  font-size: var(--text-caption-regular);
+  line-height: var(--line-height-caption);
+  color: var(--color-fg-secondary);
+  opacity: var(--opacity-high);
+}
+
+/* Modal with semantic tokens */
+.modal {
+  position: fixed;
+  z-index: var(--z-dialog);
+  background: var(--color-bg-primary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--elevation-dialog);
+  animation: fadeIn var(--duration-default) var(--ease-default);
+}
+
+.modal::backdrop {
+  background: rgba(0, 0, 0, var(--opacity-medium));
+  z-index: var(--z-dialog-backdrop);
 }
 ```
 

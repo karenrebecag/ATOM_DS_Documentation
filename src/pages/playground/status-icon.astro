@@ -1,0 +1,408 @@
+---
+import '@atomchat.io/tokens/css';
+import '@atomchat.io/css';
+import { StatusIcon } from '@atomchat.io/components-astro';
+
+const title = 'StatusIcon Playground';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <style>
+    body {
+      font-family: var(--font-body, system-ui, sans-serif);
+      padding: 2rem;
+      background: var(--bg-default, #fff);
+      color: var(--fg-default, #000);
+    }
+    .playground {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section {
+      margin-bottom: 3rem;
+      padding: 2rem;
+      background: var(--bg-subtle, #f9f9f9);
+      border-radius: 8px;
+    }
+    .section h2 {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+    .section h3 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+    }
+    .status-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      align-items: center;
+    }
+    .status-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .status-label {
+      font-size: 0.875rem;
+      color: var(--fg-muted, #666);
+      font-weight: 600;
+    }
+    .demo-card {
+      padding: 2rem;
+      background: var(--bg-default, #fff);
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle, #e5e5e5);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .avatar-demo {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-accent-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      position: relative;
+    }
+    .avatar-status {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    th {
+      font-weight: 600;
+      background: var(--bg-default);
+    }
+    .color-swatch {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .color-box {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      border: 1px solid var(--border-subtle);
+    }
+  </style>
+</head>
+<body>
+  <div class="playground">
+    <h1>StatusIcon Component Playground</h1>
+
+    <div class="section">
+      <h2>All Status Types</h2>
+      <p style="margin-bottom: 1.5rem; color: var(--fg-muted, #666); font-size: 0.875rem;">
+        StatusIcon supports 4 status types: online, offline, idle, inactive
+      </p>
+      <div class="status-grid">
+        <div class="status-item">
+          <StatusIcon status="online" size="m" />
+          <span class="status-label">Online</span>
+        </div>
+        <div class="status-item">
+          <StatusIcon status="offline" size="m" />
+          <span class="status-label">Offline</span>
+        </div>
+        <div class="status-item">
+          <StatusIcon status="idle" size="m" />
+          <span class="status-label">Idle (Away)</span>
+        </div>
+        <div class="status-item">
+          <StatusIcon status="inactive" size="m" />
+          <span class="status-label">Inactive</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>All Sizes</h2>
+      <p style="margin-bottom: 1.5rem; color: var(--fg-muted, #666); font-size: 0.875rem;">
+        StatusIcon supports 4 sizes: xs (default), s, m, l
+      </p>
+
+      <h3>Online Status</h3>
+      <div class="status-grid">
+        <div class="status-item">
+          <StatusIcon status="online" size="xs" />
+          <span class="status-label">XS</span>
+        </div>
+        <div class="status-item">
+          <StatusIcon status="online" size="s" />
+          <span class="status-label">S</span>
+        </div>
+        <div class="status-item">
+          <StatusIcon status="online" size="m" />
+          <span class="status-label">M</span>
+        </div>
+        <div class="status-item">
+          <StatusIcon status="online" size="l" />
+          <span class="status-label">L</span>
+        </div>
+      </div>
+
+      <h3>All Sizes Comparison</h3>
+      <div style="display: flex; gap: 3rem; align-items: flex-end;">
+        <div class="status-item">
+          <StatusIcon status="offline" size="xs" />
+          <span class="status-label">XS</span>
+        </div>
+        <div class="status-item">
+          <StatusIcon status="idle" size="s" />
+          <span class="status-label">S</span>
+        </div>
+        <div class="status-item">
+          <StatusIcon status="online" size="m" />
+          <span class="status-label">M</span>
+        </div>
+        <div class="status-item">
+          <StatusIcon status="inactive" size="l" />
+          <span class="status-label">L</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>With / Without Border</h2>
+
+      <h3>With Border (Default)</h3>
+      <p style="margin-bottom: 1rem; color: var(--fg-muted, #666); font-size: 0.875rem;">
+        White border helps visibility on colored backgrounds
+      </p>
+      <div class="status-grid">
+        <div class="status-item">
+          <div style="padding: 1rem; background: #3b82f6; border-radius: 8px;">
+            <StatusIcon status="online" size="m" hasBorder={true} />
+          </div>
+          <span class="status-label">Online</span>
+        </div>
+        <div class="status-item">
+          <div style="padding: 1rem; background: #10b981; border-radius: 8px;">
+            <StatusIcon status="offline" size="m" hasBorder={true} />
+          </div>
+          <span class="status-label">Offline</span>
+        </div>
+        <div class="status-item">
+          <div style="padding: 1rem; background: #f59e0b; border-radius: 8px;">
+            <StatusIcon status="idle" size="m" hasBorder={true} />
+          </div>
+          <span class="status-label">Idle</span>
+        </div>
+      </div>
+
+      <h3>Without Border</h3>
+      <div class="status-grid">
+        <StatusIcon status="online" size="m" hasBorder={false} />
+        <StatusIcon status="offline" size="m" hasBorder={false} />
+        <StatusIcon status="idle" size="m" hasBorder={false} />
+        <StatusIcon status="inactive" size="m" hasBorder={false} />
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Status Colors Reference</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Status</th>
+            <th>Color</th>
+            <th>Token</th>
+            <th>Hex Value</th>
+            <th>Preview</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Online</td>
+            <td>Green</td>
+            <td><code>--fg-accent-indicators-online</code></td>
+            <td>#00c951</td>
+            <td><StatusIcon status="online" size="s" hasBorder={false} /></td>
+          </tr>
+          <tr>
+            <td>Offline</td>
+            <td>Red</td>
+            <td><code>--fg-accent-indicators-offline</code></td>
+            <td>#fb2c37</td>
+            <td><StatusIcon status="offline" size="s" hasBorder={false} /></td>
+          </tr>
+          <tr>
+            <td>Idle</td>
+            <td>Yellow</td>
+            <td><code>--fg-accent-indicators-idle</code></td>
+            <td>#f1b100</td>
+            <td><StatusIcon status="idle" size="s" hasBorder={false} /></td>
+          </tr>
+          <tr>
+            <td>Inactive</td>
+            <td>Gray</td>
+            <td><code>--fg-accent-indicators-inactive</code></td>
+            <td>#6a7282</td>
+            <td><StatusIcon status="inactive" size="s" hasBorder={false} /></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h2>Common Use Cases</h2>
+
+      <h3>With Avatar</h3>
+      <div class="demo-card">
+        <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+            <div class="avatar-demo">
+              JD
+              <span class="avatar-status">
+                <StatusIcon status="online" size="s" />
+              </span>
+            </div>
+            <span style="font-size: 0.875rem;">John Doe</span>
+            <span style="font-size: 0.75rem; color: var(--fg-muted);">Online</span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+            <div class="avatar-demo">
+              JS
+              <span class="avatar-status">
+                <StatusIcon status="idle" size="s" />
+              </span>
+            </div>
+            <span style="font-size: 0.875rem;">Jane Smith</span>
+            <span style="font-size: 0.75rem; color: var(--fg-muted);">Away</span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+            <div class="avatar-demo">
+              AB
+              <span class="avatar-status">
+                <StatusIcon status="offline" size="s" />
+              </span>
+            </div>
+            <span style="font-size: 0.875rem;">Alex Brown</span>
+            <span style="font-size: 0.75rem; color: var(--fg-muted);">Offline</span>
+          </div>
+        </div>
+      </div>
+
+      <h3>User List</h3>
+      <div class="demo-card">
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <StatusIcon status="online" size="xs" />
+            <span>Sarah Wilson - <span style="color: var(--fg-muted); font-size: 0.875rem;">Available</span></span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <StatusIcon status="idle" size="xs" />
+            <span>Mike Johnson - <span style="color: var(--fg-muted); font-size: 0.875rem;">Away</span></span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <StatusIcon status="offline" size="xs" />
+            <span>Emily Davis - <span style="color: var(--fg-muted); font-size: 0.875rem;">Offline</span></span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <StatusIcon status="inactive" size="xs" />
+            <span>Tom Anderson - <span style="color: var(--fg-muted); font-size: 0.875rem;">Inactive</span></span>
+          </div>
+        </div>
+      </div>
+
+      <h3>Chat Interface</h3>
+      <div class="demo-card">
+        <div style="padding: 1.5rem; background: var(--bg-subtle); border-radius: 8px;">
+          <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+              <div style="position: relative;">
+                <div style="width: 40px; height: 40px; border-radius: var(--radius-pill); background: #3b82f6; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                  A
+                </div>
+                <span style="position: absolute; bottom: 0; right: 0;">
+                  <StatusIcon status="online" size="xs" />
+                </span>
+              </div>
+              <div>
+                <div style="font-weight: 600;">Alice Cooper</div>
+                <div style="font-size: 0.875rem; color: var(--fg-muted);">Active now</div>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 1rem;">
+              <div style="position: relative;">
+                <div style="width: 40px; height: 40px; border-radius: var(--radius-pill); background: #10b981; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                  B
+                </div>
+                <span style="position: absolute; bottom: 0; right: 0;">
+                  <StatusIcon status="idle" size="xs" />
+                </span>
+              </div>
+              <div>
+                <div style="font-weight: 600;">Bob Martin</div>
+                <div style="font-size: 0.875rem; color: var(--fg-muted);">Away for 10 minutes</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Accessibility</h2>
+      <div class="demo-card">
+        <div style="max-width: 600px;">
+          <p style="margin-bottom: 1rem; font-weight: 600;">ARIA Attributes:</p>
+          <ul style="list-style: disc; padding-left: 1.5rem; line-height: 1.8;">
+            <li><code>role="status"</code> - Indicates a status indicator</li>
+            <li><code>aria-label</code> - Provides text alternative:
+              <ul style="margin-top: 0.5rem; list-style: circle; padding-left: 1.5rem;">
+                <li>online → "Online"</li>
+                <li>offline → "Offline"</li>
+                <li>idle → "Away"</li>
+                <li>inactive → "Inactive"</li>
+              </ul>
+            </li>
+          </ul>
+          <div style="margin-top: 1.5rem; padding: 1rem; background: var(--bg-subtle); border-radius: 4px;">
+            <strong>Example:</strong>
+            <pre style="margin-top: 0.5rem; font-size: 0.875rem;"><code>&lt;StatusIcon status="online" /&gt;</code></pre>
+            <p style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--fg-muted);">
+              Screen readers announce: "Online"
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top: 3rem; text-align: center; color: var(--fg-muted, #666);">
+      <a href="#" onclick="history.back(); return false;" style="color: var(--fg-link, #0066cc); cursor: pointer;">← Back to Documentation</a>
+    </p>
+  </div>
+
+  <script>
+    console.log('[DEBUG] StatusIcon playground loaded');
+    console.log('[DEBUG] StatusIcon elements:', document.querySelectorAll('[data-status-icon]').length);
+  </script>
+</body>
+</html>

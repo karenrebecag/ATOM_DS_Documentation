@@ -1,0 +1,1093 @@
+---
+title: Toggle
+description: Switch control for binary on/off states with support for labels and error states.
+---
+
+## Overview
+
+The Toggle component is a switch control for representing binary on/off states. It provides visual feedback through animated knob movement and is ideal for settings, preferences, and feature toggles. It follows the ARIA switch pattern with full semantic accessibility.
+
+**Key Features:**
+- Binary state toggle (on/off) with smooth animation
+- 2 size options (s, m) for compact and standard layouts
+- Supporting text for additional context
+- Native error state with error messages
+- SVG error icon indicator
+- ARIA switch role with aria-checked attribute
+- Animated knob with track background
+- Supports disabled state
+- Conditional rendering (simple or extended field)
+- Data-attribute contract for animations
+- Fully token-driven styling
+- Fully accessible with semantic HTML and ARIA
+
+---
+
+## Demo
+
+:::tip[Interactive Playground]
+**[Open Toggle Playground →](/playground/toggle)**
+
+View all Toggle states, sizes, and animations in an isolated environment.
+:::
+
+---
+
+## Installation
+
+```bash
+# Install component package
+pnpm add @atomchat.io/components-astro
+
+# Install required dependencies
+pnpm add @atomchat.io/css @atomchat.io/tokens
+
+# Optional: For animations
+pnpm add @atomchat.io/animations gsap
+```
+
+**CSS Import (required):**
+```astro
+---
+// In your layout or page
+import '@atomchat.io/css';
+---
+```
+
+---
+
+## Anatomy
+
+The Toggle component has two rendering modes:
+
+### Simple Mode (no label, text, or error)
+
+```
+┌──────────────────────┐
+│  <label>             │  ← Toggle wrapper
+│  ┌────────────────┐  │
+│  │ <input/>       │  │  ← Hidden checkbox input
+│  └────────────────┘  │
+│  ┌────────────────┐  │
+│  │ <span> track   │  │  ← Background track
+│  │ ┌────────────┐ │  │
+│  │ │ <span> knob│ │  │  ← Animated knob
+│  │ └────────────┘ │  │
+│  └────────────────┘  │
+└──────────────────────┘
+```
+
+### Extended Mode (with label, text, or error)
+
+```
+┌──────────────────────────────┐
+│  <div> .toggle-field         │  ← Field wrapper
+│  ┌────────────────────────┐  │
+│  │  <div> .row            │  │  ← Row container
+│  │  ┌──────────────────┐  │  │
+│  │  │ <div> .selector  │  │  │  ← Toggle control
+│  │  │ <label> .toggle  │  │  │
+│  │  │ <input/>         │  │  │
+│  │  │ <span> track     │  │  │
+│  │  │ <span> knob      │  │  │
+│  │  └──────────────────┘  │  │
+│  │  ┌──────────────────┐  │  │
+│  │  │ <div> .text      │  │  │  ← Label & text
+│  │  │ <label> title    │  │  │
+│  │  │ <span> supportive│  │  │
+│  │  └──────────────────┘  │  │
+│  └────────────────────────┘  │
+│  ┌────────────────────────┐  │
+│  │ <div> .error          │  │  ← Error (if present)
+│  │ <svg> error-icon      │  │
+│  │ <span> error-text     │  │
+│  └────────────────────────┘  │
+└──────────────────────────────┘
+```
+
+**DOM Structure (Simple):**
+```html
+<label class="toggle toggle--s" for="notifications" data-toggle>
+  <input
+    class="toggle__input"
+    type="checkbox"
+    id="notifications"
+    name="notifications"
+    role="switch"
+    aria-checked="false"
+  />
+  <span class="toggle__track" aria-hidden="true" data-toggle-track>
+    <span class="toggle__knob" data-toggle-knob></span>
+  </span>
+</label>
+```
+
+**DOM Structure (Extended with error):**
+```html
+<div class="toggle-field toggle-field--m toggle-field--error" data-toggle>
+  <div class="toggle-field__row">
+    <div class="toggle-field__selector">
+      <label class="toggle toggle--m" for="required-field">
+        <input
+          class="toggle__input"
+          type="checkbox"
+          id="required-field"
+          name="required-field"
+          role="switch"
+          aria-checked="false"
+        />
+        <span class="toggle__track" aria-hidden="true" data-toggle-track>
+          <span class="toggle__knob" data-toggle-knob></span>
+        </span>
+      </label>
+    </div>
+    <div class="toggle-field__text">
+      <label class="toggle-field__title" for="required-field">
+        Required Field
+      </label>
+      <span class="toggle-field__supportive">
+        This field must be enabled
+      </span>
+    </div>
+  </div>
+  <div class="toggle-field__error">
+    <svg class="toggle-field__error-icon" viewBox="0 0 16 16" fill="currentColor">
+      <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm-.75 4a.75.75 0 0 1 1.5 0v3.5a.75.75 0 0 1-1.5 0V5Zm.75 7a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/>
+    </svg>
+    <span class="toggle-field__error-text">
+      This feature must be enabled
+    </span>
+  </div>
+</div>
+```
+
+---
+
+## Framework Support
+
+The Toggle component is available for multiple frameworks with shared design tokens, styles, and behavior.
+
+import FrameworkSwitcher from '../../../../components/FrameworkSwitcher.astro';
+
+<FrameworkSwitcher
+  frameworks={[
+    { name: 'astro', label: 'Astro', icon: 'https://svgl.app/library/astro-icon-dark.svg' },
+    { name: 'react', label: 'React', icon: 'https://svgl.app/library/react_dark.svg' },
+    { name: 'nextjs', label: 'Next.js', icon: 'https://svgl.app/library/nextjs_icon_dark.svg' },
+    { name: 'vue', label: 'Vue', icon: 'https://svgl.app/library/vue.svg' },
+    { name: 'angular', label: 'Angular', icon: 'https://svgl.app/library/angular.svg' },
+  ]}
+>
+  <div data-framework="astro" data-active="true">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-astro @atomchat.io/css
+```
+
+### Usage
+
+```astro
+---
+import { Toggle } from '@atomchat.io/components-astro';
+import '@atomchat.io/css';
+---
+
+<Toggle name="notifications" size="m">
+  Enable notifications
+</Toggle>
+
+<Toggle
+  name="dark-mode"
+  size="m"
+  checked
+  supportiveText="Automatically switches at sunset"
+>
+  Dark mode
+</Toggle>
+
+<Toggle
+  name="required-field"
+  size="m"
+  error
+  errorText="This feature must be enabled"
+>
+  Required feature
+</Toggle>
+```
+
+  </div>
+
+  <div data-framework="react">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+import { Toggle } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+import { useState } from 'react';
+
+function Example() {
+  const [isNotificationsOn, setIsNotificationsOn] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
+
+  return (
+    <>
+      <Toggle
+        name="notifications"
+        size="m"
+        checked={isNotificationsOn}
+        onChange={(e) => setIsNotificationsOn(e.target.checked)}
+      >
+        Enable notifications
+      </Toggle>
+
+      <Toggle
+        name="dark-mode"
+        size="m"
+        checked={isDarkMode}
+        supportiveText="Automatically switches at sunset"
+        onChange={(e) => setIsDarkMode(e.target.checked)}
+      >
+        Dark mode
+      </Toggle>
+
+      <Toggle
+        name="required-field"
+        size="m"
+        error
+        errorText="This feature must be enabled"
+      >
+        Required feature
+      </Toggle>
+    </>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="nextjs">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+'use client';
+
+import { Toggle } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+import { useState } from 'react';
+
+export default function Example() {
+  const [isNotificationsOn, setIsNotificationsOn] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
+
+  return (
+    <>
+      <Toggle
+        name="notifications"
+        size="m"
+        checked={isNotificationsOn}
+        onChange={(e) => setIsNotificationsOn(e.target.checked)}
+      >
+        Enable notifications
+      </Toggle>
+
+      <Toggle
+        name="dark-mode"
+        size="m"
+        checked={isDarkMode}
+        supportiveText="Automatically switches at sunset"
+        onChange={(e) => setIsDarkMode(e.target.checked)}
+      >
+        Dark mode
+      </Toggle>
+
+      <Toggle
+        name="required-field"
+        size="m"
+        error
+        errorText="This feature must be enabled"
+      >
+        Required feature
+      </Toggle>
+    </>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="vue">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-vue @atomchat.io/css
+```
+
+### Usage
+
+```vue
+<script setup>
+import { Toggle } from '@atomchat.io/components-vue';
+import '@atomchat.io/css';
+import { ref } from 'vue';
+
+const isNotificationsOn = ref(false);
+const isDarkMode = ref(true);
+</script>
+
+<template>
+  <Toggle
+    name="notifications"
+    size="m"
+    :checked="isNotificationsOn"
+    @change="isNotificationsOn = !isNotificationsOn"
+  >
+    Enable notifications
+  </Toggle>
+
+  <Toggle
+    name="dark-mode"
+    size="m"
+    :checked="isDarkMode"
+    supportiveText="Automatically switches at sunset"
+    @change="isDarkMode = !isDarkMode"
+  >
+    Dark mode
+  </Toggle>
+
+  <Toggle
+    name="required-field"
+    size="m"
+    error
+    errorText="This feature must be enabled"
+  >
+    Required feature
+  </Toggle>
+</template>
+```
+
+  </div>
+
+  <div data-framework="angular">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-angular @atomchat.io/css
+```
+
+### Usage
+
+```typescript
+import { ToggleComponent } from '@atomchat.io/components-angular';
+import '@atomchat.io/css';
+import { Component, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  imports: [ToggleComponent, FormsModule],
+  template: `
+    <atom-toggle
+      name="notifications"
+      size="m"
+      [(ngModel)]="isNotificationsOn"
+    >
+      Enable notifications
+    </atom-toggle>
+
+    <atom-toggle
+      name="dark-mode"
+      size="m"
+      [(ngModel)]="isDarkMode"
+      supportiveText="Automatically switches at sunset"
+    >
+      Dark mode
+    </atom-toggle>
+
+    <atom-toggle
+      name="required-field"
+      size="m"
+      [error]="true"
+      errorText="This feature must be enabled"
+    >
+      Required feature
+    </atom-toggle>
+  `
+})
+export class ExampleComponent {
+  isNotificationsOn = signal(false);
+  isDarkMode = signal(true);
+}
+```
+
+  </div>
+</FrameworkSwitcher>
+
+---
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `string` | — | Unique identifier for the toggle (required) |
+| `size` | `"s" \| "m"` | `"s"` | Toggle size (compact or standard) |
+| `checked` | `boolean?` | `false` | Initial on/off state |
+| `disabled` | `boolean?` | `false` | Disables interaction |
+| `supportiveText` | `string?` | — | Helper text below label |
+| `error` | `boolean?` | `false` | Indicates validation error |
+| `errorText` | `string?` | — | Error message (only shown if `error=true`) |
+| `class` | `string?` | — | Additional CSS classes |
+
+### Slots
+
+| Slot | Description |
+|------|-------------|
+| `default` | Toggle label text (optional) |
+
+**Slot Usage:**
+```astro
+<Toggle name="dark-mode" size="m">
+  Dark mode
+</Toggle>
+```
+
+---
+
+## Variants
+
+### Size Variants
+
+| Size | Track Width | Track Height | Use Case |
+|------|------------|--------------|----------|
+| **s** | `36px` | `20px` | Compact forms, dense layouts, mobile |
+| **m** | `44px` | `24px` | Standard forms, settings, desktop |
+
+**Size Tokens:**
+```css
+--toggle-size-s-width: 36px;
+--toggle-size-s-height: 20px;
+
+--toggle-size-m-width: 44px;
+--toggle-size-m-height: 24px;
+```
+
+### State Variants
+
+| State | Behavior | Visual Change |
+|-------|----------|---------------|
+| **Off** | Interactive | Track on left, knob at start |
+| **On** | Selected | Track on right, knob at end |
+| **Hover** | On mouse over | Subtle background transition |
+| **Focus** | On keyboard focus | Focus ring outline |
+| **Disabled** | Non-interactive | Gray track + `cursor: not-allowed` |
+| **Error** | Validation failed | Red border + error message + icon |
+
+### Rendering Modes
+
+| Mode | Trigger | Structure |
+|------|---------|-----------|
+| **Simple** | No label, supportive text, or error | Single `<label>` wrapper |
+| **Extended** | Has label/text/error | `<div class="toggle-field">` wrapper |
+
+---
+
+## Usage Examples
+
+### Basic Toggle
+
+```astro
+---
+import { Toggle } from '@atomchat.io/components-astro';
+---
+
+<Toggle name="feature" size="m">
+  Enable feature
+</Toggle>
+```
+
+### With Supporting Text
+
+```astro
+<Toggle
+  name="notifications"
+  size="m"
+  supportiveText="Receive updates when someone replies to your comment"
+>
+  Email notifications
+</Toggle>
+```
+
+### Enabled by Default
+
+```astro
+<Toggle
+  name="analytics"
+  size="m"
+  checked
+  supportiveText="Help us improve by sharing usage data"
+>
+  Share analytics
+</Toggle>
+```
+
+### With Error State
+
+```astro
+<Toggle
+  name="terms"
+  size="m"
+  error
+  errorText="You must agree to proceed"
+>
+  I agree to terms and conditions
+</Toggle>
+```
+
+### Disabled Toggle
+
+```astro
+<Toggle
+  name="legacy-feature"
+  size="m"
+  disabled
+  supportiveText="This feature is no longer available"
+>
+  Legacy feature
+</Toggle>
+```
+
+### Compact Size
+
+```astro
+<div style="display: flex; gap: var(--m); align-items: center;">
+  <Toggle name="opt1" size="s">Option 1</Toggle>
+  <Toggle name="opt2" size="s">Option 2</Toggle>
+  <Toggle name="opt3" size="s">Option 3</Toggle>
+</div>
+```
+
+### Settings Panel
+
+```astro
+<section>
+  <h3>Privacy Settings</h3>
+
+  <Toggle
+    name="profile-public"
+    size="m"
+    supportiveText="Allow anyone to view your profile"
+  >
+    Public profile
+  </Toggle>
+
+  <Toggle
+    name="analytics-sharing"
+    size="m"
+    checked
+    supportiveText="Share usage data to improve our service"
+  >
+    Analytics
+  </Toggle>
+
+  <Toggle
+    name="marketing-emails"
+    size="m"
+    supportiveText="Receive promotional content"
+  >
+    Marketing emails
+  </Toggle>
+</section>
+```
+
+---
+
+## Structure Tokens
+
+### Size Tokens
+
+```css
+/* Small variant */
+--toggle-size-s-width: 36px;
+--toggle-size-s-height: 20px;
+--toggle-size-s-knob-size: 16px;
+
+/* Medium variant */
+--toggle-size-m-width: 44px;
+--toggle-size-m-height: 24px;
+--toggle-size-m-knob-size: 20px;
+
+/* Knob movement distance */
+--toggle-knob-translate-s: 16px;
+--toggle-knob-translate-m: 20px;
+```
+
+### Spacing Tokens
+
+```css
+/* Between toggle and label text */
+--toggle-field-gap: 8px;
+
+/* Between label and supporting text */
+--toggle-field-text-gap: 4px;
+
+/* Between error icon and text */
+--toggle-error-icon-gap: 6px;
+```
+
+### Typography
+
+```css
+--toggle-field-title-font-size: 14px;      /* Label text */
+--toggle-field-title-font-weight: 500;     /* Label weight */
+
+--toggle-field-supportive-font-size: 12px; /* Helper text */
+--toggle-field-supportive-font-weight: 400; /* Helper weight */
+
+--toggle-field-error-font-size: 12px;      /* Error text */
+--toggle-field-error-font-weight: 400;     /* Error weight */
+```
+
+---
+
+## Dependencies
+
+### Required Packages
+- `@atomchat.io/css` — Component styles and tokens
+- `@atomchat.io/tokens` — Design token definitions
+
+### Optional Packages
+- `@atomchat.io/animations` — Knob animation effects
+- `gsap` — Animation library (required by animations package)
+
+### Semantic Tokens Used
+
+**Background:**
+```css
+--toggle-bg-enabled          /* Off state background */
+--toggle-bg-checked          /* On state background */
+--toggle-bg-hovered          /* Hover state background */
+--toggle-bg-focused          /* Focus state background */
+--toggle-bg-disabled         /* Disabled state background */
+--toggle-field-bg-error      /* Error state background */
+```
+
+**Foreground:**
+```css
+--toggle-knob-color          /* Knob color (track) */
+--toggle-fg-disabled         /* Disabled text color */
+--toggle-field-fg-supportive /* Supporting text color */
+--toggle-field-fg-error      /* Error text color */
+--toggle-field-fg-error-icon /* Error icon color */
+```
+
+**Border:**
+```css
+--toggle-border-enabled      /* Off state border */
+--toggle-border-checked      /* On state border */
+--toggle-border-focused      /* Focus ring border */
+--toggle-border-error        /* Error state border */
+```
+
+---
+
+## Animations
+
+The Toggle component integrates with the **ATOM animation system** for **knob movement** effects.
+
+### Knob Animation
+
+**What it does:**
+When a toggle is clicked, the knob smoothly slides between on/off positions with accompanying track color transitions.
+
+**Data attributes:**
+```html
+<label class="toggle" data-toggle>
+  <input type="checkbox" class="toggle__input" role="switch" />
+  <span class="toggle__track" data-toggle-track>
+    <span class="toggle__knob" data-toggle-knob></span>
+  </span>
+</label>
+```
+
+**Animation Behavior:**
+- **On Toggle:** Knob slides from start to end (or vice versa)
+- **Duration:** 300ms (smooth transition)
+- **Easing:** `ease-out` (natural deceleration)
+- **Track Color:** Transitions from off to on color
+
+**CSS-based Animation:**
+
+```css
+.toggle__knob {
+  transition: transform 300ms ease-out;
+}
+
+.toggle__input:checked ~ .toggle__track {
+  transition: background-color 300ms ease-out;
+}
+
+.toggle__input:checked ~ .toggle__track .toggle__knob {
+  transform: translateX(var(--toggle-knob-translate-s));
+}
+```
+
+**GSAP Timeline (optional enhancement):**
+
+```typescript
+// When toggle is clicked
+gsap.to('[data-toggle-knob]', {
+  x: isChecked ? 20 : 0,
+  duration: 0.3,
+  ease: 'power2.out'
+});
+
+gsap.to('[data-toggle-track]', {
+  backgroundColor: isChecked ? '#22c55e' : '#e5e7eb',
+  duration: 0.3,
+  ease: 'power2.out'
+});
+```
+
+### Initialization
+
+**Global initialization (recommended):**
+
+```astro
+<!-- Astro Layout.astro -->
+<script>
+  import { initAllAnimations } from '@atomchat.io/animations';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initAllAnimations();
+  });
+
+  document.addEventListener('astro:page-load', () => {
+    initAllAnimations();
+  });
+</script>
+```
+
+**Respects Motion Preferences:**
+```css
+@media (prefers-reduced-motion: reduce) {
+  .toggle__knob,
+  .toggle__track {
+    transition-duration: 1s;
+  }
+}
+```
+
+---
+
+## Accessibility
+
+### ARIA Attributes
+
+The Toggle component includes built-in accessibility features:
+
+```html
+<!-- Off state -->
+<label class="toggle" for="dark-mode">
+  <input
+    type="checkbox"
+    id="dark-mode"
+    name="dark-mode"
+    role="switch"
+    aria-checked="false"
+    aria-label="Dark mode"
+  />
+  <span class="toggle__track" aria-hidden="true">
+    <span class="toggle__knob"></span>
+  </span>
+</label>
+
+<!-- On state -->
+<label class="toggle" for="dark-mode">
+  <input
+    type="checkbox"
+    id="dark-mode"
+    name="dark-mode"
+    role="switch"
+    aria-checked="true"
+    aria-label="Dark mode"
+  />
+  <span class="toggle__track" aria-hidden="true">
+    <span class="toggle__knob"></span>
+  </span>
+</label>
+
+<!-- Toggle with error -->
+<div class="toggle-field toggle-field--error">
+  <div class="toggle-field__row">
+    <label class="toggle" for="required">
+      <input
+        type="checkbox"
+        id="required"
+        name="required"
+        role="switch"
+        aria-checked="false"
+        aria-invalid="true"
+        aria-describedby="error-msg"
+      />
+      <span class="toggle__track" aria-hidden="true">
+        <span class="toggle__knob"></span>
+      </span>
+    </label>
+  </div>
+  <div class="toggle-field__error" id="error-msg" role="alert">
+    <svg aria-hidden="true"><!-- Error icon --></svg>
+    <span>This feature must be enabled</span>
+  </div>
+</div>
+```
+
+**Automatic behaviors:**
+- `role="switch"` for proper switch semantics
+- `aria-checked="true|false"` reflects toggle state
+- Track and knob hidden with `aria-hidden="true"`
+- Error messages with `role="alert"`
+- `aria-invalid="true"` for validation errors
+- `aria-describedby` links to error messages
+
+### Best Practices
+
+**Provide descriptive labels:**
+```astro
+<Toggle name="dark-mode" size="m">
+  Enable dark mode
+</Toggle>
+```
+
+**Use supporting text for clarity:**
+```astro
+<Toggle
+  name="analytics"
+  size="m"
+  supportiveText="Help improve our service by sharing usage data"
+>
+  Share analytics
+</Toggle>
+```
+
+**Show error messages clearly:**
+```astro
+<Toggle
+  name="terms"
+  size="m"
+  error
+  errorText="You must agree to continue"
+>
+  I agree to terms
+</Toggle>
+```
+
+**Avoid unclear labels:**
+```astro
+<!-- Bad: Too vague -->
+<Toggle name="feature" size="m">
+  Enable
+</Toggle>
+
+<!-- Good: Clear action -->
+<Toggle name="notifications" size="m">
+  Email notifications
+</Toggle>
+```
+
+**Don't toggle on hover:**
+```astro
+<!-- Bad: Unexpected behavior -->
+<Toggle name="hidden" size="m">Hidden by default</Toggle>
+
+<!-- Good: Click to toggle -->
+<Toggle name="visible" size="m">Show advanced options</Toggle>
+```
+
+---
+
+## Composition Patterns
+
+### Settings Panel
+
+```astro
+<section>
+  <h2>Account Settings</h2>
+
+  <fieldset>
+    <legend>Notifications</legend>
+
+    <Toggle
+      name="email-notifications"
+      size="m"
+      checked
+      supportiveText="Receive email updates on account activity"
+    >
+      Email notifications
+    </Toggle>
+
+    <Toggle
+      name="push-notifications"
+      size="m"
+      supportiveText="Browser push notifications for real-time alerts"
+    >
+      Push notifications
+    </Toggle>
+
+    <Toggle
+      name="sms-notifications"
+      size="m"
+      supportiveText="SMS alerts for critical security events"
+    >
+      SMS notifications
+    </Toggle>
+  </fieldset>
+</section>
+```
+
+### Privacy Controls
+
+```astro
+<section>
+  <h2>Privacy</h2>
+
+  <Toggle
+    name="profile-public"
+    size="m"
+    supportiveText="Allow anyone to view your public profile"
+  >
+    Public profile
+  </Toggle>
+
+  <Toggle
+    name="analytics"
+    size="m"
+    checked
+    supportiveText="Help us improve by sharing usage analytics"
+  >
+    Analytics tracking
+  </Toggle>
+
+  <Toggle
+    name="marketing"
+    size="m"
+    supportiveText="Receive product updates and special offers"
+  >
+    Marketing communications
+  </Toggle>
+</section>
+```
+
+### Feature Flags
+
+```astro
+<fieldset>
+  <legend>Experimental Features</legend>
+
+  <Toggle
+    name="beta-ui"
+    size="m"
+    supportiveText="Try the new redesigned interface (beta)"
+  >
+    New interface
+  </Toggle>
+
+  <Toggle
+    name="ai-suggestions"
+    size="m"
+    supportiveText="Get AI-powered recommendations"
+  >
+    AI suggestions
+  </Toggle>
+
+  <Toggle
+    name="dark-mode"
+    size="m"
+    supportiveText="Reduces eye strain in low-light environments"
+  >
+    Dark mode
+  </Toggle>
+</fieldset>
+```
+
+### Conditional Display
+
+```astro
+<div>
+  <Toggle
+    name="advanced-options"
+    size="m"
+    supportiveText="Show additional configuration options"
+  >
+    Advanced settings
+  </Toggle>
+
+  <div id="advanced-panel" hidden>
+    <Toggle name="option1" size="m">Option 1</Toggle>
+    <Toggle name="option2" size="m">Option 2</Toggle>
+    <Toggle name="option3" size="m">Option 3</Toggle>
+  </div>
+</div>
+```
+
+---
+
+## Design Tokens in Action
+
+### Token-First Philosophy
+
+Every visual property of the Toggle component is controlled by design tokens:
+
+- **Global consistency** — All toggles use the same size and color scale
+- **Easy theming** — Switch themes by updating token values
+- **State management** — Off/on/hover/focus/error states via tokens
+- **Maintainability** — Update once, reflect everywhere
+
+### Token Override Example
+
+```css
+/* Custom toggle variant for important settings */
+.toggle--important {
+  --toggle-bg-checked: var(--primitive-error-500);
+  --toggle-border-checked: var(--primitive-error-600);
+  --toggle-field-bg-error: var(--primitive-error-50);
+}
+
+.toggle--important:hover {
+  --toggle-bg-hovered: var(--primitive-error-600);
+}
+```
+
+**Usage:**
+```astro
+<Toggle name="critical-setting" class="toggle--important" size="m">
+  Enable critical feature
+</Toggle>
+```
+
+---
+
+## Build this Component with AI
+
+Use this pre-built prompt to generate a complete showcase of this component in your preferred framework. The AI will create a working settings panel with all toggle patterns and proper token usage.
+
+**What you get:**
+- Complete component setup with proper imports
+- Multiple toggle groups and sizes
+- Supporting text examples
+- Error state demonstrations
+- Settings and privacy patterns
+- Feature flag examples
+- Token-first styling (no hardcoded values)

@@ -1,0 +1,695 @@
+---
+title: IconButton
+description: Icon-only button with hover rotation animation and loading states.
+---
+
+## Overview
+
+The **IconButton** component is an icon-only button designed for compact interfaces where space is limited or when an icon alone can clearly convey the action. It features built-in hover rotation animations and loading states, sharing the same token system as the standard Button component.
+
+:::tip[Interactive Playground]
+**[Open IconButton Playground →](/playground/icon-button)**
+
+View all IconButton variants with live hover animations and working states in an isolated environment.
+:::
+
+**Key Features:**
+- 6 semantic variants (Primary, Secondary, Tertiary + Destructive variants)
+- 5 size options (xs, s, m, l, xl)
+- Hover rotation animation powered by @atomchat.io/animations
+- Loading state with animated spinner
+- Can render as button or link (`<a>` tag)
+- Fully token-driven styling
+- Accessible with required ARIA labels
+- External link support with proper attributes
+
+---
+
+## Demo
+
+:::tip[Live Demo]
+**[Open IconButton Playground →](/playground/icon-button)** to see all variants, sizes, and states rendered with live interactions.
+:::
+
+---
+
+## Installation
+
+```bash
+# Install component package
+pnpm add @atomchat.io/components-astro
+
+# Install required dependencies
+pnpm add @atomchat.io/css @atomchat.io/tokens
+
+# Optional: For GSAP animations
+pnpm add @atomchat.io/animations gsap
+```
+
+**CSS Import (required):**
+```astro
+---
+// In your layout or page
+import '@atomchat.io/css';
+---
+```
+
+---
+
+## Anatomy
+
+The IconButton component consists of nested elements to support hover animations and loading states:
+
+```
+┌───────────────────────┐
+│  .icon-button         │  ← Base button/link element
+│  ┌─────────────────┐  │
+│  │ .icon-wrap      │  │  ← Icon wrapper (relative positioning)
+│  │  ┌───────────┐  │  │
+│  │  │  .icon    │  │  │  ← Original icon (visible)
+│  │  │ --clone   │  │  │  ← Clone for rotation animation (hidden)
+│  │  └───────────┘  │  │
+│  └─────────────────┘  │
+│  OR                   │
+│  ┌─────────────────┐  │
+│  │  .loader        │  │  ← Loading spinner (when loading=true)
+│  └─────────────────┘  │
+└───────────────────────┘
+```
+
+**DOM Structure (default state):**
+```html
+<button
+  class="icon-button icon-button--primary icon-button--m"
+  data-icon-button
+  data-hover-rotate
+  aria-label="Settings"
+>
+  <span class="icon-button__icon-wrap">
+    <span class="icon-button__icon" data-icon-button-icon>
+      <!-- Icon SVG -->
+    </span>
+    <span class="icon-button__icon icon-button__icon--clone" aria-hidden="true">
+      <!-- Clone for animation -->
+    </span>
+  </span>
+</button>
+```
+
+---
+
+## Framework Support
+
+The IconButton component is available for multiple frameworks with shared design tokens, styles, and behavior.
+
+import FrameworkSwitcher from '../../../../components/FrameworkSwitcher.astro';
+
+<FrameworkSwitcher
+  frameworks={[
+    { name: 'astro', label: 'Astro', icon: 'https://svgl.app/library/astro-icon-dark.svg' },
+    { name: 'react', label: 'React', icon: 'https://svgl.app/library/react_dark.svg' },
+    { name: 'nextjs', label: 'Next.js', icon: 'https://svgl.app/library/nextjs_icon_dark.svg' },
+    { name: 'vue', label: 'Vue', icon: 'https://svgl.app/library/vue.svg' },
+    { name: 'angular', label: 'Angular', icon: 'https://svgl.app/library/angular.svg' },
+  ]}
+>
+  <div data-framework="astro" data-active="true">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-astro @atomchat.io/css
+```
+
+### Usage
+```astro
+---
+import { IconButton } from '@atomchat.io/components-astro';
+import '@atomchat.io/css';
+---
+
+<IconButton variant="Primary" size="m" label="Settings">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+    <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492z"/>
+  </svg>
+</IconButton>
+```
+
+  </div>
+
+  <div data-framework="react">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+```tsx
+import { IconButton } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+
+function Example() {
+  return (
+    <IconButton variant="Primary" size="m" label="Settings">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492z"/>
+      </svg>
+    </IconButton>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="nextjs">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+```tsx
+'use client';
+
+import { IconButton } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+
+export default function Example() {
+  return (
+    <IconButton variant="Primary" size="m" label="Settings">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492z"/>
+      </svg>
+    </IconButton>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="vue">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-vue @atomchat.io/css
+```
+
+### Usage
+```vue
+<script setup>
+import { IconButton } from '@atomchat.io/components-vue';
+import '@atomchat.io/css';
+</script>
+
+<template>
+  <IconButton variant="Primary" size="m" label="Settings">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+      <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492z"/>
+    </svg>
+  </IconButton>
+</template>
+```
+
+  </div>
+
+  <div data-framework="angular">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-angular @atomchat.io/css
+```
+
+### Usage
+```typescript
+import { Component } from '@angular/core';
+import { IconButtonComponent } from '@atomchat.io/components-angular';
+import '@atomchat.io/css';
+
+@Component({
+  selector: 'app-example',
+  standalone: true,
+  imports: [IconButtonComponent],
+  template: `
+    <atom-icon-button variant="Primary" size="m" label="Settings">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492z"/>
+      </svg>
+    </atom-icon-button>
+  `
+})
+export class ExampleComponent {}
+```
+
+  </div>
+</FrameworkSwitcher>
+
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `"Primary"` \| `"Secondary"` \| `"Tertiary"` \| `"Destructive Primary"` \| `"Destructive Secondary"` \| `"Destructive Tertiary"` | `"Primary"` | Visual style variant |
+| `size` | `"xs"` \| `"s"` \| `"m"` \| `"l"` \| `"xl"` | `"m"` | Button size |
+| `href` | `string?` | — | If provided, renders as `<a>` tag instead of `<button>` |
+| `label` | `string` | — | **Required** aria-label for accessibility (icon-only buttons need labels) |
+| `external` | `boolean?` | `false` | Opens link in new tab (only for href). Adds `target="_blank" rel="noopener noreferrer"` |
+| `disabled` | `boolean?` | `false` | Disables interaction and applies disabled styling |
+| `loading` | `boolean?` | `false` | Shows loading spinner and disables interaction |
+| `class` | `string?` | — | Additional CSS classes |
+
+### Slots
+
+| Slot | Description |
+|------|-------------|
+| `default` | Icon SVG content (required) |
+
+**Slot Usage:**
+```astro
+<IconButton variant="Primary" size="m" label="Settings">
+  <svg width="16" height="16">...</svg>
+</IconButton>
+```
+
+**Notes:**
+- `label` prop is **required for accessibility** — icon-only buttons need descriptive labels for screen readers
+- When `href` is provided, the component renders as an `<a>` tag; otherwise as `<button type="button">`
+- When `loading` is true, the icon is hidden and replaced with a spinner
+- Uses the same variant/size tokens as the standard Button component
+
+---
+
+## Variants
+
+### Size Variants
+
+| Size | Token | Dimensions | Icon Size | Use Case |
+|------|-------|------------|-----------|----------|
+| **xs** | `--buttons-structure-size-xs` | `24px × 24px` | `12px` | Ultra-compact UI, table actions |
+| **s** | `--buttons-structure-size-s` | `32px × 32px` | `14px` | Compact toolbars, inline actions |
+| **m** | `--buttons-structure-size-m` | `40px × 40px` | `16px` | Default size, standard UI |
+| **l** | `--buttons-structure-size-l` | `48px × 48px` | `20px` | Emphasis, touch targets |
+| **xl** | `--buttons-structure-size-xl` | `56px × 56px` | `24px` | Hero actions, large touch areas |
+
+### Visual Variants
+
+| Variant | Background | Border | Text Color | Use Case |
+|---------|------------|--------|------------|----------|
+| **Primary** | `--buttons-bg-primary-enabled` | None | `--buttons-fg-primary-enabled` | Main actions (save, submit) |
+| **Secondary** | `--buttons-bg-secondary-enabled` | `--buttons-border-secondary-enabled` | `--buttons-fg-secondary-enabled` | Secondary actions (cancel, edit) |
+| **Tertiary** | Transparent | None | `--buttons-fg-tertiary-enabled` | Subtle actions (close, minimize) |
+| **Destructive Primary** | `--buttons-bg-danger-primary-enabled` | None | `--buttons-fg-danger-primary-enabled` | Destructive primary (delete account) |
+| **Destructive Secondary** | `--buttons-bg-danger-secondary-enabled` | `--buttons-border-danger-secondary-enabled` | `--buttons-fg-danger-secondary-enabled` | Destructive secondary (remove item) |
+| **Destructive Tertiary** | Transparent | None | `--buttons-fg-danger-tertiary-enabled` | Subtle destructive (dismiss error) |
+
+### State Variants
+
+| State | Visual Change | Behavior |
+|-------|---------------|----------|
+| **Default** | Standard appearance | Interactive, hover animation enabled |
+| **Hover** | Icon rotates, background changes | Animated via `@atomchat.io/animations` |
+| **Focus** | Border + shadow (`:focus-visible`) | Keyboard focus indicator |
+| **Active** | Background → `--btn-bg-pressed` | Click/press feedback |
+| **Disabled** | Reduced opacity, muted colors | Non-interactive, `disabled` attribute added |
+| **Loading** | Icon hidden, spinner shown | Non-interactive, `aria-busy="true"` |
+
+---
+
+## Usage Examples
+
+### Basic Usage
+
+```astro
+---
+import { IconButton } from '@atomchat.io/components-astro';
+---
+
+<IconButton variant="Primary" size="m" label="Settings">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+    <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492z"/>
+  </svg>
+</IconButton>
+```
+
+### As Link (Navigation)
+
+```astro
+<IconButton
+  variant="Secondary"
+  size="m"
+  href="/settings"
+  label="Go to Settings"
+>
+  <svg width="16" height="16">...</svg>
+</IconButton>
+```
+
+### External Link
+
+```astro
+<IconButton
+  variant="Tertiary"
+  size="m"
+  href="https://github.com/atom-ds"
+  external
+  label="Open GitHub repository"
+>
+  <svg width="16" height="16">...</svg>
+</IconButton>
+```
+
+### Loading State
+
+```astro
+<IconButton
+  variant="Primary"
+  size="m"
+  loading
+  label="Saving changes"
+>
+  <svg width="16" height="16">...</svg>
+</IconButton>
+```
+
+### Destructive Action
+
+```astro
+<IconButton
+  variant="Destructive Primary"
+  size="m"
+  label="Delete item"
+>
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5z"/>
+  </svg>
+</IconButton>
+```
+
+### Toolbar Pattern
+
+```astro
+<div style="display: flex; gap: var(--xs); align-items: center;">
+  <IconButton variant="Secondary" size="s" label="Bold">
+    <svg width="14" height="14">...</svg>
+  </IconButton>
+
+  <IconButton variant="Secondary" size="s" label="Italic">
+    <svg width="14" height="14">...</svg>
+  </IconButton>
+
+  <IconButton variant="Secondary" size="s" label="Underline">
+    <svg width="14" height="14">...</svg>
+  </IconButton>
+</div>
+```
+
+---
+
+## Structure Tokens
+
+### Size Tokens
+
+```css
+/* Button dimensions (width = height for square icon buttons) */
+--buttons-structure-size-xs: 24px;
+--buttons-structure-size-s: 32px;
+--buttons-structure-size-m: 40px;
+--buttons-structure-size-l: 48px;
+--buttons-structure-size-xl: 56px;
+```
+
+### Border & Radius
+
+```css
+--stroke-xs: 1px;               /* Border width */
+--s: 8px;                       /* Border radius */
+```
+
+---
+
+## Dependencies
+
+### Required Packages
+- `@atomchat.io/css` — Component styles and tokens
+- `@atomchat.io/tokens` — Design token definitions
+
+### Optional Packages
+- `@atomchat.io/animations` — Hover rotation animation (via `initHoverRotate`)
+- `gsap` — Animation engine (peer dependency of animations)
+
+### Semantic Tokens Used
+
+**Backgrounds:**
+```css
+--buttons-bg-primary-enabled              /* Primary variant background */
+--buttons-bg-secondary-enabled            /* Secondary variant background */
+--buttons-bg-tertiary-enabled             /* Tertiary variant background */
+--buttons-bg-danger-primary-enabled       /* Destructive primary background */
+--buttons-bg-danger-secondary-enabled     /* Destructive secondary background */
+--buttons-bg-danger-tertiary-enabled      /* Destructive tertiary background */
+--bg-disabled                             /* Disabled state */
+```
+
+**Foregrounds:**
+```css
+--buttons-fg-primary-enabled              /* Primary icon color */
+--buttons-fg-secondary-enabled            /* Secondary icon color */
+--buttons-fg-tertiary-enabled             /* Tertiary icon color */
+--buttons-fg-danger-primary-enabled       /* Destructive primary icon color */
+--buttons-fg-danger-secondary-enabled     /* Destructive secondary icon color */
+--buttons-fg-danger-tertiary-enabled      /* Destructive tertiary icon color */
+--fg-disabled                             /* Disabled icon color */
+```
+
+**Borders:**
+```css
+--buttons-border-secondary-enabled        /* Secondary variant border */
+--buttons-border-danger-secondary-enabled /* Destructive secondary border */
+```
+
+**Shadows:**
+```css
+--buttons-shadow-focus                    /* Focus ring (primary/secondary/tertiary) */
+--buttons-shadow-focus-danger             /* Focus ring (destructive variants) */
+```
+
+---
+
+## Animations
+
+The IconButton integrates with the **ATOM animation system** (`@atomchat.io/animations`) through a **data-attribute contract**.
+
+### Data-Attribute Contract
+
+The IconButton component exposes these animation hooks:
+
+| Attribute | Purpose | Animation Module |
+|-----------|---------|------------------|
+| `data-icon-button` | Root element discovery | All icon button animations |
+| `data-hover-rotate` | Enables hover rotation effect | `initHoverRotate()` |
+| `data-icon-button-icon` | Original icon (animatable) | `initHoverRotate()` |
+| `data-icon-button-icon-clone` | Clone icon (animatable) | `initHoverRotate()` |
+| `data-button-spinner` | Loading spinner | Native CSS animation |
+
+### Hover Rotation Animation
+
+**What it does:**
+On hover, the icon rotates out while a clone icon rotates in, creating a smooth flip effect.
+
+**Animation Initialization (3 functions):**
+
+```astro
+<script>
+  import { initRotateClones, initRotateCalc, initHoverRotate } from '@atomchat.io/animations/hover';
+
+  // Initialize on first load
+  document.addEventListener('DOMContentLoaded', () => {
+    initRotateClones();
+    initRotateCalc();
+    initHoverRotate();
+  });
+</script>
+```
+
+**CSS Variables:**
+
+```css
+.icon-button {
+  --r: 20deg;  /* Rotation angle */
+  --y: 1100%;  /* Transform-origin Y (auto-calculated) */
+}
+```
+
+### Loading Spinner
+
+The loading state includes an automatic rotating spinner (CSS-based, no JS required).
+
+**Accessibility:**
+```css
+@media (prefers-reduced-motion: reduce) {
+  .icon-button__spinner {
+    animation-duration: 1.5s; /* Slower for accessibility */
+  }
+}
+```
+
+---
+
+## Accessibility
+
+### ARIA Attributes
+
+The IconButton includes built-in accessibility features:
+
+```html
+<button
+  class="icon-button"
+  aria-label="Settings"
+  aria-disabled="false"
+  aria-busy="false"
+>
+  <!-- Icon content -->
+</button>
+```
+
+**Automatic ARIA Labels:**
+- `aria-label` — **Required** descriptive label from `label` prop
+- `aria-disabled="true"` — Added when `disabled` or `loading` is true
+- `aria-busy="true"` — Added when `loading` is true
+- `aria-hidden="true"` — Applied to icon clone (for animation)
+
+### Best Practices
+
+**Use semantic HTML:**
+```astro
+<!-- Navigation -->
+<IconButton variant="Secondary" href="/settings" label="Settings">
+  <svg>...</svg>
+</IconButton>
+
+<!-- Action -->
+<IconButton variant="Primary" label="Save changes">
+  <svg>...</svg>
+</IconButton>
+```
+
+**Provide descriptive labels:**
+```astro
+<!-- Good -->
+<IconButton label="Delete item">
+  <svg>...</svg>
+</IconButton>
+
+<!-- Bad -->
+<IconButton label="Icon">
+  <svg>...</svg>
+</IconButton>
+```
+
+**Provide context in labels:**
+```astro
+<!-- Good -->
+<IconButton label="Delete user account">
+  <svg>...</svg>
+</IconButton>
+
+<!-- Bad -->
+<IconButton label="Delete">
+  <svg>...</svg>
+</IconButton>
+```
+
+**Don't omit labels (inaccessible):**
+```astro
+<!-- Very Bad - Screen readers can't describe this -->
+<IconButton>
+  <svg>...</svg>
+</IconButton>
+```
+
+### Keyboard Navigation
+
+- **Tab**: Focus the button
+- **Enter** / **Space**: Activate the button
+- **Disabled/Loading**: Non-focusable, non-interactive
+
+---
+
+## Composition Patterns
+
+### Icon Button Group
+
+For toolbar actions:
+
+```astro
+<div style="display: flex; gap: var(--xs); align-items: center;">
+  <IconButton variant="Secondary" size="s" label="Undo">
+    <svg>...</svg>
+  </IconButton>
+  <IconButton variant="Secondary" size="s" label="Redo">
+    <svg>...</svg>
+  </IconButton>
+  <div style="width: 1px; height: 24px; background: var(--border-subtle);"></div>
+  <IconButton variant="Secondary" size="s" label="Settings">
+    <svg>...</svg>
+  </IconButton>
+</div>
+```
+
+### Close Button Pattern
+
+```astro
+<!-- Dialog/Modal close button -->
+<div style="position: absolute; top: var(--spacing-sm); right: var(--spacing-sm);">
+  <IconButton variant="Tertiary" size="s" label="Close dialog">
+    <svg width="14" height="14">...</svg>
+  </IconButton>
+</div>
+```
+
+### Action Group (Destructive)
+
+```astro
+<div style="display: flex; gap: var(--sm); justify-content: flex-end;">
+  <IconButton variant="Secondary" size="m" label="Cancel action">
+    <svg>...</svg>
+  </IconButton>
+  <IconButton variant="Destructive Primary" size="m" label="Confirm delete">
+    <svg>...</svg>
+  </IconButton>
+</div>
+```
+
+---
+
+## Design Tokens in Action
+
+### Token-First Philosophy
+
+Every visual property of the IconButton is controlled by design tokens. This ensures:
+
+- **Global consistency** — All icon buttons use the same scale
+- **Easy theming** — Change tokens to update all instances
+- **Responsive sizing** — Tokens can be responsive via media queries
+- **Maintainability** — Update once, reflect everywhere
+
+### Token Override Example
+
+```css
+/* Custom XXL size variant */
+.icon-button--xxl {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-lg);
+}
+
+.icon-button--xxl svg {
+  width: 32px;
+  height: 32px;
+}
+```
+
+---
+

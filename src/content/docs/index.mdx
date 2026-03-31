@@ -1,40 +1,97 @@
 ---
-title: Welcome to Starlight
-description: Get started building your docs site with Starlight.
-template: splash # Remove or comment out this line to display the site sidebar on this page.
+title: AtomChat Design System
+description: A monorepo design system with W3C DTCG tokens, GSAP animations, and pure CSS.
+template: splash
 hero:
-  tagline: Congrats on setting up a new Starlight project!
-  image:
-    file: ../../assets/houston.webp
+  tagline: A modern, scalable design system built with W3C DTCG tokens, GSAP animations, and pure CSS. Distributed as independent npm packages.
   actions:
-    - text: Example Guide
-      link: /guides/example/
+    - text: Get Started
+      link: /getting-started/introduction/
       icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
+      variant: primary
+    - text: View on GitHub
+      link: https://github.com/karenrebecag/ATOM_DS
       icon: external
       variant: minimal
 ---
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
-## Next steps
+## What is AtomChat DS?
+
+AtomChat Design System is a comprehensive monorepo built with modern web standards. It provides independently publishable npm packages that work together to deliver tokens, styles, and animations for building consistent and scalable interfaces.
 
 <CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
-	</Card>
-	<Card title="Change page layout" icon="document">
-		Delete `template: splash` in `src/content/docs/index.mdx` to display a
-		sidebar on this page.
-	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
-	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
-	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
-	</Card>
+  <Card title="@atomchat.io/tokens" icon="setting">
+    W3C DTCG-compliant tokens in CSS, SCSS, JavaScript, TypeScript, and JSON formats.
+  </Card>
+  <Card title="CDN Ready" icon="rocket">
+    Use instantly via jsDelivr CDN. No build step required.
+  </Card>
+  <Card title="GSAP Animations" icon="star">
+    Professional animation system with full prefers-reduced-motion support.
+  </Card>
+  <Card title="Monorepo Architecture" icon="puzzle">
+    Built with Turborepo + pnpm workspaces for independent versioning and publishing.
+  </Card>
 </CardGrid>
+
+## Three-Layer Token Architecture
+
+AtomChat DS uses a hierarchical token system:
+
+1. **Primitive Layer** — Raw foundation values (`--primitive-blue-500`)
+2. **Semantic Layer** — Intent-driven tokens (`--bg-primary`, `--text-body-m`)
+3. **Component Layer** — Component-specific tokens (`--buttons-bg-primary-enabled`)
+
+## Quick Start
+
+### Via CDN (Fastest)
+
+```html
+<!-- Add to your HTML <head> -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/tokens.css">
+
+<!-- Use tokens in your CSS -->
+<style>
+  .my-component {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    padding: var(--gap-m);
+  }
+</style>
+```
+
+### Via npm
+
+```bash
+pnpm add @atomchat.io/tokens
+```
+
+```css
+@import '@atomchat.io/tokens/build/css/tokens.css';
+```
+
+### Theme Switching
+
+```html
+<html data-theme="light">  <!-- or "dark" -->
+```
+
+## Package Ecosystem
+
+| Package | Purpose | Version |
+|---------|---------|---------|
+| **@atomchat.io/tokens** | Design token source of truth | 1.0.0 |
+| **@atomchat.io/css** | Pre-compiled CSS bundle | Latest |
+| **@atomchat.io/animations** | GSAP animation system | Latest |
+
+## CDN Links
+
+All packages are available via **jsDelivr CDN**:
+
+```
+https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/tokens.css
+```
+
+**npm Organization:** [@atomchat.io](https://www.npmjs.com/org/atomchat.io)

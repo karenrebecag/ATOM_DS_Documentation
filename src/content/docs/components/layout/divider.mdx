@@ -1,0 +1,759 @@
+---
+title: Divider
+description: Semantic horizontal rule separator for visual content organization with customizable opacity and token-driven styling.
+---
+
+## Overview
+
+The Divider component is a semantic `<hr>` element that creates visual separation between content sections. It's lightweight, accessible, and supports custom opacity for flexible styling.
+
+### Key Features
+
+- **Semantic HTML**: Proper `<hr>` element for accessibility
+- **Accessibility**: Marked aria-hidden="true" (decorative)
+- **Custom Opacity**: Adjustable transparency for subtle to prominent dividers
+- **Token-Driven**: Uses design tokens for consistent styling
+- **Lightweight**: Minimal markup, single-element component
+- **Flexible**: Works in any layout context
+
+## Installation
+
+To use the Divider component in your project, install it from the Atom Design System package:
+
+```bash
+npm install @atomchat.io/components-astro
+# or
+pnpm add @atomchat.io/components-astro
+```
+
+Then import and include the CSS tokens:
+
+```astro
+---
+import { Divider } from '@atomchat.io/components-astro'
+import '@atomchat.io/components-astro/dist/tokens.css'
+---
+```
+
+## Anatomy
+
+The Divider component is a simple semantic `<hr>` element:
+
+```html
+<hr class="divider" data-divider aria-hidden="true" />
+
+<!-- With custom opacity -->
+<hr
+  class="divider"
+  style="--divider-opacity: 0.5"
+  data-divider
+  aria-hidden="true"
+/>
+```
+
+**DOM Structure:**
+- `<hr>` - Semantic horizontal rule element
+- `.divider` - Root component class
+- `data-divider` - Component identifier
+- `aria-hidden="true"` - Marks as decorative element
+- `style="--divider-opacity: [value]"` - Applied for custom opacity (0-1)
+
+## Framework Support
+
+Divider is available across multiple frameworks. Choose your preferred implementation:
+
+### Astro
+
+```astro
+---
+import { Divider } from '@atomchat.io/components-astro'
+---
+
+<Divider />
+<Divider opacity={0.5} />
+<Divider opacity={0.2} />
+```
+
+### React
+
+```jsx
+import { Divider } from '@atomchat.io/components-astro/react'
+
+export function Layout() {
+  return (
+    <>
+      <section>Section 1</section>
+      <Divider />
+      <section>Section 2</section>
+    </>
+  )
+}
+```
+
+### Next.js
+
+```tsx
+import { Divider } from '@atomchat.io/components-astro'
+
+export default function Dashboard() {
+  return (
+    <>
+      <h1>Dashboard</h1>
+      <Divider />
+      <div>Main content</div>
+    </>
+  )
+}
+```
+
+### Vue
+
+```vue
+<template>
+  <div>
+    <section>Top section</section>
+    <Divider />
+    <section>Bottom section</section>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { Divider } from '@atomchat.io/components-astro/vue'
+</script>
+```
+
+### Angular
+
+```typescript
+import { DividerComponent } from '@atomchat.io/components-astro/angular'
+
+@Component({
+  selector: 'app-layout',
+  template: `
+    <section>Content section</section>
+    <divider></divider>
+    <section>Another section</section>
+  `,
+  imports: [DividerComponent]
+})
+export class LayoutComponent {}
+```
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `opacity` | `number` | `undefined` | Custom opacity value (0-1, where 0 is transparent and 1 is opaque) |
+| `class` | `string` | `""` | Additional CSS classes |
+
+### Data Attributes
+
+| Attribute | Values | Purpose |
+|-----------|--------|---------|
+| `data-divider` | Present (no value) | Component identifier |
+| `aria-hidden` | "true" | Marks divider as decorative |
+
+## Variants
+
+### Opacity Levels
+
+Different opacity levels for subtle to prominent dividers:
+
+```astro
+---
+import { Divider } from '@atomchat.io/components-astro'
+---
+
+<div class="opacity-examples">
+  <div class="section">
+    <p>Subtle divider (20% opacity)</p>
+    <Divider opacity={0.2} />
+  </div>
+
+  <div class="section">
+    <p>Medium divider (50% opacity)</p>
+    <Divider opacity={0.5} />
+  </div>
+
+  <div class="section">
+    <p>Default divider (100% opacity)</p>
+    <Divider />
+  </div>
+
+  <div class="section">
+    <p>Another subtle (30% opacity)</p>
+    <Divider opacity={0.3} />
+  </div>
+</div>
+
+<style>
+  .opacity-examples {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  .section {
+    padding: var(--spacing-md);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-sm);
+  }
+</style>
+```
+
+## Usage Examples
+
+### Content Sections
+
+```astro
+---
+import { Divider } from '@atomchat.io/components-astro'
+---
+
+<article class="article">
+  <section class="intro">
+    <h2>Introduction</h2>
+    <p>This is the introduction section with important context.</p>
+  </section>
+
+  <Divider />
+
+  <section class="main-content">
+    <h2>Main Content</h2>
+    <p>The primary article content goes here with detailed information.</p>
+  </section>
+
+  <Divider />
+
+  <section class="conclusion">
+    <h2>Conclusion</h2>
+    <p>Summary and key takeaways from the article.</p>
+  </section>
+</article>
+
+<style>
+  .article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  section {
+    padding: var(--spacing-lg) 0;
+  }
+
+  h2 {
+    margin-bottom: var(--spacing-md);
+  }
+</style>
+```
+
+### List Items
+
+```astro
+---
+import { Divider } from '@atomchat.io/components-astro'
+
+const items = [
+  { title: 'Item 1', description: 'First item description' },
+  { title: 'Item 2', description: 'Second item description' },
+  { title: 'Item 3', description: 'Third item description' }
+]
+---
+
+<div class="item-list">
+  {items.map((item, index) => (
+    <>
+      <div class="item">
+        <h3>{item.title}</h3>
+        <p>{item.description}</p>
+      </div>
+      {index < items.length - 1 && <Divider opacity={0.3} />}
+    </>
+  ))}
+</div>
+
+<style>
+  .item-list {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .item {
+    padding: var(--spacing-md) 0;
+  }
+
+  h3 {
+    margin: 0 0 var(--spacing-sm) 0;
+  }
+
+  p {
+    margin: 0;
+    color: var(--fg-secondary);
+  }
+</style>
+```
+
+### Form Sections
+
+```astro
+---
+import { Divider } from '@atomchat.io/components-astro'
+---
+
+<form class="multi-step-form">
+  <fieldset>
+    <legend>Personal Information</legend>
+    <div class="form-group">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" />
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" />
+    </div>
+  </fieldset>
+
+  <Divider opacity={0.2} />
+
+  <fieldset>
+    <legend>Address Information</legend>
+    <div class="form-group">
+      <label for="address">Street Address</label>
+      <input type="text" id="address" />
+    </div>
+    <div class="form-group">
+      <label for="city">City</label>
+      <input type="text" id="city" />
+    </div>
+  </fieldset>
+
+  <Divider opacity={0.2} />
+
+  <fieldset>
+    <legend>Preferences</legend>
+    <div class="form-group">
+      <input type="checkbox" id="newsletter" />
+      <label for="newsletter">Subscribe to newsletter</label>
+    </div>
+  </fieldset>
+
+  <button type="submit">Complete Registration</button>
+</form>
+
+<style>
+  .multi-step-form {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  fieldset {
+    margin-bottom: var(--spacing-lg);
+    border: none;
+    padding: 0;
+  }
+
+  legend {
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .form-group {
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  button {
+    width: 100%;
+    padding: var(--spacing-md);
+    background: var(--fg-accent-brand);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+  }
+</style>
+```
+
+### Card Grid
+
+```astro
+---
+import { Divider } from '@atomchat.io/components-astro'
+
+const cards = [
+  { title: 'Card 1', content: 'Content for card one' },
+  { title: 'Card 2', content: 'Content for card two' },
+  { title: 'Card 3', content: 'Content for card three' }
+]
+---
+
+<div class="cards-container">
+  {cards.map((card, index) => (
+    <>
+      <div class="card">
+        <h3>{card.title}</h3>
+        <p>{card.content}</p>
+      </div>
+      {index < cards.length - 1 && (
+        <Divider opacity={0.2} />
+      )}
+    </>
+  ))}
+</div>
+
+<style>
+  .cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+  }
+
+  .card {
+    padding: var(--spacing-md);
+    background: var(--bg-primary);
+    border: 1px solid var(--stroke-default);
+    border-radius: var(--radius-md);
+  }
+
+  h3 {
+    margin: 0 0 var(--spacing-sm) 0;
+  }
+
+  p {
+    margin: 0;
+    color: var(--fg-secondary);
+  }
+</style>
+```
+
+### Sidebar with Sections
+
+```astro
+---
+import { Divider } from '@atomchat.io/components-astro'
+---
+
+<aside class="sidebar">
+  <nav>
+    <h3>Navigation</h3>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Services</a></li>
+    </ul>
+  </nav>
+
+  <Divider opacity={0.2} />
+
+  <div class="sidebar-section">
+    <h3>Recent Posts</h3>
+    <ul>
+      <li><a href="#">Post Title 1</a></li>
+      <li><a href="#">Post Title 2</a></li>
+      <li><a href="#">Post Title 3</a></li>
+    </ul>
+  </div>
+
+  <Divider opacity={0.2} />
+
+  <div class="sidebar-section">
+    <h3>Categories</h3>
+    <ul>
+      <li><a href="#">Design</a></li>
+      <li><a href="#">Development</a></li>
+      <li><a href="#">Business</a></li>
+    </ul>
+  </div>
+</aside>
+
+<style>
+  .sidebar {
+    width: 250px;
+    padding: var(--spacing-md);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+  }
+
+  h3 {
+    margin: var(--spacing-md) 0 var(--spacing-sm) 0;
+    font-size: var(--font-size-label);
+  }
+
+  h3:first-child {
+    margin-top: 0;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  a {
+    color: var(--fg-accent-brand);
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+</style>
+```
+
+### Vertical Timeline
+
+```astro
+---
+import { Divider } from '@atomchat.io/components-astro'
+
+const events = [
+  { title: 'Project Start', date: 'Jan 1, 2024' },
+  { title: 'Milestone 1', date: 'Feb 15, 2024' },
+  { title: 'Milestone 2', date: 'Apr 1, 2024' },
+  { title: 'Project End', date: 'May 30, 2024' }
+]
+---
+
+<div class="timeline">
+  {events.map((event, index) => (
+    <>
+      <div class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <h4>{event.title}</h4>
+          <p class="date">{event.date}</p>
+        </div>
+      </div>
+      {index < events.length - 1 && (
+        <div class="timeline-divider">
+          <Divider opacity={0.5} />
+        </div>
+      )}
+    </>
+  ))}
+</div>
+
+<style>
+  .timeline {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .timeline-item {
+    display: flex;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) 0;
+    position: relative;
+  }
+
+  .timeline-marker {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--fg-accent-brand);
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  .timeline-content h4 {
+    margin: 0 0 var(--spacing-xs) 0;
+  }
+
+  .date {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--fg-secondary);
+  }
+
+  .timeline-divider {
+    margin-left: 5px;
+    padding-left: var(--spacing-sm);
+  }
+</style>
+```
+
+## Structure Tokens
+
+The Divider component uses these structural tokens:
+
+| Token | Purpose |
+|-------|---------|
+| `--divider-height` | Divider line thickness |
+| `--divider-color` | Default divider color |
+| `--divider-opacity` | Opacity level (customizable) |
+
+## Dependencies
+
+The Divider component has no component dependencies. It uses design tokens for styling:
+
+**Design Tokens Required:**
+- `--divider-height` - Line thickness
+- `--divider-color` - Line color
+- `--divider-opacity` - Opacity value
+
+## Accessibility
+
+### Semantic HTML
+
+- **Uses `<hr>` element**: Proper semantic meaning as a thematic break
+- **aria-hidden="true"**: Marks divider as decorative (not content)
+- **Screen reader impact**: Dividers are hidden from screen readers (appropriate for visual separators)
+
+### Best Practices
+
+- Use dividers for visual organization, not as semantic content separators
+- Don't use multiple dividers in quick succession (confuses screen reader users)
+- Combine with semantic sections (use `<section>` or `<article>`) for proper document structure
+- Consider whether content sections should be announced to screen readers
+
+### Screen Reader Testing
+
+```html
+<!-- Good: Divider between semantic sections -->
+<section>Section 1 content</section>
+<hr aria-hidden="true" />
+<section>Section 2 content</section>
+
+<!-- Good: Divider in visually organized lists -->
+<ul>
+  <li>Item 1</li>
+  <li>Item 2</li>
+</ul>
+<hr aria-hidden="true" />
+<ul>
+  <li>Item 3</li>
+  <li>Item 4</li>
+</ul>
+
+<!-- Avoid: Using dividers as primary content structure -->
+<!-- Instead: Use semantic HTML sections -->
+```
+
+## Composition Patterns
+
+### Content Separator
+
+```astro
+---
+import { Divider } from '@atomchat.io/components-astro'
+---
+
+<article>
+  <h1>Article Title</h1>
+  <p>Introduction paragraph</p>
+
+  <Divider opacity={0.3} />
+
+  <h2>Section 1</h2>
+  <p>Section 1 content</p>
+
+  <Divider opacity={0.3} />
+
+  <h2>Section 2</h2>
+  <p>Section 2 content</p>
+
+  <Divider opacity={0.3} />
+
+  <h2>Conclusion</h2>
+  <p>Conclusion paragraph</p>
+</article>
+
+<style>
+  article {
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+</style>
+```
+
+### Item List Separator
+
+```astro
+---
+import { Divider } from '@atomchat.io/components-astro'
+
+interface ListItem {
+  id: string
+  title: string
+  description: string
+}
+
+const items: ListItem[] = [...]
+---
+
+<div class="list-container">
+  {items.map((item, idx) => (
+    <>
+      <div class="list-item">
+        <h3>{item.title}</h3>
+        <p>{item.description}</p>
+      </div>
+      {idx < items.length - 1 && <Divider opacity={0.2} />}
+    </>
+  ))}
+</div>
+
+<style>
+  .list-item {
+    padding: var(--spacing-md) 0;
+  }
+</style>
+```
+
+## Design Tokens in Action
+
+The Divider component consumes structural and color tokens:
+
+**Visual Properties:**
+```css
+:root {
+  --divider-height: 1px;
+  --divider-color: var(--stroke-default);
+  --divider-opacity: 1;
+}
+
+.divider {
+  height: var(--divider-height);
+  background-color: var(--divider-color);
+  opacity: var(--divider-opacity);
+  border: none;
+  margin: var(--spacing-md) 0;
+}
+```
+
+**Custom Opacity:**
+```css
+.divider {
+  --divider-opacity: 0.5; /* Can be overridden via prop */
+}
+```
+
+## Build with AI
+
+Use this prompt to generate Divider components with Claude Code:
+
+```
+Create a Divider component in [framework].
+Setup: npm install @atomchat.io/components-astro then import "@atomchat.io/components-astro/dist/tokens.css"
+
+Requirements:
+- Accepts opacity prop: number (0-1)
+- Renders semantic <hr> element
+- Uses aria-hidden="true" (decorative element)
+- Uses ONLY these CSS custom properties:
+  * --divider-height (line thickness)
+  * --divider-color (line color)
+  * --divider-opacity (customizable opacity)
+- Implements data-divider attribute
+- No hardcoded values
+- Export as named export
+```

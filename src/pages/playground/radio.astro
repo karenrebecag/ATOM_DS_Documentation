@@ -1,0 +1,296 @@
+---
+import '@atomchat.io/tokens/css';
+import '@atomchat.io/css';
+import { Radio } from '@atomchat.io/components-astro';
+
+const title = 'Radio Playground';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <style>
+    /* Fix: Override opacity tokens */
+    :root {
+      --opacity-0: 0;
+    }
+
+    body {
+      font-family: var(--font-body, system-ui, sans-serif);
+      padding: 2rem;
+      background: var(--bg-default, #fff);
+      color: var(--fg-default, #000);
+    }
+    .playground {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section {
+      margin-bottom: 3rem;
+      padding: 2rem;
+      background: var(--bg-subtle, #f9f9f9);
+      border-radius: 8px;
+    }
+    .section h2 {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+    .section h3 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+    }
+    .radio-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: var(--bg-default, #fff);
+      border-radius: 8px;
+    }
+    .group-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--fg-default, #000);
+      margin-bottom: 0.5rem;
+    }
+    .size-comparison {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+    }
+  </style>
+</head>
+<body>
+  <div class="playground">
+    <h1>Radio Component Playground</h1>
+
+    <div class="section">
+      <h2>All Sizes</h2>
+
+      <h3>Size S (Default)</h3>
+      <div class="radio-group">
+        <span class="group-label">Choose your plan:</span>
+        <Radio name="plan-s" value="free" size="s">
+          Free Plan
+        </Radio>
+        <Radio name="plan-s" value="pro" size="s" checked>
+          Pro Plan
+        </Radio>
+        <Radio name="plan-s" value="enterprise" size="s">
+          Enterprise Plan
+        </Radio>
+      </div>
+
+      <h3>Size M</h3>
+      <div class="radio-group">
+        <span class="group-label">Select shipping method:</span>
+        <Radio name="shipping-m" value="standard" size="m">
+          Standard Shipping
+        </Radio>
+        <Radio name="shipping-m" value="express" size="m" checked>
+          Express Shipping
+        </Radio>
+        <Radio name="shipping-m" value="overnight" size="m">
+          Overnight Shipping
+        </Radio>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>With Supportive Text</h2>
+      <div class="radio-group">
+        <span class="group-label">Choose your subscription:</span>
+        <Radio
+          name="subscription"
+          value="monthly"
+          size="s"
+          supportiveText="Billed monthly, cancel anytime"
+        >
+          Monthly Plan
+        </Radio>
+        <Radio
+          name="subscription"
+          value="yearly"
+          size="s"
+          checked
+          supportiveText="Save 20% with annual billing"
+        >
+          Yearly Plan
+        </Radio>
+        <Radio
+          name="subscription"
+          value="lifetime"
+          size="s"
+          supportiveText="One-time payment, lifetime access"
+        >
+          Lifetime Plan
+        </Radio>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>States</h2>
+
+      <h3>Disabled</h3>
+      <div class="radio-group">
+        <span class="group-label">Payment method:</span>
+        <Radio name="payment-disabled" value="credit" size="s">
+          Credit Card
+        </Radio>
+        <Radio name="payment-disabled" value="paypal" size="s" checked disabled>
+          PayPal (Currently unavailable)
+        </Radio>
+        <Radio name="payment-disabled" value="crypto" size="s" disabled>
+          Cryptocurrency (Coming soon)
+        </Radio>
+      </div>
+
+      <h3>Error State</h3>
+      <div class="radio-group">
+        <span class="group-label">Select delivery option:</span>
+        <Radio
+          name="delivery-error"
+          value="pickup"
+          size="s"
+          supportiveText="Pick up at our store"
+        >
+          Store Pickup
+        </Radio>
+        <Radio
+          name="delivery-error"
+          value="home"
+          size="s"
+          supportiveText="Deliver to home address"
+          error
+          errorText="This option is not available in your area"
+        >
+          Home Delivery
+        </Radio>
+        <Radio
+          name="delivery-error"
+          value="locker"
+          size="s"
+          supportiveText="Deliver to nearby locker"
+        >
+          Locker Delivery
+        </Radio>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Simple Radio (No Label)</h2>
+      <p style="margin-bottom: 1rem; color: var(--fg-muted, #666); font-size: 0.875rem;">
+        Radio buttons without labels render as standalone controls
+      </p>
+      <div class="size-comparison">
+        <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
+          <Radio name="simple-s" value="1" size="s" />
+          <span style="font-size: 0.75rem; color: var(--fg-muted);">Size S</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
+          <Radio name="simple-m" value="1" size="m" />
+          <span style="font-size: 0.75rem; color: var(--fg-muted);">Size M</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
+          <Radio name="simple-checked" value="1" size="s" checked />
+          <span style="font-size: 0.75rem; color: var(--fg-muted);">Checked</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
+          <Radio name="simple-disabled" value="1" size="s" disabled />
+          <span style="font-size: 0.75rem; color: var(--fg-muted);">Disabled</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Common Use Cases</h2>
+
+      <h3>Survey Question</h3>
+      <div class="radio-group">
+        <span class="group-label">How satisfied are you with our service?</span>
+        <Radio name="satisfaction" value="very-satisfied" size="s">
+          Very Satisfied
+        </Radio>
+        <Radio name="satisfaction" value="satisfied" size="s">
+          Satisfied
+        </Radio>
+        <Radio name="satisfaction" value="neutral" size="s">
+          Neutral
+        </Radio>
+        <Radio name="satisfaction" value="dissatisfied" size="s">
+          Dissatisfied
+        </Radio>
+        <Radio name="satisfaction" value="very-dissatisfied" size="s">
+          Very Dissatisfied
+        </Radio>
+      </div>
+
+      <h3>Settings Panel</h3>
+      <div class="radio-group">
+        <span class="group-label">Theme preference:</span>
+        <Radio
+          name="theme"
+          value="light"
+          size="s"
+          supportiveText="Light mode with bright backgrounds"
+        >
+          Light Theme
+        </Radio>
+        <Radio
+          name="theme"
+          value="dark"
+          size="s"
+          checked
+          supportiveText="Dark mode for reduced eye strain"
+        >
+          Dark Theme
+        </Radio>
+        <Radio
+          name="theme"
+          value="auto"
+          size="s"
+          supportiveText="Automatically match system preferences"
+        >
+          Auto Theme
+        </Radio>
+      </div>
+
+      <h3>Checkout Flow</h3>
+      <div class="radio-group">
+        <span class="group-label">Billing address:</span>
+        <Radio
+          name="billing"
+          value="same"
+          size="m"
+          checked
+          supportiveText="Use the same address as shipping"
+        >
+          Same as shipping address
+        </Radio>
+        <Radio
+          name="billing"
+          value="different"
+          size="m"
+          supportiveText="Enter a different billing address"
+        >
+          Use a different address
+        </Radio>
+      </div>
+    </div>
+
+    <p style="margin-top: 3rem; text-align: center; color: var(--fg-muted, #666);">
+      <a href="#" onclick="history.back(); return false;" style="color: var(--fg-link, #0066cc); cursor: pointer;">← Back to Documentation</a>
+    </p>
+  </div>
+</body>
+</html>

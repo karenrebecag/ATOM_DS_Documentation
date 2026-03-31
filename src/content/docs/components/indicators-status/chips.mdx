@@ -1,0 +1,880 @@
+---
+title: Chips
+description: Interactive filterable tags for selections, filters, and categorization.
+---
+
+## Overview
+
+Chips are compact, interactive elements that represent selections, filters, or categories. They function as toggleable buttons with visual feedback for selected and disabled states. Ideal for filter bars, tag clouds, category selection, and attribute displays.
+
+**Key Features:**
+- 5 size variants (xs, s, m, l, xl) for flexible layouts
+- Toggle selection states with visual feedback
+- Disabled state support
+- Leading and trailing icon slots for enhanced semantics
+- Compact and self-contained design
+- Semantic button HTML with type="button"
+- Data attributes for animations and styling
+- Full keyboard accessibility and focus management
+- Fully token-driven styling
+- Multi-select or single-select patterns
+
+---
+
+## Demo
+
+:::tip[Interactive Playground]
+**[Open Chip Playground →](/playground/chip)**
+
+View all Chip sizes, states, dismissible variants, and icon arrangements with live interactions.
+:::
+
+---
+
+## Installation
+
+```bash
+# Install component package
+pnpm add @atomchat.io/components-astro
+
+# Install required dependencies
+pnpm add @atomchat.io/css @atomchat.io/tokens
+```
+
+**CSS Import (required):**
+```astro
+---
+// In your layout or page
+import '@atomchat.io/css';
+---
+```
+
+---
+
+## Anatomy
+
+The Chip component is a flexible, icon-aware button element:
+
+```
+┌────────────────────────────────┐
+│  <button> .chip                │  ← Button wrapper
+│  ┌──────────┐ ┌──────┐ ┌────┐ │
+│  │ <span>   │ │      │ │    │ │
+│  │ icon-    │ │label │ │icon│ │
+│  │ start    │ │      │ │-end│ │
+│  └──────────┘ └──────┘ └────┘ │
+└────────────────────────────────┘
+```
+
+**DOM Structure (Label only):**
+```html
+<button
+  class="chip"
+  type="button"
+  data-chip
+  data-size="m"
+  data-selected="false"
+>
+  <span class="chip__label" data-chip-label>
+    Filter Option
+  </span>
+</button>
+```
+
+**DOM Structure (With icons):**
+```html
+<button
+  class="chip"
+  type="button"
+  data-chip
+  data-size="m"
+  data-selected="true"
+>
+  <span class="chip__icon" data-chip-icon>
+    <svg><!-- Leading icon --></svg>
+  </span>
+  <span class="chip__label" data-chip-label>
+    Selected Filter
+  </span>
+  <span class="chip__icon" data-chip-icon>
+    <svg><!-- Trailing icon --></svg>
+  </span>
+</button>
+```
+
+**DOM Structure (Disabled):**
+```html
+<button
+  class="chip"
+  type="button"
+  data-chip
+  data-size="m"
+  data-selected="false"
+  disabled
+>
+  <span class="chip__label" data-chip-label>
+    Unavailable Filter
+  </span>
+</button>
+```
+
+---
+
+## Framework Support
+
+The Chip component is available for multiple frameworks with shared design tokens, styles, and behavior.
+
+import FrameworkSwitcher from '../../../../components/FrameworkSwitcher.astro';
+
+<FrameworkSwitcher
+  frameworks={[
+    { name: 'astro', label: 'Astro', icon: 'https://svgl.app/library/astro-icon-dark.svg' },
+    { name: 'react', label: 'React', icon: 'https://svgl.app/library/react_dark.svg' },
+    { name: 'nextjs', label: 'Next.js', icon: 'https://svgl.app/library/nextjs_icon_dark.svg' },
+    { name: 'vue', label: 'Vue', icon: 'https://svgl.app/library/vue.svg' },
+    { name: 'angular', label: 'Angular', icon: 'https://svgl.app/library/angular.svg' },
+  ]}
+>
+  <div data-framework="astro" data-active="true">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-astro @atomchat.io/css
+```
+
+### Usage
+
+```astro
+---
+import { Chip } from '@atomchat.io/components-astro';
+import '@atomchat.io/css';
+---
+
+<Chip size="m">Default</Chip>
+
+<Chip size="m" selected>Selected</Chip>
+
+<Chip size="m" disabled>Disabled</Chip>
+
+<Chip size="m">
+  <svg slot="icon-start" viewBox="0 0 24 24">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+  </svg>
+  With Icon
+</Chip>
+```
+
+  </div>
+
+  <div data-framework="react">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+import { Chip } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+import { useState } from 'react';
+
+function Example() {
+  const [selected, setSelected] = useState(false);
+
+  return (
+    <>
+      <Chip size="m">Default</Chip>
+
+      <Chip size="m" selected={selected} onClick={() => setSelected(!selected)}>
+        Selected
+      </Chip>
+
+      <Chip size="m" disabled>Disabled</Chip>
+
+      <Chip size="m">
+        <svg slot="icon-start" viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+        </svg>
+        With Icon
+      </Chip>
+    </>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="nextjs">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+'use client';
+
+import { Chip } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+import { useState } from 'react';
+
+export default function Example() {
+  const [selected, setSelected] = useState(false);
+
+  return (
+    <>
+      <Chip size="m">Default</Chip>
+
+      <Chip size="m" selected={selected} onClick={() => setSelected(!selected)}>
+        Selected
+      </Chip>
+
+      <Chip size="m" disabled>Disabled</Chip>
+
+      <Chip size="m">
+        <svg slot="icon-start" viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+        </svg>
+        With Icon
+      </Chip>
+    </>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="vue">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-vue @atomchat.io/css
+```
+
+### Usage
+
+```vue
+<script setup>
+import { Chip } from '@atomchat.io/components-vue';
+import '@atomchat.io/css';
+import { ref } from 'vue';
+
+const isSelected = ref(false);
+</script>
+
+<template>
+  <Chip size="m">Default</Chip>
+
+  <Chip size="m" :selected="isSelected" @click="isSelected = !isSelected">
+    Selected
+  </Chip>
+
+  <Chip size="m" disabled>Disabled</Chip>
+
+  <Chip size="m">
+    <svg slot="icon-start" viewBox="0 0 24 24">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+    </svg>
+    With Icon
+  </Chip>
+</template>
+```
+
+  </div>
+
+  <div data-framework="angular">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-angular @atomchat.io/css
+```
+
+### Usage
+
+```typescript
+import { ChipComponent } from '@atomchat.io/components-angular';
+import '@atomchat.io/css';
+import { Component, signal } from '@angular/core';
+
+@Component({
+  imports: [ChipComponent],
+  template: `
+    <atom-chip size="m">Default</atom-chip>
+
+    <atom-chip
+      size="m"
+      [selected]="isSelected()"
+      (click)="isSelected.set(!isSelected())"
+    >
+      Selected
+    </atom-chip>
+
+    <atom-chip size="m" disabled>Disabled</atom-chip>
+
+    <atom-chip size="m">
+      <svg slot="icon-start" viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+      </svg>
+      With Icon
+    </atom-chip>
+  `
+})
+export class ExampleComponent {
+  isSelected = signal(false);
+}
+```
+
+  </div>
+</FrameworkSwitcher>
+
+---
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `"xs" \| "s" \| "m" \| "l" \| "xl"` | `"m"` | Chip size variant |
+| `selected` | `boolean?` | `false` | Selected state toggle |
+| `disabled` | `boolean?` | `false` | Disables interaction |
+| `class` | `string?` | — | Additional CSS classes |
+
+### Slots
+
+| Slot | Description |
+|------|-------------|
+| `icon-start` | Leading icon (optional) |
+| `default` | Chip label text (required) |
+| `icon-end` | Trailing icon (optional) |
+
+**Slot Usage:**
+```astro
+<Chip size="m" selected>
+  <svg slot="icon-start"><!-- Icon --></svg>
+  Filter Label
+  <svg slot="icon-end"><!-- Icon --></svg>
+</Chip>
+```
+
+---
+
+## Variants
+
+### Size Variants
+
+| Size | Padding | Font Size | Use Case |
+|------|---------|-----------|----------|
+| **xs** | `var(--chip-padding-xs)` | `11px` | Dense layouts, mobile filters |
+| **s** | `var(--chip-padding-s)` | `12px` | Compact UI, secondary filters |
+| **m** | `var(--chip-padding-m)` | `14px` | Standard chip, default UI |
+| **l** | `var(--chip-padding-l)` | `16px` | Prominent filters, large areas |
+| **xl** | `var(--chip-padding-xl)` | `18px` | Hero sections, feature highlight |
+
+**Size Tokens:**
+```css
+--chip-size-xs: 28px;      /* Height for xs */
+--chip-size-s: 32px;       /* Height for s */
+--chip-size-m: 36px;       /* Height for m */
+--chip-size-l: 40px;       /* Height for l */
+--chip-size-xl: 44px;      /* Height for xl */
+```
+
+### State Variants
+
+| State | Behavior | Visual Change |
+|-------|----------|---------------|
+| **Unselected** | Interactive | Default background |
+| **Selected** | Active/highlighted | Different background + accent color |
+| **Hover** | On mouse over | Subtle highlight transition |
+| **Focus** | On keyboard focus | Focus ring outline |
+| **Disabled** | Non-interactive | Gray background + `cursor: not-allowed` |
+| **Disabled Selected** | Non-interactive | Grayed selected state |
+
+---
+
+## Usage Examples
+
+### Basic Chip
+
+```astro
+---
+import { Chip } from '@atomchat.io/components-astro';
+---
+
+<Chip size="m">Default Chip</Chip>
+```
+
+### Filter Bar
+
+```astro
+<div class="filter-bar">
+  <Chip size="m">All</Chip>
+  <Chip size="m">Electronics</Chip>
+  <Chip size="m">Books</Chip>
+  <Chip size="m">Clothing</Chip>
+</div>
+```
+
+### Multi-Select Filters
+
+```astro
+<fieldset>
+  <legend>Select categories</legend>
+  <Chip size="m" selected>Category 1</Chip>
+  <Chip size="m">Category 2</Chip>
+  <Chip size="m" selected>Category 3</Chip>
+</fieldset>
+```
+
+### With Leading Icon
+
+```astro
+<Chip size="m">
+  <svg slot="icon-start" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+  </svg>
+  Add Tag
+</Chip>
+```
+
+### With Trailing Icon (Close)
+
+```astro
+<Chip size="m" selected>
+  Python
+  <svg slot="icon-end" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+  </svg>
+</Chip>
+```
+
+### With Both Icons
+
+```astro
+<Chip size="m">
+  <svg slot="icon-start" viewBox="0 0 24 24">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+  </svg>
+  Verified User
+  <svg slot="icon-end" viewBox="0 0 24 24">
+    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+  </svg>
+</Chip>
+```
+
+### Disabled Chip
+
+```astro
+<Chip size="m" disabled>
+  Unavailable Option
+</Chip>
+```
+
+### Size Variants
+
+```astro
+<div style="display: flex; gap: var(--s); align-items: center;">
+  <Chip size="xs">XS</Chip>
+  <Chip size="s">Small</Chip>
+  <Chip size="m">Medium</Chip>
+  <Chip size="l">Large</Chip>
+  <Chip size="xl">XL</Chip>
+</div>
+```
+
+### Tag Cloud
+
+```astro
+<div class="tag-cloud">
+  <Chip size="s">JavaScript</Chip>
+  <Chip size="s" selected>React</Chip>
+  <Chip size="s">TypeScript</Chip>
+  <Chip size="s" selected>CSS</Chip>
+  <Chip size="s">Astro</Chip>
+  <Chip size="s" selected>Web Dev</Chip>
+</div>
+```
+
+---
+
+## Structure Tokens
+
+### Size Tokens
+
+```css
+/* Chip heights by size */
+--chip-size-xs: 28px;
+--chip-size-s: 32px;
+--chip-size-m: 36px;
+--chip-size-l: 40px;
+--chip-size-xl: 44px;
+
+/* Padding for different sizes */
+--chip-padding-xs: 4px 8px;
+--chip-padding-s: 4px 12px;
+--chip-padding-m: 6px 16px;
+--chip-padding-l: 8px 20px;
+--chip-padding-xl: 10px 24px;
+
+/* Border radius */
+--chip-border-radius: 16px;        /* Pill-shaped */
+```
+
+### Icon Spacing
+
+```css
+/* Space between icon and label */
+--chip-icon-gap: 6px;
+
+/* Icon size (may vary by size) */
+--chip-icon-size-xs: 14px;
+--chip-icon-size-s: 16px;
+--chip-icon-size-m: 18px;
+--chip-icon-size-l: 20px;
+--chip-icon-size-xl: 22px;
+```
+
+### Typography
+
+```css
+--chip-font-size-xs: 11px;
+--chip-font-size-s: 12px;
+--chip-font-size-m: 14px;
+--chip-font-size-l: 16px;
+--chip-font-size-xl: 18px;
+
+--chip-font-weight: 500;           /* Medium weight */
+--chip-line-height: 1.2;           /* Tight line height */
+```
+
+---
+
+## Dependencies
+
+### Required Packages
+- `@atomchat.io/css` — Component styles and tokens
+- `@atomchat.io/tokens` — Design token definitions
+
+### Semantic Tokens Used
+
+**Background:**
+```css
+--chip-bg-enabled           /* Unselected background */
+--chip-bg-selected          /* Selected background */
+--chip-bg-hovered           /* Hover state background */
+--chip-bg-focused           /* Focus state background */
+--chip-bg-disabled          /* Disabled background */
+```
+
+**Foreground:**
+```css
+--chip-fg-enabled           /* Unselected text color */
+--chip-fg-selected          /* Selected text color */
+--chip-fg-disabled          /* Disabled text color */
+--chip-fg-icon              /* Icon color */
+```
+
+**Border:**
+```css
+--chip-border-enabled       /* Unselected border */
+--chip-border-focused       /* Focus ring border */
+--chip-border-disabled      /* Disabled border */
+```
+
+---
+
+## Animations
+
+The Chip component supports optional animation effects through CSS transitions.
+
+### Selection Animation
+
+**What it does:**
+When a chip is selected or deselected, the background color and scale animate smoothly.
+
+**CSS-based Animation:**
+
+```css
+.chip {
+  transition: all 200ms ease-out;
+}
+
+.chip[data-selected="true"] {
+  background-color: var(--chip-bg-selected);
+  color: var(--chip-fg-selected);
+}
+
+.chip:hover {
+  transform: scale(1.05);
+}
+
+.chip:active {
+  transform: scale(0.95);
+}
+```
+
+### GSAP Timeline (optional)
+
+```typescript
+// Selection animation
+gsap.to('[data-chip]', {
+  backgroundColor: isSelected ? '#4f46e5' : '#e5e7eb',
+  color: isSelected ? '#ffffff' : '#000000',
+  duration: 0.2,
+  ease: 'power2.out'
+});
+```
+
+### Initialization
+
+**Global initialization (optional):**
+
+```astro
+<!-- Astro Layout.astro -->
+<script>
+  import { initAllAnimations } from '@atomchat.io/animations';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initAllAnimations();
+  });
+
+  document.addEventListener('astro:page-load', () => {
+    initAllAnimations();
+  });
+</script>
+```
+
+**Respects Motion Preferences:**
+```css
+@media (prefers-reduced-motion: reduce) {
+  .chip {
+    transition-duration: 1s;
+  }
+}
+```
+
+---
+
+## Accessibility
+
+### Semantic HTML
+
+The Chip component uses semantic `<button>` elements for proper keyboard interaction and screen reader support:
+
+```html
+<button
+  class="chip"
+  type="button"
+  data-chip
+  data-size="m"
+  data-selected="false"
+>
+  <span class="chip__label">Filter Label</span>
+</button>
+```
+
+### Keyboard Navigation
+
+- **Tab/Shift+Tab:** Navigate between chips
+- **Enter/Space:** Toggle chip selection
+- **Disabled chips:** Not focusable, skipped in tab order
+
+### Screen Reader Support
+
+- Button semantic automatically announces as "button"
+- Label text is read as button content
+- Selected state conveyed through color/styling (ensure sufficient contrast)
+- Icons should have appropriate alt text or aria-hidden
+
+### Best Practices
+
+**Provide clear labels:**
+```astro
+<Chip size="m">Filter by Category</Chip>
+```
+
+**Use aria-label for icon-only chips:**
+```astro
+<Chip size="m" aria-label="Remove filter">
+  <svg slot="icon-end"><!-- Close icon --></svg>
+</Chip>
+```
+
+**Group related chips:**
+```astro
+<fieldset>
+  <legend>Filter by type</legend>
+  <Chip size="m">Option 1</Chip>
+  <Chip size="m">Option 2</Chip>
+  <Chip size="m">Option 3</Chip>
+</fieldset>
+```
+
+**Don't use decorative chips for interaction:**
+```astro
+<!-- Bad: Chip without purpose -->
+<Chip size="m">View more</Chip>
+
+<!-- Good: Use Button component instead -->
+<button class="button">View more</button>
+```
+
+---
+
+## Composition Patterns
+
+### Filter Bar
+
+```astro
+<nav class="filter-bar" aria-label="Product filters">
+  <Chip size="m" selected>All Products</Chip>
+  <Chip size="m">Electronics</Chip>
+  <Chip size="m">Clothing</Chip>
+  <Chip size="m">Books</Chip>
+  <Chip size="m">Home & Garden</Chip>
+</nav>
+```
+
+### Tag Selection
+
+```astro
+<fieldset>
+  <legend>Select tags for your post</legend>
+  <div class="chip-group">
+    <Chip size="m" selected>JavaScript</Chip>
+    <Chip size="m">React</Chip>
+    <Chip size="m" selected>Web Development</Chip>
+    <Chip size="m">Frontend</Chip>
+    <Chip size="m" selected>CSS</Chip>
+  </div>
+</fieldset>
+```
+
+### Skill Selection with Icons
+
+```astro
+<fieldset>
+  <legend>Select your skills</legend>
+  <div class="skill-chips">
+    <Chip size="m" selected>
+      <svg slot="icon-start"><!-- Checkmark --></svg>
+      JavaScript
+      <svg slot="icon-end"><!-- X --></svg>
+    </Chip>
+
+    <Chip size="m">
+      <svg slot="icon-start"><!-- Plus --></svg>
+      Python
+    </Chip>
+
+    <Chip size="m" selected>
+      <svg slot="icon-start"><!-- Checkmark --></svg>
+      React
+      <svg slot="icon-end"><!-- X --></svg>
+    </Chip>
+  </div>
+</fieldset>
+```
+
+### Category Browser
+
+```astro
+<section>
+  <h2>Browse by Category</h2>
+  <div class="category-chips">
+    <Chip size="l" selected>
+      <svg slot="icon-start"><!-- Category icon --></svg>
+      Electronics
+    </Chip>
+
+    <Chip size="l">
+      <svg slot="icon-start"><!-- Category icon --></svg>
+      Clothing
+    </Chip>
+
+    <Chip size="l">
+      <svg slot="icon-start"><!-- Category icon --></svg>
+      Books
+    </Chip>
+
+    <Chip size="l" disabled>
+      <svg slot="icon-start"><!-- Category icon --></svg>
+      Seasonal (Coming Soon)
+    </Chip>
+  </div>
+</section>
+```
+
+### Remove Tags (with close icon)
+
+```astro
+<div class="selected-tags">
+  <span>Selected tags:</span>
+  <Chip size="s" selected>
+    Python
+    <svg slot="icon-end" role="button" aria-label="Remove Python tag">
+      <!-- X icon -->
+    </svg>
+  </Chip>
+  <Chip size="s" selected>
+    JavaScript
+    <svg slot="icon-end" role="button" aria-label="Remove JavaScript tag">
+      <!-- X icon -->
+    </svg>
+  </Chip>
+</div>
+```
+
+---
+
+## Design Tokens in Action
+
+### Token-First Philosophy
+
+Every visual property of the Chip is controlled by design tokens:
+
+- **Global consistency** — All chips use the same sizing and color scale
+- **Easy theming** — Switch themes by updating token values
+- **State management** — Selected/hover/focus/disabled states via tokens
+- **Maintainability** — Update once, reflect everywhere
+
+### Token Override Example
+
+```css
+/* Premium badge chips */
+.chip--premium {
+  --chip-bg-enabled: var(--primitive-gold-100);
+  --chip-bg-selected: var(--primitive-gold-600);
+  --chip-border-enabled: var(--primitive-gold-300);
+  --chip-fg-selected: var(--primitive-neutral-0);
+}
+
+.chip--premium:hover {
+  --chip-bg-enabled: var(--primitive-gold-200);
+}
+```
+
+**Usage:**
+```astro
+<Chip size="m" class="chip--premium">Premium Member</Chip>
+```
+
+---
+
+## Build this Component with AI
+
+Use this pre-built prompt to generate a complete showcase of this component in your preferred framework. The AI will create a working filter interface with all chip patterns and proper token usage.
+
+**What you get:**
+- Complete component setup with proper imports
+- All size variants demonstrated
+- Selected and disabled states
+- Icon usage (leading, trailing, both)
+- Multi-select filter patterns
+- Tag cloud examples
+- Token-first styling (no hardcoded values)

@@ -1,0 +1,799 @@
+---
+title: Label Text
+description: Semantic form label component with required indicator, multiple sizes, and accessibility features for associating with form inputs.
+---
+
+## Overview
+
+The LabelText component renders semantic HTML `<label>` elements for form inputs. It supports required indicators, multiple sizes, font weights, and states with proper accessibility.
+
+### Key Features
+
+- **Semantic HTML**: Proper `<label>` element for form association
+- **Input Association**: `for` attribute automatically links to input elements
+- **Required Indicator**: Optional asterisk (*) for required fields
+- **3 Size Options**: Label, label-small, and footnote sizes
+- **3 Weight Options**: Regular, medium, and bold font weights
+- **Disabled State**: Visual indication for disabled form fields
+- **Custom Colors**: Support for CSS color values or inherit
+- **Accessibility**: Proper aria-hidden for decorative asterisk
+- **Lightweight**: Simple, single-element component
+
+## Installation
+
+To use the LabelText component in your project, install it from the Atom Design System package:
+
+```bash
+npm install @atomchat.io/components-astro
+# or
+pnpm add @atomchat.io/components-astro
+```
+
+Then import and include the CSS tokens:
+
+```astro
+---
+import { LabelText } from '@atomchat.io/components-astro'
+import '@atomchat.io/components-astro/dist/tokens.css'
+---
+```
+
+## Anatomy
+
+The LabelText component renders a semantic `<label>` element with optional required indicator:
+
+```html
+<label class="label-text label-text--label label-text--medium" for="email" data-text>
+  Email address
+  <span class="label-text__required" aria-hidden="true"> *</span>
+</label>
+```
+
+**DOM Structure:**
+- `<label>` - Semantic form label element
+- `.label-text` - Root component class
+- `.label-text--{size}` - Size modifier (label, label-small, footnote)
+- `.label-text--{weight}` - Font weight modifier (regular, medium, bold)
+- `.label-text--disabled` - Applied when disabled prop is true
+- `.label-text__required` - Required indicator asterisk (aria-hidden="true")
+- `for` attribute - Associated input ID for proper form linking
+- `data-text` - Component identifier
+- `style="color: [value]"` - Applied for custom colors
+
+## Framework Support
+
+LabelText is available across multiple frameworks. Choose your preferred implementation:
+
+### Astro
+
+```astro
+---
+import { LabelText } from '@atomchat.io/components-astro'
+---
+
+<LabelText for="email">Email address</LabelText>
+<LabelText for="password" required>Password</LabelText>
+<LabelText for="bio" size="label-small">Bio (optional)</LabelText>
+<LabelText for="terms" disabled>Disabled label</LabelText>
+```
+
+### React
+
+```jsx
+import { LabelText } from '@atomchat.io/components-astro/react'
+
+export function LoginForm() {
+  return (
+    <>
+      <LabelText for="email" required>Email</LabelText>
+      <input type="email" id="email" />
+
+      <LabelText for="password" required>Password</LabelText>
+      <input type="password" id="password" />
+    </>
+  )
+}
+```
+
+### Next.js
+
+```tsx
+import { LabelText } from '@atomchat.io/components-astro'
+
+export default function Profile() {
+  return (
+    <>
+      <LabelText for="name" required>Full Name</LabelText>
+      <input type="text" id="name" />
+    </>
+  )
+}
+```
+
+### Vue
+
+```vue
+<template>
+  <div class="form-group">
+    <LabelText for="username" required>Username</LabelText>
+    <input type="text" id="username" />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { LabelText } from '@atomchat.io/components-astro/vue'
+</script>
+```
+
+### Angular
+
+```typescript
+import { LabelTextComponent } from '@atomchat.io/components-astro/angular'
+
+@Component({
+  selector: 'app-form',
+  template: `
+    <form>
+      <label-text for="email" required>Email Address</label-text>
+      <input type="email" id="email" />
+    </form>
+  `,
+  imports: [LabelTextComponent]
+})
+export class FormComponent {}
+```
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `for` | `string` | `undefined` | ID of associated input element (recommended) |
+| `size` | `"label" \| "label-small" \| "footnote"` | `"label"` | Text size for different contexts |
+| `weight` | `"regular" \| "medium" \| "bold"` | `"medium"` | Font weight emphasis |
+| `required` | `boolean` | `false` | Show required asterisk indicator |
+| `disabled` | `boolean` | `false` | Disable label appearance |
+| `color` | `string` | `"inherit"` | Text color (CSS value or inherit) |
+| `class` | `string` | `""` | Additional CSS classes |
+
+### Slots
+
+| Slot | Description |
+|------|-------------|
+| `default` | Label text content (required) |
+
+### Data Attributes
+
+| Attribute | Values | Purpose |
+|-----------|--------|---------|
+| `data-text` | Present (no value) | Component identifier |
+
+## Variants
+
+### By Size
+
+Three size options for different form contexts:
+
+**Size Scale:**
+- **label** - Standard form label (default)
+- **label-small** - Compact label for condensed layouts
+- **footnote** - Extra small label for minimal spaces
+
+```astro
+---
+import { LabelText } from '@atomchat.io/components-astro'
+---
+
+<div class="size-examples">
+  <div class="form-group">
+    <LabelText for="field1" size="label">Standard label</LabelText>
+    <input type="text" id="field1" />
+  </div>
+
+  <div class="form-group">
+    <LabelText for="field2" size="label-small">Small label</LabelText>
+    <input type="text" id="field2" />
+  </div>
+
+  <div class="form-group">
+    <LabelText for="field3" size="footnote">Footnote label</LabelText>
+    <input type="text" id="field3" />
+  </div>
+</div>
+
+<style>
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-md);
+  }
+</style>
+```
+
+### By Weight
+
+Font weight options for emphasis:
+
+```astro
+---
+import { LabelText } from '@atomchat.io/components-astro'
+---
+
+<div class="weight-variants">
+  <LabelText for="f1" weight="regular">Regular weight</LabelText>
+  <LabelText for="f2" weight="medium">Medium weight (default)</LabelText>
+  <LabelText for="f3" weight="bold">Bold weight</LabelText>
+</div>
+
+<style>
+  .weight-variants {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+</style>
+```
+
+### Required Indicator
+
+Optional required asterisk for validation:
+
+```astro
+---
+import { LabelText } from '@atomchat.io/components-astro'
+---
+
+<div class="required-examples">
+  <div class="form-group">
+    <LabelText for="email" required>Email address</LabelText>
+    <input type="email" id="email" required />
+  </div>
+
+  <div class="form-group">
+    <LabelText for="bio">Bio (optional)</LabelText>
+    <textarea id="bio"></textarea>
+  </div>
+</div>
+
+<style>
+  .form-group {
+    margin-bottom: var(--spacing-md);
+  }
+</style>
+```
+
+### Disabled State
+
+Visual indication for disabled fields:
+
+```astro
+---
+import { LabelText } from '@atomchat.io/components-astro'
+---
+
+<div class="disabled-example">
+  <LabelText for="disabled-field" disabled>Disabled field</LabelText>
+  <input type="text" id="disabled-field" disabled />
+</div>
+```
+
+## Usage Examples
+
+### Basic Form
+
+```astro
+---
+import { LabelText } from '@atomchat.io/components-astro'
+---
+
+<form class="login-form">
+  <div class="form-group">
+    <LabelText for="email" required>Email Address</LabelText>
+    <input
+      type="email"
+      id="email"
+      placeholder="name@example.com"
+      required
+    />
+  </div>
+
+  <div class="form-group">
+    <LabelText for="password" required>Password</LabelText>
+    <input
+      type="password"
+      id="password"
+      placeholder="••••••••"
+      required
+    />
+  </div>
+
+  <button type="submit">Sign In</button>
+</form>
+
+<style>
+  .login-form {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .form-group {
+    margin-bottom: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  input {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--stroke-default);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-md);
+  }
+
+  button {
+    width: 100%;
+    padding: var(--spacing-md);
+    background: var(--fg-accent-brand);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+  }
+</style>
+```
+
+### Registration Form with Validation
+
+```astro
+---
+import { LabelText } from '@atomchat.io/components-astro'
+---
+
+<form class="registration-form">
+  <fieldset>
+    <legend>Personal Information</legend>
+
+    <div class="form-group">
+      <LabelText for="first-name" required>First Name</LabelText>
+      <input type="text" id="first-name" required />
+    </div>
+
+    <div class="form-group">
+      <LabelText for="last-name" required>Last Name</LabelText>
+      <input type="text" id="last-name" required />
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Contact Information</legend>
+
+    <div class="form-group">
+      <LabelText for="email" required>Email</LabelText>
+      <input type="email" id="email" required />
+    </div>
+
+    <div class="form-group">
+      <LabelText for="phone">Phone (optional)</LabelText>
+      <input type="tel" id="phone" />
+    </div>
+  </fieldset>
+
+  <button type="submit">Create Account</button>
+</form>
+
+<style>
+  .registration-form {
+    max-width: 500px;
+  }
+
+  fieldset {
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md);
+    border: 1px solid var(--stroke-default);
+    border-radius: var(--radius-md);
+  }
+
+  legend {
+    padding: 0 var(--spacing-sm);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .form-group {
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  input {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--stroke-default);
+    border-radius: var(--radius-sm);
+  }
+
+  button {
+    width: 100%;
+    padding: var(--spacing-md);
+    background: var(--fg-accent-brand);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+</style>
+```
+
+### Inline Form Group
+
+```astro
+---
+import { LabelText } from '@atomchat.io/components-astro'
+---
+
+<form class="inline-form">
+  <div class="form-row">
+    <div class="form-group">
+      <LabelText for="city">City</LabelText>
+      <input type="text" id="city" />
+    </div>
+
+    <div class="form-group">
+      <LabelText for="state">State</LabelText>
+      <input type="text" id="state" />
+    </div>
+
+    <div class="form-group">
+      <LabelText for="zip">ZIP Code</LabelText>
+      <input type="text" id="zip" />
+    </div>
+  </div>
+</form>
+
+<style>
+  .form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--spacing-md);
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  input {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--stroke-default);
+    border-radius: var(--radius-sm);
+  }
+</style>
+```
+
+### Checkbox Group with Labels
+
+```astro
+---
+import { LabelText } from '@atomchat.io/components-astro'
+import { Checkbox } from '@atomchat.io/components-astro'
+---
+
+<fieldset class="checkbox-group">
+  <legend>
+    <LabelText weight="bold">Preferences</LabelText>
+  </legend>
+
+  <div class="checkbox-item">
+    <Checkbox id="opt1" />
+    <LabelText for="opt1" size="label-small">Email notifications</LabelText>
+  </div>
+
+  <div class="checkbox-item">
+    <Checkbox id="opt2" />
+    <LabelText for="opt2" size="label-small">SMS alerts</LabelText>
+  </div>
+
+  <div class="checkbox-item">
+    <Checkbox id="opt3" />
+    <LabelText for="opt3" size="label-small">Weekly digest</LabelText>
+  </div>
+</fieldset>
+
+<style>
+  .checkbox-group {
+    border: 1px solid var(--stroke-default);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    margin: 0;
+  }
+
+  legend {
+    padding: 0;
+    margin: 0 0 var(--spacing-md) 0;
+  }
+
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .checkbox-item:last-child {
+    margin-bottom: 0;
+  }
+</style>
+```
+
+### Search Form
+
+```astro
+---
+import { LabelText } from '@atomchat.io/components-astro'
+---
+
+<form class="search-form">
+  <div class="form-group">
+    <LabelText for="search" size="label-small">Search</LabelText>
+    <div class="search-input-wrapper">
+      <input
+        type="search"
+        id="search"
+        placeholder="Search documentation..."
+        autocomplete="off"
+      />
+      <button type="submit" aria-label="Search">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+          <path d="M10 2a8 8 0 015.3 14.3l7 7a1 1 0 01-1.4 1.4l-7-7A8 8 0 1110 2zm0 2a6 6 0 100 12 6 6 0 000-12z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</form>
+
+<style>
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  .search-input-wrapper {
+    position: relative;
+    display: flex;
+  }
+
+  input {
+    flex: 1;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--stroke-default);
+    border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  }
+
+  button {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-secondary);
+    border: 1px solid var(--stroke-default);
+    border-left: none;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+```
+
+## Structure Tokens
+
+The LabelText component uses these typography tokens:
+
+| Token | Purpose |
+|-------|---------|
+| `--font-size-label` | Standard label size |
+| `--font-size-label-small` | Small label size |
+| `--font-size-footnote` | Footnote/minimal size |
+| `--line-height-tight` | Text line height |
+| `--font-weight-regular` | Regular weight |
+| `--font-weight-medium` | Medium weight |
+| `--font-weight-bold` | Bold weight |
+
+## Dependencies
+
+The LabelText component has no component dependencies but requires these design tokens:
+
+**Typography Tokens:**
+- `--font-size-label` - Standard label size
+- `--font-size-label-small` - Compact label size
+- `--font-size-footnote` - Minimal label size
+- `--line-height-tight` - Text line height
+- `--font-weight-regular` - Regular weight
+- `--font-weight-medium` - Medium weight
+- `--font-weight-bold` - Bold weight
+
+**Color Tokens:**
+- `--fg-primary` - Primary text color (for inherit)
+- `--fg-disabled` - Disabled text color
+
+## Accessibility
+
+### Semantic HTML
+
+- **Always use `for` attribute** - Links label to input for proper form association
+- **Required indicator** - Asterisk is marked aria-hidden="true" (decorative)
+- **Paired with inputs** - Labels should always accompany form inputs
+
+### Screen Reader Testing
+
+```html
+<!-- Good: Proper label-input association -->
+<label for="email">Email Address</label>
+<input type="email" id="email" />
+
+<!-- Good: Required is announced by input, asterisk is decorative -->
+<label for="password">Password <span aria-hidden="true">*</span></label>
+<input type="password" id="password" required />
+
+<!-- Avoid: Label without for attribute -->
+<label>Email Address</label>
+<input type="email" />
+
+<!-- Avoid: Asterisk without aria-hidden -->
+<label for="field">Field *</label>
+<input type="text" id="field" />
+```
+
+### Best Practices
+
+- Always associate labels with inputs using the `for` attribute
+- Mark decorative elements (like asterisks) with aria-hidden="true"
+- Don't use placeholder text as substitute for labels
+- Ensure labels are visible and descriptive
+- Use required prop for actual required fields
+- Test with screen readers to verify proper announcement
+
+## Composition Patterns
+
+### Form Field Component
+
+```astro
+---
+import { LabelText } from '@atomchat.io/components-astro'
+
+interface FormFieldProps {
+  id: string
+  label: string
+  type?: string
+  required?: boolean
+  disabled?: boolean
+  placeholder?: string
+  helpText?: string
+  error?: string
+}
+
+const { id, label, type = 'text', required, disabled, placeholder, helpText, error } = Astro.props
+---
+
+<div class="form-field">
+  <LabelText for={id} required={required} disabled={disabled}>
+    {label}
+  </LabelText>
+  <input
+    type={type}
+    id={id}
+    placeholder={placeholder}
+    disabled={disabled}
+    required={required}
+    aria-invalid={error ? 'true' : 'false'}
+    aria-describedby={error ? `${id}-error` : helpText ? `${id}-help` : undefined}
+  />
+  {error && (
+    <span id={`${id}-error`} class="form-error">{error}</span>
+  )}
+  {helpText && (
+    <span id={`${id}-help`} class="form-help">{helpText}</span>
+  )}
+</div>
+
+<style>
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-md);
+  }
+
+  input {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--stroke-default);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-md);
+  }
+
+  input[aria-invalid="true"] {
+    border-color: var(--fg-accent-danger);
+  }
+
+  .form-error {
+    font-size: var(--font-size-sm);
+    color: var(--fg-accent-danger);
+  }
+
+  .form-help {
+    font-size: var(--font-size-sm);
+    color: var(--fg-secondary);
+  }
+</style>
+```
+
+## Design Tokens in Action
+
+The LabelText component consumes typography and color tokens:
+
+**Typography System:**
+```css
+.label-text--label {
+  font-size: var(--font-size-label);
+  line-height: var(--line-height-tight);
+}
+
+.label-text--label-small {
+  font-size: var(--font-size-label-small);
+  line-height: var(--line-height-tight);
+}
+
+.label-text--footnote {
+  font-size: var(--font-size-footnote);
+  line-height: var(--line-height-tight);
+}
+
+.label-text--regular {
+  font-weight: var(--font-weight-regular);
+}
+
+.label-text--medium {
+  font-weight: var(--font-weight-medium);
+}
+
+.label-text--bold {
+  font-weight: var(--font-weight-bold);
+}
+```
+
+**Disabled State:**
+```css
+.label-text--disabled {
+  color: var(--fg-disabled);
+  cursor: not-allowed;
+}
+```
+
+## Build with AI
+
+Use this prompt to generate LabelText components with Claude Code:
+
+```
+Create a LabelText component in [framework].
+Setup: npm install @atomchat.io/components-astro then import "@atomchat.io/components-astro/dist/tokens.css"
+
+Requirements:
+- Accepts for prop: string (ID of associated input)
+- Accepts size prop: "label" | "label-small" | "footnote"
+- Accepts weight prop: "regular" | "medium" | "bold"
+- Accepts required prop: boolean (default false) - shows asterisk
+- Accepts disabled prop: boolean (default false)
+- Accepts color prop: CSS color value or "inherit" (default "inherit")
+- Renders semantic <label> element
+- Uses ONLY these CSS custom properties:
+  * --font-size-label, --font-size-label-small, --font-size-footnote
+  * --line-height-tight
+  * --font-weight-regular, --font-weight-medium, --font-weight-bold
+  * --fg-disabled (for disabled state)
+- Implements data-text attribute
+- Required indicator asterisk has aria-hidden="true"
+- No hardcoded values
+- Export as named export
+```

@@ -1,0 +1,916 @@
+---
+title: Checkbox
+description: Selection control for choosing one or multiple options from a set.
+---
+
+## Overview
+
+The Checkbox component is a binary selection control that allows users to choose one or multiple options from a set. It supports checked, unchecked, and disabled states with smooth animations and full keyboard accessibility.
+
+**Key Features:**
+- Binary selection (checked/unchecked)
+- Support for multiple checkboxes in groups
+- Radio button variant via `type` prop
+- Light and dark theme support
+- SVG checkmark with smooth animations
+- Custom styling via design tokens
+- Fully accessible with semantic HTML and ARIA labels
+- Data-attribute contract for animations
+- Respects `prefers-reduced-motion`
+
+---
+
+## Demo
+
+:::tip[Interactive Playground]
+**[Open Checkbox Playground →](/playground/checkbox)**
+
+View all Checkbox states, themes, and interactions with live animations in an isolated environment.
+:::
+
+---
+
+## Installation
+
+```bash
+# Install component package
+pnpm add @atomchat.io/components-astro
+
+# Install required dependencies
+pnpm add @atomchat.io/css @atomchat.io/tokens
+
+# Optional: For animations
+pnpm add @atomchat.io/animations gsap
+```
+
+**CSS Import (required):**
+```astro
+---
+// In your layout or page
+import '@atomchat.io/css';
+---
+```
+
+---
+
+## Anatomy
+
+The Checkbox component consists of a semantic label wrapping an input element with a custom styled indicator:
+
+```
+┌─────────────────────────────────┐
+│  <label> .checkbox              │  ← Wrapper label
+│  ┌──────────────┐               │
+│  │ <input/>     │               │  ← Hidden native input
+│  │ .checkbox__  │               │
+│  │ input        │               │
+│  └──────────────┘               │
+│  ┌──────────────┐               │
+│  │ <span>       │               │  ← Custom indicator
+│  │ .checkbox__  │               │
+│  │ custom       │               │
+│  │ ┌──────────┐ │               │
+│  │ │ <svg>    │ │               │  ← SVG checkmark
+│  │ │ checkmark│ │               │
+│  │ └──────────┘ │               │
+│  └──────────────┘               │
+│  ┌──────────────┐               │
+│  │ <span>       │               │  ← Label text
+│  │ .checkbox__  │               │
+│  │ label        │               │
+│  └──────────────┘               │
+└─────────────────────────────────┘
+```
+
+**DOM Structure:**
+```html
+<label class="checkbox checkbox--light" for="agree-terms" data-checkbox>
+  <input
+    class="checkbox__input"
+    type="checkbox"
+    id="agree-terms"
+    name="terms"
+    value="agree"
+  />
+  <span class="checkbox__custom" aria-hidden="true" data-checkbox-custom>
+    <svg
+      class="checkbox__check"
+      viewBox="0 0 12 10"
+      fill="none"
+      data-checkbox-check
+    >
+      <path
+        d="M1 5.5L4 8.5L11 1.5"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </span>
+  <span class="checkbox__label">
+    I agree to the terms
+  </span>
+</label>
+```
+
+---
+
+## Framework Support
+
+The Checkbox component is available for multiple frameworks with shared design tokens, styles, and behavior.
+
+import FrameworkSwitcher from '../../../../components/FrameworkSwitcher.astro';
+
+<FrameworkSwitcher
+  frameworks={[
+    { name: 'astro', label: 'Astro', icon: 'https://svgl.app/library/astro-icon-dark.svg' },
+    { name: 'react', label: 'React', icon: 'https://svgl.app/library/react_dark.svg' },
+    { name: 'nextjs', label: 'Next.js', icon: 'https://svgl.app/library/nextjs_icon_dark.svg' },
+    { name: 'vue', label: 'Vue', icon: 'https://svgl.app/library/vue.svg' },
+    { name: 'angular', label: 'Angular', icon: 'https://svgl.app/library/angular.svg' },
+  ]}
+>
+  <div data-framework="astro" data-active="true">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-astro @atomchat.io/css
+```
+
+### Usage
+
+```astro
+---
+import { Checkbox } from '@atomchat.io/components-astro';
+import '@atomchat.io/css';
+---
+
+<Checkbox name="subscribe" value="yes">
+  Subscribe to newsletter
+</Checkbox>
+
+<Checkbox name="terms" value="agree" checked>
+  I agree to the terms
+</Checkbox>
+
+<Checkbox name="privacy" value="accept" theme="dark">
+  Accept privacy policy
+</Checkbox>
+```
+
+  </div>
+
+  <div data-framework="react">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+import { Checkbox } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+import { useState } from 'react';
+
+function Example() {
+  const [checked, setChecked] = useState(false);
+
+  return (
+    <>
+      <Checkbox
+        name="subscribe"
+        value="yes"
+        onChange={(e) => setChecked(e.target.checked)}
+      >
+        Subscribe to newsletter
+      </Checkbox>
+
+      <Checkbox
+        name="terms"
+        value="agree"
+        defaultChecked
+      >
+        I agree to the terms
+      </Checkbox>
+
+      <Checkbox
+        name="privacy"
+        value="accept"
+        theme="dark"
+      >
+        Accept privacy policy
+      </Checkbox>
+    </>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="nextjs">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+'use client';
+
+import { Checkbox } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+import { useState } from 'react';
+
+export default function Example() {
+  const [checked, setChecked] = useState(false);
+
+  return (
+    <>
+      <Checkbox
+        name="subscribe"
+        value="yes"
+        onChange={(e) => setChecked(e.target.checked)}
+      >
+        Subscribe to newsletter
+      </Checkbox>
+
+      <Checkbox
+        name="terms"
+        value="agree"
+        defaultChecked
+      >
+        I agree to the terms
+      </Checkbox>
+
+      <Checkbox
+        name="privacy"
+        value="accept"
+        theme="dark"
+      >
+        Accept privacy policy
+      </Checkbox>
+    </>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="vue">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-vue @atomchat.io/css
+```
+
+### Usage
+
+```vue
+<script setup>
+import { Checkbox } from '@atomchat.io/components-vue';
+import '@atomchat.io/css';
+import { ref } from 'vue';
+
+const isSubscribed = ref(false);
+</script>
+
+<template>
+  <Checkbox
+    name="subscribe"
+    value="yes"
+    v-model="isSubscribed"
+  >
+    Subscribe to newsletter
+  </Checkbox>
+
+  <Checkbox
+    name="terms"
+    value="agree"
+    :checked="true"
+  >
+    I agree to the terms
+  </Checkbox>
+
+  <Checkbox
+    name="privacy"
+    value="accept"
+    theme="dark"
+  >
+    Accept privacy policy
+  </Checkbox>
+</template>
+```
+
+  </div>
+
+  <div data-framework="angular">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-angular @atomchat.io/css
+```
+
+### Usage
+
+```typescript
+import { CheckboxComponent } from '@atomchat.io/components-angular';
+import '@atomchat.io/css';
+import { Component, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  imports: [CheckboxComponent, FormsModule],
+  template: `
+    <atom-checkbox
+      name="subscribe"
+      value="yes"
+      [(ngModel)]="isSubscribed"
+    >
+      Subscribe to newsletter
+    </atom-checkbox>
+
+    <atom-checkbox
+      name="terms"
+      value="agree"
+      [checked]="true"
+    >
+      I agree to the terms
+    </atom-checkbox>
+
+    <atom-checkbox
+      name="privacy"
+      value="accept"
+      theme="dark"
+    >
+      Accept privacy policy
+    </atom-checkbox>
+  `
+})
+export class ExampleComponent {
+  isSubscribed = signal(false);
+}
+```
+
+  </div>
+</FrameworkSwitcher>
+
+---
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `string` | — | Form input name attribute (required) |
+| `value` | `string?` | — | Input value attribute |
+| `checked` | `boolean?` | `false` | Initial checked state |
+| `type` | `"checkbox" \| "radio"` | `"checkbox"` | Input type (checkbox or radio button) |
+| `theme` | `"light" \| "dark"` | `"light"` | Visual theme variant |
+| `disabled` | `boolean?` | `false` | Disables the checkbox interaction |
+| `class` | `string?` | — | Additional CSS classes |
+
+### Slots
+
+| Slot | Description |
+|------|-------------|
+| `default` | Checkbox label text (required) |
+
+**Slot Usage:**
+```astro
+<Checkbox name="agree" value="yes">
+  I agree to the terms and conditions
+</Checkbox>
+```
+
+---
+
+## Variants
+
+### Theme Variants
+
+| Theme | Background | Check Color | Use Case |
+|-------|------------|-------------|----------|
+| **light** | `--checkbox-bg-light` | `--checkbox-fg-light` | Light backgrounds, default theme |
+| **dark** | `--checkbox-bg-dark` | `--checkbox-fg-dark` | Dark backgrounds, high contrast |
+
+### Input Type Variants
+
+| Type | Behavior | Shape | Use Case |
+|------|----------|-------|----------|
+| **checkbox** | Multiple selection | Square with rounded corners | Multiple options allowed |
+| **radio** | Single selection | Circle | Only one option per group |
+
+### State Variants
+
+| State | Behavior | Visual Change |
+|-------|----------|---------------|
+| **Unchecked** | Interactive, clickable | Empty indicator |
+| **Checked** | Shows checkmark | Filled indicator + SVG checkmark |
+| **Hover** | On mouse over | Background color transitions |
+| **Focus** | On keyboard focus | Focus ring outline |
+| **Active** | On click/press | Checkmark animation (scale/fade) |
+| **Disabled** | Non-interactive | Gray background + `cursor: not-allowed` |
+
+---
+
+## Usage Examples
+
+### Single Checkbox
+
+```astro
+---
+import { Checkbox } from '@atomchat.io/components-astro';
+---
+
+<Checkbox name="subscribe" value="newsletter">
+  Subscribe to our newsletter
+</Checkbox>
+```
+
+### Checkbox Group
+
+```astro
+<fieldset>
+  <legend>Preferences</legend>
+  <Checkbox name="emails" value="marketing">
+    Marketing emails
+  </Checkbox>
+  <Checkbox name="emails" value="updates">
+    Product updates
+  </Checkbox>
+  <Checkbox name="emails" value="news">
+    Company news
+  </Checkbox>
+</fieldset>
+```
+
+### Radio Button Group
+
+```astro
+<fieldset>
+  <legend>Shipping Method</legend>
+  <Checkbox type="radio" name="shipping" value="standard">
+    Standard (5-7 days)
+  </Checkbox>
+  <Checkbox type="radio" name="shipping" value="express">
+    Express (2-3 days)
+  </Checkbox>
+  <Checkbox type="radio" name="shipping" value="overnight">
+    Overnight
+  </Checkbox>
+</fieldset>
+```
+
+### Form with Validation
+
+```astro
+<form>
+  <Checkbox name="terms" value="accept">
+    I agree to the terms and conditions
+  </Checkbox>
+  <Checkbox name="privacy" value="accept">
+    I accept the privacy policy
+  </Checkbox>
+  <button type="submit">Continue</button>
+</form>
+```
+
+### Dark Theme Checkbox
+
+```astro
+<div style="background: var(--bg-dark); padding: var(--m);">
+  <Checkbox name="darkmode" value="enabled" theme="dark">
+    Enable dark mode
+  </Checkbox>
+</div>
+```
+
+### Disabled Checkbox
+
+```astro
+<Checkbox name="legacy" value="feature" disabled>
+  Disabled legacy feature
+</Checkbox>
+```
+
+---
+
+## Structure Tokens
+
+### Size Tokens
+
+```css
+/* Indicator size */
+--checkbox-size: 20px;
+--checkbox-border-radius: 4px;
+
+/* Checkmark stroke */
+--checkbox-stroke-width: 1.5px;
+
+/* Focus ring */
+--checkbox-focus-ring-width: 2px;
+--checkbox-focus-ring-offset: 2px;
+```
+
+### Spacing Tokens
+
+```css
+/* Label gap */
+--checkbox-gap: 8px;
+
+/* Line height for label text */
+--checkbox-line-height: var(--line-height-tight);
+```
+
+### Typography
+
+```css
+--checkbox-font-size: 14px;          /* Label font size */
+--checkbox-font-weight: 400;         /* Label weight */
+```
+
+---
+
+## Dependencies
+
+### Required Packages
+- `@atomchat.io/css` — Component styles and tokens
+- `@atomchat.io/tokens` — Design token definitions
+
+### Optional Packages
+- `@atomchat.io/animations` — Checkmark animation effects
+- `gsap` — Animation library (required by animations package)
+
+### Semantic Tokens Used
+
+**Background:**
+```css
+--checkbox-bg-enabled          /* Unchecked background */
+--checkbox-bg-checked          /* Checked background */
+--checkbox-bg-hovered          /* Hover state background */
+--checkbox-bg-focused          /* Focus state background */
+--checkbox-bg-disabled         /* Disabled background */
+--checkbox-bg-light            /* Light theme background */
+--checkbox-bg-dark             /* Dark theme background */
+```
+
+**Foreground:**
+```css
+--checkbox-fg-enabled          /* Unchecked text color */
+--checkbox-fg-checked          /* Checked checkmark color */
+--checkbox-fg-disabled         /* Disabled text color */
+--checkbox-fg-light            /* Light theme text */
+--checkbox-fg-dark             /* Dark theme text */
+```
+
+**Border:**
+```css
+--checkbox-border-enabled      /* Unchecked border */
+--checkbox-border-focused      /* Focus ring border */
+--checkbox-border-disabled     /* Disabled border */
+```
+
+---
+
+## Animations
+
+The Checkbox component integrates with the **ATOM animation system** (`@atomchat.io/animations`) for **checkmark animation** effects.
+
+### Checkmark Animation
+
+**What it does:**
+When a checkbox is toggled, the checkmark SVG animates with scale and fade effects for visual feedback.
+
+**Data attributes:**
+```html
+<label class="checkbox" data-checkbox>
+  <input type="checkbox" class="checkbox__input" />
+  <span class="checkbox__custom" data-checkbox-custom>
+    <svg class="checkbox__check" data-checkbox-check>
+      <path />
+    </svg>
+  </span>
+  <span class="checkbox__label">Label</span>
+</label>
+```
+
+**Animation Triggers:**
+- **On Check:** Checkmark scales from 0 to 1 and fades in
+- **On Uncheck:** Checkmark scales from 1 to 0 and fades out
+- **Duration:** 200ms (default)
+- **Easing:** `ease-out` (smooth deceleration)
+
+**GSAP Timeline Implementation:**
+
+```typescript
+// When checkbox is checked
+gsap.to('[data-checkbox-check]', {
+  scale: 1,
+  opacity: 1,
+  duration: 0.2,
+  ease: 'atom'
+});
+
+// When checkbox is unchecked
+gsap.to('[data-checkbox-check]', {
+  scale: 0,
+  opacity: 0,
+  duration: 0.2,
+  ease: 'atom'
+});
+```
+
+### Customization
+
+```css
+/* Adjust animation duration */
+.checkbox {
+  --animation-duration: 300ms;
+}
+
+/* Customize scale effect */
+.checkbox__check {
+  transform-origin: center;
+  --scale-from: 0.8;
+  --scale-to: 1;
+}
+```
+
+### Initialization
+
+**Global initialization (recommended):**
+
+```astro
+<!-- Astro Layout.astro -->
+<script>
+  import { initAllAnimations } from '@atomchat.io/animations';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initAllAnimations();
+  });
+
+  document.addEventListener('astro:page-load', () => {
+    initAllAnimations();
+  });
+</script>
+```
+
+**Respects Motion Preferences:**
+```css
+@media (prefers-reduced-motion: reduce) {
+  [data-checkbox-check] {
+    animation-duration: 1s; /* Slower animation */
+  }
+}
+```
+
+---
+
+## Accessibility
+
+### ARIA Attributes
+
+The Checkbox component includes built-in accessibility features:
+
+```html
+<!-- Checked checkbox -->
+<label class="checkbox" for="subscribe">
+  <input
+    type="checkbox"
+    id="subscribe"
+    name="subscribe"
+    checked
+    aria-checked="true"
+  />
+  <span class="checkbox__custom" aria-hidden="true">
+    <svg class="checkbox__check" aria-hidden="true">
+      <path />
+    </svg>
+  </span>
+  <span class="checkbox__label">Subscribe</span>
+</label>
+
+<!-- Disabled checkbox -->
+<label class="checkbox checkbox--disabled" for="legacy">
+  <input
+    type="checkbox"
+    id="legacy"
+    name="legacy"
+    disabled
+    aria-disabled="true"
+  />
+  <span class="checkbox__custom" aria-hidden="true">
+    <svg class="checkbox__check" aria-hidden="true">
+      <path />
+    </svg>
+  </span>
+  <span class="checkbox__label">Disabled option</span>
+</label>
+
+<!-- Checkbox group -->
+<fieldset>
+  <legend>Select options</legend>
+  <div role="group" aria-labelledby="options-legend">
+    <Checkbox name="option" value="1">Option 1</Checkbox>
+    <Checkbox name="option" value="2">Option 2</Checkbox>
+  </div>
+</fieldset>
+```
+
+**Automatic behaviors:**
+- Native `<input type="checkbox">` for semantic HTML
+- `aria-checked` reflects checked state
+- SVG indicator hidden with `aria-hidden="true"`
+- Label click toggles checkbox
+- Keyboard: Space/Enter to toggle, Tab to navigate
+
+### Best Practices
+
+**Use fieldset for groups:**
+```astro
+<fieldset>
+  <legend>Email Preferences</legend>
+  <Checkbox name="emails" value="marketing">
+    Marketing emails
+  </Checkbox>
+  <Checkbox name="emails" value="updates">
+    Product updates
+  </Checkbox>
+</fieldset>
+```
+
+**Provide descriptive labels:**
+```astro
+<Checkbox name="terms" value="accept">
+  I agree to the Terms of Service and Privacy Policy
+</Checkbox>
+```
+
+**Use radio buttons for single selection:**
+```astro
+<Checkbox type="radio" name="size" value="small">
+  Small
+</Checkbox>
+<Checkbox type="radio" name="size" value="large">
+  Large
+</Checkbox>
+```
+
+**Associate labels with inputs:**
+```astro
+<Checkbox name="newsletter" value="yes">
+  Subscribe to newsletter
+</Checkbox>
+```
+
+**Avoid disabling without context:**
+```astro
+<!-- Bad: No explanation -->
+<Checkbox name="option" value="yes" disabled>
+  Unavailable option
+</Checkbox>
+
+<!-- Good: Provides reason -->
+<div>
+  <Checkbox name="option" value="yes" disabled>
+    Premium feature (upgrade required)
+  </Checkbox>
+</div>
+```
+
+---
+
+## Composition Patterns
+
+### Terms Agreement
+
+```astro
+<form>
+  <fieldset>
+    <legend>Agreement</legend>
+    <Checkbox name="terms" value="accept">
+      I agree to the Terms of Service
+    </Checkbox>
+    <Checkbox name="privacy" value="accept">
+      I accept the Privacy Policy
+    </Checkbox>
+  </fieldset>
+  <button type="submit" disabled={!allAgreed}>
+    Continue
+  </button>
+</form>
+```
+
+### Preference Settings
+
+```astro
+<section aria-labelledby="preferences-heading">
+  <h2 id="preferences-heading">Email Preferences</h2>
+  <fieldset>
+    <legend>Receive emails for:</legend>
+    <Checkbox name="emails" value="marketing">
+      Marketing and promotions
+    </Checkbox>
+    <Checkbox name="emails" value="updates">
+      Product updates
+    </Checkbox>
+    <Checkbox name="emails" value="news">
+      Company news
+    </Checkbox>
+    <Checkbox name="emails" value="weekly" checked>
+      Weekly digest
+    </Checkbox>
+  </fieldset>
+</section>
+```
+
+### Product Options
+
+```astro
+<fieldset>
+  <legend>Add-ons</legend>
+  <Checkbox name="addons" value="warranty">
+    Extended warranty (+ $49)
+  </Checkbox>
+  <Checkbox name="addons" value="insurance">
+    Accidental damage protection (+ $29)
+  </Checkbox>
+  <Checkbox name="addons" value="support">
+    Priority support (+ $99/year)
+  </Checkbox>
+</fieldset>
+```
+
+### Filter Options
+
+```astro
+<fieldset>
+  <legend>Filter by availability</legend>
+  <Checkbox name="status" value="in-stock" checked>
+    In stock
+  </Checkbox>
+  <Checkbox name="status" value="pre-order">
+    Pre-order
+  </Checkbox>
+  <Checkbox name="status" value="clearance">
+    Clearance
+  </Checkbox>
+</fieldset>
+```
+
+---
+
+## Design Tokens in Action
+
+### Token-First Philosophy
+
+Every visual property of the Checkbox component is controlled by design tokens. This ensures:
+
+- **Global consistency** — All checkboxes use the same size and color scale
+- **Easy theming** — Switch themes by changing token values
+- **State management** — Hover/focus/active states via tokens
+- **Maintainability** — Update once, reflect everywhere
+
+### Token Override Example
+
+```css
+/* Custom checkbox variant for error state */
+.checkbox--error {
+  --checkbox-border-enabled: var(--primitive-error-500);
+  --checkbox-border-focused: var(--primitive-error-600);
+  --checkbox-bg-checked: var(--primitive-error-500);
+  --checkbox-fg-checked: var(--primitive-neutral-0);
+}
+
+.checkbox--error:hover {
+  --checkbox-bg-enabled: var(--primitive-error-50);
+}
+```
+
+**Usage:**
+```astro
+<Checkbox name="confirm" value="yes" class="checkbox--error">
+  I understand the consequences
+</Checkbox>
+```
+
+---
+
+## Build this Component with AI
+
+Use this pre-built prompt to generate a complete showcase of this component in your preferred framework. The AI will create a working form with all checkbox patterns and proper token usage.
+
+**What you get:**
+- Complete component setup with proper imports
+- Light and dark theme demonstrations
+- Checkbox groups and radio button groups
+- Form validation patterns
+- Single and multiple selection examples
+- Accessible form structure
+- Token-first styling (no hardcoded values)

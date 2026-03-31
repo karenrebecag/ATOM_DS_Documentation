@@ -1,0 +1,394 @@
+---
+import '@atomchat.io/tokens/css';
+import '@atomchat.io/css';
+import { Chip } from '@atomchat.io/components-astro';
+import { Check, X, Filter, Tag, Star, TrendingUp, Calendar, MapPin, User, Heart } from '@lucide/astro';
+
+const title = 'Chip Playground';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <style>
+    body {
+      font-family: var(--font-body, system-ui, sans-serif);
+      padding: 2rem;
+      background: var(--bg-default, #fff);
+      color: var(--fg-default, #000);
+    }
+    .playground {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section {
+      margin-bottom: 3rem;
+      padding: 2rem;
+      background: var(--bg-subtle, #f9f9f9);
+      border-radius: 8px;
+    }
+    .section h2 {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+    .section h3 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+    }
+    .chip-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .chip-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .size-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--fg-muted, #666);
+      min-width: 80px;
+    }
+  </style>
+</head>
+<body>
+  <div class="playground">
+    <h1>Chip Component Playground</h1>
+
+    <div class="section">
+      <h2>All Sizes</h2>
+      <p style="margin-bottom: 1.5rem; color: var(--fg-muted, #666); font-size: 0.875rem;">
+        Chip supports 5 sizes: xs, s, m (default), l, xl
+      </p>
+
+      <div class="chip-row">
+        <span class="size-label">XS</span>
+        <Chip size="xs">Extra Small</Chip>
+      </div>
+
+      <div class="chip-row">
+        <span class="size-label">S</span>
+        <Chip size="s">Small</Chip>
+      </div>
+
+      <div class="chip-row">
+        <span class="size-label">M (Default)</span>
+        <Chip size="m">Medium</Chip>
+      </div>
+
+      <div class="chip-row">
+        <span class="size-label">L</span>
+        <Chip size="l">Large</Chip>
+      </div>
+
+      <div class="chip-row">
+        <span class="size-label">XL</span>
+        <Chip size="xl">Extra Large</Chip>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Default Filter Icon</h2>
+      <p style="margin-bottom: 1.5rem; color: var(--fg-muted, #666); font-size: 0.875rem;">
+        Chips show a default filter icon when no icon-start slot is provided
+      </p>
+      <div class="chip-grid">
+        <Chip size="xs">Extra Small</Chip>
+        <Chip size="s">Small</Chip>
+        <Chip size="m">Medium</Chip>
+        <Chip size="l">Large</Chip>
+        <Chip size="xl">Extra Large</Chip>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>States</h2>
+
+      <h3>Default State</h3>
+      <div class="chip-grid">
+        <Chip size="s">Design</Chip>
+        <Chip size="m">Development</Chip>
+        <Chip size="l">Marketing</Chip>
+      </div>
+
+      <h3>Selected State</h3>
+      <div class="chip-grid">
+        <Chip size="s" selected>Design</Chip>
+        <Chip size="m" selected>Development</Chip>
+        <Chip size="l" selected>Marketing</Chip>
+      </div>
+
+      <h3>Disabled State</h3>
+      <div class="chip-grid">
+        <Chip size="s" disabled>Design</Chip>
+        <Chip size="m" disabled>Development</Chip>
+        <Chip size="l" disabled>Marketing</Chip>
+      </div>
+
+      <h3>Disabled + Selected</h3>
+      <div class="chip-grid">
+        <Chip size="m" selected disabled>Selected & Disabled</Chip>
+        <Chip size="l" selected disabled>Can't Change</Chip>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Dismissible Chips</h2>
+      <p style="margin-bottom: 1.5rem; color: var(--fg-muted, #666); font-size: 0.875rem;">
+        Chips with dismissible prop show a close button (X icon)
+      </p>
+
+      <h3>Basic Dismissible</h3>
+      <div class="chip-grid">
+        <Chip size="s" dismissible onDismiss="console.log('dismissed')">
+          Remove me
+        </Chip>
+        <Chip size="m" dismissible onDismiss="console.log('dismissed')">
+          Removable tag
+        </Chip>
+        <Chip size="l" dismissible onDismiss="console.log('dismissed')">
+          Click X to dismiss
+        </Chip>
+      </div>
+
+      <h3>Dismissible with Custom Icon</h3>
+      <div class="chip-grid">
+        <Chip size="m" dismissible onDismiss="console.log('dismissed')">
+          <Tag slot="icon-start" size={16} />
+          Photography
+        </Chip>
+        <Chip size="m" dismissible onDismiss="console.log('dismissed')">
+          <Star slot="icon-start" size={16} />
+          Featured
+        </Chip>
+        <Chip size="m" dismissible selected onDismiss="console.log('dismissed')">
+          <Check slot="icon-start" size={16} />
+          Active Filter
+        </Chip>
+      </div>
+
+      <h3>Dismissible States</h3>
+      <div class="chip-grid">
+        <Chip size="m" dismissible selected onDismiss="console.log('dismissed')">
+          Selected & Dismissible
+        </Chip>
+        <Chip size="m" dismissible disabled onDismiss="console.log('dismissed')">
+          Disabled & Dismissible
+        </Chip>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>With Custom Icons</h2>
+
+      <h3>Icon Start (Replaces Default Filter Icon)</h3>
+      <div class="chip-grid">
+        <Chip size="s">
+          <Tag slot="icon-start" size={14} />
+          Tag
+        </Chip>
+        <Chip size="m">
+          <Star slot="icon-start" size={16} />
+          Featured
+        </Chip>
+        <Chip size="m" selected>
+          <Check slot="icon-start" size={16} />
+          Verified
+        </Chip>
+        <Chip size="l">
+          <Heart slot="icon-start" size={20} />
+          Favorite
+        </Chip>
+      </div>
+
+      <h3>Icon End (Only if NOT dismissible)</h3>
+      <div class="chip-grid">
+        <Chip size="s">
+          Trending
+          <TrendingUp slot="icon-end" size={14} />
+        </Chip>
+        <Chip size="m">
+          Calendar
+          <Calendar slot="icon-end" size={16} />
+        </Chip>
+        <Chip size="m" selected>
+          Location
+          <MapPin slot="icon-end" size={16} />
+        </Chip>
+      </div>
+
+      <h3>Both Icons</h3>
+      <div class="chip-grid">
+        <Chip size="s">
+          <Tag slot="icon-start" size={14} />
+          Complete
+          <Check slot="icon-end" size={14} />
+        </Chip>
+        <Chip size="m">
+          <Star slot="icon-start" size={16} />
+          Featured Item
+          <TrendingUp slot="icon-end" size={16} />
+        </Chip>
+        <Chip size="m" selected>
+          <User slot="icon-start" size={16} />
+          Active User
+          <Check slot="icon-end" size={16} />
+        </Chip>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Common Use Cases</h2>
+
+      <h3>Filter Chips (Default Icon)</h3>
+      <p style="margin-bottom: 1rem; color: var(--fg-muted, #666); font-size: 0.875rem;">
+        Default filter icon shown automatically
+      </p>
+      <div class="chip-grid">
+        <Chip size="m" selected>All</Chip>
+        <Chip size="m">Active</Chip>
+        <Chip size="m">Pending</Chip>
+        <Chip size="m">Archived</Chip>
+        <Chip size="m">Deleted</Chip>
+      </div>
+
+      <h3>Category Tags (Custom Icons)</h3>
+      <div class="chip-grid">
+        <Chip size="s">
+          <Tag slot="icon-start" size={14} />
+          React
+        </Chip>
+        <Chip size="s">
+          <Tag slot="icon-start" size={14} />
+          TypeScript
+        </Chip>
+        <Chip size="s">
+          <Tag slot="icon-start" size={14} />
+          Design System
+        </Chip>
+      </div>
+
+      <h3>Removable Tags (Dismissible)</h3>
+      <p style="margin-bottom: 1rem; color: var(--fg-muted, #666); font-size: 0.875rem;">
+        Use dismissible for tags that can be removed
+      </p>
+      <div class="chip-grid">
+        <Chip size="m" dismissible onDismiss="alert('Removed: Photography')">
+          Photography
+        </Chip>
+        <Chip size="m" dismissible onDismiss="alert('Removed: Travel')">
+          Travel
+        </Chip>
+        <Chip size="m" dismissible onDismiss="alert('Removed: Food')">
+          Food
+        </Chip>
+      </div>
+
+      <h3>Active Filters (Dismissible + Selected)</h3>
+      <div class="chip-grid">
+        <Chip size="m" selected dismissible onDismiss="console.log('removed filter')">
+          <Tag slot="icon-start" size={16} />
+          Category: Tech
+        </Chip>
+        <Chip size="m" selected dismissible onDismiss="console.log('removed filter')">
+          <Calendar slot="icon-start" size={16} />
+          This Week
+        </Chip>
+        <Chip size="m" selected dismissible onDismiss="console.log('removed filter')">
+          <MapPin slot="icon-start" size={16} />
+          San Francisco
+        </Chip>
+      </div>
+
+      <h3>User Mentions (Dismissible)</h3>
+      <div class="chip-grid">
+        <Chip size="m" dismissible onDismiss="console.log('removed mention')">
+          <User slot="icon-start" size={16} />
+          @johndoe
+        </Chip>
+        <Chip size="m" dismissible onDismiss="console.log('removed mention')">
+          <User slot="icon-start" size={16} />
+          @janedoe
+        </Chip>
+        <Chip size="m" dismissible onDismiss="console.log('removed mention')">
+          <User slot="icon-start" size={16} />
+          @designer
+        </Chip>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Interactive Filter Panel</h2>
+      <div style="background: var(--bg-default, #fff); padding: 1.5rem; border-radius: 8px;">
+        <div style="margin-bottom: 1.5rem;">
+          <div style="font-size: 0.875rem; font-weight: 600; margin-bottom: 0.75rem;">Status</div>
+          <div class="chip-grid">
+            <Chip size="m" selected onclick="this.dataset.selected = this.dataset.selected === 'true' ? 'false' : 'true'">
+              All
+            </Chip>
+            <Chip size="m" onclick="this.dataset.selected = this.dataset.selected === 'true' ? 'false' : 'true'">
+              Active
+            </Chip>
+            <Chip size="m" onclick="this.dataset.selected = this.dataset.selected === 'true' ? 'false' : 'true'">
+              Pending
+            </Chip>
+            <Chip size="m" onclick="this.dataset.selected = this.dataset.selected === 'true' ? 'false' : 'true'">
+              Completed
+            </Chip>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+          <div style="font-size: 0.875rem; font-weight: 600; margin-bottom: 0.75rem;">Priority</div>
+          <div class="chip-grid">
+            <Chip size="m" onclick="this.dataset.selected = this.dataset.selected === 'true' ? 'false' : 'true'">
+              <Star slot="icon-start" size={16} />
+              High
+            </Chip>
+            <Chip size="m" selected onclick="this.dataset.selected = this.dataset.selected === 'true' ? 'false' : 'true'">
+              <TrendingUp slot="icon-start" size={16} />
+              Medium
+            </Chip>
+            <Chip size="m" onclick="this.dataset.selected = this.dataset.selected === 'true' ? 'false' : 'true'">
+              Low
+            </Chip>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size: 0.875rem; font-weight: 600; margin-bottom: 0.75rem;">Active Filters</div>
+          <div class="chip-grid">
+            <Chip size="s" selected dismissible onDismiss="this.remove()">
+              <Tag slot="icon-start" size={14} />
+              All Status
+            </Chip>
+            <Chip size="s" selected dismissible onDismiss="this.remove()">
+              <TrendingUp slot="icon-start" size={14} />
+              Medium Priority
+            </Chip>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top: 3rem; text-align: center; color: var(--fg-muted, #666);">
+      <a href="#" onclick="history.back(); return false;" style="color: var(--fg-link, #0066cc); cursor: pointer;">← Back to Documentation</a>
+    </p>
+  </div>
+
+  <script>
+    console.log('[DEBUG] Chip playground loaded');
+    console.log('[DEBUG] Chip elements:', document.querySelectorAll('[data-chip]').length);
+    console.log('[DEBUG] Dismissible chips:', document.querySelectorAll('[data-chip-dismiss]').length);
+  </script>
+</body>
+</html>

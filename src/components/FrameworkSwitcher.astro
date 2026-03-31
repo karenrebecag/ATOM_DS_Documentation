@@ -1,0 +1,227 @@
+---
+interface Props {
+  frameworks: {
+    name: string;
+    label: string;
+    icon?: string;
+  }[];
+}
+
+const { frameworks } = Astro.props;
+---
+
+<div class="framework-switcher" data-framework-switcher>
+  <div class="framework-switcher__header">
+    <div class="framework-switcher__tabs" role="tablist">
+      {frameworks.map((framework, index) => (
+        <button
+          class="framework-switcher__tab"
+          role="tab"
+          data-framework={framework.name}
+          aria-selected={index === 0 ? "true" : "false"}
+          tabindex={index === 0 ? 0 : -1}
+        >
+          {framework.icon && (
+            <img
+              src={framework.icon}
+              alt={framework.label}
+              class="framework-switcher__icon"
+            />
+          )}
+          <span>{framework.label}</span>
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <div class="framework-switcher__content">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .framework-switcher {
+    margin: var(--m, 24px) 0 !important;
+    border-radius: var(--s, 12px);
+    overflow: hidden;
+    background: var(--sl-color-bg-nav, var(--bg-surface, #ffffff));
+    border: var(--stroke-xs, 1px) solid var(--sl-color-gray-5, var(--border-default, #e5e7eb));
+  }
+
+  .framework-switcher * {
+    margin-top: 0 !important;
+  }
+
+  .framework-switcher__header {
+    background: var(--sl-color-bg-nav, var(--bg-surface, #f9fafb));
+    border-bottom: var(--stroke-xs, 1px) solid var(--sl-color-gray-5, var(--border-default, #e5e7eb));
+    padding: var(--xs, 8px);
+  }
+
+  .framework-switcher__tabs {
+    display: flex;
+    gap: var(--xxs, 4px);
+    overflow-x: auto;
+    scrollbar-width: thin;
+    height: 40px;
+    align-items: stretch;
+  }
+
+  .framework-switcher__tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--xxs, 6px);
+    height: 100%;
+    padding: 0 var(--sm, 12px);
+    background: transparent;
+    border: none;
+    border-radius: var(--xxs, 6px);
+    color: var(--sl-color-gray-3, var(--fg-muted, #6b7280));
+    font-size: var(--text-label-regular, 14px);
+    font-weight: var(--font-weight-medium, 500);
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .framework-switcher__tab:hover {
+    background: var(--sl-color-gray-6, var(--bg-hover, #f3f4f6));
+    color: var(--sl-color-text, var(--fg-default, #111827));
+  }
+
+  .framework-switcher__tab[aria-selected="true"] {
+    background: hsl(193.85deg 21.41% 29.14%);
+    color: #ffffff;
+    box-shadow:
+      0 1px 3px 0 rgba(0, 0, 0, 0.1),
+      0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  .framework-switcher__tab[aria-selected="true"] .framework-switcher__icon {
+    opacity: 1;
+  }
+
+  .framework-switcher__tab:focus-visible {
+    outline: 2px solid var(--sl-color-text-accent, var(--border-focus, #3b82f6));
+    outline-offset: 2px;
+  }
+
+  .framework-switcher__icon {
+    width: 16px;
+    height: 16px;
+    display: block;
+    flex-shrink: 0;
+    object-fit: contain;
+  }
+
+  .framework-switcher__content {
+    padding: var(--m, 16px);
+  }
+
+  .framework-switcher__content :global([data-framework]) {
+    display: none;
+  }
+
+  .framework-switcher__content :global([data-framework][data-active="true"]) {
+    display: block;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .framework-switcher__tab {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  function initFrameworkSwitcher() {
+    const switchers = document.querySelectorAll('[data-framework-switcher]');
+
+    switchers.forEach((switcher) => {
+      const tabs = switcher.querySelectorAll('.framework-switcher__tab');
+      const content = switcher.querySelector('.framework-switcher__content');
+
+      // Load saved preference
+      const savedFramework = localStorage.getItem('preferred-framework');
+      if (savedFramework) {
+        const savedTab = switcher.querySelector(`[data-framework="${savedFramework}"]`);
+        if (savedTab) {
+          activateTab(savedTab as HTMLElement, content as HTMLElement);
+        }
+      }
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          const framework = (tab as HTMLElement).dataset.framework;
+          activateTab(tab as HTMLElement, content as HTMLElement);
+
+          // Save preference
+          if (framework) {
+            localStorage.setItem('preferred-framework', framework);
+          }
+        });
+
+        // Keyboard navigation
+        tab.addEventListener('keydown', (e) => {
+          const key = (e as KeyboardEvent).key;
+          let nextTab: Element | null = null;
+
+          if (key === 'ArrowRight') {
+            nextTab = tab.nextElementSibling || tabs[0];
+          } else if (key === 'ArrowLeft') {
+            nextTab = tab.previousElementSibling || tabs[tabs.length - 1];
+          } else if (key === 'Home') {
+            nextTab = tabs[0];
+          } else if (key === 'End') {
+            nextTab = tabs[tabs.length - 1];
+          }
+
+          if (nextTab) {
+            e.preventDefault();
+            (nextTab as HTMLElement).click();
+            (nextTab as HTMLElement).focus();
+          }
+        });
+      });
+    });
+  }
+
+  function activateTab(tab: HTMLElement, content: HTMLElement) {
+    const switcher = tab.closest('[data-framework-switcher]');
+    if (!switcher) return;
+
+    const allTabs = switcher.querySelectorAll('.framework-switcher__tab');
+    const framework = tab.dataset.framework;
+
+    // Update tabs
+    allTabs.forEach((t) => {
+      t.setAttribute('aria-selected', 'false');
+      t.setAttribute('tabindex', '-1');
+    });
+    tab.setAttribute('aria-selected', 'true');
+    tab.setAttribute('tabindex', '0');
+
+    // Update content
+    const examples = content.querySelectorAll('[data-framework]');
+    examples.forEach((example) => {
+      const exampleFramework = (example as HTMLElement).dataset.framework;
+      if (exampleFramework === framework) {
+        (example as HTMLElement).dataset.active = 'true';
+      } else {
+        delete (example as HTMLElement).dataset.active;
+      }
+    });
+  }
+
+  // Initialize on load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFrameworkSwitcher);
+  } else {
+    initFrameworkSwitcher();
+  }
+
+  // Reinitialize after Astro page transitions
+  document.addEventListener('astro:page-load', initFrameworkSwitcher);
+</script>

@@ -1,0 +1,971 @@
+---
+title: Button
+description: Primary interactive component with multiple variants, sizes, and states.
+---
+
+## Overview
+
+The Button component is the primary interactive element used to trigger actions throughout the application. It supports 6 visual variants, 5 sizes, and multiple states including loading and disabled.
+
+:::tip[Interactive Playground]
+**[Open Button Playground →](/playground/button)**
+
+View all Button variants with live hover animations and working states in an isolated environment.
+:::
+
+**Key Features:**
+- 6 visual variants (Primary, Secondary, Tertiary, Destructive variants)
+- 5 size options (xs, s, m, l, xl)
+- Loading state with spinner animation
+- Icon support (left, right, or both)
+- Disabled state handling
+- Can render as button or link (`<a>` tag)
+- GSAP hover rotation animation
+- Fully token-driven styling
+- Accessible with ARIA attributes
+
+---
+
+## Demo
+
+:::tip[Live Demo]
+**[Open Button Playground →](/playground/button)** to see all variants, sizes, and states rendered with live interactions.
+:::
+
+---
+
+## Installation
+
+```bash
+# Install component package
+pnpm add @atomchat.io/components-astro
+
+# Install required dependencies
+pnpm add @atomchat.io/css @atomchat.io/tokens
+
+# Optional: For GSAP animations
+pnpm add @atomchat.io/animations gsap
+```
+
+**CSS Import (required):**
+```astro
+---
+// In your layout or page
+import '@atomchat.io/css';
+---
+```
+
+---
+
+## Anatomy
+
+The Button component consists of multiple nested elements to support hover animations and loading states:
+
+```
+┌──────────────────────────┐
+│  .button (container)     │  ← Base button/link element
+│  ┌────────────────────┐  │
+│  │ .button__label-wrap│  │  ← Grid for hover rotation animation
+│  │  ┌──────────────┐  │  │
+│  │  │ __label      │  │  │  ← Original label (visible)
+│  │  │ __label--clone│ │  │  ← Cloned label (hidden, for animation)
+│  │  └──────────────┘  │  │
+│  └────────────────────┘  │
+│  OR                      │
+│  ┌────────────────────┐  │
+│  │__loading-content   │  │  ← Loading state
+│  │  __loading-text    │  │  ← "Loading" text with shimmer
+│  │  __spinner         │  │  ← Spinning indicator
+│  └────────────────────┘  │
+└──────────────────────────┘
+```
+
+**DOM Structure (default state):**
+```html
+<button class="button button--primary button--m">
+  <span class="button__label-wrap">
+    <span class="button__label" data-button-label>
+      Button Text
+    </span>
+    <span class="button__label button__label--clone" data-button-label-clone>
+      Button Text
+    </span>
+  </span>
+</button>
+```
+
+**DOM Structure (loading state):**
+```html
+<button class="button button--primary button--m button--loading">
+  <span class="button__loading-content">
+    <span class="button__loading-text" data-shimmer>Loading</span>
+    <span class="button__spinner" data-button-spinner></span>
+  </span>
+</button>
+```
+
+---
+
+
+## Framework Support
+
+The Button component is available for multiple frameworks with shared design tokens, styles, and behavior.
+
+import FrameworkSwitcher from '../../../../components/FrameworkSwitcher.astro';
+
+<FrameworkSwitcher
+  frameworks={[
+    { name: 'astro', label: 'Astro', icon: 'https://svgl.app/library/astro-icon-dark.svg' },
+    { name: 'react', label: 'React', icon: 'https://svgl.app/library/react_dark.svg' },
+    { name: 'nextjs', label: 'Next.js', icon: 'https://svgl.app/library/nextjs_icon_dark.svg' },
+    { name: 'vue', label: 'Vue', icon: 'https://svgl.app/library/vue.svg' },
+    { name: 'angular', label: 'Angular', icon: 'https://svgl.app/library/angular.svg' },
+  ]}
+>
+  <div data-framework="astro" data-active="true">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-astro @atomchat.io/css
+```
+
+### Usage
+
+```astro
+---
+import { Button } from '@atomchat.io/components-astro';
+import '@atomchat.io/css';
+---
+
+<Button variant="Primary" size="m">
+  Click me
+</Button>
+
+<Button variant="Secondary" size="l" loading>
+  Loading...
+</Button>
+
+<Button variant="Tertiary" size="s" href="/about">
+  Learn More
+</Button>
+```
+
+  </div>
+
+  <div data-framework="react">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+import { Button } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+import { useState } from 'react';
+
+function Example() {
+  const [loading, setLoading] = useState(false);
+
+  return (
+    <>
+      <Button variant="Primary" size="m" onClick={() => setLoading(true)}>
+        Click me
+      </Button>
+
+      <Button variant="Secondary" size="l" loading={loading}>
+        Loading...
+      </Button>
+
+      <Button variant="Tertiary" size="s" href="/about">
+        Learn More
+      </Button>
+    </>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="nextjs">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+'use client';
+
+import { Button } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+import { useState } from 'react';
+
+export default function Example() {
+  const [loading, setLoading] = useState(false);
+
+  return (
+    <>
+      <Button variant="Primary" size="m" onClick={() => setLoading(true)}>
+        Click me
+      </Button>
+
+      <Button variant="Secondary" size="l" loading={loading}>
+        Loading...
+      </Button>
+
+      <Button variant="Tertiary" size="s" href="/about">
+        Learn More
+      </Button>
+    </>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="vue">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-vue @atomchat.io/css
+```
+
+### Usage
+
+```vue
+<script setup>
+import { Button } from '@atomchat.io/components-vue';
+import '@atomchat.io/css';
+import { ref } from 'vue';
+
+const loading = ref(false);
+</script>
+
+<template>
+  <Button variant="Primary" size="m" @click="loading = true">
+    Click me
+  </Button>
+
+  <Button variant="Secondary" size="l" :loading="loading">
+    Loading...
+  </Button>
+
+  <Button variant="Tertiary" size="s" href="/about">
+    Learn More
+  </Button>
+</template>
+```
+
+  </div>
+
+  <div data-framework="angular">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-angular @atomchat.io/css
+```
+
+### Usage
+
+```typescript
+import { ButtonComponent } from '@atomchat.io/components-angular';
+import '@atomchat.io/css';
+
+@Component({
+  imports: [ButtonComponent],
+  template: `
+    <atom-button variant="Primary" size="m" (click)="handleClick()">
+      Click me
+    </atom-button>
+
+    <atom-button variant="Secondary" size="l" [loading]="loading">
+      Loading...
+    </atom-button>
+
+    <atom-button variant="Tertiary" size="s" href="/about">
+      Learn More
+    </atom-button>
+  `
+})
+export class ExampleComponent {
+  loading = false;
+
+  handleClick() {
+    this.loading = true;
+  }
+}
+```
+
+  </div>
+</FrameworkSwitcher>
+
+---
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `"Primary" \| "Secondary" \| "Tertiary" \| "Destructive Primary" \| "Destructive Secondary" \| "Destructive Tertiary"` | `"Primary"` | Visual style variant |
+| `size` | `"xs" \| "s" \| "m" \| "l" \| "xl"` | `"m"` | Size of the button |
+| `href` | `string?` | — | If provided, renders as `<a>` tag instead of `<button>` |
+| `type` | `"button" \| "submit" \| "reset"` | `"button"` | Button type attribute (only for `<button>` elements) |
+| `disabled` | `boolean?` | `false` | Disables button interaction |
+| `loading` | `boolean?` | `false` | Shows loading spinner and disables interaction |
+| `class` | `string?` | — | Additional CSS classes |
+
+### Slots
+
+| Slot | Description |
+|------|-------------|
+| `default` | Button label text (required) |
+| `icon-left` | Icon placed before the label |
+| `icon-right` | Icon placed after the label |
+
+**Slot Usage:**
+```astro
+<Button variant="Primary" size="m">
+  <svg slot="icon-left">...</svg>
+  Button Text
+  <svg slot="icon-right">...</svg>
+</Button>
+```
+
+---
+
+## Variants
+
+### Size Variants
+
+| Size | Padding (Y × X) | Font Size | Use Case |
+|------|-----------------|-----------|----------|
+| **xs** | `var(--xxs) × var(--xs)` | `--text-label-regular` | Compact UIs, inline actions |
+| **s** | `var(--xs) × var(--s)` | `--text-label-regular` | Dense layouts, toolbars |
+| **m** | `var(--sm) × var(--m)` | `--text-label-regular` | Default button size |
+| **l** | `var(--m) × var(--l)` | `--text-body-regular` | Prominent actions |
+| **xl** | `var(--l) × var(--xl)` | `--text-body-large` | Hero sections, CTAs |
+
+### Visual Variants
+
+| Variant | Background | Border | Text Color | Use Case |
+|---------|------------|--------|------------|----------|
+| **Primary** | `--buttons-bg-primary-enabled` | None | `--buttons-fg-primary-enabled` | Main actions |
+| **Secondary** | `--buttons-bg-secondary-enabled` | `--buttons-border-secondary-enabled` | `--buttons-fg-secondary-enabled` | Secondary actions |
+| **Tertiary** | `--buttons-bg-tertiary-enabled` | None | `--buttons-fg-tertiary-enabled` | Tertiary actions |
+| **Destructive Primary** | `--buttons-bg-danger-primary-enabled` | None | `--buttons-fg-danger-primary-enabled` | Destructive actions (delete, remove) |
+| **Destructive Secondary** | `--buttons-bg-danger-secondary-enabled` | `--buttons-border-danger-secondary-enabled` | `--buttons-fg-danger-secondary-enabled` | Secondary destructive actions |
+| **Destructive Tertiary** | `--buttons-bg-danger-tertiary-enabled` | None | `--buttons-fg-danger-tertiary-enabled` | Subtle destructive actions |
+
+### State Variants
+
+| State | Behavior | Visual Change |
+|-------|----------|---------------|
+| **Default** | Interactive, clickable | Standard appearance |
+| **Hover** | On mouse over | Background → `--btn-bg-hover` |
+| **Focus** | On keyboard focus | Border + shadow (`:focus-visible`) |
+| **Active** | On click/press | Background → `--btn-bg-pressed` |
+| **Disabled** | Non-interactive | Gray background + `cursor: not-allowed` |
+| **Loading** | Shows spinner, non-interactive | Spinner animation + `cursor: wait` |
+
+---
+
+## Usage Examples
+
+### Basic Button
+
+```astro
+---
+import { Button } from '@atomchat.io/components-astro';
+---
+
+<Button variant="Primary" size="m">
+  Click me
+</Button>
+```
+
+### Button with Icons
+
+```astro
+<Button variant="Secondary" size="l">
+  <svg slot="icon-left" viewBox="0 0 24 24">
+    <path d="M12 4l-8 8h16l-8-8z"/>
+  </svg>
+  Upload File
+</Button>
+```
+
+### Loading Button
+
+```astro
+<Button variant="Primary" size="m" loading>
+  Submitting...
+</Button>
+```
+
+### Disabled Button
+
+```astro
+<Button variant="Destructive Primary" size="m" disabled>
+  Delete Account
+</Button>
+```
+
+### Link Button
+
+```astro
+<Button variant="Tertiary" size="s" href="/about">
+  Learn More
+</Button>
+```
+
+### Form Submit Button
+
+```astro
+<form>
+  <Button variant="Primary" size="m" type="submit">
+    Save Changes
+  </Button>
+</form>
+```
+
+### Button with Both Icons
+
+```astro
+<Button variant="Primary" size="l">
+  <svg slot="icon-left">...</svg>
+  Download
+  <svg slot="icon-right">...</svg>
+</Button>
+```
+
+---
+
+## Structure Tokens
+
+### Size Tokens
+
+Buttons use spacing tokens for consistent sizing:
+
+```css
+/* XS */
+padding: var(--xxs) var(--xs);  /* ~4px 8px */
+
+/* S */
+padding: var(--xs) var(--s);    /* ~8px 12px */
+
+/* M */
+padding: var(--sm) var(--m);    /* ~12px 16px */
+
+/* L */
+padding: var(--m) var(--l);     /* ~16px 24px */
+
+/* XL */
+padding: var(--l) var(--xl);    /* ~24px 32px */
+```
+
+### Border & Radius
+
+```css
+--stroke-xs: 1px;               /* Border width */
+--s: 8px;                       /* Border radius */
+```
+
+### Typography
+
+```css
+--text-label-regular: 14px;     /* xs, s, m */
+--text-body-regular: 16px;      /* l */
+--text-body-large: 18px;        /* xl */
+--font-weight-medium: 500;      /* All buttons */
+```
+
+### Icon Size
+
+```css
+--icon-s: 16px;                 /* Icon dimensions */
+```
+
+---
+
+## Dependencies
+
+### Required Packages
+- `@atomchat.io/css` — Component styles and tokens
+- `@atomchat.io/tokens` — Design token definitions
+
+### Optional Packages
+- `@atomchat.io/animations` — Hover rotation and shimmer effects
+- `gsap` — Animation library (required by animations package)
+
+### Semantic Tokens Used
+
+**Background:**
+```css
+--buttons-bg-primary-enabled        /* Primary button background */
+--buttons-bg-primary-hovered        /* Primary hover state */
+--buttons-bg-primary-focused        /* Primary focus state */
+--buttons-bg-primary-pressed        /* Primary active state */
+--buttons-bg-primary-loading        /* Primary loading state */
+--buttons-bg-secondary-enabled      /* Secondary button background */
+--buttons-bg-tertiary-enabled       /* Tertiary button background */
+--buttons-bg-danger-primary-enabled /* Destructive button background */
+--bg-disabled                       /* Disabled state (all variants) */
+```
+
+**Foreground:**
+```css
+--buttons-fg-primary-enabled        /* Primary text color */
+--buttons-fg-secondary-enabled      /* Secondary text color */
+--buttons-fg-tertiary-enabled       /* Tertiary text color */
+--buttons-fg-danger-primary-enabled /* Destructive text color */
+--fg-disabled                       /* Disabled text color */
+```
+
+**Border:**
+```css
+--buttons-border-secondary-enabled   /* Secondary border */
+--buttons-border-primary-focused     /* Primary focus border */
+--buttons-border-danger-secondary-enabled /* Destructive Secondary border */
+```
+
+**Shadow:**
+```css
+--buttons-shadow-focus               /* Focus ring (primary/secondary/tertiary) */
+--buttons-shadow-focus-danger        /* Focus ring (destructive variants) */
+```
+
+---
+
+## Animations
+
+The Button component integrates with the **ATOM animation system** (`@atomchat.io/animations`) through a **data-attribute contract** that maintains separation of concerns between components and animations.
+
+### Animation Architecture
+
+**Separation of Concerns:**
+
+Following the ATOM Design System architecture, Button components **do not import or initialize animations**. Instead:
+
+1. **Component Layer** — Button.astro renders semantic HTML with `data-*` attributes
+2. **Animation Layer** — GSAP functions discover elements via `querySelector("[data-*]")` and attach behaviors
+3. **Layout Initialization** — Animations initialize globally in the layout, not in components
+
+**Why this matters:**
+- Zero framework coupling
+- Components remain server-renderable
+- Animations work across all frameworks (Astro, React, Vue, Angular)
+- Easy to disable animations globally without touching components
+
+### Data-Attribute Contract
+
+The Button component exposes these animation hooks:
+
+| Attribute | Purpose | Animation Module |
+|-----------|---------|------------------|
+| `data-button` | Root element discovery | All button animations |
+| `data-hover-rotate` | Enables hover rotation effect | `initHoverRotate()` |
+| `data-button-label` | Original label (animatable) | `initHoverRotate()` |
+| `data-button-label-clone` | Clone label (animatable) | `initHoverRotate()` |
+| `data-shimmer` | Loading text shimmer | `initShimmerText()` |
+| `data-button-spinner` | Loading spinner | Native CSS animation |
+
+### Hover Rotation Animation
+
+**What it does:**
+On hover, the button label rotates out while a clone label rotates in, creating a smooth flip effect.
+
+**Pre-Rendered DOM Structure:**
+
+The Button component **pre-renders both the original and clone labels** in the template:
+
+```html
+<button class="button" data-button data-hover-rotate>
+  <span class="button__label-wrap">
+    <!-- Original label (visible, opacity: 1, rotation: 0deg) -->
+    <span class="button__label" data-button-label>
+      <span class="button__icon"><!-- icon-left slot --></span>
+      Button Text
+      <span class="button__icon"><!-- icon-right slot --></span>
+    </span>
+
+    <!-- Clone label (hidden, opacity: 0, rotation: -20deg) -->
+    <span class="button__label button__label--clone"
+          data-button-label-clone
+          aria-hidden="true">
+      <span class="button__icon"><!-- icon-left slot --></span>
+      Button Text
+      <span class="button__icon"><!-- icon-right slot --></span>
+    </span>
+  </span>
+</button>
+```
+
+**Animation Initialization (3 functions):**
+
+The `@atomchat.io/animations` package runs three coordinated functions:
+
+1. **`initRotateClones()`**
+   Detects pre-rendered clones (Astro pattern) and marks elements with `data-clones-ready` attribute. For non-Astro contexts, creates clones inline-styled as fallback.
+
+2. **`initRotateCalc()`**
+   Calculates `--y` CSS custom property (transform-origin Y-coordinate) based on character count:
+   ```typescript
+   const y = Y_MIN + Y_PADDING * (Y_BASE_OFFSET + Y_CHAR_MULTIPLIER * chars);
+   element.style.setProperty('--y', y + '%');
+   ```
+   Uses `MutationObserver` to recalculate on text changes.
+
+3. **`initHoverRotate()`**
+   Registers GSAP timelines on `pointerenter` events:
+   - Reads `--r` CSS variable (default: `20deg`) for rotation angle
+   - Applies "resetToRest" pattern: forces originals to `0deg` and clones to `-r` before animating
+   - On hover: originals rotate `+=${r}` and fade out, clones rotate to `0deg` and fade in
+   - Duration: `DURATION.half` (0.3s), stagger: `0.075s`
+   - Respects `prefersReducedMotion()` and `isMotionExempt()`
+
+**GSAP Timeline (actual implementation):**
+
+```typescript
+// resetToRest pattern (prevents state corruption on rapid re-hover)
+originals.forEach(orig => gsap.set(orig, { rotation: 0, opacity: 1 }));
+clones.forEach(clone => gsap.set(clone, { rotation: -r, opacity: 0 }));
+
+// Hover animation
+const tl = gsap.timeline();
+
+tl.to(originals, {
+  rotation: `+=${r}`,        // Rotate out
+  opacity: 0,                // Fade out
+  duration: DURATION.half,   // 0.3s
+  ease: "atom",              // Custom ease: cubic-bezier(0.625, 0.05, 0, 1)
+  stagger: 0.075,            // Stagger per child span
+}, 0);
+
+tl.to(clones, {
+  rotation: 0,               // Rotate from -r to 0
+  opacity: 1,                // Fade in
+  duration: DURATION.half,
+  ease: "atom",
+  stagger: 0.075,
+}, 0);
+```
+
+**CSS Variables:**
+
+```css
+.button {
+  --r: 20deg;  /* Rotation angle (customizable per button) */
+  --y: 1100%;  /* Transform-origin Y (auto-calculated by initRotateCalc) */
+}
+```
+
+**Customization:**
+
+```css
+/* Override rotation angle */
+.button--subtle-rotate {
+  --r: 10deg;
+}
+
+/* Override globally */
+:root {
+  --button-rotation: 15deg;
+}
+.button {
+  --r: var(--button-rotation);
+}
+```
+
+### Loading Shimmer Animation
+
+**Trigger:** When `loading={true}`, the Button renders loading state with shimmer effect.
+
+**Data attribute:** `data-shimmer` on `.button__loading-text`
+
+**Animation module:** `initShimmerText()` from `@atomchat.io/animations`
+
+**Implementation:**
+
+The shimmer effect uses CSS gradient mask with GSAP timeline:
+
+```css
+.button__loading-text[data-shimmer] {
+  background: linear-gradient(
+    90deg,
+    var(--fg-disabled) 0%,
+    var(--fg-default) 50%,
+    var(--fg-disabled) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 1.5s infinite linear;
+}
+
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+```
+
+### Spinner Animation
+
+**Data attribute:** `data-button-spinner` on `.button__spinner`
+
+**Implementation:** Native CSS animation (no JavaScript required)
+
+```css
+@keyframes button-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.button__spinner {
+  animation: button-spin var(--duration-default) linear infinite;
+}
+```
+
+**Accessibility:**
+```css
+@media (prefers-reduced-motion: reduce) {
+  .button__spinner {
+    animation-duration: 1.5s; /* Slower for accessibility */
+  }
+}
+```
+
+### Initialization
+
+**Global initialization (recommended):**
+
+In your Astro layout or React app entry:
+
+```astro
+<!-- Astro Layout.astro -->
+<script>
+  import { initAllAnimations } from '@atomchat.io/animations';
+
+  // Initialize on first load
+  document.addEventListener('DOMContentLoaded', () => {
+    initAllAnimations();
+  });
+
+  // Reinitialize after Astro page transitions
+  document.addEventListener('astro:page-load', () => {
+    initAllAnimations();
+  });
+</script>
+```
+
+**Scoped initialization (SPAs, component-level):**
+
+```typescript
+import { initHoverRotate, initRotateClones, initRotateCalc } from '@atomchat.io/animations';
+
+// In React/Vue/Svelte component
+useEffect(() => {
+  const cleanups = [
+    initRotateClones({ scope: containerRef.current }),
+    initRotateCalc({ scope: containerRef.current }),
+    initHoverRotate({ scope: containerRef.current }),
+  ];
+
+  return () => cleanups.forEach(cleanup => cleanup());
+}, []);
+```
+
+**Motion preferences:**
+
+The animation system respects three-tier motion control:
+
+1. **OS preference:** `prefers-reduced-motion: reduce`
+2. **Site-level:** `<html data-motion="reduced|none">`
+3. **Element-level:** `data-motion-exempt` attribute
+
+When motion is reduced, hover rotation animations are skipped entirely inside event handlers.
+
+---
+
+## Accessibility
+
+### ARIA Attributes
+
+The Button component includes built-in accessibility features:
+
+```html
+<!-- Disabled button -->
+<button
+  class="button button--disabled"
+  disabled
+  aria-disabled="true"
+>
+  Click me
+</button>
+
+<!-- Loading button -->
+<button
+  class="button button--loading"
+  disabled
+  aria-disabled="true"
+  aria-busy="true"
+>
+  Loading
+</button>
+
+<!-- Link button -->
+<a
+  class="button button--primary"
+  href="/about"
+>
+  Learn More
+</a>
+```
+
+**Automatic behaviors:**
+- `disabled` attribute prevents interaction
+- `aria-disabled="true"` for screen readers
+- `aria-busy="true"` during loading state
+- Clone label has `aria-hidden="true"` to avoid duplication
+- Spinner has `aria-hidden="true"` (state conveyed by `aria-busy`)
+
+### Best Practices
+
+**Use semantic HTML:**
+```astro
+<!-- Form submission -->
+<Button variant="Primary" type="submit">Submit</Button>
+
+<!-- Navigation -->
+<Button variant="Secondary" href="/about">About</Button>
+```
+
+**Provide descriptive labels:**
+```astro
+<Button variant="Destructive Primary">
+  Delete Account
+</Button>
+```
+
+**Use loading state for async actions:**
+```astro
+<Button variant="Primary" loading={isSubmitting}>
+  {isSubmitting ? 'Saving...' : 'Save Changes'}
+</Button>
+```
+
+**Don't use generic labels:**
+```astro
+<!-- Bad -->
+<Button variant="Primary">Click Here</Button>
+```
+
+**Don't nest interactive elements:**
+```astro
+<!-- Bad -->
+<Button variant="Primary">
+  <a href="/link">Link inside button</a>
+</Button>
+```
+
+---
+
+## Composition Patterns
+
+### Button Group
+
+For multiple buttons in a row:
+
+```astro
+<div style="display: flex; gap: var(--s);">
+  <Button variant="Secondary" size="m">Cancel</Button>
+  <Button variant="Primary" size="m">Confirm</Button>
+</div>
+```
+
+### Form Actions
+
+```astro
+<form>
+  <!-- Form fields -->
+  <div style="display: flex; justify-content: flex-end; gap: var(--s); margin-top: var(--m);">
+    <Button variant="Tertiary" size="m" type="reset">Reset</Button>
+    <Button variant="Primary" size="m" type="submit">Submit</Button>
+  </div>
+</form>
+```
+
+### Modal Actions
+
+```astro
+<div class="modal__footer">
+  <Button variant="Tertiary" size="m">Cancel</Button>
+  <Button variant="Destructive Primary" size="m">Delete</Button>
+</div>
+```
+
+### Icon-only Button
+
+For icon-only buttons, use the `IconButton` component instead:
+
+```astro
+import { IconButton } from '@atomchat.io/components-astro';
+
+<IconButton variant="Primary" size="m">
+  <svg slot="icon">...</svg>
+</IconButton>
+```
+
+---
+
+## Design Tokens in Action
+
+### Token-First Philosophy
+
+Every visual property of the Button component is controlled by design tokens. This ensures:
+
+- **Global consistency** — All buttons use the same size scale
+- **Easy theming** — Change tokens to update all buttons
+- **State management** — Hover/focus/active states via tokens
+- **Maintainability** — Update once, reflect everywhere
+
+### Token Override Example
+
+```css
+/* Custom button variant */
+.button--custom {
+  --btn-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --btn-bg-hover: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  --btn-fg: var(--primitive-neutral-0);
+  --btn-shadow-focus: 0 0 0 2px #667eea40;
+}
+```
+
+**Usage:**
+```astro
+<Button variant="Primary" class="button--custom">
+  Custom Gradient
+</Button>
+```
+
+---
+
+
+## Build this Component with AI
+
+Use this pre-built prompt to generate a complete showcase of this component in your preferred framework. The AI will create a working implementation with all variants, animations, and proper token usage.
+
+**What you get:**
+- Complete component setup with proper imports
+- All 6 variants + 5 sizes demonstrated
+- States (enabled, disabled, loading) with examples
+- Icon slots usage (left, right, both)
+- Link rendering example
+- Optional additional GSAP animations
+- Token-first styling (no hardcoded values)

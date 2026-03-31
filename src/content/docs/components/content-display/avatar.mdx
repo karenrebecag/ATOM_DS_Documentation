@@ -1,0 +1,631 @@
+---
+title: Avatar
+description: User profile image or placeholder with status indicators.
+---
+
+## Overview
+
+The Avatar component displays user profile images, initials, or icons with optional status badges. It's a versatile atom-level component that adapts to various contexts through size, shape, and type variants.
+
+:::tip[Interactive Playground]
+**[Open Avatar Playground →](/playground/avatar)**
+
+View all Avatar variants with live examples including badges, shapes, and sizes in an isolated environment.
+:::
+
+**Key Features:**
+- 4 size variants (xs, s, m, l)
+- 4 content types (image, image-border, initials, icon)
+- 2 shape options (circle, square)
+- 4 badge states (none, verified, online, offline)
+- Fully token-driven styling
+- Accessible with ARIA labels
+- Auto-detection of content type
+
+---
+
+## Installation
+
+```bash
+# Install component package
+pnpm add @atomchat.io/components-astro
+
+# Install required dependencies
+pnpm add @atomchat.io/css @atomchat.io/tokens
+```
+
+**CSS Import (required):**
+```astro
+---
+// In your layout or page
+import '@atomchat.io/css';
+---
+```
+
+---
+
+## Anatomy
+
+The Avatar component consists of three main elements:
+
+```
+┌─────────────────────────┐
+│  .avatar (container)    │  ← Base wrapper with position: relative
+│  ┌──────────────────┐   │
+│  │  .avatar__frame  │   │  ← Inner frame (overflow: hidden)
+│  │  ┌────────────┐  │   │
+│  │  │  Content   │  │   │  ← One of: __img | __initials | __icon
+│  │  └────────────┘  │   │
+│  └──────────────────┘   │
+│                         │
+│  ● .avatar__badge      │  ← Badge indicator (position: absolute)
+└─────────────────────────┘
+```
+
+**DOM Structure:**
+```html
+<span class="avatar avatar--m avatar--circle avatar--image-border">
+  <span class="avatar__frame">
+    <img class="avatar__img" src="..." alt="..." />
+  </span>
+  <span class="avatar__badge avatar__badge--verified">
+    <svg>...</svg>
+  </span>
+</span>
+```
+
+---
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `src` | `string?` | — | Image URL for avatar photo |
+| `alt` | `string?` | `""` | Alt text for image (accessibility) |
+| `size` | `"xs" \| "s" \| "m" \| "l"` | `"xs"` | Size variant |
+| `shape` | `"circle" \| "square"` | `"circle"` | Shape variant |
+| `type` | `"image" \| "image-border" \| "initials" \| "icon"` | Auto-detected | Content type |
+| `initials` | `string?` | `"?"` | Initials text (e.g., "JD") |
+| `badge` | `"verified" \| "online" \| "offline" \| "none"` | `"none"` | Status badge indicator |
+| `class` | `string?` | — | Additional CSS classes |
+
+**Auto-detection Logic:**
+- If `src` is provided → defaults to `type="image-border"`
+- If `src` is missing → defaults to `type="initials"`
+- Can be overridden by explicitly passing `type`
+
+---
+
+## Variants
+
+### Size Variants
+
+| Size | Token | Value | Use Case |
+|------|-------|-------|----------|
+| **xs** | `--avatar-structure-size-xs` | `24px` | Compact lists, inline mentions |
+| **s** | `--avatar-structure-size-s` | `32px` | Sidebar navigation, small cards |
+| **m** | `--avatar-structure-size-m` | `40px` | Default UI elements, headers |
+| **l** | `--avatar-structure-size-l` | `48px` | Profile pages, large cards |
+
+### Type Variants
+
+| Type | Background | Border | Description |
+|------|------------|--------|-------------|
+| **image** | `none` | `none` | Clean photo without decorations |
+| **image-border** | `var(--bg-tertiary)` | Visual padding | Photo with subtle border effect |
+| **initials** | `var(--bg-tertiary)` | — | Text-based fallback (1-2 letters) |
+| **icon** | `var(--bg-tertiary)` | — | Generic user icon placeholder |
+
+### Shape Variants
+
+| Shape | Border Radius | Use Case |
+|-------|---------------|----------|
+| **circle** | `50%` or `var(--radius-pill)` | Modern, friendly UI |
+| **square** | `var(--radius-s)` (xs/s) or `var(--radius-m)` (m/l) | Professional, structured layouts |
+
+### Badge Variants
+
+| Badge | Background Token | Icon/Indicator | Meaning |
+|-------|------------------|----------------|---------|
+| **none** | — | — | No status |
+| **verified** | `var(--primitive-blue-500)` | checkmark SVG | Official/verified account |
+| **online** | `var(--fg-accent-indicators-online)` | Solid dot | User is active |
+| **offline** | `var(--fg-accent-indicators-offline)` | Solid dot | User is inactive |
+
+---
+
+## Usage Examples
+
+### Basic Image Avatar
+
+```astro
+---
+import { Avatar } from '@atomchat.io/components-astro';
+---
+
+<Avatar
+  src="https://example.com/user.jpg"
+  alt="John Doe"
+  size="m"
+/>
+```
+
+### Initials Avatar
+
+```astro
+<Avatar
+  size="l"
+  type="initials"
+  initials="JD"
+  shape="square"
+/>
+```
+
+### Avatar with Badge
+
+```astro
+<Avatar
+  src="https://example.com/user.jpg"
+  size="m"
+  badge="verified"
+  alt="Verified user"
+/>
+```
+
+### Icon Avatar
+
+```astro
+<Avatar
+  size="s"
+  type="icon"
+  badge="online"
+/>
+```
+
+### Custom Icon Slot
+
+```astro
+<Avatar size="l" type="icon">
+  <svg slot="icon" viewBox="0 0 24 24">
+    <path d="M12 2L2 7v10c0 5.52 3.84 10.67 10 12 6.16-1.33 10-6.48 10-12V7l-10-5z"/>
+  </svg>
+</Avatar>
+```
+
+---
+
+## Structure Tokens
+
+### Size Tokens
+
+```css
+--avatar-structure-size-xs: 24px;
+--avatar-structure-size-s: 32px;
+--avatar-structure-size-m: 40px;
+--avatar-structure-size-l: 48px;
+```
+
+### Badge Tokens
+
+**Badge Size (Online/Offline Dot):**
+```css
+--avatar-structure-badge-size-xs: 10px;
+--avatar-structure-badge-size-s: 10px;
+--avatar-structure-badge-size-m: 12px;
+--avatar-structure-badge-size-l: 14px;
+```
+
+**Badge Size (Verified Icon -- Larger for SVG):**
+```css
+--avatar-structure-badge-size-verified-xs: 12px;
+--avatar-structure-badge-size-verified-s: 14px;
+--avatar-structure-badge-size-verified-m: 16px;
+--avatar-structure-badge-size-verified-l: 18px;
+```
+
+**Badge Positioning:**
+```css
+/* XS positioning */
+--avatar-structure-badge-position-xs-right: -2px;
+--avatar-structure-badge-position-xs-bottom: -2px;
+
+/* S positioning */
+--avatar-structure-badge-position-s-right: -1px;
+--avatar-structure-badge-position-s-bottom: -1px;
+
+/* M positioning */
+--avatar-structure-badge-position-m-right: 0px;
+--avatar-structure-badge-position-m-bottom: 0px;
+
+/* L positioning */
+--avatar-structure-badge-position-l-right: 0px;
+--avatar-structure-badge-position-l-bottom: 0px;
+```
+
+**Badge Border Width:**
+```css
+--avatar-structure-badge-border-width-xs: 1.5px;
+--avatar-structure-badge-border-width-s: 2px;
+--avatar-structure-badge-border-width-m: 2px;
+--avatar-structure-badge-border-width-l: 2px;
+```
+
+### Additional Structure Tokens
+
+```css
+--avatar-structure-border-width: 2px;
+--avatar-structure-icon-size-l: 28px;
+--avatar-structure-padding-l-circle: 6px;
+```
+
+---
+
+## Dependencies
+
+### Required Packages
+- `@atomchat.io/css` -- Component styles and tokens
+- `@atomchat.io/tokens` -- Design token definitions
+
+### Semantic Tokens Used
+
+**Background:**
+```css
+--bg-primary        /* Badge border background */
+--bg-tertiary       /* Avatar background (initials/icon) */
+```
+
+**Foreground:**
+```css
+--fg-primary        /* Initials text color */
+--fg-quaternary     /* Icon color */
+--fg-accent-indicators-online   /* Online badge green */
+--fg-accent-indicators-offline  /* Offline badge red */
+```
+
+**Primitive:**
+```css
+--primitive-blue-500     /* Verified badge background */
+--primitive-neutral-0    /* Verified icon color (white) */
+```
+
+**Spacing:**
+```css
+--xxs, --xs, --s, --sm   /* Internal padding */
+```
+
+**Border Radius:**
+```css
+--radius-s           /* Small border radius */
+--radius-m           /* Medium border radius */
+--radius-pill        /* Full rounded (9999px) */
+--radius-circle      /* Perfect circle (50%) */
+```
+
+---
+
+## Animations
+
+The Avatar component itself has **no built-in animations**. It's designed as a static display element for optimal performance.
+
+**Animation Opportunities:**
+- **Entry animations** (fade-in, scale) can be applied via GSAP or CSS
+- **Hover effects** for clickable avatars (scale, shadow, border glow)
+- **Badge transitions** when status changes
+- **Loading states** (skeleton, shimmer)
+
+**Example with GSAP (in parent component):**
+```astro
+<script>
+  import gsap from 'gsap';
+
+  // Entry animation
+  gsap.fromTo('.avatar',
+    { scale: 0, opacity: 0 },
+    { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out', stagger: 0.05 }
+  );
+</script>
+```
+
+**Example with CSS (hover interaction):**
+```css
+.avatar-button {
+  transition: transform 200ms ease;
+}
+
+.avatar-button:hover .avatar {
+  transform: scale(1.05);
+}
+```
+
+---
+
+## Accessibility
+
+### ARIA Attributes
+
+The Avatar component includes built-in accessibility features:
+
+```html
+<span
+  class="avatar ..."
+  role="img"
+  aria-label="John Doe"
+  data-avatar
+>
+  <!-- Badge with aria-label -->
+  <span
+    class="avatar__badge avatar__badge--verified"
+    aria-label="Verified"
+    data-avatar-badge
+  >
+    <svg aria-hidden="true">...</svg>
+  </span>
+</span>
+```
+
+**Automatic ARIA Labels:**
+- `role="img"` -- Identifies avatar as image element
+- `aria-label` -- Uses `alt` prop, falls back to `initials` or "Avatar"
+- Badge `aria-label` -- "Verified", "Online", "Offline"
+- SVG icons use `aria-hidden="true"` to avoid duplication
+
+### Best Practices
+
+**Always provide meaningful alt text:**
+```astro
+<Avatar src="..." alt="Karen Ortiz, Design Lead" />
+```
+
+**Use initials as fallback:**
+```astro
+<Avatar initials="KO" alt="Karen Ortiz" />
+```
+
+**For decorative avatars, use empty alt:**
+```astro
+<Avatar src="..." alt="" />
+```
+
+**Don't use generic labels:**
+```astro
+<!-- Bad -->
+<Avatar src="..." alt="User" />
+```
+
+---
+
+## Composition Patterns
+
+### Avatar Group
+
+For multiple overlapping avatars, use the `AvatarGroup` molecule:
+
+```astro
+---
+import { AvatarGroup } from '@atomchat.io/components-astro';
+---
+
+<AvatarGroup
+  avatars={[
+    { src: '/user1.jpg', alt: 'User 1' },
+    { src: '/user2.jpg', alt: 'User 2' },
+    { src: '/user3.jpg', alt: 'User 3' }
+  ]}
+  max={3}
+  size="m"
+/>
+```
+
+### Clickable Avatar
+
+Wrap in a button or link for interactivity:
+
+```astro
+<button type="button" class="avatar-button">
+  <Avatar src="..." alt="..." size="m" />
+</button>
+
+<a href="/profile" class="avatar-link">
+  <Avatar src="..." alt="..." size="m" />
+</a>
+```
+
+### Avatar with Tooltip
+
+```astro
+<div class="avatar-wrapper" data-tooltip="John Doe">
+  <Avatar src="..." alt="John Doe" size="s" />
+</div>
+```
+
+---
+
+## Design Tokens in Action
+
+### Token-First Philosophy
+
+Every visual property of the Avatar component is controlled by design tokens. This ensures:
+
+- **Global consistency** -- All avatars use the same size scale
+- **Easy theming** -- Change tokens to update all avatars
+- **Responsive sizing** -- Tokens can be responsive via media queries
+- **Maintainability** -- Update once, reflect everywhere
+
+### Token Override Example
+
+```css
+/* Custom size variant (if needed) */
+.avatar--xl {
+  width: 64px;
+  height: 64px;
+}
+
+.avatar--xl .avatar__badge {
+  width: 18px;
+  height: 18px;
+  right: 2px;
+  bottom: 2px;
+}
+
+.avatar--xl .avatar__initials {
+  font-size: var(--text-body-regular);
+}
+```
+
+---
+
+## Framework Support
+
+The Avatar component is available for multiple frameworks:
+
+| Package | Framework | Status |
+|---------|-----------|--------|
+| `@atomchat.io/components-astro` | Astro | Stable |
+| `@atomchat.io/components-react` | React | Stable |
+| `@atomchat.io/components-vue` | Vue 3 | Stable |
+| `@atomchat.io/components-angular` | Angular | Stable |
+
+All implementations share the same:
+- CSS styles (`@atomchat.io/css`)
+- Design tokens (`@atomchat.io/tokens`)
+- API interface (props)
+- Visual appearance
+
+---
+
+## Framework Examples
+
+### Astro
+
+**Installation:**
+```bash
+pnpm add @atomchat.io/components-astro @atomchat.io/css
+```
+
+**Usage:**
+```astro
+---
+import { Avatar } from '@atomchat.io/components-astro';
+import '@atomchat.io/css';
+---
+
+<Avatar
+  src="/user.jpg"
+  alt="John Doe"
+  size="l"
+  badge="verified"
+/>
+```
+
+### React
+
+**Installation:**
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+**Usage:**
+```tsx
+import { Avatar } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+
+function UserProfile() {
+  return (
+    <Avatar
+      src="/user.jpg"
+      alt="John Doe"
+      size="l"
+      badge="verified"
+    />
+  );
+}
+```
+
+### Next.js
+
+**Installation:**
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+**Usage:**
+```tsx
+import { Avatar } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+
+export default function UserProfile() {
+  return (
+    <Avatar
+      src="/user.jpg"
+      alt="John Doe"
+      size="l"
+      badge="verified"
+    />
+  );
+}
+```
+
+### Vue
+
+**Installation:**
+```bash
+pnpm add @atomchat.io/components-vue @atomchat.io/css
+```
+
+**Usage:**
+```vue
+<script setup>
+import { Avatar } from '@atomchat.io/components-vue';
+import '@atomchat.io/css';
+</script>
+
+<template>
+  <Avatar
+    src="/user.jpg"
+    alt="John Doe"
+    size="l"
+    badge="verified"
+  />
+</template>
+```
+
+### Angular
+
+**Installation:**
+```bash
+pnpm add @atomchat.io/components-angular @atomchat.io/css
+```
+
+**Usage:**
+```typescript
+import { AvatarComponent } from '@atomchat.io/components-angular';
+import '@atomchat.io/css';
+
+@Component({
+  imports: [AvatarComponent],
+  template: `
+    <atom-avatar
+      src="/user.jpg"
+      alt="John Doe"
+      size="l"
+      badge="verified"
+    ></atom-avatar>
+  `
+})
+export class UserProfileComponent {}
+```
+
+---
+
+## Build this Component with AI
+
+Use this pre-built prompt to generate a complete showcase of this component in your preferred framework. The AI will create a working implementation with all variants, animations (optional), and proper token usage.
+
+**What you get:**
+- Complete component setup with proper imports
+- All size, type, shape, and badge variants
+- Real-world composition examples
+- Optional GSAP animations
+- Token-first styling (no hardcoded values)

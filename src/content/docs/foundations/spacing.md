@@ -260,6 +260,72 @@ li {
 }
 ```
 
+### Semantic Spacing in Components
+
+```css
+/* Button with semantic height */
+.button {
+  height: var(--spacing-btn-height);
+  padding: 0 var(--spacing-md);
+  display: flex;
+  align-items: center;
+}
+
+/* Input field with responsive height */
+.input {
+  height: var(--spacing-input-height);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  gap: var(--spacing-xs);
+}
+
+/* Icon with semantic sizing */
+.icon {
+  width: var(--spacing-icon-m);
+  height: var(--spacing-icon-m);
+}
+
+/* Modal dialog with semantic width */
+.modal {
+  width: var(--spacing-dialog-width-m);
+  max-width: 90vw;
+  padding: var(--spacing-padding-m);
+}
+
+/* Responsive container */
+.container {
+  width: var(--spacing-container-width-m);
+  margin: 0 auto;
+  padding: var(--spacing-padding-container);
+}
+
+/* Navigation bar with semantic height */
+.navbar {
+  height: var(--spacing-nav-bar-height);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-gap-l);
+  padding: 0 var(--spacing-padding-container);
+}
+
+/* Content width constraint */
+.article {
+  max-width: var(--spacing-content-width-lg);
+  margin: 0 auto;
+  padding: var(--spacing-padding-l);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-gap-m);
+}
+
+/* Aspect ratio container */
+.video-container {
+  aspect-ratio: var(--spacing-aspect-video);
+  background: var(--color-bg-secondary);
+  border-radius: var(--border-radius-m);
+  overflow: hidden;
+}
+```
+
 ## Responsive Spacing
 
 ```css
@@ -294,6 +360,93 @@ li {
   }
 }
 ```
+
+## Semantic Spacing Tokens
+
+Beyond primitive spacing, Atom DS provides semantic tokens for common layout patterns:
+
+### Padding Scales
+
+Responsive padding values using em units for fluid scaling:
+
+| Level | Token | Value | Use Case |
+|-------|-------|-------|----------|
+| XL | `--spacing-padding-xl` | 12.5em | Extra large page padding |
+| L | `--spacing-padding-l` | 10em | Large sections padding |
+| M | `--spacing-padding-m` | 5em | Medium padding |
+| S | `--spacing-padding-s` | 3.75em | Small padding |
+| XS | `--spacing-padding-xs` | 2.5em | Extra small padding |
+| Container | `--spacing-padding-container` | 1.875em | Container padding |
+
+### Gap Scales
+
+Flex/grid gap values using em units:
+
+| Level | Token | Value | Use Case |
+|-------|-------|-------|----------|
+| XXL | `--spacing-gap-xxl` | 2.5em | Extra large gaps |
+| XL | `--spacing-gap-xl` | 2em | Large gaps |
+| L | `--spacing-gap-l` | 1.875em | Large gaps |
+| M | `--spacing-gap-m` | 1.5em | Medium gaps |
+| SM | `--spacing-gap-sm` | 1.25em | Small gaps |
+| S | `--spacing-gap-s` | 1em | Small gaps |
+| XS | `--spacing-gap-xs` | 0.75em | Extra small gaps |
+| XXS | `--spacing-gap-xxs` | 0.5em | Minimal gaps |
+
+### Component Heights
+
+Predefined heights for common interactive elements:
+
+| Component | Token | Value | Purpose |
+|-----------|-------|-------|---------|
+| Button | `--spacing-btn-height` | 2.5em | Standard button height |
+| Input | `--spacing-input-height` | 3em | Standard input height |
+| Input SM | `--spacing-input-height-sm` | 2rem | Small input |
+| Input MD | `--spacing-input-height-md` | 2.5rem | Medium input |
+| Input LG | `--spacing-input-height-lg` | 3rem | Large input |
+| Navbar | `--spacing-nav-bar-height` | 4.625em | Navigation bar height |
+
+### Icon Sizing
+
+Semantic icon sizes for consistent icon usage:
+
+| Size | Token | Pixel Value | Usage |
+|------|-------|-------------|-------|
+| XS | `--spacing-icon-xs` | 12px | Tiny icons |
+| S | `--spacing-icon-s` | 16px | Small icons |
+| M | `--spacing-icon-m` | 20px | Medium icons |
+| L | `--spacing-icon-l` | 24px | Large icons |
+
+### Container & Dialog Widths
+
+Predefined width values for layout containers and modals:
+
+**Container widths (percentage-based):**
+- `--spacing-container-width-m`: 82.5%
+- `--spacing-container-width-sm`: 65%
+- `--spacing-container-width-s`: 50%
+
+**Dialog widths (fixed):**
+- `--spacing-dialog-width-s`: 400px (Small dialog)
+- `--spacing-dialog-width-m`: 560px (Medium dialog)
+- `--spacing-dialog-width-l`: 800px (Large dialog)
+
+**Content widths (fixed):**
+- `--spacing-content-width-sm`: 600px
+- `--spacing-content-width-md`: 800px
+- `--spacing-content-width-lg`: 1000px
+
+### Aspect Ratios
+
+Predefined aspect ratio values for media:
+
+| Ratio | Token | Value | Description |
+|-------|-------|-------|-------------|
+| Square | `--spacing-aspect-square` | 1 | 1/1 |
+| Video | `--spacing-aspect-video` | 1.778 | 16/9 |
+| Landscape | `--spacing-aspect-landscape` | 1.333 | 4/3 |
+| Portrait | `--spacing-aspect-portrait` | 0.75 | 3/4 |
+| Wide | `--spacing-aspect-wide` | 2.333 | 21/9 |
 
 ## Spacing Ratios
 

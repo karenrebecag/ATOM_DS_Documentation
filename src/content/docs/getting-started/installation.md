@@ -1,0 +1,361 @@
+---
+title: Installation
+description: How to install AtomChat Design System packages in your project.
+---
+
+AtomChat Design System is distributed as independent npm packages under the **@atomchat.io** scope. You can use it via CDN or install via npm.
+
+## CDN Installation (Recommended for Quick Start)
+
+The fastest way to start using AtomChat DS is via the **jsDelivr CDN**:
+
+### Complete Token Bundle
+
+```html
+<!-- Add to your HTML <head> -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/tokens.css">
+```
+
+### Layer-Specific Imports
+
+Import only the layers you need:
+
+```html
+<!-- Foundation layer (primitives) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/foundation.css">
+
+<!-- Semantic layer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/semantic.css">
+
+<!-- Component layer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/components.css">
+
+<!-- Dark theme -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/dark.css">
+```
+
+:::tip[Version Pinning]
+Always pin to a specific version (e.g., `@1.0.0`) in production to avoid unexpected breaking changes.
+:::
+
+## npm Installation
+
+### Tokens Only
+
+If you only need design tokens (most common):
+
+```bash
+pnpm add @atomchat.io/tokens
+```
+
+### Complete CSS Bundle
+
+For a pre-compiled CSS bundle with tokens, reset, and utilities:
+
+```bash
+pnpm add @atomchat.io/css
+```
+
+### With Animations
+
+To include GSAP-based animations:
+
+```bash
+pnpm add @atomchat.io/animations gsap
+```
+
+:::tip[GSAP Dependency]
+`@atomchat.io/animations` requires GSAP as a peer dependency. Make sure to install both packages.
+:::
+
+### All Packages
+
+To install the complete design system:
+
+```bash
+pnpm add @atomchat.io/tokens @atomchat.io/css @atomchat.io/animations gsap
+```
+
+## Framework-Specific Setup
+
+### React / Next.js
+
+**Via CDN (in layout):**
+
+```tsx
+// app/layout.tsx (Next.js App Router)
+import Head from 'next/head';
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/tokens.css" />
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+**Via npm:**
+
+```tsx
+// app/layout.tsx
+import '@atomchat.io/css';
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+**With Animations:**
+
+```tsx
+'use client';
+
+import { useEffect } from 'react';
+import { initAllAnimations } from '@atomchat.io/animations';
+
+export function AnimationProvider() {
+  useEffect(() => {
+    initAllAnimations();
+  }, []);
+
+  return null;
+}
+```
+
+### Astro
+
+**Via CDN:**
+
+```astro
+---
+// src/layouts/Layout.astro
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/tokens.css">
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+```
+
+**Via npm:**
+
+```astro
+---
+// src/layouts/Layout.astro
+import '@atomchat.io/css';
+---
+<html lang="en">
+  <body>
+    <slot />
+  </body>
+</html>
+```
+
+**With Animations:**
+
+```astro
+<html lang="en">
+  <body>
+    <slot />
+  </body>
+</html>
+
+<script>
+  import { initAllAnimations } from '@atomchat.io/animations';
+  initAllAnimations();
+</script>
+```
+
+### Vue
+
+**Via CDN (in index.html):**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/tokens.css">
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>
+```
+
+**Via npm:**
+
+```js
+// main.js
+import { createApp } from 'vue';
+import App from './App.vue';
+import '@atomchat.io/css';
+
+createApp(App).mount('#app');
+```
+
+### Vanilla HTML/CSS
+
+**Via CDN:**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My App</title>
+
+  <!-- AtomChat DS Tokens -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/tokens.css">
+
+  <style>
+    .my-button {
+      background: var(--bg-primary);
+      color: var(--text-inverse);
+      padding: var(--gap-s) var(--gap-m);
+      border-radius: var(--radius-m);
+    }
+  </style>
+</head>
+<body>
+  <button class="my-button">Click me</button>
+</body>
+</html>
+```
+
+**Via npm:**
+
+```css
+/* styles.css */
+@import '@atomchat.io/tokens/build/css/tokens.css';
+
+.my-component {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  padding: var(--gap-m);
+}
+```
+
+## Token Format Options
+
+`@atomchat.io/tokens` provides multiple output formats:
+
+### CSS Custom Properties
+
+**CDN:**
+```html
+<!-- Complete bundle -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/tokens.css">
+
+<!-- Or layer-specific -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/foundation.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/semantic.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/components.css">
+```
+
+**npm:**
+```css
+@import '@atomchat.io/tokens/build/css/tokens.css';
+/* or */
+@import '@atomchat.io/tokens/build/css/foundation.css';
+@import '@atomchat.io/tokens/build/css/semantic.css';
+@import '@atomchat.io/tokens/build/css/components.css';
+```
+
+### SCSS Variables
+
+```scss
+@use '@atomchat.io/tokens/build/scss/tokens' as tokens;
+
+.button {
+  background: tokens.$bg-primary;
+}
+```
+
+### JavaScript/TypeScript
+
+```typescript
+import tokens from '@atomchat.io/tokens';
+
+console.log(tokens.colors.primary);
+```
+
+### JSON
+
+```javascript
+import tokensJson from '@atomchat.io/tokens/build/json/tokens.json';
+```
+
+## Theme Support
+
+AtomChat DS includes built-in light/dark theme support via the `data-theme` attribute:
+
+```html
+<!-- Light theme (default) -->
+<html data-theme="light">
+
+<!-- Dark theme -->
+<html data-theme="dark">
+```
+
+Toggle themes with JavaScript:
+
+```javascript
+const html = document.documentElement;
+const currentTheme = html.getAttribute('data-theme');
+html.setAttribute('data-theme', currentTheme === 'light' ? 'dark' : 'light');
+```
+
+## Verification
+
+To verify installation, check that tokens are loaded:
+
+```javascript
+// In browser console
+getComputedStyle(document.documentElement).getPropertyValue('--bg-primary');
+// Should return a color value
+```
+
+## Available CDN Files
+
+All files available on jsDelivr CDN:
+
+| File | Size | Purpose |
+|------|------|---------|
+| `tokens.css` | 60.77 KB | Complete token bundle |
+| `foundation.css` | 14.77 KB | Primitive layer only |
+| `semantic.css` | 8.32 KB | Semantic layer only |
+| `components.css` | 21.43 KB | Component layer only |
+| `dark.css` | 325 B | Dark theme overrides |
+
+**Base URL:**
+```
+https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/
+```
+
+## Package Versions
+
+| Package | Current Version | npm Link |
+|---------|-----------------|----------|
+| @atomchat.io/tokens | 1.0.0 | [View on npm](https://www.npmjs.com/package/@atomchat.io/tokens) |
+| @atomchat.io/css | Latest | [View on npm](https://www.npmjs.com/package/@atomchat.io/css) |
+| @atomchat.io/animations | Latest | [View on npm](https://www.npmjs.com/package/@atomchat.io/animations) |
+
+## Next Steps
+
+- [Quick Start](/getting-started/quick-start/) - Build your first component
+- [Architecture Overview](/architecture/overview/) - Understand the system
+- [Design Tokens](/foundations/tokens/) - Explore available tokens

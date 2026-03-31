@@ -1,0 +1,668 @@
+---
+title: Tag
+description: Status indicator with semantic colors and multiple visual styles. Displays states with optional dot indicators, icons, or avatars.
+---
+
+## Overview
+
+The Tag component is a status indicator that communicates state or status with semantic color coding. It supports 7 semantic states (success, warning, danger, info, neutral, brand, ai) and 2 visual styles (filled, outlined).
+
+### Key Features
+
+- **7 Semantic States**: Success, warning, danger, info, neutral, brand, and AI with distinct color coding
+- **2 Visual Styles**: Filled and outlined variants for different visual hierarchies
+- **Optional Dot Indicator**: Status dot for additional visual emphasis
+- **Icon Support**: Slot for 16px icons alongside text
+- **Avatar Support**: Slot for 24px avatars for user-specific tags
+- **Lightweight**: Minimal markup with semantic `<span>` structure
+- **Composable**: Works standalone or integrated with other components
+- **Data-Attribute Contract**: Hooks for animations and interactions
+
+---
+
+## Demo
+
+:::tip[Interactive Playground]
+**[Open Tag Playground →](/playground/tag)**
+
+View all Tag states, types (filled/outlined), status dots, and icon/avatar integration with live examples.
+:::
+
+---
+
+## Installation
+
+To use the Tag component in your project, install it from the Atom Design System package:
+
+```bash
+npm install @atomchat.io/components-astro
+# or
+pnpm add @atomchat.io/components-astro
+```
+
+Then import and include the CSS tokens:
+
+```astro
+---
+import { Tag } from '@atomchat.io/components-astro'
+import '@atomchat.io/components-astro/dist/tokens.css'
+---
+```
+
+## Anatomy
+
+The Tag component is a `<span>` wrapper that can contain a dot indicator, avatar, icon, and text:
+
+```html
+<span class="tag tag--success tag--filled" data-tag>
+  <span class="tag__dot" aria-hidden="true" data-tag-dot></span>
+  <span class="tag__avatar"><slot name="avatar" /></span>
+  <span class="tag__icon"><slot name="icon" /></span>
+  <span class="tag__text" data-tag-text>Tag Label</span>
+</span>
+```
+
+**DOM Structure:**
+- `.tag` - Root container with semantic styling
+- `.tag--{state}` - State modifier (success, warning, danger, info, neutral, brand, ai)
+- `.tag--{type}` - Type modifier (filled, outlined)
+- `.tag__dot` - Optional status dot indicator (aria-hidden)
+- `.tag__avatar` - Avatar container (24px)
+- `.tag__icon` - Icon container (16px)
+- `.tag__text` - Text content wrapper
+- `data-tag` - Component identifier for animations
+- `data-tag-dot` - Dot element identifier
+- `data-tag-text` - Text element identifier
+
+## Framework Support
+
+Tag is available across multiple frameworks. Choose your preferred implementation:
+
+### Astro
+
+```astro
+---
+import { Tag } from '@atomchat.io/components-astro'
+---
+
+<Tag state="success" type="filled">Active</Tag>
+<Tag state="warning" type="outlined">Pending</Tag>
+<Tag state="danger" hasDots>Error</Tag>
+```
+
+### React
+
+```jsx
+import { Tag } from '@atomchat.io/components-astro/react'
+
+export function StatusTags() {
+  return (
+    <>
+      <Tag state="success" type="filled">Active</Tag>
+      <Tag state="warning" hasDots>Pending</Tag>
+    </>
+  )
+}
+```
+
+### Next.js
+
+```tsx
+import { Tag } from '@atomchat.io/components-astro'
+
+export default function StatusBoard() {
+  return <Tag state="danger">Failed</Tag>
+}
+```
+
+### Vue
+
+```vue
+<template>
+  <Tag state="info" type="outlined">Information</Tag>
+  <Tag state="brand" has-dots>Featured</Tag>
+</template>
+
+<script setup lang="ts">
+import { Tag } from '@atomchat.io/components-astro/vue'
+</script>
+```
+
+### Angular
+
+```typescript
+import { TagComponent } from '@atomchat.io/components-astro/angular'
+
+@Component({
+  selector: 'app-status',
+  template: `
+    <tag state="success" type="filled">Completed</tag>
+    <tag state="ai" has-dots>AI Generated</tag>
+  `,
+  imports: [TagComponent]
+})
+export class StatusComponent {}
+```
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `state` | `"success" \| "warning" \| "danger" \| "info" \| "neutral" \| "brand" \| "ai"` | `"success"` | Semantic state with corresponding color |
+| `type` | `"filled" \| "outlined"` | `"filled"` | Visual style variant |
+| `hasDots` | `boolean` | `false` | Show status dot indicator |
+| `class` | `string` | `""` | Additional CSS classes |
+
+### Slots
+
+| Slot | Size | Description |
+|------|------|-------------|
+| `default` | - | Tag label text (required) |
+| `icon` | 16px | Icon element before text |
+| `avatar` | 24px | Avatar element before text |
+
+### Data Attributes
+
+| Attribute | Values | Purpose |
+|-----------|--------|---------|
+| `data-tag` | Present (no value) | Root element identifier |
+| `data-tag-dot` | Present (no value) | Status dot identifier |
+| `data-tag-text` | Present (no value) | Text content identifier |
+
+## Variants
+
+### By State
+
+Tag supports 7 semantic states for different status categories:
+
+**State Semantics:**
+- **Success** (Green): Positive completion, approved, or active status
+- **Warning** (Orange): Caution, pending, or needs attention
+- **Danger** (Red): Error, critical, or failed status
+- **Info** (Blue): Informational or neutral information
+- **Neutral** (Gray): Default, inactive, or neutral state
+- **Brand** (Primary): Featured, highlighted, or branded content
+- **AI** (Purple): AI-generated or AI-assisted content
+
+```astro
+---
+import { Tag } from '@atomchat.io/components-astro'
+---
+
+<div class="tag-grid">
+  <Tag state="success" type="filled">Success</Tag>
+  <Tag state="warning" type="filled">Warning</Tag>
+  <Tag state="danger" type="filled">Danger</Tag>
+  <Tag state="info" type="filled">Info</Tag>
+  <Tag state="neutral" type="filled">Neutral</Tag>
+  <Tag state="brand" type="filled">Brand</Tag>
+  <Tag state="ai" type="filled">AI</Tag>
+</div>
+
+<style>
+  .tag-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+  }
+</style>
+```
+
+### By Type
+
+**Filled** - Solid background with semantic color (default, high emphasis)
+**Outlined** - Transparent background with colored border (lower emphasis)
+
+```astro
+---
+import { Tag } from '@atomchat.io/components-astro'
+---
+
+<div class="type-comparison">
+  <div class="type-group">
+    <h3>Filled</h3>
+    <Tag state="success" type="filled">Completed</Tag>
+  </div>
+  <div class="type-group">
+    <h3>Outlined</h3>
+    <Tag state="success" type="outlined">Completed</Tag>
+  </div>
+</div>
+
+<style>
+  .type-comparison {
+    display: flex;
+    gap: var(--spacing-lg);
+  }
+
+  .type-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+</style>
+```
+
+### With Dot Indicator
+
+Optional status dot for additional visual emphasis:
+
+```astro
+---
+import { Tag } from '@atomchat.io/components-astro'
+---
+
+<div class="dot-variants">
+  <Tag state="success" hasDots>Active</Tag>
+  <Tag state="warning" hasDots>Pending</Tag>
+  <Tag state="danger" hasDots>Error</Tag>
+</div>
+
+<style>
+  .dot-variants {
+    display: flex;
+    gap: var(--spacing-md);
+  }
+</style>
+```
+
+## Usage Examples
+
+### Status Labels
+
+```astro
+---
+import { Tag } from '@atomchat.io/components-astro'
+---
+
+<div class="task-item">
+  <h3>Deploy Feature</h3>
+  <p>Update user authentication system</p>
+  <div class="tag-container">
+    <Tag state="warning" type="filled">In Progress</Tag>
+    <Tag state="brand" hasDots>High Priority</Tag>
+  </div>
+</div>
+
+<style>
+  .task-item {
+    padding: var(--spacing-md);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+  }
+
+  .tag-container {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+  }
+</style>
+```
+
+### User Status with Avatar
+
+```astro
+---
+import { Tag } from '@atomchat.io/components-astro'
+import { Avatar } from '@atomchat.io/components-astro'
+---
+
+<div class="user-status">
+  <Tag state="success">
+    <Avatar slot="avatar" src="user.jpg" name="Jane" size="xs" />
+    Jane is Active
+  </Tag>
+</div>
+
+<style>
+  .user-status {
+    display: flex;
+    gap: var(--spacing-md);
+  }
+</style>
+```
+
+### API Response Status
+
+```astro
+---
+import { Tag } from '@atomchat.io/components-astro'
+
+const endpoints = [
+  { name: 'Users API', status: 'success' },
+  { name: 'Auth Service', status: 'warning' },
+  { name: 'Database', status: 'danger' }
+]
+---
+
+<div class="api-status">
+  <h2>Service Health</h2>
+  <div class="status-list">
+    {endpoints.map(endpoint => (
+      <div class="endpoint-item">
+        <span class="endpoint-name">{endpoint.name}</span>
+        <Tag state={endpoint.status} type="filled">
+          {endpoint.status.charAt(0).toUpperCase() + endpoint.status.slice(1)}
+        </Tag>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .api-status {
+    padding: var(--spacing-md);
+  }
+
+  .status-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+  }
+
+  .endpoint-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-sm);
+  }
+
+  .endpoint-name {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+  }
+</style>
+```
+
+### AI-Generated Content Badge
+
+```astro
+---
+import { Tag } from '@atomchat.io/components-astro'
+---
+
+<div class="content-card">
+  <div class="content-header">
+    <h3>Article Title</h3>
+    <Tag state="ai" type="filled" hasDots>AI Generated</Tag>
+  </div>
+  <p class="content-excerpt">This content was generated using AI assistance...</p>
+</div>
+
+<style>
+  .content-card {
+    padding: var(--spacing-md);
+    background: var(--bg-primary);
+    border: 1px solid var(--stroke-default);
+    border-radius: var(--radius-md);
+  }
+
+  .content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  h3 {
+    margin: 0;
+  }
+
+  .content-excerpt {
+    margin: 0;
+    color: var(--fg-muted);
+    font-size: var(--font-size-sm);
+  }
+</style>
+```
+
+### Workflow State Tags with Icons
+
+```astro
+---
+import { Tag } from '@atomchat.io/components-astro'
+---
+
+<div class="workflow-states">
+  <Tag state="info" type="outlined">
+    <svg slot="icon" viewBox="0 0 16 16" width="16" height="16">
+      <path d="M8 1a7 7 0 110 14A7 7 0 018 1z" fill="currentColor"/>
+    </svg>
+    Waiting
+  </Tag>
+  <Tag state="warning" type="outlined">
+    <svg slot="icon" viewBox="0 0 16 16" width="16" height="16">
+      <path d="M8 2a6 6 0 110 12A6 6 0 018 2z" fill="currentColor"/>
+    </svg>
+    In Progress
+  </Tag>
+  <Tag state="success" type="filled">
+    <svg slot="icon" viewBox="0 0 16 16" width="16" height="16">
+      <path d="M13.78 4.22a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 11-1.06-1.06l7.5-7.5a.75.75 0 011.06 0z" fill="currentColor"/>
+    </svg>
+    Completed
+  </Tag>
+</div>
+
+<style>
+  .workflow-states {
+    display: flex;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+  }
+</style>
+```
+
+## Structure Tokens
+
+The Tag component uses these structure tokens:
+
+| Token | Purpose |
+|-------|---------|
+| `--tag-padding` | Internal padding |
+| `--tag-border-radius` | Rounded corners |
+| `--tag-font-size` | Text size |
+| `--tag-line-height` | Text vertical spacing |
+| `--tag-dot-size` | Indicator dot diameter |
+
+## Dependencies
+
+The Tag component has no component dependencies but requires these design tokens:
+
+**State Color Tokens:**
+- `--tag-success-bg` / `--tag-success-fg` - Success colors
+- `--tag-warning-bg` / `--tag-warning-fg` - Warning colors
+- `--tag-danger-bg` / `--tag-danger-fg` - Danger colors
+- `--tag-info-bg` / `--tag-info-fg` - Info colors
+- `--tag-neutral-bg` / `--tag-neutral-fg` - Neutral colors
+- `--tag-brand-bg` / `--tag-brand-fg` - Brand colors
+- `--tag-ai-bg` / `--tag-ai-fg` - AI colors
+
+**Structural Tokens:**
+- `--tag-padding` - Internal spacing
+- `--tag-border-radius` - Corner radius
+- `--tag-font-size` - Text size
+- `--tag-border-width` - Outline stroke width
+
+## Accessibility
+
+### ARIA Implementation
+
+- **aria-hidden="true"** on dot indicator (purely decorative)
+- Semantic text content wrapped in `.tag__text` for screen readers
+- Color is not the only indicator—text labels provide context
+
+### Best Practices
+
+- Always use descriptive text labels with tags
+- Pair tags with context or supporting text when status is critical
+- Use consistent state meanings across the application
+- Test with screen readers to ensure labels are announced
+- Don't rely solely on color to convey meaning
+- Provide alternative text for icon-only tags
+
+### Screen Reader Testing
+
+```html
+<!-- Good: Clear text label -->
+<Tag state="success">Task Completed</Tag>
+
+<!-- Good: Text with icon -->
+<Tag state="warning">
+  <svg slot="icon">...</svg>
+  Review Required
+</Tag>
+
+<!-- Avoid: Icon-only without context -->
+<Tag state="danger">!</Tag>
+```
+
+## Composition Patterns
+
+### Status Row
+
+```astro
+---
+import { Tag } from '@atomchat.io/components-astro'
+
+const items = [
+  { id: 1, name: 'Item A', status: 'success' },
+  { id: 2, name: 'Item B', status: 'warning' }
+]
+---
+
+<div class="status-table">
+  {items.map(item => (
+    <div class="row">
+      <span class="name">{item.name}</span>
+      <Tag state={item.status} type="filled">
+        {item.status}
+      </Tag>
+    </div>
+  ))}
+</div>
+
+<style>
+  .status-table {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-sm);
+  }
+
+  .name {
+    font-weight: var(--font-weight-medium);
+  }
+</style>
+```
+
+### Multi-Status Display
+
+```astro
+---
+import { Tag } from '@atomchat.io/components-astro'
+---
+
+<div class="feature-card">
+  <h3>Feature Name</h3>
+  <div class="tag-group">
+    <Tag state="success" type="outlined">Stable</Tag>
+    <Tag state="brand" type="outlined">Recommended</Tag>
+    <Tag state="ai" hasDots>AI Enhanced</Tag>
+  </div>
+</div>
+
+<style>
+  .feature-card {
+    padding: var(--spacing-md);
+    border: 1px solid var(--stroke-default);
+    border-radius: var(--radius-md);
+  }
+
+  .tag-group {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+    flex-wrap: wrap;
+  }
+</style>
+```
+
+## Design Tokens in Action
+
+The Tag component consumes semantic color tokens organized by state:
+
+**Color System:**
+```css
+/* Success state */
+.tag--success.tag--filled {
+  background-color: var(--tag-success-bg);
+  color: var(--tag-success-fg);
+}
+
+.tag--success.tag--outlined {
+  background-color: transparent;
+  color: var(--tag-success-fg);
+  border: var(--tag-border-width) solid var(--tag-success-fg);
+}
+
+/* Similar for warning, danger, info, neutral, brand, ai states */
+```
+
+**Shape & Structure:**
+```css
+.tag {
+  padding: var(--tag-padding);
+  border-radius: var(--tag-border-radius);
+  font-size: var(--tag-font-size);
+  line-height: var(--tag-line-height);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.tag__dot {
+  width: var(--tag-dot-size);
+  height: var(--tag-dot-size);
+  border-radius: 50%;
+  background-color: currentColor;
+}
+```
+
+## Build with AI
+
+Use this prompt to generate Tag components with Claude Code:
+
+```
+Create a Tag component in [framework].
+Setup: npm install @atomchat.io/components-astro then import "@atomchat.io/components-astro/dist/tokens.css"
+
+Requirements:
+- Accepts state prop: "success" | "warning" | "danger" | "info" | "neutral" | "brand" | "ai"
+- Accepts type prop: "filled" | "outlined"
+- Accepts hasDots boolean prop (default false)
+- Supports slots: default (text), icon (16px), avatar (24px)
+- Uses ONLY these CSS custom properties:
+  * --tag-success-bg/fg, --tag-warning-bg/fg, --tag-danger-bg/fg
+  * --tag-info-bg/fg, --tag-neutral-bg/fg, --tag-brand-bg/fg, --tag-ai-bg/fg
+  * --tag-padding, --tag-border-radius, --tag-font-size, --tag-line-height
+  * --tag-dot-size, --tag-border-width
+- Implements data-tag, data-tag-dot, data-tag-text attributes
+- aria-hidden="true" on dot indicator (decorative)
+- No hardcoded colors or sizes
+- Export as named export
+```

@@ -1,0 +1,334 @@
+---
+import '@atomchat.io/tokens/css';
+import '@atomchat.io/css';
+import { IconButton } from '@atomchat.io/components-astro';
+import { Settings, Edit, Search, Trash2, X, Plus, Download, Upload, Copy, Share2, Bookmark, Filter, RotateCw } from '@lucide/astro';
+
+const title = 'IconButton Playground';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <style>
+    /* Fix: Override icon-button clone opacity to use correct token */
+    :root {
+      --opacity-0: 0;
+    }
+
+    /* Ensure clone is hidden initially */
+    .icon-button__icon--clone {
+      opacity: 0 !important;
+      pointer-events: none;
+    }
+
+    body {
+      font-family: var(--font-body, system-ui, sans-serif);
+      padding: 2rem;
+      background: var(--bg-default, #fff);
+      color: var(--fg-default, #000);
+    }
+    .playground {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section {
+      margin-bottom: 3rem;
+      padding: 2rem;
+      background: var(--bg-subtle, #f9f9f9);
+      border-radius: 8px;
+    }
+    .section h2 {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+    .section h3 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+    }
+    .button-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .icon-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .icon-label {
+      font-size: 0.75rem;
+      color: var(--fg-muted, #666);
+    }
+  </style>
+</head>
+<body>
+  <div class="playground">
+    <h1>IconButton Component Playground</h1>
+
+    <div class="section">
+      <h2>All Variants (Size M)</h2>
+      <div class="button-grid">
+        <div class="icon-item">
+          <IconButton variant="Primary" size="m" label="Settings">
+            <Settings size={16} />
+          </IconButton>
+          <span class="icon-label">Primary</span>
+        </div>
+
+        <div class="icon-item">
+          <IconButton variant="Secondary" size="m" label="Edit">
+            <Edit size={16} />
+          </IconButton>
+          <span class="icon-label">Secondary</span>
+        </div>
+
+        <div class="icon-item">
+          <IconButton variant="Tertiary" size="m" label="Search">
+            <Search size={16} />
+          </IconButton>
+          <span class="icon-label">Tertiary</span>
+        </div>
+
+        <div class="icon-item">
+          <IconButton variant="Destructive Primary" size="m" label="Delete">
+            <Trash2 size={16} />
+          </IconButton>
+          <span class="icon-label">Destructive Primary</span>
+        </div>
+
+        <div class="icon-item">
+          <IconButton variant="Destructive Secondary" size="m" label="Remove">
+            <X size={16} />
+          </IconButton>
+          <span class="icon-label">Destructive Secondary</span>
+        </div>
+
+        <div class="icon-item">
+          <IconButton variant="Destructive Tertiary" size="m" label="Close">
+            <X size={16} />
+          </IconButton>
+          <span class="icon-label">Destructive Tertiary</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>All Sizes (Primary Variant)</h2>
+      <div class="button-grid">
+        <div class="icon-item">
+          <IconButton variant="Primary" size="xs" label="Add">
+            <Plus size={12} />
+          </IconButton>
+          <span class="icon-label">XS (24px)</span>
+        </div>
+
+        <div class="icon-item">
+          <IconButton variant="Primary" size="s" label="Add">
+            <Plus size={14} />
+          </IconButton>
+          <span class="icon-label">S (32px)</span>
+        </div>
+
+        <div class="icon-item">
+          <IconButton variant="Primary" size="m" label="Add">
+            <Plus size={16} />
+          </IconButton>
+          <span class="icon-label">M (40px)</span>
+        </div>
+
+        <div class="icon-item">
+          <IconButton variant="Primary" size="l" label="Add">
+            <Plus size={20} />
+          </IconButton>
+          <span class="icon-label">L (48px)</span>
+        </div>
+
+        <div class="icon-item">
+          <IconButton variant="Primary" size="xl" label="Add">
+            <Plus size={24} />
+          </IconButton>
+          <span class="icon-label">XL (56px)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>States</h2>
+
+      <h3>Disabled</h3>
+      <div class="button-grid">
+        <div class="icon-item">
+          <IconButton variant="Primary" size="m" disabled label="Disabled Primary">
+            <Plus size={16} />
+          </IconButton>
+          <span class="icon-label">Primary</span>
+        </div>
+
+        <div class="icon-item">
+          <IconButton variant="Secondary" size="m" disabled label="Disabled Secondary">
+            <Plus size={16} />
+          </IconButton>
+          <span class="icon-label">Secondary</span>
+        </div>
+
+        <div class="icon-item">
+          <IconButton variant="Tertiary" size="m" disabled label="Disabled Tertiary">
+            <Plus size={16} />
+          </IconButton>
+          <span class="icon-label">Tertiary</span>
+        </div>
+      </div>
+
+      <h3>Loading</h3>
+      <p style="margin-bottom: 1rem; color: var(--fg-muted, #666); font-size: 0.875rem;">
+        Loading state shows both the icon and the spinner
+      </p>
+      <div class="button-grid">
+        <div class="icon-item">
+          <IconButton variant="Primary" size="m" loading label="Loading Primary">
+            <Upload size={16} />
+          </IconButton>
+          <span class="icon-label">Primary</span>
+        </div>
+
+        <div class="icon-item">
+          <IconButton variant="Secondary" size="m" loading label="Loading Secondary">
+            <Upload size={16} />
+          </IconButton>
+          <span class="icon-label">Secondary</span>
+        </div>
+
+        <div class="icon-item">
+          <IconButton variant="Tertiary" size="m" loading label="Loading Tertiary">
+            <Upload size={16} />
+          </IconButton>
+          <span class="icon-label">Tertiary</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Common Icon Examples</h2>
+      <div class="button-grid">
+        <div class="icon-item">
+          <IconButton variant="Secondary" size="m" label="Download">
+            <Download size={16} />
+          </IconButton>
+          <span class="icon-label">Download</span>
+        </div>
+
+        <div class="icon-item">
+          <IconButton variant="Secondary" size="m" label="Upload">
+            <Upload size={16} />
+          </IconButton>
+          <span class="icon-label">Upload</span>
+        </div>
+
+        <div class="icon-item">
+          <IconButton variant="Secondary" size="m" label="Copy">
+            <Copy size={16} />
+          </IconButton>
+          <span class="icon-label">Copy</span>
+        </div>
+
+        <div class="icon-item">
+          <IconButton variant="Secondary" size="m" label="Share">
+            <Share2 size={16} />
+          </IconButton>
+          <span class="icon-label">Share</span>
+        </div>
+
+        <div class="icon-item">
+          <IconButton variant="Secondary" size="m" label="Bookmark">
+            <Bookmark size={16} />
+          </IconButton>
+          <span class="icon-label">Bookmark</span>
+        </div>
+
+        <div class="icon-item">
+          <IconButton variant="Secondary" size="m" label="Filter">
+            <Filter size={16} />
+          </IconButton>
+          <span class="icon-label">Filter</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Hover Animation Test</h2>
+      <p style="margin-bottom: 1rem; color: var(--fg-muted, #666);">
+        Hover over these buttons to see the rotation animation (requires @atomchat.io/animations)
+      </p>
+      <div class="button-grid">
+        <IconButton variant="Primary" size="m" label="Rotate">
+          <RotateCw size={16} />
+        </IconButton>
+        <IconButton variant="Secondary" size="m" label="Rotate">
+          <RotateCw size={16} />
+        </IconButton>
+        <IconButton variant="Tertiary" size="m" label="Rotate">
+          <RotateCw size={16} />
+        </IconButton>
+      </div>
+    </div>
+
+    <p style="margin-top: 3rem; text-align: center; color: var(--fg-muted, #666);">
+      <a href="#" onclick="history.back(); return false;" style="color: var(--fg-link, #0066cc); cursor: pointer;">← Back to Documentation</a>
+    </p>
+  </div>
+
+  <script>
+    // v1.2.0 now exports individual modules properly!
+    import { initRotateClones, initRotateCalc, initHoverRotate } from '@atomchat.io/animations/hover';
+
+    console.log('[DEBUG] Script loaded, readyState:', document.readyState);
+
+    // Wait for DOM to be fully loaded
+    if (document.readyState === 'loading') {
+      console.log('[DEBUG] Waiting for DOMContentLoaded...');
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      console.log('[DEBUG] DOM already loaded, initializing now...');
+      init();
+    }
+
+    function init() {
+      console.log('[DEBUG] init() called');
+      console.log('[DEBUG] Elements with [data-hover-rotate]:', document.querySelectorAll('[data-hover-rotate]').length);
+      console.log('[DEBUG] Elements with [data-icon-button]:', document.querySelectorAll('[data-icon-button]').length);
+      console.log('[DEBUG] IconButton elements:', document.querySelectorAll('.icon-button').length);
+
+      // Initialize in correct order (clones → calc → rotate)
+      console.log('[DEBUG] Calling initRotateClones()...');
+      const cleanup1 = initRotateClones();
+      console.log('[DEBUG] ✓ initRotateClones returned:', typeof cleanup1);
+
+      console.log('[DEBUG] Calling initRotateCalc()...');
+      const cleanup2 = initRotateCalc();
+      console.log('[DEBUG] ✓ initRotateCalc returned:', typeof cleanup2);
+
+      console.log('[DEBUG] Calling initHoverRotate()...');
+      const cleanup3 = initHoverRotate();
+      console.log('[DEBUG] ✓ initHoverRotate returned:', typeof cleanup3);
+
+      console.log('[DEBUG] ✅ All animations initialized successfully');
+
+      // Check if clones were created
+      setTimeout(() => {
+        const clonesReady = document.querySelectorAll('[data-clones-ready]').length;
+        const clones = document.querySelectorAll('.icon-button__icon--clone').length;
+        console.log('[DEBUG] After init - Elements with [data-clones-ready]:', clonesReady);
+        console.log('[DEBUG] After init - Clone elements:', clones);
+      }, 100);
+    }
+  </script>
+</body>
+</html>

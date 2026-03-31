@@ -1,0 +1,619 @@
+---
+title: Status Icon
+description: A small circular indicator showing online, offline, idle, or inactive status. Can be used standalone or integrated into other components.
+---
+
+## Overview
+
+The Status Icon is a compact visual indicator that communicates user presence or system status. It displays four semantic states: online (green), offline (red), idle/away (yellow), and inactive (gray).
+
+### Key Features
+
+- **4 Status States**: Online, offline, idle/away, and inactive with semantic color coding
+- **Flexible Sizing**: Four sizes (xs, s, m, l) for different contexts
+- **Optional Border**: White border option to create contrast on colored backgrounds
+- **Accessibility**: ARIA labels and semantic role="status" for screen readers
+- **Lightweight**: Minimal markup—just a styled `<span>` element
+- **Composable**: Perfect for stacking with other components like avatars
+
+---
+
+## Demo
+
+:::tip[Interactive Playground]
+**[Open StatusIcon Playground →](/playground/status-icon)**
+
+View all StatusIcon states, sizes, colors, and avatar integration examples with live interactions.
+:::
+
+---
+
+## Installation
+
+To use the Status Icon component in your project, import it from the Atom Design System package:
+
+```bash
+npm install @atomchat.io/components-astro
+# or
+pnpm add @atomchat.io/components-astro
+```
+
+Then import and include the CSS tokens:
+
+```astro
+---
+import { StatusIcon } from '@atomchat.io/components-astro'
+import '@atomchat.io/components-astro/dist/tokens.css'
+---
+```
+
+## Anatomy
+
+The Status Icon is a single `<span>` element with semantic HTML attributes and CSS classes for styling:
+
+```html
+<span
+  class="status-icon status-icon--online status-icon--xs status-icon--bordered"
+  data-status-icon
+  data-status="online"
+  data-size="xs"
+  role="status"
+  aria-label="Online"
+/>
+```
+
+**DOM Structure:**
+- `.status-icon` - Root container (circular, applies border-radius)
+- `.status-icon--{status}` - Status color modifier (online, offline, idle, inactive)
+- `.status-icon--{size}` - Size modifier (xs, s, m, l)
+- `.status-icon--bordered` - Optional white border
+- `data-status-icon` - Component identifier
+- `data-status` - Current status value
+- `data-size` - Current size value
+- `role="status"` - ARIA role for live region
+- `aria-label` - Accessible label describing the status
+
+## Framework Support
+
+Status Icon is available across multiple frameworks. Choose your preferred implementation below:
+
+### Astro
+
+```astro
+---
+import { StatusIcon } from '@atomchat.io/components-astro'
+---
+
+<StatusIcon status="online" size="s" hasBorder={true} />
+```
+
+### React
+
+```jsx
+import { StatusIcon } from '@atomchat.io/components-astro/react'
+
+export function UserPresence() {
+  return <StatusIcon status="online" size="s" hasBorder />
+}
+```
+
+### Next.js
+
+```tsx
+import { StatusIcon } from '@atomchat.io/components-astro'
+
+export default function Dashboard() {
+  return <StatusIcon status="idle" size="m" />
+}
+```
+
+### Vue
+
+```vue
+<template>
+  <StatusIcon status="offline" size="l" :has-border="false" />
+</template>
+
+<script setup lang="ts">
+import { StatusIcon } from '@atomchat.io/components-astro/vue'
+</script>
+```
+
+### Angular
+
+```typescript
+import { StatusIconComponent } from '@atomchat.io/components-astro/angular'
+
+@Component({
+  selector: 'app-user-status',
+  template: `<status-icon status="online" size="m" [hasBorder]="true"></status-icon>`,
+  imports: [StatusIconComponent]
+})
+export class UserStatusComponent {}
+```
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `status` | `"online" \| "offline" \| "idle" \| "inactive"` | `"online"` | The presence or status state to display |
+| `size` | `"xs" \| "s" \| "m" \| "l"` | `"xs"` | The icon diameter (uses structure tokens) |
+| `hasBorder` | `boolean` | `true` | Show white border around the icon |
+| `class` | `string` | `""` | Additional CSS classes for customization |
+
+### Data Attributes
+
+| Attribute | Values |
+|-----------|--------|
+| `data-status-icon` | Present (no value) |
+| `data-status` | "online", "offline", "idle", "inactive" |
+| `data-size` | "xs", "s", "m", "l" |
+
+## Variants
+
+### By Status
+
+The Status Icon provides four semantic color states representing different presence conditions:
+
+**Status Semantics:**
+- **Online** (Green): User is actively present and available
+- **Offline** (Red): User is not connected or unavailable
+- **Idle/Away** (Yellow): User is present but inactive
+- **Inactive** (Gray): User account is disabled or inactive
+
+### By Size
+
+The Status Icon is available in four size options for different use cases:
+
+**Size Scale:**
+- `xs` - 8px (embedded in small components)
+- `s` - 12px (avatar badges)
+- `m` - 16px (standard display)
+- `l` - 24px (prominent indicators)
+
+### Border Variants
+
+The Status Icon can display with or without a white border for contrast against different background colors:
+
+- **With Border** (default): Creates visual separation when placed over colored backgrounds
+- **No Border**: Ideal for minimal layouts or when contrast is sufficient
+
+The border creates visual separation when placed over colored backgrounds. Remove the border for minimal layouts or when contrast is sufficient.
+
+## Usage Examples
+
+### User Presence Indicator
+
+```astro
+---
+import { StatusIcon } from '@atomchat.io/components-astro'
+---
+
+<div class="user-card">
+  <div class="avatar-wrapper">
+    <img src="user.jpg" alt="User" />
+    <StatusIcon status="online" size="s" hasBorder={true} />
+  </div>
+  <div>
+    <h3>Jane Smith</h3>
+    <p class="status-label">Online now</p>
+  </div>
+</div>
+
+<style>
+  .user-card {
+    display: flex;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+  }
+
+  .avatar-wrapper {
+    position: relative;
+  }
+
+  img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+  }
+
+  :global(.status-icon) {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
+  .status-label {
+    color: var(--fg-muted);
+    font-size: var(--font-size-sm);
+  }
+</style>
+```
+
+### Chat Thread Member List
+
+```astro
+---
+import { StatusIcon } from '@atomchat.io/components-astro'
+
+const members = [
+  { name: 'Alice', status: 'online' },
+  { name: 'Bob', status: 'idle' },
+  { name: 'Carol', status: 'offline' }
+]
+---
+
+<div class="member-list">
+  {members.map(member => (
+    <div class="member-item">
+      <span class="member-avatar">A</span>
+      <div>
+        <p class="member-name">{member.name}</p>
+        <StatusIcon status={member.status} size="xs" />
+      </div>
+    </div>
+  ))}
+</div>
+
+<style>
+  .member-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .member-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  .member-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--bg-secondary);
+    border-radius: 50%;
+    font-weight: var(--font-weight-medium);
+  }
+
+  .member-name {
+    font-size: var(--font-size-sm);
+    margin: 0;
+  }
+</style>
+```
+
+### Status Dashboard
+
+```astro
+---
+import { StatusIcon } from '@atomchat.io/components-astro'
+
+const servers = [
+  { name: 'API Server', status: 'online' },
+  { name: 'Database', status: 'online' },
+  { name: 'Cache', status: 'idle' },
+  { name: 'Queue', status: 'offline' }
+]
+---
+
+<div class="status-dashboard">
+  <h2>System Status</h2>
+  <div class="server-list">
+    {servers.map(server => (
+      <div class="server-item">
+        <StatusIcon status={server.status} size="s" hasBorder={false} />
+        <span class="server-name">{server.name}</span>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .status-dashboard {
+    padding: var(--spacing-md);
+    background: var(--bg-primary);
+    border-radius: var(--radius-md);
+  }
+
+  .server-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+  }
+
+  .server-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-sm);
+  }
+
+  .server-name {
+    font-size: var(--font-size-sm);
+    color: var(--fg-default);
+  }
+</style>
+```
+
+### Notification Badge
+
+```astro
+---
+import { StatusIcon } from '@atomchat.io/components-astro'
+---
+
+<div class="notification-bell">
+  <svg class="bell-icon" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+  </svg>
+  <StatusIcon status="online" size="xs" hasBorder={true} />
+</div>
+
+<style>
+  .notification-bell {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+  }
+
+  .bell-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--fg-default);
+  }
+
+  :global(.status-icon) {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+  }
+</style>
+```
+
+## Structure Tokens
+
+The Status Icon uses these structure tokens to define sizing:
+
+| Token | Default | Context |
+|-------|---------|---------|
+| `--status-icon-structure-size-xs` | 8px | Embedded badges |
+| `--status-icon-structure-size-s` | 12px | Avatar corners |
+| `--status-icon-structure-size-m` | 16px | Standard display |
+| `--status-icon-structure-size-l` | 24px | Prominent indicators |
+
+All sizes use these spacing and border tokens:
+- `--radius-pill` - 50% border radius (full circle)
+- `--stroke-xs` - White border width
+- `--bg-primary` - White border color
+
+## Dependencies
+
+The Status Icon has no component dependencies but requires these design tokens:
+
+**Color Tokens:**
+- `--fg-accent-indicators-online` (green)
+- `--fg-accent-indicators-offline` (red)
+- `--fg-accent-indicators-idle` (yellow)
+- `--fg-accent-indicators-inactive` (gray)
+
+**Structural Tokens:**
+- `--radius-pill` - Circular shape
+- `--stroke-xs` - Border width
+- `--bg-primary` - Border color
+
+## Accessibility
+
+### ARIA Implementation
+
+- **role="status"**: Marks the element as a live region that announces status changes
+- **aria-label**: Provides accessible descriptions:
+  - "Online" for online status
+  - "Away" for idle status
+  - "Offline" for offline status
+  - "Inactive" for inactive status
+
+### Best Practices
+
+- Always pair the Status Icon with text labels in data-heavy contexts (dashboards, member lists)
+- Use appropriate semantic status colors consistently across the application
+- Ensure sufficient color contrast when using bordered variants on dark backgrounds
+- For critical status indicators (server health), supplement with text fallbacks
+- Test with screen readers to ensure aria-labels are announced correctly
+
+### Screen Reader Testing
+
+```html
+<!-- Good: Clear context with label -->
+<div class="user-presence">
+  <img src="user.jpg" alt="Alice Johnson" />
+  <StatusIcon status="online" size="s" aria-label="Alice is online" />
+</div>
+
+<!-- Avoid: Status icon alone without context -->
+<StatusIcon status="online" />
+```
+
+## Composition Patterns
+
+### Avatar with Status
+
+```astro
+---
+import { StatusIcon } from '@atomchat.io/components-astro'
+---
+
+<div class="avatar-with-status">
+  <img src="profile.jpg" alt="User profile" class="avatar-image" />
+  <StatusIcon status="online" size="s" hasBorder={true} />
+</div>
+
+<style>
+  .avatar-with-status {
+    position: relative;
+    display: inline-block;
+    width: fit-content;
+  }
+
+  .avatar-image {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  :global(.status-icon) {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border: 2px solid white;
+  }
+</style>
+```
+
+### Status List
+
+```astro
+---
+import { StatusIcon } from '@atomchat.io/components-astro'
+import { Card, CardContent } from '@/components/Card'
+
+const users = [
+  { id: 1, name: 'Alice', status: 'online' },
+  { id: 2, name: 'Bob', status: 'idle' }
+]
+---
+
+<Card>
+  <CardContent>
+    <h3>Active Users</h3>
+    <div class="status-list">
+      {users.map(user => (
+        <div key={user.id} class="status-row">
+          <StatusIcon status={user.status} size="s" />
+          <span class="user-name">{user.name}</span>
+        </div>
+      ))}
+    </div>
+  </CardContent>
+</Card>
+
+<style>
+  .status-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+  }
+
+  .status-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-sm);
+  }
+
+  .user-name {
+    font-size: var(--font-size-sm);
+    color: var(--fg-default);
+  }
+</style>
+```
+
+## Design Tokens in Action
+
+The Status Icon consumes these design system tokens:
+
+**Color System:**
+```css
+/* Status colors use semantic accent indicators */
+.status-icon--online {
+  background-color: var(--fg-accent-indicators-online); /* Green */
+}
+
+.status-icon--offline {
+  background-color: var(--fg-accent-indicators-offline); /* Red */
+}
+
+.status-icon--idle {
+  background-color: var(--fg-accent-indicators-idle); /* Yellow */
+}
+
+.status-icon--inactive {
+  background-color: var(--fg-accent-indicators-inactive); /* Gray */
+}
+```
+
+**Shape & Structure:**
+```css
+.status-icon {
+  border-radius: var(--radius-pill); /* Perfect circle */
+}
+
+.status-icon--bordered {
+  border: var(--stroke-xs) solid var(--bg-primary); /* White border */
+}
+```
+
+**Sizing:**
+```css
+.status-icon--xs {
+  width: var(--status-icon-structure-size-xs); /* 8px */
+  height: var(--status-icon-structure-size-xs);
+}
+
+.status-icon--s {
+  width: var(--status-icon-structure-size-s); /* 12px */
+  height: var(--status-icon-structure-size-s);
+}
+
+.status-icon--m {
+  width: var(--status-icon-structure-size-m); /* 16px */
+  height: var(--status-icon-structure-size-m);
+}
+
+.status-icon--l {
+  width: var(--status-icon-structure-size-l); /* 24px */
+  height: var(--status-icon-structure-size-l);
+}
+```
+
+## Build with AI
+
+Use this prompt to generate Status Icon components with Claude Code:
+```
+Create a StatusIcon component in [framework].
+Setup: npm install @atomchat.io/components-astro then import "@atomchat.io/components-astro/dist/tokens.css"
+
+Requirements:
+- Accepts status prop: "online" | "offline" | "idle" | "inactive"
+- Accepts size prop: "xs" | "s" | "m" | "l"
+- Accepts hasBorder boolean prop (default true)
+- Uses ONLY these CSS custom properties:
+  * --fg-accent-indicators-online (green)
+  * --fg-accent-indicators-offline (red)
+  * --fg-accent-indicators-idle (yellow)
+  * --fg-accent-indicators-inactive (gray)
+  * --status-icon-structure-size-xs/s/m/l
+  * --radius-pill
+  * --stroke-xs
+- Implements role="status" and aria-label
+- No hardcoded colors or sizes
+- Export as named export
+```

@@ -1,0 +1,719 @@
+---
+title: Caption
+description: Small auxiliary text component for metadata, captions, footnotes, and image descriptions with flexible element types.
+---
+
+## Overview
+
+The Caption component is a flexible text element for auxiliary, secondary, or metadata content. It supports multiple sizes, weights, colors, and semantic HTML element types (span, p, figcaption) for proper markup and accessibility.
+
+### Key Features
+
+- **Flexible Element Types**: Render as `<span>`, `<p>`, or `<figcaption>` for semantic HTML
+- **3 Size Options**: Caption, label, and footnote sizes for different contexts
+- **2 Weight Options**: Regular and medium font weights
+- **4 Color Options**: Primary, secondary, tertiary semantic colors + custom CSS support
+- **3 Alignment Options**: Left, center, and right text alignment
+- **Custom Color Support**: Accept any CSS color value for advanced use cases
+- **Muted by Default**: Secondary color emphasis for auxiliary content
+- **Lightweight**: Simple, single-element component
+
+## Installation
+
+To use the Caption component in your project, install it from the Atom Design System package:
+
+```bash
+npm install @atomchat.io/components-astro
+# or
+pnpm add @atomchat.io/components-astro
+```
+
+Then import and include the CSS tokens:
+
+```astro
+---
+import { Caption } from '@atomchat.io/components-astro'
+import '@atomchat.io/components-astro/dist/tokens.css'
+---
+```
+
+## Anatomy
+
+The Caption component renders a flexible HTML element with typography modifiers:
+
+```html
+<span class="caption caption--caption caption--regular caption--left caption--secondary" data-text>
+  Caption text content
+</span>
+
+<!-- Or with semantic HTML -->
+<figcaption class="caption caption--caption caption--regular caption--secondary" data-text>
+  Figure caption
+</figcaption>
+```
+
+**DOM Structure:**
+- `.caption` - Root element (can be span, p, or figcaption)
+- `.caption--{size}` - Size modifier (caption, label, footnote)
+- `.caption--{weight}` - Font weight modifier (regular, medium)
+- `.caption--{color}` - Semantic color modifier (primary, secondary, tertiary)
+- `.caption--{align}` - Text alignment modifier (left, center, right)
+- `data-text` - Component identifier
+- `style="color: [value]"` - Applied only for custom CSS colors
+
+## Framework Support
+
+Caption is available across multiple frameworks. Choose your preferred implementation:
+
+### Astro
+
+```astro
+---
+import { Caption } from '@atomchat.io/components-astro'
+---
+
+<Caption>Image caption</Caption>
+<Caption as="figcaption">Figure 1: Architecture</Caption>
+<Caption size="footnote" color="tertiary">Last updated: 2024</Caption>
+```
+
+### React
+
+```jsx
+import { Caption } from '@atomchat.io/components-astro/react'
+
+export function ImageCard() {
+  return (
+    <>
+      <img src="image.jpg" alt="Feature" />
+      <Caption as="figcaption">Descriptive caption text</Caption>
+    </>
+  )
+}
+```
+
+### Next.js
+
+```tsx
+import { Caption } from '@atomchat.io/components-astro'
+
+export default function Article() {
+  return <Caption as="p">Updated on January 15, 2024</Caption>
+}
+```
+
+### Vue
+
+```vue
+<template>
+  <div>
+    <p>Main content</p>
+    <Caption size="footnote" color="tertiary">
+      Additional context or metadata
+    </Caption>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { Caption } from '@atomchat.io/components-astro/vue'
+</script>
+```
+
+### Angular
+
+```typescript
+import { CaptionComponent } from '@atomchat.io/components-astro/angular'
+
+@Component({
+  selector: 'app-figure',
+  template: `
+    <figure>
+      <img src="diagram.jpg" alt="System" />
+      <caption as="figcaption">System Architecture Diagram</caption>
+    </figure>
+  `,
+  imports: [CaptionComponent]
+})
+export class FigureComponent {}
+```
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `"caption" \| "label" \| "footnote"` | `"caption"` | Text size for different contexts |
+| `weight` | `"regular" \| "medium"` | `"regular"` | Font weight emphasis |
+| `color` | `"primary" \| "secondary" \| "tertiary" \| string` | `"secondary"` | Semantic color or custom CSS value |
+| `align` | `"left" \| "center" \| "right"` | `"left"` | Text alignment |
+| `as` | `"span" \| "p" \| "figcaption"` | `"span"` | HTML element type for semantic markup |
+| `class` | `string` | `""` | Additional CSS classes |
+
+### Slots
+
+| Slot | Description |
+|------|-------------|
+| `default` | Caption text content (required) |
+
+### Data Attributes
+
+| Attribute | Values | Purpose |
+|-----------|--------|---------|
+| `data-text` | Present (no value) | Component identifier |
+
+## Variants
+
+### By Size
+
+Three size options for different text contexts:
+
+**Size Scale:**
+- **caption** - Small auxiliary text (default)
+- **label** - Medium auxiliary text
+- **footnote** - Extra small text for marginal notes
+
+```astro
+---
+import { Caption } from '@atomchat.io/components-astro'
+---
+
+<div class="size-examples">
+  <Caption size="caption">This is a caption</Caption>
+  <Caption size="label">This is a label</Caption>
+  <Caption size="footnote">This is a footnote</Caption>
+</div>
+
+<style>
+  .size-examples {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+</style>
+```
+
+### By Color
+
+Four color options with semantic meaning:
+
+**Color Semantics:**
+- **primary** - Emphasized or important auxiliary text
+- **secondary** (default) - Standard auxiliary text
+- **tertiary** - De-emphasized or minimal text
+- **custom** - Any CSS color value
+
+```astro
+---
+import { Caption } from '@atomchat.io/components-astro'
+---
+
+<div class="color-variants">
+  <Caption color="primary">Primary color</Caption>
+  <Caption color="secondary">Secondary color</Caption>
+  <Caption color="tertiary">Tertiary color</Caption>
+  <Caption color="var(--fg-accent)">Custom color</Caption>
+</div>
+
+<style>
+  .color-variants {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+</style>
+```
+
+### By Weight
+
+Font weight options for emphasis:
+
+```astro
+---
+import { Caption } from '@atomchat.io/components-astro'
+---
+
+<div class="weight-variants">
+  <Caption weight="regular">Regular weight</Caption>
+  <Caption weight="medium">Medium weight</Caption>
+</div>
+
+<style>
+  .weight-variants {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+</style>
+```
+
+### By Alignment
+
+Text alignment for different layouts:
+
+```astro
+---
+import { Caption } from '@atomchat.io/components-astro'
+---
+
+<div class="alignment-variants">
+  <Caption align="left">Left aligned caption</Caption>
+  <Caption align="center">Centered caption</Caption>
+  <Caption align="right">Right aligned caption</Caption>
+</div>
+
+<style>
+  .alignment-variants {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+</style>
+```
+
+## Usage Examples
+
+### Image Figure
+
+```astro
+---
+import { Caption } from '@atomchat.io/components-astro'
+---
+
+<figure class="image-figure">
+  <img src="architecture.jpg" alt="System architecture" />
+  <Caption as="figcaption" weight="medium">
+    Figure 1: High-level system architecture
+  </Caption>
+</figure>
+
+<style>
+  .image-figure {
+    margin: 0;
+    padding: var(--spacing-md);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+  }
+
+  img {
+    width: 100%;
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--spacing-sm);
+  }
+</style>
+```
+
+### Metadata Display
+
+```astro
+---
+import { Caption } from '@atomchat.io/components-astro'
+---
+
+<div class="article-header">
+  <h1>Article Title</h1>
+  <div class="metadata">
+    <Caption color="secondary">By Author Name</Caption>
+    <Caption color="tertiary">Published January 15, 2024</Caption>
+  </div>
+</div>
+
+<style>
+  .article-header {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .metadata {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-sm);
+  }
+</style>
+```
+
+### Form Label Context
+
+```astro
+---
+import { Caption } from '@atomchat.io/components-astro'
+---
+
+<div class="form-field">
+  <label for="email">Email</label>
+  <input type="email" id="email" placeholder="name@example.com" />
+  <Caption as="p" size="footnote" color="tertiary">
+    We'll never share your email address
+  </Caption>
+</div>
+
+<style>
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  label {
+    font-weight: var(--font-weight-medium);
+  }
+
+  input {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--stroke-default);
+    border-radius: var(--radius-sm);
+  }
+</style>
+```
+
+### List Item Metadata
+
+```astro
+---
+import { Caption } from '@atomchat.io/components-astro'
+
+const items = [
+  { title: 'Item A', date: '2 days ago', status: 'active' },
+  { title: 'Item B', date: '1 week ago', status: 'archived' }
+]
+---
+
+<ul class="item-list">
+  {items.map(item => (
+    <li class="item">
+      <div>
+        <p class="item-title">{item.title}</p>
+        <Caption size="footnote" color="tertiary">{item.date}</Caption>
+      </div>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .item-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .item {
+    padding: var(--spacing-md);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-sm);
+  }
+
+  .item-title {
+    margin: 0 0 var(--spacing-xs) 0;
+    font-weight: var(--font-weight-medium);
+  }
+</style>
+```
+
+### Tooltip Content
+
+```astro
+---
+import { Caption } from '@atomchat.io/components-astro'
+---
+
+<div class="tooltip-example">
+  <button class="info-button">
+    ?
+    <div class="tooltip">
+      <Caption size="footnote" align="center">
+        Additional information about this field
+      </Caption>
+    </div>
+  </button>
+</div>
+
+<style>
+  .info-button {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    border: none;
+    cursor: help;
+  }
+
+  .tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-default);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    width: 200px;
+    margin-bottom: var(--spacing-xs);
+    border: 1px solid var(--stroke-default);
+    display: none;
+  }
+
+  .info-button:hover .tooltip {
+    display: block;
+  }
+</style>
+```
+
+### Code Example Annotation
+
+```astro
+---
+import { Caption } from '@atomchat.io/components-astro'
+---
+
+<div class="code-block">
+  <pre><code>const result = await fetch(url)</code></pre>
+  <Caption size="footnote" color="tertiary">
+    This returns a Promise that resolves with the Response object
+  </Caption>
+</div>
+
+<style>
+  .code-block {
+    background: var(--bg-secondary);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    margin: var(--spacing-md) 0;
+  }
+
+  pre {
+    margin: 0 0 var(--spacing-sm) 0;
+    overflow-x: auto;
+  }
+
+  code {
+    font-family: monospace;
+    font-size: var(--font-size-sm);
+  }
+</style>
+```
+
+## Structure Tokens
+
+The Caption component uses these typography tokens:
+
+| Token | Purpose |
+|-------|---------|
+| `--caption-font-size` | Default caption size |
+| `--caption-line-height` | Text line height |
+| `--label-font-size` | Label size |
+| `--footnote-font-size` | Footnote size |
+| `--font-weight-regular` | Regular weight |
+| `--font-weight-medium` | Medium weight |
+
+## Dependencies
+
+The Caption component has no component dependencies but requires these design tokens:
+
+**Color Tokens:**
+- `--fg-primary` - Primary text color
+- `--fg-secondary` - Secondary/muted text color (default)
+- `--fg-tertiary` - Tertiary/minimal text color
+
+**Typography Tokens:**
+- `--font-size-caption` - Caption size
+- `--font-size-label` - Label size
+- `--font-size-footnote` - Footnote size
+- `--line-height-tight` - Text line height
+- `--font-weight-regular` - Regular weight
+- `--font-weight-medium` - Medium weight
+
+## Accessibility
+
+### Semantic HTML
+
+- **Use `as="figcaption"`** for image and figure captions
+- **Use `as="p"`** for paragraph-level content blocks
+- **Use `as="span"`** for inline text
+
+### Best Practices
+
+- Always pair captions with their primary content (images, figures, forms)
+- Use semantic colors consistently for meaning
+- Ensure adequate contrast between caption and background colors
+- Don't rely solely on reduced opacity for critical information
+- Use footnotes for supplementary, not essential information
+- Test with screen readers for proper context
+
+### Screen Reader Testing
+
+```html
+<!-- Good: Semantic figcaption -->
+<figure>
+  <img src="diagram.jpg" alt="System architecture" />
+  <figcaption class="caption">Figure 1: Architecture overview</figcaption>
+</figure>
+
+<!-- Good: Paragraph context -->
+<p>Main content here</p>
+<Caption as="p">Supporting metadata</Caption>
+
+<!-- Avoid: Span for important context -->
+<Caption as="span">Critical information should not be secondary text</Caption>
+```
+
+## Composition Patterns
+
+### Card with Metadata
+
+```astro
+---
+import { Caption } from '@atomchat.io/components-astro'
+---
+
+<div class="card">
+  <div class="card-content">
+    <h3>Card Title</h3>
+    <p>Card description content goes here</p>
+  </div>
+  <div class="card-footer">
+    <Caption size="footnote" color="tertiary">
+      Last updated 2 hours ago
+    </Caption>
+  </div>
+</div>
+
+<style>
+  .card {
+    background: var(--bg-primary);
+    border: 1px solid var(--stroke-default);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .card-content {
+    padding: var(--spacing-md);
+  }
+
+  .card-footer {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--stroke-default);
+  }
+
+  h3 {
+    margin: 0 0 var(--spacing-sm) 0;
+  }
+
+  p {
+    margin: 0;
+  }
+</style>
+```
+
+### Info Block
+
+```astro
+---
+import { Caption } from '@atomchat.io/components-astro'
+---
+
+<div class="info-block">
+  <p class="info-title">Important Note</p>
+  <Caption as="p" size="footnote" color="primary">
+    This is important auxiliary information that users should see
+  </Caption>
+</div>
+
+<style>
+  .info-block {
+    padding: var(--spacing-md);
+    background: var(--bg-secondary);
+    border-left: 3px solid var(--fg-accent-info);
+    border-radius: var(--radius-sm);
+  }
+
+  .info-title {
+    margin: 0 0 var(--spacing-xs) 0;
+    font-weight: var(--font-weight-medium);
+  }
+</style>
+```
+
+## Design Tokens in Action
+
+The Caption component consumes typography and color tokens:
+
+**Color System:**
+```css
+.caption--primary {
+  color: var(--fg-primary);
+}
+
+.caption--secondary {
+  color: var(--fg-secondary);
+}
+
+.caption--tertiary {
+  color: var(--fg-tertiary);
+}
+```
+
+**Typography System:**
+```css
+.caption--caption {
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-tight);
+}
+
+.caption--label {
+  font-size: var(--font-size-label);
+  line-height: var(--line-height-tight);
+}
+
+.caption--footnote {
+  font-size: var(--font-size-footnote);
+  line-height: var(--line-height-tight);
+}
+
+.caption--medium {
+  font-weight: var(--font-weight-medium);
+}
+
+.caption--regular {
+  font-weight: var(--font-weight-regular);
+}
+
+.caption--left {
+  text-align: left;
+}
+
+.caption--center {
+  text-align: center;
+}
+
+.caption--right {
+  text-align: right;
+}
+```
+
+## Build with AI
+
+Use this prompt to generate Caption components with Claude Code:
+
+```
+Create a Caption component in [framework].
+Setup: npm install @atomchat.io/components-astro then import "@atomchat.io/components-astro/dist/tokens.css"
+
+Requirements:
+- Accepts size prop: "caption" | "label" | "footnote"
+- Accepts weight prop: "regular" | "medium"
+- Accepts color prop: "primary" | "secondary" | "tertiary" | any CSS color
+- Accepts align prop: "left" | "center" | "right"
+- Accepts as prop: "span" | "p" | "figcaption" (dynamic element type)
+- Uses ONLY these CSS custom properties:
+  * --font-size-caption, --font-size-label, --font-size-footnote
+  * --line-height-tight
+  * --font-weight-regular, --font-weight-medium
+  * --fg-primary, --fg-secondary, --fg-tertiary (for semantic colors)
+- Implements data-text attribute
+- Smart color handling: semantic colors use classes, custom CSS colors use inline style
+- No hardcoded values
+- Export as named export
+```

@@ -1,0 +1,320 @@
+---
+import '@atomchat.io/tokens/css';
+import '@atomchat.io/css';
+import { Spinner } from '@atomchat.io/components-astro';
+
+const title = 'Spinner Playground';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <style>
+    body {
+      font-family: var(--font-body, system-ui, sans-serif);
+      padding: 2rem;
+      background: var(--bg-default, #fff);
+      color: var(--fg-default, #000);
+    }
+    .playground {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section {
+      margin-bottom: 3rem;
+      padding: 2rem;
+      background: var(--bg-subtle, #f9f9f9);
+      border-radius: 8px;
+    }
+    .section h2 {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+    .section h3 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+    }
+    .spinner-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3rem;
+      align-items: center;
+    }
+    .spinner-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .spinner-label {
+      font-size: 0.875rem;
+      color: var(--fg-muted, #666);
+      font-weight: 600;
+    }
+    .demo-card {
+      padding: 2rem;
+      background: var(--bg-default, #fff);
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle, #e5e5e5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .demo-row {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+    .color-demo {
+      padding: 2rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 120px;
+    }
+    .color-demo--dark {
+      background: var(--bg-inverse, #000);
+    }
+    .color-demo--light {
+      background: var(--bg-default, #fff);
+      border: 1px solid var(--border-subtle, #e5e5e5);
+    }
+    .color-demo--colored {
+      background: var(--bg-brand, #ff6600);
+    }
+  </style>
+</head>
+<body>
+  <div class="playground">
+    <h1>Spinner Component Playground</h1>
+
+    <div class="section">
+      <h2>All Sizes</h2>
+      <p style="margin-bottom: 1.5rem; color: var(--fg-muted, #666); font-size: 0.875rem;">
+        Spinner supports 5 sizes: xs, s, m (default), l, xl
+      </p>
+      <div class="spinner-grid">
+        <div class="spinner-item">
+          <Spinner size="xs" />
+          <span class="spinner-label">XS</span>
+        </div>
+        <div class="spinner-item">
+          <Spinner size="s" />
+          <span class="spinner-label">S</span>
+        </div>
+        <div class="spinner-item">
+          <Spinner size="m" />
+          <span class="spinner-label">M (Default)</span>
+        </div>
+        <div class="spinner-item">
+          <Spinner size="l" />
+          <span class="spinner-label">L</span>
+        </div>
+        <div class="spinner-item">
+          <Spinner size="xl" />
+          <span class="spinner-label">XL</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Size Comparison</h2>
+      <div style="display: flex; align-items: flex-end; gap: 2rem;">
+        <div class="spinner-item">
+          <Spinner size="xs" />
+          <span class="spinner-label">16px</span>
+        </div>
+        <div class="spinner-item">
+          <Spinner size="s" />
+          <span class="spinner-label">20px</span>
+        </div>
+        <div class="spinner-item">
+          <Spinner size="m" />
+          <span class="spinner-label">24px</span>
+        </div>
+        <div class="spinner-item">
+          <Spinner size="l" />
+          <span class="spinner-label">32px</span>
+        </div>
+        <div class="spinner-item">
+          <Spinner size="xl" />
+          <span class="spinner-label">40px</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>On Different Backgrounds</h2>
+
+      <h3>Light Background</h3>
+      <div class="color-demo color-demo--light">
+        <Spinner size="l" />
+      </div>
+
+      <h3>Dark Background</h3>
+      <div class="color-demo color-demo--dark">
+        <Spinner size="l" />
+      </div>
+
+      <h3>Colored Background</h3>
+      <div class="color-demo color-demo--colored">
+        <Spinner size="l" />
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Common Use Cases</h2>
+
+      <h3>Loading State in Button</h3>
+      <div class="demo-card">
+        <button style="
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.75rem 1.5rem;
+          background: var(--bg-brand, #ff6600);
+          color: white;
+          border: none;
+          border-radius: 8px;
+          font-weight: 500;
+          cursor: not-allowed;
+          opacity: 0.7;
+        ">
+          <Spinner size="s" />
+          Loading...
+        </button>
+      </div>
+
+      <h3>Centered Page Loader</h3>
+      <div class="demo-card">
+        <div style="
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+          padding: 3rem;
+        ">
+          <Spinner size="xl" />
+          <span style="color: var(--fg-muted, #666);">Loading content...</span>
+        </div>
+      </div>
+
+      <h3>Inline with Text</h3>
+      <div class="demo-card">
+        <p style="display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+          <Spinner size="xs" />
+          Processing your request...
+        </p>
+      </div>
+
+      <h3>Card Loading State</h3>
+      <div class="demo-card" style="min-height: 200px; justify-content: center;">
+        <Spinner size="l" />
+        <span style="color: var(--fg-muted, #666); font-size: 0.875rem;">Loading data...</span>
+      </div>
+
+      <h3>Multiple Sizes in Context</h3>
+      <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+        <div class="demo-card" style="flex: 1; min-width: 200px;">
+          <Spinner size="xs" />
+          <span style="font-size: 0.75rem; color: var(--fg-muted);">Small task</span>
+        </div>
+        <div class="demo-card" style="flex: 1; min-width: 200px;">
+          <Spinner size="s" />
+          <span style="font-size: 0.875rem; color: var(--fg-muted);">Medium task</span>
+        </div>
+        <div class="demo-card" style="flex: 1; min-width: 200px;">
+          <Spinner size="m" />
+          <span style="color: var(--fg-muted);">Large task</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Form Loading States</h2>
+
+      <h3>Input Loading</h3>
+      <div class="demo-card">
+        <div style="position: relative; width: 100%; max-width: 300px;">
+          <input
+            type="text"
+            placeholder="Search..."
+            disabled
+            style="
+              width: 100%;
+              padding: 0.75rem 3rem 0.75rem 1rem;
+              border: 1px solid var(--border-default);
+              border-radius: 8px;
+              font-size: 1rem;
+            "
+          />
+          <div style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);">
+            <Spinner size="s" />
+          </div>
+        </div>
+      </div>
+
+      <h3>Select Loading</h3>
+      <div class="demo-card">
+        <div style="position: relative; width: 100%; max-width: 300px;">
+          <select
+            disabled
+            style="
+              width: 100%;
+              padding: 0.75rem 3rem 0.75rem 1rem;
+              border: 1px solid var(--border-default);
+              border-radius: 8px;
+              font-size: 1rem;
+              appearance: none;
+              background: var(--bg-default);
+            "
+          >
+            <option>Loading options...</option>
+          </select>
+          <div style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);">
+            <Spinner size="s" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Accessibility</h2>
+      <div class="demo-card">
+        <div style="max-width: 600px; text-align: left;">
+          <p style="margin-bottom: 1rem; font-weight: 600;">ARIA Attributes:</p>
+          <ul style="list-style: disc; padding-left: 1.5rem; line-height: 1.8;">
+            <li><code>role="status"</code> - Indicates dynamic content update</li>
+            <li><code>aria-label="Loading"</code> - Provides screen reader context</li>
+            <li>Semantic HTML structure for assistive technologies</li>
+          </ul>
+          <div style="margin-top: 1.5rem; padding: 1rem; background: var(--bg-subtle); border-radius: 4px;">
+            <strong>Example:</strong>
+            <pre style="margin-top: 0.5rem; font-size: 0.875rem; overflow-x: auto;"><code>&lt;Spinner size="m" /&gt;</code></pre>
+            <p style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--fg-muted);">
+              Screen readers announce: "Loading"
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top: 3rem; text-align: center; color: var(--fg-muted, #666);">
+      <a href="#" onclick="history.back(); return false;" style="color: var(--fg-link, #0066cc); cursor: pointer;">← Back to Documentation</a>
+    </p>
+  </div>
+
+  <script>
+    console.log('[DEBUG] Spinner playground loaded');
+    console.log('[DEBUG] Spinner elements:', document.querySelectorAll('[data-spinner]').length);
+    console.log('[DEBUG] Spinner indicators:', document.querySelectorAll('[data-spinner-indicator]').length);
+  </script>
+</body>
+</html>

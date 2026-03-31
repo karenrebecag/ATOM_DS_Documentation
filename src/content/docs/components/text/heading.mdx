@@ -1,0 +1,803 @@
+---
+title: Heading
+description: Semantic heading component with level/size decoupling, flexible typography, and optional GSAP text animations.
+---
+
+## Overview
+
+The Heading component renders semantic HTML headings (h1-h6) with flexible typography styling and optional GSAP animations. It decouples HTML heading level from visual size, allowing proper semantic markup while maintaining design flexibility.
+
+### Key Features
+
+- **Level/Size Decoupling**: Use h3 semantically styled as h1 size
+- **10 Visual Sizes**: Display-xl, display-l, display-m, display-s, huge-title, h1–h4, and heading
+- **Smart Auto-Mapping**: Automatic size from heading level (h1→h1 size, h2→h2 size, etc.)
+- **3 Font Weights**: Regular, medium, and bold options
+- **6 Letter Spacing Options**: Tighter to widest for fine-tuned typography
+- **Text Balancing**: Optional text-wrap: balance for improved readability
+- **7 GSAP Animations**: Masked text (lines/words/chars), scramble, fade, highlight effects
+- **Flexible Triggers**: Scroll or load animations with configurable delay
+- **Custom Colors**: Support for CSS color values or inherit
+- **3 Alignment Options**: Left, center, right text alignment
+
+## Installation
+
+To use the Heading component in your project, install it from the Atom Design System package:
+
+```bash
+npm install @atomchat.io/components-astro
+# or
+pnpm add @atomchat.io/components-astro
+```
+
+Then import and include the CSS tokens and GSAP library (for animations):
+
+```astro
+---
+import { Heading } from '@atomchat.io/components-astro'
+import '@atomchat.io/components-astro/dist/tokens.css'
+
+// Optional: For animations
+import gsap from 'gsap'
+import SplitText from 'gsap/SplitText'
+gsap.registerPlugin(SplitText)
+---
+```
+
+## Anatomy
+
+The Heading component renders a semantic HTML heading element with typography modifiers:
+
+```html
+<h2
+  class="heading heading--h2 heading--bold heading--tight heading--left"
+  data-text
+  data-text-animate="masked-lines"
+  data-text-trigger="scroll"
+  data-text-split="lines"
+  data-text-delay="0"
+>
+  Heading text content
+</h2>
+```
+
+**DOM Structure:**
+- `h1`–`h6` - Semantic heading element (determined by `level` prop)
+- `.heading` - Root component class
+- `.heading--{size}` - Visual size modifier (display-xl, h1, h2, etc.)
+- `.heading--{weight}` - Font weight modifier (regular, medium, bold)
+- `.heading--{tracking}` - Letter spacing modifier (tighter, tight, normal, wide, wider, widest)
+- `.heading--{align}` - Text alignment modifier (left, center, right)
+- `.heading--balance` - Applied when balance prop is true (text-wrap: balance)
+- `data-text` - Component identifier
+- `data-text-animate` - Animation type (if animate prop provided)
+- `data-text-trigger` - Animation trigger mode (scroll, load)
+- `data-text-split` - SplitText split type (chars, words, lines)
+- `data-text-delay` - Animation delay in seconds
+- `style="color: [value]"` - Applied for custom colors
+
+## Framework Support
+
+Heading is available across multiple frameworks. Choose your preferred implementation:
+
+### Astro
+
+```astro
+---
+import { Heading } from '@atomchat.io/components-astro'
+---
+
+<Heading level={1} size="display-xl">Hero Heading</Heading>
+<Heading level={2}>Section Title</Heading>
+<Heading level={3} size="h1" animate="masked-lines">Styled as h1</Heading>
+<Heading level={4} weight="medium" align="center">Subtitle</Heading>
+```
+
+### React
+
+```jsx
+import { Heading } from '@atomchat.io/components-astro/react'
+
+export function PageHeader() {
+  return (
+    <>
+      <Heading level={1} size="display-xl" animate="fade-up-load">
+        Welcome
+      </Heading>
+      <Heading level={2} align="center">
+        Section Title
+      </Heading>
+    </>
+  )
+}
+```
+
+### Next.js
+
+```tsx
+import { Heading } from '@atomchat.io/components-astro'
+
+export default function Page() {
+  return (
+    <Heading level={1} size="huge-title" animate="masked-words" trigger="scroll">
+      Featured Content
+    </Heading>
+  )
+}
+```
+
+### Vue
+
+```vue
+<template>
+  <div>
+    <Heading level="1" size="display-xl" animate="scramble-load">
+      Page Title
+    </Heading>
+    <Heading level="2" weight="medium">Subsection</Heading>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { Heading } from '@atomchat.io/components-astro/vue'
+</script>
+```
+
+### Angular
+
+```typescript
+import { HeadingComponent } from '@atomchat.io/components-astro/angular'
+
+@Component({
+  selector: 'app-hero',
+  template: `
+    <heading
+      level="1"
+      size="display-xl"
+      animate="masked-lines"
+      trigger="load"
+    >
+      Welcome to Our Site
+    </heading>
+  `,
+  imports: [HeadingComponent]
+})
+export class HeroComponent {}
+```
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | `2` | HTML heading level (h1–h6) |
+| `size` | `"display-xl" \| "display-l" \| "display-m" \| "display-s" \| "huge-title" \| "h1" \| "h2" \| "h3" \| "h4" \| "heading"` | Auto-mapped from level | Visual size independent of level |
+| `weight` | `"regular" \| "medium" \| "bold"` | `"bold"` | Font weight emphasis |
+| `tracking` | `"tighter" \| "tight" \| "normal" \| "wide" \| "wider" \| "widest"` | `"tight"` | Letter spacing |
+| `color` | `string` | `"inherit"` | Text color (CSS value or inherit) |
+| `align` | `"left" \| "center" \| "right"` | `"left"` | Text alignment |
+| `balance` | `boolean` | `false` | Enable text-wrap: balance for readability |
+| `animate` | `"masked-lines" \| "masked-words" \| "masked-chars" \| "scramble-load" \| "fade-up-load" \| "scramble-scroll" \| "highlight-scroll" \| false` | `false` | GSAP animation type |
+| `trigger` | `"scroll" \| "load"` | `"scroll"` | Animation trigger mode |
+| `delay` | `number` | `0` | Animation delay in seconds |
+| `class` | `string` | `""` | Additional CSS classes |
+
+### Data Attributes
+
+| Attribute | Values | Purpose |
+|-----------|--------|---------|
+| `data-text` | Present (no value) | Component identifier |
+| `data-text-animate` | Animation type or undefined | Animation selector for GSAP |
+| `data-text-trigger` | "scroll", "load", or undefined | Animation trigger mode |
+| `data-text-split` | "chars", "words", "lines", or undefined | SplitText split type |
+| `data-text-delay` | Delay in seconds or undefined | Animation delay value |
+
+## Variants
+
+### By Size
+
+10 visual size options from extra large display to standard heading:
+
+**Size Scale:**
+- **display-xl** - Extra large display (hero sections)
+- **display-l** - Large display
+- **display-m** - Medium display
+- **display-s** - Small display
+- **huge-title** - Huge title size
+- **h1** - Heading 1 size
+- **h2** - Heading 2 size
+- **h3** - Heading 3 size
+- **h4** - Heading 4 size
+- **heading** - Standard heading size
+
+```astro
+---
+import { Heading } from '@atomchat.io/components-astro'
+---
+
+<div class="size-examples">
+  <Heading size="display-xl">Display XL</Heading>
+  <Heading size="display-l">Display L</Heading>
+  <Heading size="display-m">Display M</Heading>
+  <Heading size="h1">Heading 1</Heading>
+  <Heading size="h2">Heading 2</Heading>
+  <Heading size="h3">Heading 3</Heading>
+</div>
+
+<style>
+  .size-examples {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+</style>
+```
+
+### By Weight
+
+Font weight options for emphasis:
+
+```astro
+---
+import { Heading } from '@atomchat.io/components-astro'
+---
+
+<div class="weight-variants">
+  <Heading weight="regular">Regular weight</Heading>
+  <Heading weight="medium">Medium weight</Heading>
+  <Heading weight="bold">Bold weight (default)</Heading>
+</div>
+
+<style>
+  .weight-variants {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+</style>
+```
+
+### By Letter Spacing
+
+6 letter spacing options for fine-tuned typography:
+
+```astro
+---
+import { Heading } from '@atomchat.io/components-astro'
+---
+
+<div class="tracking-variants">
+  <Heading tracking="tighter">Tighter spacing</Heading>
+  <Heading tracking="tight">Tight spacing (default)</Heading>
+  <Heading tracking="normal">Normal spacing</Heading>
+  <Heading tracking="wide">Wide spacing</Heading>
+  <Heading tracking="wider">Wider spacing</Heading>
+  <Heading tracking="widest">Widest spacing</Heading>
+</div>
+
+<style>
+  .tracking-variants {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+</style>
+```
+
+### Animations
+
+7 GSAP-powered animation options:
+
+**Masked Animations** (using GSAP SplitText):
+- **masked-lines** - Reveal by lines
+- **masked-words** - Reveal by words
+- **masked-chars** - Reveal by characters
+
+**Load Animations:**
+- **scramble-load** - Scramble effect on load
+- **fade-up-load** - Fade up effect on load
+
+**Scroll Animations:**
+- **scramble-scroll** - Scramble on scroll
+- **highlight-scroll** - Highlight on scroll
+
+```astro
+---
+import { Heading } from '@atomchat.io/components-astro'
+---
+
+<Heading animate="masked-lines" trigger="load">
+  Line-by-line reveal
+</Heading>
+
+<Heading animate="scramble-load">
+  Scramble on page load
+</Heading>
+
+<Heading animate="highlight-scroll" trigger="scroll">
+  Highlight as you scroll
+</Heading>
+
+<Heading animate="masked-words" delay={0.5}>
+  Word reveal with 0.5s delay
+</Heading>
+```
+
+### With Text Balancing
+
+Optional text wrapping for improved readability:
+
+```astro
+---
+import { Heading } from '@atomchat.io/components-astro'
+---
+
+<Heading level={1} size="display-xl" balance>
+  This long heading will wrap to multiple lines in a balanced way
+</Heading>
+
+<Heading level={2} balance>
+  Balanced typography for better readability
+</Heading>
+```
+
+### Level/Size Decoupling
+
+Use different heading levels with different visual sizes:
+
+```astro
+---
+import { Heading } from '@atomchat.io/components-astro'
+---
+
+<!-- h3 semantically, but looks like h1 -->
+<Heading level={3} size="h1">Semantic h3, Visual h1</Heading>
+
+<!-- h2 semantically, displayed as h3 -->
+<Heading level={2} size="h3">Semantic h2, Visual h3</Heading>
+
+<!-- h4 with display size -->
+<Heading level={4} size="display-m">Semantic h4, Display M size</Heading>
+```
+
+## Usage Examples
+
+### Hero Section
+
+```astro
+---
+import { Heading } from '@atomchat.io/components-astro'
+---
+
+<section class="hero">
+  <Heading
+    level={1}
+    size="display-xl"
+    animate="masked-lines"
+    trigger="load"
+    balance
+  >
+    Build amazing things with our design system
+  </Heading>
+  <p class="hero-subtitle">Enterprise-grade components for modern web applications</p>
+</section>
+
+<style>
+  .hero {
+    padding: var(--spacing-xl);
+    text-align: center;
+    background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+  }
+
+  .hero-subtitle {
+    margin-top: var(--spacing-md);
+    font-size: var(--font-size-lg);
+    color: var(--fg-secondary);
+  }
+</style>
+```
+
+### Section Headers
+
+```astro
+---
+import { Heading } from '@atomchat.io/components-astro'
+
+const sections = [
+  { title: 'Getting Started', level: 2 },
+  { title: 'Installation', level: 3 },
+  { title: 'Configuration', level: 3 }
+]
+---
+
+<div class="page-content">
+  {sections.map(section => (
+    <Heading
+      level={section.level}
+      weight={section.level === 2 ? 'bold' : 'medium'}
+      tracking={section.level === 2 ? 'tight' : 'normal'}
+    >
+      {section.title}
+    </Heading>
+  ))}
+</div>
+
+<style>
+  .page-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+  }
+</style>
+```
+
+### Animated Landing Page
+
+```astro
+---
+import { Heading } from '@atomchat.io/components-astro'
+---
+
+<div class="landing">
+  <Heading
+    level={1}
+    size="display-xl"
+    animate="masked-words"
+    trigger="load"
+    balance
+  >
+    Transform Your Workflow
+  </Heading>
+
+  <Heading
+    level={2}
+    size="h1"
+    animate="fade-up-load"
+    delay={0.3}
+    color="var(--fg-secondary)"
+  >
+    Powerful tools for modern teams
+  </Heading>
+
+  <section class="features">
+    <Heading level={3} size="h2" animate="highlight-scroll">
+      Key Features
+    </Heading>
+  </section>
+</div>
+
+<style>
+  .landing {
+    padding: var(--spacing-xl);
+  }
+
+  .features {
+    margin-top: var(--spacing-xl);
+  }
+</style>
+```
+
+### Centered Heading
+
+```astro
+---
+import { Heading } from '@atomchat.io/components-astro'
+---
+
+<div class="feature-section">
+  <Heading
+    level={2}
+    size="display-m"
+    align="center"
+    tracking="wide"
+    animate="masked-lines"
+  >
+    PREMIUM FEATURES
+  </Heading>
+
+  <div class="features-grid">
+    <!-- Feature cards here -->
+  </div>
+</div>
+
+<style>
+  .feature-section {
+    padding: var(--spacing-xl);
+    text-align: center;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+  }
+</style>
+```
+
+### Custom Color Heading
+
+```astro
+---
+import { Heading } from '@atomchat.io/components-astro'
+---
+
+<div class="gradient-section">
+  <Heading
+    level={2}
+    size="display-l"
+    color="var(--fg-accent-brand)"
+    weight="bold"
+  >
+    Featured Content
+  </Heading>
+</div>
+
+<style>
+  .gradient-section {
+    padding: var(--spacing-xl);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+</style>
+```
+
+## Structure Tokens
+
+The Heading component uses these typography structure tokens:
+
+| Size | Font Size | Line Height | Letter Spacing |
+|------|-----------|-------------|-----------------|
+| display-xl | `--font-size-display-xl` | `--line-height-display` | `--tracking-tight` |
+| display-l | `--font-size-display-l` | `--line-height-display` | `--tracking-tight` |
+| display-m | `--font-size-display-m` | `--line-height-display` | `--tracking-tight` |
+| display-s | `--font-size-display-s` | `--line-height-display` | `--tracking-tight` |
+| huge-title | `--font-size-huge-title` | `--line-height-tight` | `--tracking-tight` |
+| h1 | `--font-size-h1` | `--line-height-tight` | `--tracking-tight` |
+| h2 | `--font-size-h2` | `--line-height-tight` | `--tracking-tight` |
+| h3 | `--font-size-h3` | `--line-height-tight` | `--tracking-normal` |
+| h4 | `--font-size-h4` | `--line-height-normal` | `--tracking-normal` |
+| heading | `--font-size-heading` | `--line-height-normal` | `--tracking-normal` |
+
+## Dependencies
+
+The Heading component has no required component dependencies. For animations, GSAP and SplitText plugin are required:
+
+```bash
+npm install gsap
+```
+
+**Design Tokens Required:**
+- Font size tokens for all size variants
+- Line height tokens (display, tight, normal)
+- Letter spacing tokens (tighter, tight, normal, wide, wider, widest)
+- Font weight tokens (regular, medium, bold)
+- Color tokens for text colors
+
+**GSAP Plugins (for animations):**
+- `gsap/SplitText` - For masked-lines, masked-words, masked-chars animations
+- `gsap/ScrollTrigger` - For scroll-triggered animations (if using scramble-scroll, highlight-scroll)
+
+## Accessibility
+
+### Semantic HTML
+
+- **Use correct heading levels** - Maintain proper document outline (h1, h2, h3, etc.)
+- **Don't skip levels** - Go h2→h3, not h2→h4
+- **One h1 per page** - Use h1 for main page title only
+
+### Animation Accessibility
+
+- **Respects prefers-reduced-motion** - Animations should be disabled for users with motion sensitivities
+- **Test with screen readers** - Ensure animations don't interfere with content announcement
+- **Provide text alternatives** - Don't rely solely on animation to convey meaning
+
+### Best Practices
+
+```html
+<!-- Good: Proper heading hierarchy -->
+<h1>Page Title</h1>
+<h2>Section 1</h2>
+<h3>Subsection 1.1</h3>
+<h3>Subsection 1.2</h3>
+<h2>Section 2</h2>
+
+<!-- Good: Semantic level with visual flexibility -->
+<h3 class="heading--h1">Semantic h3, displayed as h1 size</h3>
+
+<!-- Avoid: Skipping heading levels -->
+<h1>Main</h1>
+<h4>Should be h2 or h3</h4>
+
+<!-- Avoid: Multiple h1 on one page -->
+<h1>Title 1</h1>
+<h1>Title 2</h1>
+```
+
+## Composition Patterns
+
+### Hero with Animated Heading
+
+```astro
+---
+import { Heading } from '@atomchat.io/components-astro'
+import { Button } from '@atomchat.io/components-astro'
+---
+
+<section class="hero">
+  <div class="hero-content">
+    <Heading
+      level={1}
+      size="display-xl"
+      animate="masked-lines"
+      trigger="load"
+      balance
+    >
+      Revolutionary Design System
+    </Heading>
+    <p class="hero-description">
+      Build faster with powerful, accessible components
+    </p>
+    <div class="hero-actions">
+      <Button variant="primary">Get Started</Button>
+      <Button variant="secondary">Learn More</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-xl);
+    background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+  }
+
+  .hero-content {
+    max-width: 600px;
+  }
+
+  .hero-description {
+    margin: var(--spacing-md) 0;
+    font-size: var(--font-size-lg);
+    color: var(--fg-secondary);
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+  }
+</style>
+```
+
+### Section with Underline
+
+```astro
+---
+import { Heading } from '@atomchat.io/components-astro'
+---
+
+<section class="section-with-accent">
+  <div class="section-header">
+    <Heading level={2} size="display-m" weight="bold">
+      Key Capabilities
+    </Heading>
+    <div class="accent-line"></div>
+  </div>
+  <div class="section-content">
+    <!-- Content cards here -->
+  </div>
+</section>
+
+<style>
+  .section-header {
+    position: relative;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .accent-line {
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: var(--fg-accent-brand);
+    border-radius: 2px;
+  }
+
+  .section-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+  }
+</style>
+```
+
+## Design Tokens in Action
+
+The Heading component consumes typography and spacing tokens:
+
+**Font Size System:**
+```css
+.heading--display-xl {
+  font-size: var(--font-size-display-xl);
+  line-height: var(--line-height-display);
+}
+
+.heading--h1 {
+  font-size: var(--font-size-h1);
+  line-height: var(--line-height-tight);
+}
+
+/* etc. for all size variants */
+```
+
+**Weight System:**
+```css
+.heading--regular {
+  font-weight: var(--font-weight-regular);
+}
+
+.heading--medium {
+  font-weight: var(--font-weight-medium);
+}
+
+.heading--bold {
+  font-weight: var(--font-weight-bold);
+}
+```
+
+**Tracking (Letter Spacing):**
+```css
+.heading--tighter {
+  letter-spacing: var(--tracking-tighter);
+}
+
+.heading--tight {
+  letter-spacing: var(--tracking-tight);
+}
+
+.heading--normal {
+  letter-spacing: var(--tracking-normal);
+}
+
+/* etc. for all tracking variants */
+```
+
+**Text Balancing:**
+```css
+.heading--balance {
+  text-wrap: balance;
+}
+```
+
+## Build with AI
+
+Use this prompt to generate Heading components with Claude Code:
+
+```
+Create a Heading component in [framework].
+Setup: npm install @atomchat.io/components-astro gsap then import "@atomchat.io/components-astro/dist/tokens.css"
+
+Requirements:
+- Accepts level prop: 1 | 2 | 3 | 4 | 5 | 6 (default 2)
+- Accepts size prop: "display-xl" | "display-l" | "display-m" | "display-s" | "huge-title" | "h1" | "h2" | "h3" | "h4" | "heading" (auto-maps from level)
+- Accepts weight prop: "regular" | "medium" | "bold" (default "bold")
+- Accepts tracking prop: "tighter" | "tight" | "normal" | "wide" | "wider" | "widest" (default "tight")
+- Accepts color prop: CSS color value or "inherit" (default "inherit")
+- Accepts align prop: "left" | "center" | "right" (default "left")
+- Accepts balance prop: boolean (default false) - applies text-wrap: balance
+- Accepts animate prop: "masked-lines" | "masked-words" | "masked-chars" | "scramble-load" | "fade-up-load" | "scramble-scroll" | "highlight-scroll" | false
+- Accepts trigger prop: "scroll" | "load" (default "scroll")
+- Accepts delay prop: number in seconds (default 0)
+- Uses ONLY these CSS custom properties:
+  * --font-size-display-xl/l/m/s, --font-size-huge-title, --font-size-h1/2/3/4, --font-size-heading
+  * --line-height-display, --line-height-tight, --line-height-normal
+  * --tracking-tighter, --tracking-tight, --tracking-normal, --tracking-wide, --tracking-wider, --tracking-widest
+  * --font-weight-regular, --font-weight-medium, --font-weight-bold
+- Implements data-text, data-text-animate, data-text-trigger, data-text-split, data-text-delay attributes
+- No hardcoded colors, sizes, or weights
+- Export as named export
+```
