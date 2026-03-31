@@ -1,0 +1,429 @@
+# ATOM Design System — Checkbox Component Replication Prompt
+
+I need to create a Checkbox component from the ATOM Design System. Before we start, I need to answer these questions:
+
+## Question 1: Target Stack
+Which technology stack are you building this component for?
+
+**Options:**
+- React (with TypeScript)
+- Next.js (App Router with TypeScript)
+- Vue 3 (with Composition API)
+- Angular (Standalone Components)
+- Astro
+- Svelte/SvelteKit
+- HTML/CSS/JavaScript (Vanilla)
+
+**Note:** The official npm package currently only has `@atomchat.io/components-astro`. You'll need to convert the component to your chosen stack while maintaining the same design tokens, structure, and behavior.
+
+## Question 2: Animation Support
+Do you want to include checkbox check/uncheck animations?
+
+**Options:**
+- Yes, include GSAP animations (smooth checkmark animation)
+- No, static component only (CSS-only transitions)
+
+**Note:** If you choose animations, you'll need to install `gsap` and implement the checkbox check animation with SVG path drawing effect.
+
+---
+
+# Component Specification
+
+## Overview
+The Checkbox component is a binary selection control for choosing one or multiple options from a set.
+
+**Key Features:**
+- Binary selection (checked/unchecked)
+- Support for multiple checkboxes in groups
+- Light and dark theme support
+- SVG checkmark with smooth animations
+- Disabled state handling
+- Fully accessible with semantic HTML
+- Token-driven styling (NEVER hardcode values)
+
+## Installation Requirements
+
+```bash
+# Install ATOM Design System packages
+pnpm add @atomchat.io/css @atomchat.io/tokens
+
+# If animations enabled
+pnpm add @atomchat.io/animations gsap
+```
+
+## Props API
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| name | string | — | Input name attribute |
+| value | string | — | Input value attribute |
+| checked | boolean? | false | Controlled checked state |
+| defaultChecked | boolean? | false | Default checked state (uncontrolled) |
+| disabled | boolean? | false | Disables checkbox interaction |
+| theme | "light" \| "dark" | "light" | Visual theme variant |
+| class | string? | — | Additional CSS classes |
+| onChange | function? | — | Change event handler |
+
+### Children
+| Slot | Description |
+|------|-------------|
+| default | Checkbox label text (required) |
+
+## DOM Structure
+
+```html
+<label class="checkbox checkbox--light" for="agree-terms" data-checkbox>
+  <input
+    class="checkbox__input"
+    type="checkbox"
+    id="agree-terms"
+    name="terms"
+    value="agree"
+  />
+  <span class="checkbox__custom" aria-hidden="true" data-checkbox-custom>
+    <svg
+      class="checkbox__check"
+      viewBox="0 0 12 10"
+      fill="none"
+      data-checkbox-check
+    >
+      <path
+        d="M1 5.5L4 8.5L11 1.5"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </span>
+  <span class="checkbox__label">
+    I agree to the terms
+  </span>
+</label>
+```
+
+## Required Design Tokens
+
+### Size Tokens
+```css
+--checkbox-size: 20px;                   /* Custom indicator size */
+--checkbox-border-radius: 4px;           /* Rounded corners */
+--checkbox-border-width: 1.5px;          /* Border thickness */
+--checkbox-checkmark-size: 12px;         /* SVG checkmark size */
+```
+
+### Color Tokens (Light Theme)
+```css
+/* Unchecked */
+--checkbox-bg-light-unchecked: var(--primitive-neutral-0);
+--checkbox-border-light-unchecked: var(--primitive-neutral-300);
+
+/* Checked */
+--checkbox-bg-light-checked: var(--primitive-blue-600);
+--checkbox-border-light-checked: var(--primitive-blue-600);
+--checkbox-check-light: var(--primitive-neutral-0);
+
+/* Hover */
+--checkbox-border-light-hover: var(--primitive-blue-500);
+
+/* Focus */
+--checkbox-shadow-light-focus: 0 0 0 3px var(--primitive-blue-100);
+
+/* Disabled */
+--checkbox-bg-light-disabled: var(--primitive-neutral-100);
+--checkbox-border-light-disabled: var(--primitive-neutral-200);
+```
+
+### Color Tokens (Dark Theme)
+```css
+/* Unchecked */
+--checkbox-bg-dark-unchecked: var(--primitive-neutral-800);
+--checkbox-border-dark-unchecked: var(--primitive-neutral-600);
+
+/* Checked */
+--checkbox-bg-dark-checked: var(--primitive-blue-500);
+--checkbox-border-dark-checked: var(--primitive-blue-500);
+--checkbox-check-dark: var(--primitive-neutral-900);
+
+/* Hover */
+--checkbox-border-dark-hover: var(--primitive-blue-400);
+
+/* Focus */
+--checkbox-shadow-dark-focus: 0 0 0 3px var(--primitive-blue-900);
+
+/* Disabled */
+--checkbox-bg-dark-disabled: var(--primitive-neutral-700);
+--checkbox-border-dark-disabled: var(--primitive-neutral-600);
+```
+
+### Typography
+```css
+--checkbox-label-font-size: var(--text-body-regular);   /* 16px */
+--checkbox-label-font-weight: var(--font-weight-normal); /* 400 */
+--checkbox-label-line-height: var(--line-height-normal); /* 1.5 */
+```
+
+## Base Component Styles
+
+```css
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--xs);
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.checkbox__custom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
+  border-radius: var(--checkbox-border-radius);
+  border: var(--checkbox-border-width) solid var(--checkbox-border-light-unchecked);
+  background: var(--checkbox-bg-light-unchecked);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.checkbox__check {
+  width: var(--checkbox-checkmark-size);
+  height: var(--checkbox-checkmark-size);
+  color: var(--checkbox-check-light);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.2s ease;
+}
+
+.checkbox__label {
+  font-size: var(--checkbox-label-font-size);
+  font-weight: var(--checkbox-label-font-weight);
+  line-height: var(--checkbox-label-line-height);
+  color: var(--fg-default);
+}
+
+/* Checked state */
+.checkbox__input:checked + .checkbox__custom {
+  background: var(--checkbox-bg-light-checked);
+  border-color: var(--checkbox-border-light-checked);
+}
+
+.checkbox__input:checked + .checkbox__custom .checkbox__check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Hover state */
+.checkbox:hover .checkbox__custom {
+  border-color: var(--checkbox-border-light-hover);
+}
+
+/* Focus state */
+.checkbox__input:focus-visible + .checkbox__custom {
+  box-shadow: var(--checkbox-shadow-light-focus);
+}
+
+/* Disabled state */
+.checkbox__input:disabled + .checkbox__custom {
+  background: var(--checkbox-bg-light-disabled);
+  border-color: var(--checkbox-border-light-disabled);
+  cursor: not-allowed;
+}
+
+.checkbox__input:disabled ~ .checkbox__label {
+  color: var(--fg-disabled);
+  cursor: not-allowed;
+}
+
+/* Dark theme */
+.checkbox--dark .checkbox__custom {
+  background: var(--checkbox-bg-dark-unchecked);
+  border-color: var(--checkbox-border-dark-unchecked);
+}
+
+.checkbox--dark .checkbox__input:checked + .checkbox__custom {
+  background: var(--checkbox-bg-dark-checked);
+  border-color: var(--checkbox-border-dark-checked);
+}
+
+.checkbox--dark .checkbox__check {
+  color: var(--checkbox-check-dark);
+}
+
+.checkbox--dark:hover .checkbox__custom {
+  border-color: var(--checkbox-border-dark-hover);
+}
+
+.checkbox--dark .checkbox__input:focus-visible + .checkbox__custom {
+  box-shadow: var(--checkbox-shadow-dark-focus);
+}
+
+.checkbox--dark .checkbox__input:disabled + .checkbox__custom {
+  background: var(--checkbox-bg-dark-disabled);
+  border-color: var(--checkbox-border-dark-disabled);
+}
+```
+
+## Animation System (if enabled)
+
+### Data Attributes Contract
+- `data-checkbox` — Root element
+- `data-checkbox-custom` — Custom indicator
+- `data-checkbox-check` — SVG checkmark
+
+### GSAP Animation Implementation
+
+**Check animation (SVG path drawing):**
+```typescript
+// On check
+gsap.to('[data-checkbox-check]', {
+  opacity: 1,
+  scale: 1,
+  duration: 0.3,
+  ease: 'back.out(1.7)'
+})
+
+// On uncheck
+gsap.to('[data-checkbox-check]', {
+  opacity: 0,
+  scale: 0.5,
+  duration: 0.2,
+  ease: 'power2.in'
+})
+```
+
+### Motion Preferences
+```css
+@media (prefers-reduced-motion: reduce) {
+  .checkbox__custom,
+  .checkbox__check {
+    transition-duration: 0.01ms !important;
+  }
+}
+```
+
+## Accessibility Requirements
+
+**Semantic HTML:**
+- Use `<label>` wrapping all elements
+- Use native `<input type="checkbox">`
+- Custom indicator marked with `aria-hidden="true"`
+- Label text visible and associated with input
+
+**Keyboard navigation:**
+- Tab to focus checkbox
+- Space to toggle checked state
+- Focus-visible styling required
+
+## Usage Examples
+
+### Basic Checkbox
+```tsx
+<Checkbox name="subscribe" value="yes">
+  Subscribe to newsletter
+</Checkbox>
+```
+
+### Checked by Default
+```tsx
+<Checkbox name="terms" value="agree" checked>
+  I agree to the terms
+</Checkbox>
+```
+
+### Dark Theme
+```tsx
+<Checkbox name="privacy" value="accept" theme="dark">
+  Accept privacy policy
+</Checkbox>
+```
+
+### Disabled Checkbox
+```tsx
+<Checkbox name="disabled" value="test" disabled>
+  Disabled option
+</Checkbox>
+```
+
+### Controlled Checkbox
+```tsx
+const [checked, setChecked] = useState(false)
+
+<Checkbox
+  name="controlled"
+  value="yes"
+  checked={checked}
+  onChange={(e) => setChecked(e.target.checked)}
+>
+  Controlled checkbox
+</Checkbox>
+```
+
+### Checkbox Group
+```tsx
+<form>
+  <Checkbox name="interests" value="design">
+    Design
+  </Checkbox>
+  <Checkbox name="interests" value="development">
+    Development
+  </Checkbox>
+  <Checkbox name="interests" value="marketing">
+    Marketing
+  </Checkbox>
+</form>
+```
+
+## Implementation Checklist
+
+- [ ] Install required packages (`@atomchat.io/css`, `@atomchat.io/tokens`)
+- [ ] Create Checkbox component with props API
+- [ ] Implement semantic HTML structure (label + input + custom indicator)
+- [ ] Implement light theme with tokens
+- [ ] Implement dark theme with tokens
+- [ ] Add disabled state handling
+- [ ] Add checked/unchecked state styling
+- [ ] Add hover state styling
+- [ ] Add focus-visible styling
+- [ ] Add label text slot/children
+- [ ] If animations enabled: Install GSAP
+- [ ] If animations enabled: Implement check animation
+- [ ] If animations enabled: Implement uncheck animation
+- [ ] Test keyboard navigation (Tab, Space)
+- [ ] Test screen reader accessibility
+- [ ] Verify all styles use tokens (no hardcoded values)
+- [ ] Test prefers-reduced-motion
+
+## Critical Rules
+
+1. **NEVER hardcode values** — Every color, spacing, font size must use design tokens
+2. **Use semantic HTML** — Native checkbox input, not div/span
+3. **Custom indicator is decorative** — Use `aria-hidden="true"`
+4. **Keyboard accessible** — Tab and Space must work
+5. **Focus-visible styling** — Required for keyboard users
+6. **Token-first philosophy** — If a token exists, use it
+
+## Questions After Implementation
+
+After building the component, verify:
+1. Does keyboard navigation work (Tab to focus, Space to toggle)?
+2. Do both light and dark themes render correctly?
+3. Does disabled state prevent interaction?
+4. Does focus-visible styling appear on keyboard focus?
+5. If animations enabled: Does checkmark animate smoothly on check/uncheck?
+6. Does component respect prefers-reduced-motion?
+7. Are all styles using design tokens?
+8. Does label click toggle the checkbox?
+
+---
+
+Now, based on your answers to Questions 1 and 2, please create a complete Checkbox component following this specification.

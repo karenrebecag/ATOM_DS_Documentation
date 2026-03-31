@@ -1,0 +1,227 @@
+---
+/**
+ * CopyPromptButton - Reusable component to copy AI prompts for component replication
+ * Reads prompt content from /src/promptsDocumentation/{componentName}.txt
+ */
+
+interface Props {
+  componentName: string
+  variant?: 'primary' | 'secondary'
+}
+
+const { componentName, variant = 'primary' } = Astro.props
+
+// Read prompt file content
+let promptContent = ''
+try {
+  const promptFile = await import(`../promptsDocumentation/${componentName}.txt?raw`)
+  promptContent = promptFile.default
+} catch (error) {
+  console.error(`Prompt file not found for component: ${componentName}`)
+  promptContent = `# Prompt file missing\nPlease create: src/promptsDocumentation/${componentName}.txt`
+}
+---
+
+<div class="copy-prompt-wrapper">
+  <button
+    aria-label="Copy component prompt to clipboard"
+    data-copy-prompt-button=""
+    data-prompt-content={promptContent}
+    class={`copy-prompt-button copy-prompt-button--${variant}`}
+  >
+    <div class="copy-prompt-icon__wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24" fill="none">
+        <path d="M16 2H8V5H16V2Z" stroke="currentColor" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M16 3H17.5L19 4.5V19.5L17.5 21H6.5L5 19.5V4.5L6.5 3H8" stroke="currentColor" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </div>
+    <div class="copy-prompt-text__wrap">
+      <span class="copy-prompt-text__el">Copy Prompt for Claude Code</span>
+      <span class="copy-prompt-text__el">Click to copy</span>
+      <span class="copy-prompt-text__el">Copied to clipboard!</span>
+    </div>
+  </button>
+</div>
+
+<style>
+.copy-prompt-wrapper {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1em;
+  margin-bottom: 2em;
+}
+
+.copy-prompt-button {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.75em;
+  padding: 0.75em 1em 0.75em 0.75em;
+  background-color: var(--sl-color-bg-nav);
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.5em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--sl-font);
+}
+
+.copy-prompt-button--primary {
+  background-color: var(--sl-color-accent-high);
+  border-color: var(--sl-color-accent);
+}
+
+.copy-prompt-button--secondary {
+  background-color: var(--sl-color-bg);
+  border-color: var(--sl-color-gray-4);
+}
+
+.copy-prompt-button:focus {
+  outline-offset: 0px;
+  outline: 2px solid var(--sl-color-accent);
+}
+
+.copy-prompt-button:focus-visible {
+  outline-offset: 4px;
+  border-style: none;
+  outline: 2px solid var(--sl-color-accent);
+}
+
+.copy-prompt-icon__wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.5em;
+  height: 2.5em;
+  padding: 0.5em;
+  background-color: var(--sl-color-accent);
+  color: var(--sl-color-black);
+  border-radius: 0.375em;
+  transition: background-color 0.2s ease;
+}
+
+.copy-prompt-text__wrap {
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 1.2em;
+  font-size: 1em;
+  line-height: 1.2;
+  overflow: hidden;
+  font-weight: 500;
+  color: var(--sl-color-white);
+}
+
+.copy-prompt-text__el {
+  white-space: nowrap;
+  font-size: 1em;
+  transition: transform 0.45s cubic-bezier(0.65, 0, 0, 1);
+}
+
+/* Hover styling */
+@media (hover: hover) {
+  .copy-prompt-button:hover {
+    border-color: var(--sl-color-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .copy-prompt-button:hover .copy-prompt-icon__wrap {
+    background-color: var(--sl-color-accent-high);
+  }
+
+  .copy-prompt-button:hover .copy-prompt-text__el {
+    transform: translateY(-100%);
+  }
+}
+
+/* Keyboard focus styling */
+.copy-prompt-button:focus .copy-prompt-icon__wrap {
+  background-color: var(--sl-color-accent-high);
+}
+
+.copy-prompt-button:focus .copy-prompt-text__el {
+  transform: translateY(-100%);
+}
+
+/* 'Copied' state, when a user has clicked the button */
+[data-copy-prompt-button="copied"] .copy-prompt-icon__wrap {
+  background-color: var(--sl-color-green) !important;
+}
+
+[data-copy-prompt-button="copied"] .copy-prompt-text__el {
+  transform: translateY(-200%) !important;
+}
+
+/* Dark mode adjustments */
+:global(.theme-dark) .copy-prompt-button--secondary {
+  background-color: var(--sl-color-gray-6);
+}
+
+@media screen and (max-width: 991px) {
+  .copy-prompt-wrapper {
+    font-size: 0.9em;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .copy-prompt-text__wrap {
+    font-size: 0.85em;
+  }
+}
+</style>
+
+<script>
+function initCopyPromptClipboard() {
+  const buttons = document.querySelectorAll('[data-copy-prompt-button]')
+  if (!buttons.length) return
+
+  const copyPrompt = (button: HTMLButtonElement) => {
+    const promptContent = button.getAttribute('data-prompt-content')
+    if (promptContent) {
+      navigator.clipboard.writeText(promptContent).then(() => {
+        button.setAttribute('data-copy-prompt-button', 'copied')
+        button.setAttribute('aria-label', 'Prompt copied to clipboard!')
+      })
+    }
+  }
+
+  const handleInteraction = (e: Event) => {
+    const target = e.currentTarget as HTMLButtonElement
+    if (
+      e.type === 'click' ||
+      (e.type === 'keydown' && ((e as KeyboardEvent).key === 'Enter' || (e as KeyboardEvent).key === ' '))
+    ) {
+      e.preventDefault()
+      copyPrompt(target)
+    }
+  }
+
+  buttons.forEach((button) => {
+    const btn = button as HTMLButtonElement
+    btn.addEventListener('click', handleInteraction)
+    btn.addEventListener('keydown', handleInteraction)
+    btn.addEventListener('mouseleave', () => {
+      btn.removeAttribute('data-copy-prompt-button')
+      btn.blur()
+      btn.setAttribute('aria-label', 'Copy component prompt to clipboard')
+    })
+    btn.addEventListener('blur', () => {
+      btn.removeAttribute('data-copy-prompt-button')
+      btn.setAttribute('aria-label', 'Copy component prompt to clipboard')
+    })
+  })
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+  initCopyPromptClipboard()
+})
+
+// Re-initialize on Astro page transitions
+document.addEventListener('astro:page-load', () => {
+  initCopyPromptClipboard()
+})
+</script>

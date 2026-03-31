@@ -1,0 +1,468 @@
+# ATOM Design System — Button Component Replication Prompt
+
+I need to create a Button component from the ATOM Design System. Before we start, I need to answer these questions:
+
+## Question 1: Target Stack
+Which technology stack are you building this component for?
+
+**Options:**
+- React (with TypeScript)
+- Next.js (App Router with TypeScript)
+- Vue 3 (with Composition API)
+- Angular (Standalone Components)
+- Astro
+- Svelte/SvelteKit
+- HTML/CSS/JavaScript (Vanilla)
+
+**Note:** The official npm package currently only has `@atomchat.io/components-astro`. You'll need to convert the component to your chosen stack while maintaining the same design tokens, structure, and behavior.
+
+## Question 2: Animation Support
+Do you want to include GSAP hover rotation animations?
+
+**Options:**
+- Yes, include full GSAP animations (hover rotation, shimmer effects)
+- No, static component only (CSS-only states, no animations)
+
+**Note:** If you choose animations, you'll need to install `gsap` and implement the `initHoverRotate`, `initRotateClones`, and `initRotateCalc` functions from the ATOM animation system.
+
+---
+
+# Component Specification
+
+## Overview
+The Button component is the primary interactive element with:
+- 6 visual variants (Primary, Secondary, Tertiary, Destructive variants)
+- 5 sizes (xs, s, m, l, xl)
+- Loading state with spinner
+- Icon support (left, right, or both)
+- Disabled state
+- Can render as `<button>` or `<a>` tag
+- Token-driven styling (NEVER hardcode values)
+
+## Installation Requirements
+
+```bash
+# Install ATOM Design System packages
+pnpm add @atomchat.io/css @atomchat.io/tokens
+
+# If animations enabled
+pnpm add @atomchat.io/animations gsap
+```
+
+## Props API
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| variant | "Primary" \| "Secondary" \| "Tertiary" \| "Destructive Primary" \| "Destructive Secondary" \| "Destructive Tertiary" | "Primary" | Visual style variant |
+| size | "xs" \| "s" \| "m" \| "l" \| "xl" | "m" | Size of the button |
+| href | string? | — | If provided, renders as `<a>` tag |
+| type | "button" \| "submit" \| "reset" | "button" | Button type (only for `<button>`) |
+| disabled | boolean? | false | Disables interaction |
+| loading | boolean? | false | Shows loading spinner |
+| class | string? | — | Additional CSS classes |
+
+## Slots/Children
+
+| Slot | Description |
+|------|-------------|
+| default | Button label text (required) |
+| icon-left | Icon placed before label |
+| icon-right | Icon placed after label |
+
+## DOM Structure (Default State)
+
+```html
+<button class="button button--primary button--m" data-button data-hover-rotate>
+  <span class="button__label-wrap">
+    <!-- Original label -->
+    <span class="button__label" data-button-label>
+      <span class="button__icon" data-icon-left><!-- icon-left --></span>
+      Button Text
+      <span class="button__icon" data-icon-right><!-- icon-right --></span>
+    </span>
+
+    <!-- Clone label (for animation, hidden by default) -->
+    <span class="button__label button__label--clone" data-button-label-clone aria-hidden="true">
+      <span class="button__icon"><!-- icon-left clone --></span>
+      Button Text
+      <span class="button__icon"><!-- icon-right clone --></span>
+    </span>
+  </span>
+</button>
+```
+
+## DOM Structure (Loading State)
+
+```html
+<button class="button button--primary button--m button--loading" disabled aria-busy="true">
+  <span class="button__loading-content">
+    <span class="button__loading-text" data-shimmer>Loading</span>
+    <span class="button__spinner" data-button-spinner></span>
+  </span>
+</button>
+```
+
+## Required Design Tokens
+
+### Size Tokens
+```css
+/* XS */
+padding: var(--xxs) var(--xs);  /* ~4px 8px */
+font-size: var(--text-label-regular);
+
+/* S */
+padding: var(--xs) var(--s);    /* ~8px 12px */
+font-size: var(--text-label-regular);
+
+/* M */
+padding: var(--sm) var(--m);    /* ~12px 16px */
+font-size: var(--text-label-regular);
+
+/* L */
+padding: var(--m) var(--l);     /* ~16px 24px */
+font-size: var(--text-body-regular);
+
+/* XL */
+padding: var(--l) var(--xl);    /* ~24px 32px */
+font-size: var(--text-body-large);
+```
+
+### Variant Tokens
+
+**Primary:**
+```css
+background: var(--buttons-bg-primary-enabled);
+color: var(--buttons-fg-primary-enabled);
+
+/* States */
+&:hover { background: var(--buttons-bg-primary-hovered); }
+&:focus {
+  background: var(--buttons-bg-primary-focused);
+  box-shadow: var(--buttons-shadow-focus);
+  border: 1px solid var(--buttons-border-primary-focused);
+}
+&:active { background: var(--buttons-bg-primary-pressed); }
+&[disabled] {
+  background: var(--bg-disabled);
+  color: var(--fg-disabled);
+  cursor: not-allowed;
+}
+```
+
+**Secondary:**
+```css
+background: var(--buttons-bg-secondary-enabled);
+color: var(--buttons-fg-secondary-enabled);
+border: var(--stroke-xs) solid var(--buttons-border-secondary-enabled);
+
+/* States */
+&:hover { background: var(--buttons-bg-secondary-hovered); }
+&:focus {
+  background: var(--buttons-bg-secondary-focused);
+  box-shadow: var(--buttons-shadow-focus);
+}
+&:active { background: var(--buttons-bg-secondary-pressed); }
+```
+
+**Tertiary:**
+```css
+background: var(--buttons-bg-tertiary-enabled);
+color: var(--buttons-fg-tertiary-enabled);
+
+/* States */
+&:hover { background: var(--buttons-bg-tertiary-hovered); }
+&:focus {
+  background: var(--buttons-bg-tertiary-focused);
+  box-shadow: var(--buttons-shadow-focus);
+}
+&:active { background: var(--buttons-bg-tertiary-pressed); }
+```
+
+**Destructive Primary:**
+```css
+background: var(--buttons-bg-danger-primary-enabled);
+color: var(--buttons-fg-danger-primary-enabled);
+
+/* States */
+&:hover { background: var(--buttons-bg-danger-primary-hovered); }
+&:focus {
+  background: var(--buttons-bg-danger-primary-focused);
+  box-shadow: var(--buttons-shadow-focus-danger);
+}
+&:active { background: var(--buttons-bg-danger-primary-pressed); }
+```
+
+**Destructive Secondary:**
+```css
+background: var(--buttons-bg-danger-secondary-enabled);
+color: var(--buttons-fg-danger-secondary-enabled);
+border: var(--stroke-xs) solid var(--buttons-border-danger-secondary-enabled);
+
+/* States */
+&:hover { background: var(--buttons-bg-danger-secondary-hovered); }
+&:focus {
+  background: var(--buttons-bg-danger-secondary-focused);
+  box-shadow: var(--buttons-shadow-focus-danger);
+}
+&:active { background: var(--buttons-bg-danger-secondary-pressed); }
+```
+
+**Destructive Tertiary:**
+```css
+background: var(--buttons-bg-danger-tertiary-enabled);
+color: var(--buttons-fg-danger-tertiary-enabled);
+
+/* States */
+&:hover { background: var(--buttons-bg-danger-tertiary-hovered); }
+&:focus {
+  background: var(--buttons-bg-danger-tertiary-focused);
+  box-shadow: var(--buttons-shadow-focus-danger);
+}
+&:active { background: var(--buttons-bg-danger-tertiary-pressed); }
+```
+
+### Structure Tokens
+```css
+border-radius: var(--s);                /* 8px */
+border-width: var(--stroke-xs);         /* 1px */
+font-weight: var(--font-weight-medium); /* 500 */
+gap: var(--xxs);                        /* Icon-to-text gap */
+--icon-s: 16px;                         /* Icon size */
+```
+
+## Animation System (if enabled)
+
+### Data Attributes Contract
+- `data-button` — Root element
+- `data-hover-rotate` — Enables hover rotation
+- `data-button-label` — Original label
+- `data-button-label-clone` — Clone label (must be pre-rendered)
+- `data-shimmer` — Loading text shimmer
+- `data-button-spinner` — Loading spinner
+
+### CSS Variables for Animation
+```css
+.button {
+  --r: 20deg;  /* Rotation angle */
+  --y: 1100%;  /* Transform-origin Y (auto-calculated) */
+}
+```
+
+### Hover Rotation Styles
+```css
+.button__label-wrap {
+  display: grid;
+  grid-template-areas: "content";
+  place-items: center;
+}
+
+.button__label,
+.button__label--clone {
+  grid-area: content;
+  display: flex;
+  align-items: center;
+  gap: var(--xxs);
+  transform-origin: 50% var(--y);
+}
+
+.button__label {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+.button__label--clone {
+  opacity: 0;
+  transform: rotate(calc(-1 * var(--r)));
+}
+```
+
+### GSAP Animation Implementation
+
+If animations are enabled, implement these functions:
+
+**initHoverRotate()** — Hover rotation effect
+```typescript
+// On button hover:
+// 1. Rotate original label by +r and fade out
+// 2. Rotate clone label from -r to 0deg and fade in
+// Duration: 0.3s
+// Ease: cubic-bezier(0.625, 0.05, 0, 1)
+// Stagger: 0.075s per child
+```
+
+**initRotateClones()** — Detect/create clone labels
+```typescript
+// Checks for pre-rendered clones (Astro pattern)
+// If not found, creates clones dynamically
+// Marks with data-clones-ready attribute
+```
+
+**initRotateCalc()** — Calculate transform-origin
+```typescript
+// Calculates --y CSS variable based on character count
+// Uses MutationObserver to recalculate on text changes
+```
+
+### Loading Spinner CSS
+```css
+@keyframes button-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.button__spinner {
+  width: var(--icon-s);
+  height: var(--icon-s);
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: button-spin var(--duration-default) linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button__spinner {
+    animation-duration: 1.5s;
+  }
+}
+```
+
+### Shimmer Effect CSS
+```css
+.button__loading-text[data-shimmer] {
+  background: linear-gradient(
+    90deg,
+    var(--fg-disabled) 0%,
+    var(--fg-default) 50%,
+    var(--fg-disabled) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 1.5s infinite linear;
+}
+
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button__loading-text[data-shimmer] {
+    animation: none;
+    background: var(--fg-disabled);
+    -webkit-text-fill-color: var(--fg-disabled);
+  }
+}
+```
+
+## Accessibility Requirements
+
+**ARIA attributes:**
+```html
+<!-- Disabled -->
+<button disabled aria-disabled="true">...</button>
+
+<!-- Loading -->
+<button disabled aria-disabled="true" aria-busy="true">...</button>
+
+<!-- Clone label -->
+<span aria-hidden="true">...</span>
+```
+
+**Keyboard navigation:**
+- Button must be focusable with Tab
+- Activatable with Enter or Space
+- Focus-visible styling required
+
+**Motion preferences:**
+- Respect `prefers-reduced-motion: reduce`
+- Disable animations when OS preference is set
+- Slower animation speeds for reduced motion
+
+## Usage Examples
+
+### Basic Button
+```tsx
+<Button variant="Primary" size="m">
+  Click me
+</Button>
+```
+
+### Button with Icon
+```tsx
+<Button variant="Secondary" size="l">
+  <IconLeft slot="icon-left" />
+  Upload File
+</Button>
+```
+
+### Loading Button
+```tsx
+<Button variant="Primary" size="m" loading>
+  Submitting...
+</Button>
+```
+
+### Link Button
+```tsx
+<Button variant="Tertiary" size="s" href="/about">
+  Learn More
+</Button>
+```
+
+### Disabled Button
+```tsx
+<Button variant="Destructive Primary" disabled>
+  Delete Account
+</Button>
+```
+
+## Implementation Checklist
+
+- [ ] Install required packages (`@atomchat.io/css`, `@atomchat.io/tokens`)
+- [ ] Create Button component with props API
+- [ ] Implement all 6 variants with token-driven styles
+- [ ] Implement all 5 sizes
+- [ ] Add disabled state handling
+- [ ] Add loading state with spinner
+- [ ] Add icon slot support (left/right)
+- [ ] Pre-render clone labels for animation
+- [ ] Add proper ARIA attributes
+- [ ] Implement link rendering (`href` prop → `<a>` tag)
+- [ ] If animations enabled: Install GSAP
+- [ ] If animations enabled: Implement hover rotation functions
+- [ ] If animations enabled: Add shimmer effect
+- [ ] Test keyboard navigation
+- [ ] Test screen reader accessibility
+- [ ] Test all states (default, hover, focus, active, disabled, loading)
+- [ ] Verify all styles use tokens (no hardcoded values)
+- [ ] Test responsive behavior
+- [ ] Test prefers-reduced-motion
+
+## Critical Rules
+
+1. **NEVER hardcode values** — Every color, spacing, font size must use design tokens
+2. **Pre-render clone labels** — Do not create clones with JavaScript (SSR compatibility)
+3. **Maintain data-attribute contract** — Required for animation system to work
+4. **Respect accessibility** — All ARIA attributes, keyboard navigation, focus states
+5. **Follow separation of concerns** — Component renders markup, animations initialize globally
+6. **Token-first philosophy** — If a token exists, use it. If it doesn't, request it.
+
+## Questions After Implementation
+
+After building the component, verify:
+1. Do all variants render correctly?
+2. Do all sizes scale properly?
+3. Does loading state show spinner and disable interaction?
+4. Do icons appear in correct positions?
+5. Does href prop render as `<a>` tag?
+6. If animations enabled: Does hover rotation work smoothly?
+7. If animations enabled: Does shimmer effect work?
+8. Does component respect prefers-reduced-motion?
+9. Are all styles using design tokens?
+10. Is keyboard navigation working?
+
+---
+
+Now, based on your answers to Questions 1 and 2, please create a complete Button component following this specification.
