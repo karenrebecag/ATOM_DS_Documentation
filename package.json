@@ -12,15 +12,13 @@
   "dependencies": {
     "@astrojs/starlight": "^0.38.2",
     "@atomchat.io/animations": "^1.2.0",
-    "@atomchat.io/components-astro": "^2.0.2",
+    "@atomchat.io/components-astro": "^2.0.3",
     "@atomchat.io/css": "^0.2.2",
     "@atomchat.io/tokens": "^1.0.2",
     "@lucide/astro": "^1.7.0",
     "astro": "^6.0.1",
     "gsap": "^3.14.2",
+    "ogl": "^1.0.11",
     "sharp": "^0.34.2"
-  },
-  "devDependencies": {
-    "patch-package": "^8.0.1"
   }
 }
