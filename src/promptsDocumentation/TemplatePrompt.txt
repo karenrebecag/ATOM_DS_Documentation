@@ -1,0 +1,539 @@
+# ATOM Design System — Project Starter Template
+
+You are setting up a brand-new web project powered by the ATOM Design System. This prompt will guide you through complete project initialization, dependency installation, configuration, and your first page — so you can start building production-ready interfaces immediately.
+
+Before we start, answer these questions:
+
+## Question 1: What are you building?
+Describe your project briefly:
+- Landing page
+- Marketing website
+- Product page
+- Documentation site
+- Dashboard
+- Portfolio
+- Other (describe)
+
+## Question 2: Target Stack
+Which technology stack will you use?
+
+**Options:**
+- **Astro** (Recommended) → Full native support, zero-JS by default, best performance
+- React (with TypeScript) → Convert components from Astro source
+- Next.js (App Router with TypeScript) → Convert components from Astro source
+- Vue 3 (Composition API) → Convert components from Astro source
+- HTML/CSS/JavaScript (Vanilla) → Use tokens via CDN, build manually
+
+> **Note:** ATOM components ship natively as Astro components. Other frameworks require converting from the Astro source while maintaining the same design tokens and structure.
+
+## Question 3: Animation Support
+Do you want GSAP-powered animations?
+
+**Options:**
+- **Yes** → Install @atomchat.io/animations + gsap (hover rotations, scroll triggers, shimmer effects)
+- No → Static CSS-only states, lighter bundle
+
+## Question 4: Theme Support
+Which theme configuration?
+
+**Options:**
+- **Light + Dark** (Recommended) → Full theme switching with data-theme attribute
+- Light only
+- Dark only
+
+---
+
+# Phase 1: Project Initialization
+
+## If you chose Astro (Recommended):
+
+### Step 1 — Create Astro project
+```bash
+pnpm create astro@latest my-project
+cd my-project
+```
+
+When prompted:
+- Template: Empty
+- TypeScript: Yes (Strict)
+- Install dependencies: Yes
+
+### Step 2 — Install ATOM Design System packages
+```bash
+# Core packages (required)
+pnpm add @atomchat.io/tokens@1.0.2
+pnpm add @atomchat.io/css@0.2.2
+pnpm add @atomchat.io/components-astro@2.0.2
+```
+
+### Step 3 — Install animations (if enabled)
+```bash
+pnpm add @atomchat.io/animations@1.2.0
+pnpm add gsap@3.14.2
+```
+
+### Step 4 — Verify installation
+```bash
+pnpm dev
+```
+Open browser console and run:
+```javascript
+getComputedStyle(document.documentElement).getPropertyValue('--bg-primary');
+// Should return a color value
+```
+
+---
+
+## If you chose another framework:
+
+### Install tokens and styles only
+```bash
+pnpm add @atomchat.io/tokens@1.0.2
+pnpm add @atomchat.io/css@0.2.2
+
+# If animations enabled:
+pnpm add @atomchat.io/animations@1.2.0 gsap@3.14.2
+```
+
+You will need to convert Astro components to your framework. Reference source:
+`node_modules/@atomchat.io/components-astro/src/`
+
+---
+
+# Phase 2: Project Configuration
+
+## File Structure
+Create this directory structure:
+
+```
+my-project/
+├── src/
+│   ├── components/       ← Your custom components
+│   ├── layouts/
+│   │   └── Layout.astro  ← Main layout with ATOM imports
+│   ├── pages/
+│   │   └── index.astro   ← Your first page
+│   └── styles/
+│       └── global.css     ← Project-specific overrides (if needed)
+├── public/
+│   └── fonts/             ← Custom fonts (if any)
+├── astro.config.mjs
+├── tsconfig.json
+└── package.json
+```
+
+## Layout Setup (Astro)
+
+Create `src/layouts/Layout.astro`:
+```astro
+---
+import '@atomchat.io/css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = '' } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+```
+
+### If animations are enabled, add this script to the layout:
+```astro
+<script>
+  import { initAllAnimations } from '@atomchat.io/animations';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initAllAnimations();
+  });
+
+  document.addEventListener('astro:page-load', () => {
+    initAllAnimations();
+  });
+</script>
+```
+
+## Theme Toggle (if Light + Dark selected)
+
+Add theme toggle to your layout or navigation:
+```astro
+<button id="theme-toggle" aria-label="Toggle theme">
+  Toggle Theme
+</button>
+
+<script>
+  const toggle = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+
+  // Check saved preference or system preference
+  const saved = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const initial = saved || (prefersDark ? 'dark' : 'light');
+  html.setAttribute('data-theme', initial);
+
+  toggle?.addEventListener('click', () => {
+    const current = html.getAttribute('data-theme');
+    const next = current === 'light' ? 'dark' : 'light';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+</script>
+```
+
+---
+
+# Phase 3: Consuming ATOM Components
+
+## Available Components (23 total)
+
+### Layout Primitives
+| Component | Import | Purpose |
+|-----------|--------|---------|
+| Container | `{ Container }` | Max-width content wrapper |
+| Stack | `{ Stack }` | Vertical flex layout with gap |
+| Inline | `{ Inline }` | Horizontal flex layout with gap |
+| Grid | `{ Grid }` | CSS Grid layout |
+| Section | `{ Section }` | Full-width section with padding |
+| Center | `{ Center }` | Centered content block |
+
+### UI Atoms
+| Component | Import | Purpose |
+|-----------|--------|---------|
+| Button | `{ Button }` | Primary interactive element (6 variants, 5 sizes) |
+| IconButton | `{ IconButton }` | Icon-only button |
+| LinkButton | `{ LinkButton }` | Styled anchor link |
+| Avatar | `{ Avatar }` | User profile images/initials |
+| Badge | `{ Badge }` | Notification counter |
+| Chip | `{ Chip }` | Compact label/filter element |
+| Tag | `{ Tag }` | Categorization label |
+| Checkbox | `{ Checkbox }` | Binary selection control |
+| Radio | `{ Radio }` | Single selection from group |
+| Toggle | `{ Toggle }` | On/off switch |
+| Spinner | `{ Spinner }` | Loading indicator |
+| Divider | `{ Divider }` | Visual separator |
+| StatusIcon | `{ StatusIcon }` | Online/offline indicator |
+
+### Typography
+| Component | Import | Purpose |
+|-----------|--------|---------|
+| Heading | `{ Heading }` | Section headings (h1-h6) |
+| Text | `{ Text }` | Body text with size variants |
+| Caption | `{ Caption }` | Small descriptive text |
+| LabelText | `{ LabelText }` | Form labels |
+
+## How to import and use components:
+```astro
+---
+import { Button, Container, Stack, Heading, Text } from '@atomchat.io/components-astro';
+import '@atomchat.io/css';
+---
+
+<Layout title="My Page">
+  <Section>
+    <Container>
+      <Stack gap="l">
+        <Heading level={1}>Welcome to my site</Heading>
+        <Text size="large">Built with ATOM Design System.</Text>
+        <Button variant="Primary" size="l">
+          Get Started
+        </Button>
+      </Stack>
+    </Container>
+  </Section>
+</Layout>
+```
+
+---
+
+# Phase 4: Design Tokens — Your Styling Foundation
+
+ATOM Design System is token-first. Every visual value comes from CSS custom properties.
+
+## Token Categories
+
+### Colors
+```css
+/* Backgrounds */
+var(--bg-primary)          /* Main background */
+var(--bg-secondary)        /* Secondary surfaces */
+var(--bg-tertiary)         /* Tertiary surfaces */
+var(--bg-inverse)          /* Inverted background */
+var(--bg-disabled)         /* Disabled state */
+
+/* Foreground / Text */
+var(--fg-default)          /* Primary text */
+var(--fg-secondary)        /* Secondary text */
+var(--fg-tertiary)         /* Muted text */
+var(--fg-inverse)          /* Inverted text */
+var(--fg-disabled)         /* Disabled text */
+
+/* Accent */
+var(--fg-accent)           /* Brand accent color */
+var(--bg-accent)           /* Accent background */
+```
+
+### Spacing
+```css
+var(--xxs)    /* 4px */
+var(--xs)     /* 8px */
+var(--s)      /* 12px */
+var(--sm)     /* 14px */
+var(--m)      /* 16px */
+var(--l)      /* 24px */
+var(--xl)     /* 32px */
+var(--xxl)    /* 48px */
+var(--xxxl)   /* 64px */
+```
+
+### Typography
+```css
+/* Font sizes */
+var(--text-caption)         /* 12px */
+var(--text-label-regular)   /* 14px */
+var(--text-body-regular)    /* 16px */
+var(--text-body-large)      /* 18px */
+var(--text-heading-s)       /* 20px */
+var(--text-heading-m)       /* 24px */
+var(--text-heading-l)       /* 32px */
+var(--text-heading-xl)      /* 40px */
+var(--text-display)         /* 48px */
+
+/* Font weights */
+var(--font-weight-regular)  /* 400 */
+var(--font-weight-medium)   /* 500 */
+var(--font-weight-semibold) /* 600 */
+var(--font-weight-bold)     /* 700 */
+```
+
+### Border & Radius
+```css
+var(--radius-s)    /* 4px */
+var(--radius-m)    /* 8px */
+var(--radius-l)    /* 12px */
+var(--radius-xl)   /* 16px */
+var(--radius-full) /* 9999px (pill) */
+
+var(--stroke-xs)   /* 1px */
+var(--stroke-s)    /* 2px */
+```
+
+### Shadows
+```css
+var(--shadow-xs)   /* Subtle elevation */
+var(--shadow-s)    /* Card elevation */
+var(--shadow-m)    /* Dropdown elevation */
+var(--shadow-l)    /* Modal elevation */
+```
+
+## Critical Rule: NEVER Hardcode Values
+
+```css
+/* CORRECT */
+.my-section {
+  padding: var(--xl) var(--l);
+  background: var(--bg-primary);
+  color: var(--fg-default);
+  border-radius: var(--radius-m);
+}
+
+/* WRONG — Never do this */
+.my-section {
+  padding: 32px 24px;
+  background: #ffffff;
+  color: #1a1a1a;
+  border-radius: 8px;
+}
+```
+
+---
+
+# Phase 5: Building Your First Page
+
+Create `src/pages/index.astro`:
+
+```astro
+---
+import Layout from '../layouts/Layout.astro';
+import {
+  Button,
+  Container,
+  Stack,
+  Inline,
+  Section,
+  Heading,
+  Text,
+  Divider,
+} from '@atomchat.io/components-astro';
+---
+
+<Layout title="My Project" description="Built with ATOM Design System">
+  <!-- Hero Section -->
+  <Section>
+    <Container>
+      <Stack gap="l" align="center">
+        <Heading level={1}>Your headline here</Heading>
+        <Text size="large">Your subheadline or description.</Text>
+        <Inline gap="m">
+          <Button variant="Primary" size="l">Primary Action</Button>
+          <Button variant="Secondary" size="l">Secondary Action</Button>
+        </Inline>
+      </Stack>
+    </Container>
+  </Section>
+
+  <Divider />
+
+  <!-- Features Section -->
+  <Section>
+    <Container>
+      <Stack gap="xl">
+        <Heading level={2}>Features</Heading>
+        <!-- Add your feature cards here using tokens -->
+      </Stack>
+    </Container>
+  </Section>
+</Layout>
+```
+
+---
+
+# Phase 6: Adding Custom Styles (Token-First)
+
+When you need custom styles beyond what components provide, always use tokens:
+
+```css
+/* src/styles/global.css */
+
+.hero {
+  padding: var(--xxxl) 0;
+  background: var(--bg-secondary);
+  text-align: center;
+}
+
+.feature-card {
+  padding: var(--l);
+  background: var(--bg-primary);
+  border: var(--stroke-xs) solid var(--border-default);
+  border-radius: var(--radius-l);
+  box-shadow: var(--shadow-s);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.feature-card:hover {
+  box-shadow: var(--shadow-m);
+  transform: translateY(-2px);
+}
+```
+
+---
+
+# Phase 7: What's Next
+
+Now that your project is configured and your first page is built, here's how to keep building:
+
+## Adding New Sections
+1. Use `<Section>` + `<Container>` + `<Stack>` for consistent layout
+2. Compose UI with the 23 available ATOM components
+3. Style custom elements exclusively with design tokens
+4. Keep each section in its own Astro component for maintainability
+
+## Adding New Pages
+```astro
+---
+// src/pages/about.astro
+import Layout from '../layouts/Layout.astro';
+import { Container, Section, Heading, Text } from '@atomchat.io/components-astro';
+---
+
+<Layout title="About">
+  <Section>
+    <Container>
+      <Heading level={1}>About Us</Heading>
+      <Text>Your content here.</Text>
+    </Container>
+  </Section>
+</Layout>
+```
+
+## Exploring Components
+Each ATOM component has its own documentation page with:
+- Live previews and playgrounds
+- Full props API
+- Required design tokens
+- Usage examples
+- Accessibility specifications
+
+Visit the component documentation to learn the complete API for each component before using it.
+
+## Implementation Rules (Non-Negotiable)
+1. **Token-first** — Every color, spacing, font, radius, and shadow must use `var(--token-name)`
+2. **No hardcoded values** — If a token doesn't exist for what you need, ask before inventing one
+3. **Semantic HTML** — Use correct elements (button for actions, a for links, etc.)
+4. **Accessible** — All interactive elements must have ARIA labels, keyboard support, and focus states
+5. **Responsive** — Mobile-first approach, test at 320px, 768px, 1024px, 1440px
+6. **Performance** — Astro ships zero JS by default. Only add `client:load` when interactivity is required
+
+## Quick Reference — Common Patterns
+
+### Centered hero section
+```astro
+<Section>
+  <Container>
+    <Stack gap="l" align="center">
+      <Heading level={1}>Title</Heading>
+      <Text size="large">Subtitle</Text>
+      <Button variant="Primary" size="l">CTA</Button>
+    </Stack>
+  </Container>
+</Section>
+```
+
+### Two-column layout
+```astro
+<Section>
+  <Container>
+    <Grid columns={2} gap="xl">
+      <Stack gap="m">
+        <Heading level={2}>Left content</Heading>
+        <Text>Description here.</Text>
+      </Stack>
+      <div>
+        <!-- Image or visual content -->
+      </div>
+    </Grid>
+  </Container>
+</Section>
+```
+
+### Card grid
+```astro
+<Section>
+  <Container>
+    <Grid columns={3} gap="l">
+      {cards.map(card => (
+        <Stack gap="s" class="feature-card">
+          <Heading level={3}>{card.title}</Heading>
+          <Text>{card.description}</Text>
+        </Stack>
+      ))}
+    </Grid>
+  </Container>
+</Section>
+```
+
+---
+
+Now, based on your answers to the questions above, please create a complete project setup following this specification. Start with the project initialization, then build the first page with at least a hero section and one content section.

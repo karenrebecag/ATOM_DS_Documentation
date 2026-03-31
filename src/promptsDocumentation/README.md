@@ -1,10 +1,120 @@
 # Component Prompts Documentation
 
-This directory contains reusable AI prompts for replicating ATOM Design System components in any framework.
+This directory contains reusable AI prompts for implementing ATOM Design System components in any framework.
 
 ## Overview
 
-Each `.txt` file contains a comprehensive, sequential prompt that guides an AI assistant (like Claude Code) through building a component from scratch while maintaining design system standards.
+Each `.txt` file contains a comprehensive, sequential prompt that guides an AI assistant (like Claude Code) through either:
+- **Using the official npm package** (if Astro is selected)
+- **Converting the Astro component** to another framework while maintaining design system standards
+
+## NPM Package Information
+
+**Official Package:** `@atomchat.io/components-astro@2.0.2`
+
+**Core Dependencies:**
+- `@atomchat.io/tokens@1.0.2` — Design token definitions
+- `@atomchat.io/css@0.2.2` — Compiled CSS from tokens
+
+**Optional Dependencies:**
+- `@atomchat.io/animations` — GSAP animation functions
+- `gsap` — Animation library
+
+## Available Components (23 total)
+
+### Layout Primitives (6 components)
+- `Container` — Max-width content container
+- `Stack` — Vertical spacing primitive
+- `Inline` — Horizontal spacing primitive
+- `Grid` — CSS Grid layout
+- `Section` — Semantic section wrapper
+- `Center` — Centering primitive
+
+**Import paths:**
+```typescript
+import { Container } from '@atomchat.io/components-astro';
+import { Stack } from '@atomchat.io/components-astro';
+import { Inline } from '@atomchat.io/components-astro';
+import { Grid } from '@atomchat.io/components-astro';
+import { Section } from '@atomchat.io/components-astro';
+import { Center } from '@atomchat.io/components-astro';
+```
+
+### Atoms (17 components)
+- `Avatar` — User avatar with fallback
+- `Badge` — Notification badge with overflow logic ✅ *Prompt available*
+- `Button` — Primary action button ✅ *Prompt available*
+- `Caption` — Small caption text
+- `Checkbox` — Selection control ✅ *Prompt available*
+- `Chip` — Dismissible tag/filter
+- `Divider` — Visual separator
+- `Heading` — Semantic heading
+- `IconButton` — Icon-only button
+- `LabelText` — Form label text
+- `LinkButton` — Link styled as button
+- `Radio` — Single selection control
+- `Spinner` — Loading indicator
+- `StatusIcon` — Status indicator icon
+- `Tag` — Static label/category
+- `Text` — Body text primitive
+- `Toggle` — Switch/toggle control
+
+**Import paths:**
+```typescript
+import { Avatar } from '@atomchat.io/components-astro';
+import { Badge } from '@atomchat.io/components-astro';
+import { Button } from '@atomchat.io/components-astro';
+import { Caption } from '@atomchat.io/components-astro';
+import { Checkbox } from '@atomchat.io/components-astro';
+import { Chip } from '@atomchat.io/components-astro';
+import { Divider } from '@atomchat.io/components-astro';
+import { Heading } from '@atomchat.io/components-astro';
+import { IconButton } from '@atomchat.io/components-astro';
+import { LabelText } from '@atomchat.io/components-astro';
+import { LinkButton } from '@atomchat.io/components-astro';
+import { Radio } from '@atomchat.io/components-astro';
+import { Spinner } from '@atomchat.io/components-astro';
+import { StatusIcon } from '@atomchat.io/components-astro';
+import { Tag } from '@atomchat.io/components-astro';
+import { Text } from '@atomchat.io/components-astro';
+import { Toggle } from '@atomchat.io/components-astro';
+```
+
+**Specific file paths in npm:**
+```
+@atomchat.io/components-astro/src/layout/Container.astro
+@atomchat.io/components-astro/src/layout/Stack.astro
+@atomchat.io/components-astro/src/atoms/Avatar.astro
+@atomchat.io/components-astro/src/atoms/Badge.astro
+@atomchat.io/components-astro/src/atoms/Button.astro
+@atomchat.io/components-astro/src/atoms/Checkbox.astro
+... etc
+```
+
+## Installation Flow
+
+### If User Chooses Astro:
+```bash
+# Install the complete component library from npm
+pnpm add @atomchat.io/components-astro@2.0.2
+pnpm add @atomchat.io/tokens@1.0.2
+pnpm add @atomchat.io/css@0.2.2
+```
+
+**Result:** Direct usage, no conversion needed. All 23 components ready to import.
+
+### If User Chooses Another Framework:
+```bash
+# Install only the design system foundation
+pnpm add @atomchat.io/tokens@1.0.2
+pnpm add @atomchat.io/css@0.2.2
+```
+
+**Result:** User must convert the Astro component source to their chosen framework while maintaining:
+- Design tokens
+- DOM structure
+- Accessibility
+- Animation contracts
 
 ## Prompt Structure
 
@@ -131,11 +241,30 @@ Prompts guide conversion from Astro (npm source) to any target framework while p
 - **Animation layer** — GSAP functions initialize globally
 - **Prompt layer** — Complete specification in text files
 
-## Current Prompts
+## Current Prompts Available
 
-- `button.txt` — Button component with 6 variants, 5 sizes, loading state
-- `badge.txt` — Badge component with smart overflow logic
-- `checkbox.txt` — Checkbox component with light/dark themes
+### ✅ `button.txt`
+**Component:** Button
+**NPM Path:** `@atomchat.io/components-astro/src/atoms/Button.astro`
+**Features:** 6 variants, 5 sizes, loading state, icon support, GSAP animations
+**Versions:** @2.0.2 (components), @1.0.2 (tokens), @0.2.2 (css)
+
+### ✅ `badge.txt`
+**Component:** Badge
+**NPM Path:** `@atomchat.io/components-astro/src/atoms/Badge.astro`
+**Features:** 3 types, 3 states, smart overflow (99+, +50), auto-hide on zero
+**Versions:** @2.0.2 (components), @1.0.2 (tokens), @0.2.2 (css)
+
+### ✅ `checkbox.txt`
+**Component:** Checkbox
+**NPM Path:** `@atomchat.io/components-astro/src/atoms/Checkbox.astro`
+**Features:** Light/dark themes, SVG checkmark, disabled state, GSAP animations
+**Versions:** @2.0.2 (components), @1.0.2 (tokens), @0.2.2 (css)
+
+### 📋 Remaining Components (no prompts yet)
+These components are available in npm but don't have prompts yet:
+- Avatar, Caption, Chip, Divider, Heading, IconButton, LabelText, LinkButton, Radio, Spinner, StatusIcon, Tag, Text, Toggle
+- Container, Stack, Inline, Grid, Section, Center
 
 ## Best Practices
 

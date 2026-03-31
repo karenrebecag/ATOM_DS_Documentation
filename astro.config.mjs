@@ -8,7 +8,8 @@ export default defineConfig({
 		starlight({
 			title: '',
 			logo: {
-				src: './public/atomchat-logo.png',
+				light: './public/atomchat-logo.png',
+				dark: './public/atomlogoinverted (1).webp',
 				alt: 'AtomChat',
 				replacesTitle: true,
 			},

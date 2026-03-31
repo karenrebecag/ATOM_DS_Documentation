@@ -1,0 +1,105 @@
+---
+import GrainyGradient from './GrainyGradient.astro'
+
+interface Props {
+  title?: string
+  description?: string
+  className?: string
+  color1?: string
+  color2?: string
+  color3?: string
+}
+
+const {
+  title,
+  description,
+  className = '',
+  color1 = '#FF9FFC',
+  color2 = '#715abf',
+  color3 = '#B19EEF',
+} = Astro.props
+---
+
+<div class={`gradient-card ${className}`}>
+  <div class="gradient-card__bg">
+    <GrainyGradient
+      {color1}
+      {color2}
+      {color3}
+      timeSpeed={0.25}
+      warpStrength={1}
+      warpFrequency={5}
+      warpSpeed={2}
+      warpAmplitude={50}
+      grainAmount={0.1}
+      grainScale={2}
+      contrast={1.5}
+      zoom={0.9}
+    />
+  </div>
+  <div class="gradient-card__content">
+    {title && <h3 class="gradient-card__title">{title}</h3>}
+    {description && <p class="gradient-card__description">{description}</p>}
+    <slot />
+  </div>
+</div>
+
+<style>
+.gradient-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1em;
+  border: 1px solid rgba(255, 159, 252, 0.2);
+  transition: all 0.3s ease;
+}
+
+.gradient-card__bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.gradient-card__content {
+  position: relative;
+  z-index: 1;
+  padding: 2em;
+  color: white;
+}
+
+.gradient-card__title {
+  margin: 0 0 0.5em 0;
+  font-size: 1.5em;
+  font-weight: 600;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.gradient-card__description {
+  margin: 0 0 1em 0;
+  font-size: 0.95em;
+  line-height: 1.6;
+  opacity: 0.95;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+@media (hover: hover) {
+  .gradient-card:hover {
+    border-color: rgba(255, 159, 252, 0.4);
+    box-shadow: 0 12px 32px rgba(113, 90, 191, 0.25);
+    transform: translateY(-2px);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .gradient-card__content {
+    padding: 1.5em;
+  }
+
+  .gradient-card__title {
+    font-size: 1.25em;
+  }
+
+  .gradient-card__description {
+    font-size: 0.9em;
+  }
+}
+</style>

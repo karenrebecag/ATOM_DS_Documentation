@@ -1,0 +1,125 @@
+---
+import GrainyGradient from './GrainyGradient.astro'
+import CopyPromptButton from './CopyPromptButton.astro'
+---
+
+<div class="template-card not-content">
+  <div class="template-card__bg">
+    <GrainyGradient
+      color1="#FF9FFC"
+      color2="#715abf"
+      color3="#B19EEF"
+      timeSpeed={0.35}
+      colorBalance={0}
+      warpStrength={1}
+      warpFrequency={5}
+      warpSpeed={1}
+      warpAmplitude={50}
+      grainAmount={0.1}
+      grainScale={2}
+      contrast={1.5}
+      zoom={1}
+    />
+  </div>
+  <div class="template-card__content">
+    <div class="template-card__text">
+      <p class="template-card__eyebrow">ATOM Starter Template</p>
+      <h3 class="template-card__title">Start building with AI</h3>
+      <p class="template-card__description">Copy the full project setup prompt — dependencies, configuration, tokens, and components — ready for Claude Code to scaffold your next project.</p>
+    </div>
+    <div class="template-card__action">
+      <CopyPromptButton componentName="TemplatePrompt" variant="primary" />
+    </div>
+  </div>
+</div>
+
+<style>
+.template-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  width: 100%;
+  margin: 24px 0;
+}
+
+.template-card__bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.template-card__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  padding: 2em;
+}
+
+.template-card__eyebrow {
+  margin: 0;
+  font-size: 0.75em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.template-card__title {
+  margin: 0.25em 0 0 0;
+  font-size: 1.75em;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+}
+
+.template-card__description {
+  margin: 0.5em 0 0 0;
+  font-size: 0.95em;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 540px;
+}
+
+.template-card__action {
+  margin-top: 0.5em;
+}
+
+/* Override nested CopyPromptButton wrapper margin */
+.template-card__action :global(.copy-prompt-wrapper) {
+  margin: 0;
+}
+
+.template-card__action :global(.copy-prompt-button) {
+  margin: 0;
+  width: auto;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(12px);
+}
+
+.template-card__action :global(.copy-prompt-button:hover) {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.template-card__action :global(.copy-prompt-button__gradient-bg) {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .template-card__content {
+    padding: 1.5em;
+  }
+
+  .template-card__title {
+    font-size: 1.35em;
+  }
+
+  .template-card__description {
+    font-size: 0.9em;
+  }
+}
+</style>

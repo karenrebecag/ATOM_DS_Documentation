@@ -1,4 +1,75 @@
-# FrameworkSwitcher Component
+# Components Library
+
+Built with native Astro + Canvas for zero JavaScript framework dependencies.
+
+## Animated Gradient Canvas
+
+Both `CopyPromptButton` and `GradientCard` components use an optimized canvas-based animated gradient with grain/noise effects and warp distortions. The animation uses Perlin-like noise functions and is GPU-accelerated.
+
+## GradientCard Component
+
+Reusable card component with integrated animated gradient background.
+
+### Usage in Astro
+
+```astro
+---
+import GradientCard from '../components/GradientCard.astro'
+---
+
+<GradientCard
+  title="Feature Title"
+  description="Card description text"
+  color1="#FF9FFC"
+  color2="#715abf"
+  color3="#B19EEF"
+>
+  <p>Additional content goes here</p>
+</GradientCard>
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | string | - | Card title (optional) |
+| `description` | string | - | Card description (optional) |
+| `color1` | string | `#FF9FFC` | First gradient color |
+| `color2` | string | `#715abf` | Second gradient color |
+| `color3` | string | `#B19EEF` | Third gradient color |
+| `className` | string | `''` | Additional CSS classes |
+
+### Slot
+
+The default slot accepts any Astro/HTML content to be rendered inside the card.
+
+## CopyPromptButton Component (Updated)
+
+Enhanced with animated gradient background for better visual appeal.
+
+### Usage
+
+```astro
+---
+import CopyPromptButton from '../components/CopyPromptButton.astro'
+---
+
+<CopyPromptButton
+  componentName="button"
+  variant="primary"
+/>
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `componentName` | string | - | Name of prompt file (without .txt) |
+| `variant` | 'primary' \| 'secondary' | `'primary'` | Button style variant |
+
+---
+
+## FrameworkSwitcher Component
 
 Dynamic framework selector for component documentation pages.
 

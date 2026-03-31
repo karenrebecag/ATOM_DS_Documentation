@@ -1,20 +1,18 @@
-# ATOM Design System — Badge Component Replication Prompt
+# ATOM Design System — Badge Component Implementation Prompt
 
-I need to create a Badge component from the ATOM Design System. Before we start, I need to answer these questions:
+I need to implement the Badge component from the ATOM Design System. Before we start, I need to answer these questions:
 
 ## Question 1: Target Stack
 Which technology stack are you building this component for?
 
 **Options:**
-- React (with TypeScript)
-- Next.js (App Router with TypeScript)
-- Vue 3 (with Composition API)
-- Angular (Standalone Components)
-- Astro
-- Svelte/SvelteKit
-- HTML/CSS/JavaScript (Vanilla)
-
-**Note:** The official npm package currently only has `@atomchat.io/components-astro`. You'll need to convert the component to your chosen stack while maintaining the same design tokens, structure, and behavior.
+- **Astro** → Use the official npm package directly
+- React (with TypeScript) → Convert from Astro source
+- Next.js (App Router with TypeScript) → Convert from Astro source
+- Vue 3 (with Composition API) → Convert from Astro source
+- Angular (Standalone Components) → Convert from Astro source
+- Svelte/SvelteKit → Convert from Astro source
+- HTML/CSS/JavaScript (Vanilla) → Convert from Astro source
 
 ## Question 2: Animation Support
 Do you want to include optional appearance animations?
@@ -23,7 +21,57 @@ Do you want to include optional appearance animations?
 - Yes, include entrance/update animations (GSAP scale and fade)
 - No, static component only (no animations)
 
-**Note:** If you choose animations, you'll need to install `gsap` and implement entrance/update animation effects for when the badge appears or count changes.
+---
+
+# Installation Instructions
+
+## If you chose Astro:
+
+```bash
+# Install all required packages with exact versions
+pnpm add @atomchat.io/components-astro@2.0.2
+pnpm add @atomchat.io/tokens@1.0.2
+pnpm add @atomchat.io/css@0.2.2
+
+# If animations enabled, also install:
+pnpm add @atomchat.io/animations gsap
+```
+
+**Usage (Astro):**
+```astro
+---
+import { Badge } from '@atomchat.io/components-astro';
+import '@atomchat.io/css';
+---
+
+<Badge count={5} type="neutral" />
+<Badge count={45} type="inbox" context="inbox" state="focused" />
+<Badge count={150} type="info" context="default" />
+```
+
+**Component source location in npm:**
+`@atomchat.io/components-astro/src/atoms/Badge.astro`
+
+**✅ You're done!** The component is ready to use. No need to replicate anything.
+
+---
+
+## If you chose another framework (React/Vue/Next.js/etc.):
+
+**Note:** The official npm package only contains Astro components. You'll need to convert the component to your chosen framework while maintaining the same design tokens, structure, and behavior.
+
+```bash
+# Install design tokens and styles (required)
+pnpm add @atomchat.io/tokens@1.0.2
+pnpm add @atomchat.io/css@0.2.2
+
+# If animations enabled, also install:
+pnpm add @atomchat.io/animations gsap
+```
+
+**Reference implementation:**
+- Source: `@atomchat.io/components-astro/src/atoms/Badge.astro`
+- npm registry: https://www.npmjs.com/package/@atomchat.io/components-astro
 
 ---
 
@@ -41,15 +89,17 @@ The Badge component is a notification indicator that displays count information 
 - Data attributes for styling hooks
 - Token-driven styling (NEVER hardcode values)
 
-## Installation Requirements
+## NPM Package Information
 
-```bash
-# Install ATOM Design System packages
-pnpm add @atomchat.io/css @atomchat.io/tokens
+**Package:** `@atomchat.io/components-astro@2.0.2`
+**Component path:** `src/atoms/Badge.astro`
+**Dependencies:**
+- `@atomchat.io/tokens@1.0.2` (design tokens)
+- `@atomchat.io/css@0.2.2` (compiled CSS from tokens)
 
-# If animations enabled
-pnpm add @atomchat.io/animations gsap
-```
+**Optional dependencies (for animations):**
+- `@atomchat.io/animations` (GSAP animation functions)
+- `gsap` (animation library)
 
 ## Props API
 
