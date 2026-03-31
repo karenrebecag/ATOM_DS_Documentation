@@ -1,5 +1,79 @@
 # ATOM Design System — Checkbox Component Implementation Prompt
 
+---
+
+## ⚠️ CRITICAL INSTRUCTIONS FOR AI CODE GENERATORS (v0, Cursor, Claude, etc.)
+
+**THIS IS THE ATOM CHECKBOX COMPONENT — NOT A shadcn/ui CHECKBOX**
+
+### 🚫 FORBIDDEN — DO NOT USE:
+
+**Prohibited Packages:**
+- ❌ `@radix-ui/react-checkbox` — Do NOT use Radix Checkbox
+- ❌ `tailwindcss` — Do NOT use Tailwind classes
+- ❌ `class-variance-authority` — Do NOT use CVA
+- ❌ `@headlessui/react` — Do NOT use Headless UI
+
+**Prohibited Code Patterns:**
+- ❌ Tailwind classes: `className="h-4 w-4 border-gray-300"`
+- ❌ Radix Checkbox primitive: `import * as Checkbox from '@radix-ui/react-checkbox'`
+- ❌ Inline hardcoded styles: `style={{ width: '16px', height: '16px' }}`
+- ❌ Emojis as checkmarks: `{checked && '✓'}`
+
+### ✅ REQUIRED — YOU MUST USE:
+
+**Required Packages:**
+```bash
+@atomchat.io/tokens@1.0.3
+@atomchat.io/css@0.2.3
+@atomchat.io/components-astro@2.0.4  # If using Astro
+@atomchat.io/animations@1.2.1        # If animations enabled
+gsap@3.14.2                          # If animations enabled
+```
+
+**Required Styling Pattern:**
+```tsx
+// ✅ CORRECT: Use CSS custom properties
+<input
+  type="checkbox"
+  style={{
+    width: 'var(--checkbox-size)',
+    height: 'var(--checkbox-size)',
+    borderColor: 'var(--border-default)'
+  }}
+/>
+
+// ❌ WRONG: Tailwind classes
+<input type="checkbox" className="h-4 w-4 border-gray-300" />
+```
+
+**Required Animation Pattern (if enabled):**
+```tsx
+// ✅ CORRECT: Use data attributes + GSAP
+<input type="checkbox" data-checkbox data-animate-check />
+
+// Initialize in layout:
+import { initAllAnimations } from '@atomchat.io/animations';
+useEffect(() => { initAllAnimations(); }, []);
+
+// ❌ WRONG: CSS-only transitions
+.checkbox:checked { transform: scale(1.1); transition: transform 0.2s; }
+```
+
+**Required Checkmark Pattern:**
+```tsx
+// ✅ CORRECT: Use SVG checkmark (built into ATOM)
+<svg data-checkmark>
+  <path d="M20 6L9 17l-5-5" />
+</svg>
+
+// ❌ WRONG: Emojis or Unicode
+{checked && '✓'}
+{checked && '✔️'}
+```
+
+---
+
 I need to implement the Checkbox component from the ATOM Design System. Before we start, I need to answer these questions:
 
 ## Question 1: Target Stack

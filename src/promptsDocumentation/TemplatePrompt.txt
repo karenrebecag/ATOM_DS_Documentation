@@ -2,6 +2,158 @@
 
 You are setting up a brand-new web project powered by the ATOM Design System. This prompt will guide you through complete project initialization, dependency installation, configuration, and your first page — so you can start building production-ready interfaces immediately.
 
+---
+
+## ⚠️ CRITICAL INSTRUCTIONS FOR AI CODE GENERATORS (v0, Cursor, Claude, etc.)
+
+**READ THIS FIRST — THIS IS A CUSTOM DESIGN SYSTEM, NOT shadcn/ui**
+
+### 🚫 FORBIDDEN — DO NOT USE THESE:
+
+**Prohibited Packages (NEVER install):**
+- ❌ `@radix-ui/*` — Any Radix UI package
+- ❌ `tailwindcss` — No Tailwind CSS utility classes
+- ❌ `shadcn/ui` — Not using shadcn components
+- ❌ `@headlessui/*` — Not using Headless UI
+- ❌ `class-variance-authority` — Not using CVA
+- ❌ `tailwind-merge` — Not using Tailwind
+- ❌ `clsx` for Tailwind — Not using Tailwind utilities
+- ❌ `tw-animate-css` — Must use GSAP instead
+- ❌ `framer-motion` — Must use GSAP instead
+- ❌ `@types/gsap` — GSAP includes types natively
+- ❌ Any CSS-in-JS library (styled-components, emotion, etc.)
+
+**Prohibited CSS Patterns (NEVER use):**
+- ❌ `@apply` directives (Tailwind-specific)
+- ❌ Tailwind utility classes (`flex`, `bg-blue-500`, `p-4`, etc.)
+- ❌ Inline style objects: `style={{ color: '#fff' }}`
+- ❌ Hardcoded color values: `#3b82f6`, `rgb(59, 130, 246)`, `blue`
+- ❌ Hardcoded spacing values: `16px`, `1rem`, `2em`
+- ❌ CSS-only animations (must use GSAP for animations)
+
+**Prohibited File Patterns:**
+- ❌ `components.json` (shadcn config file)
+- ❌ `tailwind.config.js` or `tailwind.config.ts`
+- ❌ `postcss.config.js` with Tailwind plugins
+- ❌ `lib/utils.ts` with `cn()` function (Tailwind helper)
+
+### ✅ REQUIRED — YOU MUST USE THESE:
+
+**Required Packages (install exactly these versions):**
+```bash
+# Design System Core (REQUIRED)
+@atomchat.io/tokens@1.0.3
+@atomchat.io/css@0.2.3
+
+# For Astro projects (REQUIRED if using Astro)
+@atomchat.io/components-astro@2.0.4
+
+# Animations (REQUIRED if animations enabled)
+@atomchat.io/animations@1.2.1
+gsap@3.14.2
+
+# Icons (REQUIRED)
+lucide-react@latest
+```
+
+**Required CSS Import Order (CRITICAL):**
+```tsx
+// 1. FIRST: Import tokens (defines CSS custom properties)
+import '@atomchat.io/tokens/css';
+
+// 2. SECOND: Import component styles (uses those custom properties)
+import '@atomchat.io/css';
+
+// 3. THIRD: Your custom styles
+import './styles/global.css';
+```
+
+**Required Styling Pattern (ONLY way to style):**
+```tsx
+// ✅ CORRECT: Use CSS custom properties from ATOM tokens
+<div style={{
+  background: 'var(--bg-primary)',
+  color: 'var(--fg-default)',
+  padding: 'var(--l)',
+  borderRadius: 'var(--radius-m)'
+}} />
+
+// ✅ CORRECT: Use className with CSS file
+<div className="my-component" />
+// In CSS file:
+.my-component {
+  background: var(--bg-primary);
+  padding: var(--xl);
+}
+
+// ❌ WRONG: Tailwind classes
+<div className="bg-blue-500 p-4 rounded-lg" />
+
+// ❌ WRONG: Hardcoded values
+<div style={{ background: '#3b82f6', padding: '16px' }} />
+```
+
+**Required Animation Pattern (if animations enabled):**
+```tsx
+// ✅ CORRECT: Initialize GSAP animations
+import { initAllAnimations } from '@atomchat.io/animations';
+
+useEffect(() => {
+  initAllAnimations();
+}, []);
+
+// ❌ WRONG: CSS-only animations
+@keyframes fadeIn { /* ... */ }
+
+// ❌ WRONG: Framer Motion
+<motion.div animate={{ opacity: 1 }} />
+```
+
+**Required Icon Pattern (ALWAYS):**
+```tsx
+// ✅ CORRECT: Use Lucide React icons
+import { Zap, ArrowRight } from 'lucide-react';
+<Zap size={24} color="var(--fg-accent)" />
+
+// ❌ WRONG: Emojis
+<span>⚡</span>
+
+// ❌ WRONG: Heroicons or other icon libraries
+import { BoltIcon } from '@heroicons/react/24/outline';
+```
+
+### 🎯 Validation Checklist
+
+After generating code, verify:
+
+```bash
+# ✅ Check package.json contains ATOM packages
+grep "@atomchat.io/tokens" package.json
+grep "@atomchat.io/css" package.json
+grep "lucide-react" package.json
+
+# ❌ Check NO forbidden packages exist
+grep "tailwindcss" package.json    # Should return nothing
+grep "@radix-ui" package.json      # Should return nothing
+grep "shadcn" package.json         # Should return nothing
+
+# ✅ Check CSS imports are correct
+grep "@atomchat.io/tokens/css" src/**/*
+grep "@atomchat.io/css" src/**/*
+
+# ❌ Check NO Tailwind patterns exist
+grep "@apply" src/**/*.css         # Should return nothing
+grep "className.*bg-" src/**/*     # Should return nothing (Tailwind utilities)
+
+# ✅ Check animations use GSAP (if enabled)
+grep "initAllAnimations" src/**/*
+grep "from '@atomchat.io/animations'" src/**/*
+```
+
+**If ANY forbidden pattern is found, STOP and regenerate the code correctly.**
+
+---
+
 Before we start, answer these questions:
 
 ## Question 1: What are you building?
@@ -59,34 +211,96 @@ When prompted:
 - Install dependencies: Yes
 
 ### Step 2 — Install ATOM Design System packages
+
+**⚠️ COPY THIS COMMAND EXACTLY — DO NOT MODIFY:**
+
 ```bash
-# Core packages (required)
-pnpm add @atomchat.io/tokens@1.0.3
-pnpm add @atomchat.io/css@0.2.3
-pnpm add @atomchat.io/components-astro@2.0.4
+pnpm add @atomchat.io/tokens@1.0.3 @atomchat.io/css@0.2.3 @atomchat.io/components-astro@2.0.4 lucide-react
+```
+
+**✅ What this installs:**
+- `@atomchat.io/tokens@1.0.3` — Design tokens (CSS custom properties)
+- `@atomchat.io/css@0.2.3` — Component styles (73KB)
+- `@atomchat.io/components-astro@2.0.4` — 23 Astro components
+- `lucide-react` — 1000+ professional SVG icons
+
+**❌ DO NOT install these (common mistakes):**
+```bash
+# ❌ WRONG — DO NOT RUN THESE COMMANDS:
+pnpm add tailwindcss          # NO Tailwind
+pnpm add @radix-ui/react-*    # NO Radix UI
+pnpm add shadcn-ui            # NO shadcn
+pnpm add class-variance-authority  # NO CVA
+pnpm add @types/gsap          # GSAP has types built-in
 ```
 
 ### Step 3 — Install animations (if enabled)
+
+**⚠️ COPY THIS COMMAND EXACTLY — DO NOT MODIFY:**
+
 ```bash
-pnpm add @atomchat.io/animations@1.2.1
-pnpm add gsap@3.14.2
+pnpm add @atomchat.io/animations@1.2.1 gsap@3.14.2
 ```
 
+**✅ What this installs:**
+- `@atomchat.io/animations@1.2.1` — ATOM animation system
+- `gsap@3.14.2` — GreenSock animation engine (includes TypeScript types)
+
 **⚠️ CRITICAL: DO NOT install @types/gsap**
-- GSAP 3.5+ includes TypeScript types natively
-- The `@types/gsap` package is obsolete and will cause errors
+- GSAP 3.5+ includes TypeScript types natively in the main package
+- The `@types/gsap` package is obsolete (last version: 3.0.0 from 2019)
+- Installing `@types/gsap` will cause type conflicts and errors
 - Only install `gsap` — no separate @types package needed
 
-### Step 4 — Install Lucide Icons (REQUIRED)
+**❌ DO NOT install these animation libraries:**
 ```bash
-pnpm add lucide-react
+# ❌ WRONG — DO NOT RUN THESE COMMANDS:
+pnpm add framer-motion        # Must use GSAP
+pnpm add react-spring         # Must use GSAP
+pnpm add @react-spring/web    # Must use GSAP
+pnpm add tw-animate-css       # Must use GSAP
+```
+
+### Step 4 — Verify installation
+
+**Run this to verify correct packages:**
+
+```bash
+# ✅ Should show ATOM packages
+pnpm list --depth=0 | grep @atomchat.io
+
+# ❌ Should return nothing (no forbidden packages)
+pnpm list --depth=0 | grep -E "tailwind|radix|shadcn|framer"
+```
+
+**Expected output:**
+```
+@atomchat.io/animations 1.2.1
+@atomchat.io/components-astro 2.0.4
+@atomchat.io/css 0.2.3
+@atomchat.io/tokens 1.0.3
+```
+
+**If you see ANY of these, you installed the wrong packages:**
+```
+❌ tailwindcss
+❌ @radix-ui/*
+❌ framer-motion
+❌ class-variance-authority
+```
+
+**Fix: Remove forbidden packages and reinstall:**
+```bash
+pnpm remove tailwindcss @radix-ui/react-* framer-motion class-variance-authority
+pnpm add @atomchat.io/tokens@1.0.3 @atomchat.io/css@0.2.3 @atomchat.io/components-astro@2.0.4
 ```
 
 **🚫 CRITICAL RULE: NEVER USE EMOJIS**
 - **NEVER use emojis in UI** unless the user explicitly requests them
-- **ALWAYS use Lucide React icons** for all visual icons
+- **ALWAYS use Lucide React icons** for all visual icons (already installed)
 - Emojis are inconsistent across platforms and break professional design
 - Lucide provides 1000+ consistent, accessible SVG icons
+- Browse icons at: https://lucide.dev/icons/
 
 **Why Lucide?**
 - ✅ Consistent rendering across all platforms
@@ -210,10 +424,18 @@ my-project/
 ## Layout Setup (Astro)
 
 Create `src/layouts/Layout.astro`:
+
+**⚠️ COPY THIS CODE EXACTLY — DO NOT MODIFY THE IMPORTS:**
+
 ```astro
 ---
+// ✅ CRITICAL: Import order MUST be exactly this:
+// 1. TOKENS FIRST (defines CSS custom properties)
 import '@atomchat.io/tokens/css';
+// 2. CSS SECOND (uses those custom properties)
 import '@atomchat.io/css';
+// 3. Custom styles LAST (optional)
+// import '../styles/global.css';
 
 interface Props {
   title: string;
@@ -237,24 +459,104 @@ const { title, description = '' } = Astro.props;
 </html>
 ```
 
-**⚠️ CRITICAL IMPORT ORDER:**
-- **Tokens MUST be imported BEFORE CSS**: The component styles in `@atomchat.io/css` depend on CSS custom properties defined in `@atomchat.io/tokens/css`
-- If you import CSS before tokens, components will render without styles (all `var()` references will be empty)
-- Always maintain this order: tokens → css → your custom styles
+**⚠️ CRITICAL IMPORT ORDER — THIS IS NON-NEGOTIABLE:**
+
+```tsx
+// ✅ CORRECT ORDER (always use this exact order):
+import '@atomchat.io/tokens/css';  // 1. FIRST
+import '@atomchat.io/css';         // 2. SECOND
+import './global.css';             // 3. THIRD (optional)
+
+// ❌ WRONG ORDER (will break all styles):
+import '@atomchat.io/css';         // ❌ CSS before tokens = BROKEN
+import '@atomchat.io/tokens/css';  // ❌ Too late, var() already empty
+
+// ❌ WRONG IMPORTS (forbidden):
+import 'tailwindcss/tailwind.css'; // ❌ NO Tailwind
+import './tailwind.css';           // ❌ NO Tailwind
+```
+
+**Why this order matters:**
+- `@atomchat.io/tokens/css` defines CSS custom properties: `--bg-primary`, `--fg-default`, etc.
+- `@atomchat.io/css` uses those custom properties: `background: var(--bg-primary);`
+- If you import CSS before tokens, all `var()` references are empty → components render without styles
+- **If components look unstyled, check import order FIRST**
+
+**❌ DO NOT add these to the layout:**
+```html
+<!-- ❌ WRONG: NO Tailwind CDN -->
+<link href="https://cdn.tailwindcss.com" rel="stylesheet" />
+
+<!-- ❌ WRONG: NO Google Fonts (ATOM uses Boysen/Median) -->
+<link href="https://fonts.googleapis.com/css2?family=Inter" rel="stylesheet" />
+
+<!-- ❌ WRONG: NO external CSS frameworks -->
+<link href="bootstrap.min.css" rel="stylesheet" />
+```
 
 ### If animations are enabled, add this script to the layout:
+
+**⚠️ COPY THIS CODE EXACTLY — REQUIRED FOR ANIMATIONS:**
+
 ```astro
 <script>
   import { initAllAnimations } from '@atomchat.io/animations';
 
+  // Initialize on page load
   document.addEventListener('DOMContentLoaded', () => {
     initAllAnimations();
   });
 
+  // Re-initialize on Astro page transitions
   document.addEventListener('astro:page-load', () => {
     initAllAnimations();
   });
 </script>
+```
+
+**⚠️ CRITICAL: This script is REQUIRED for animations to work**
+- Without this script, components will have no animations
+- Button hover effects, badge pulses, spinner rotations will not work
+- Data attributes like `data-hover-rotate` need this script to activate
+- **If animations aren't working, check if this script exists**
+
+**❌ DO NOT use these animation patterns:**
+```css
+/* ❌ WRONG: CSS-only animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.button:hover { animation: fadeIn 0.3s; }
+
+/* ❌ WRONG: Transition-only hover effects */
+.button:hover { transform: translateY(-2px); }
+```
+
+```tsx
+// ❌ WRONG: Framer Motion
+import { motion } from 'framer-motion';
+<motion.div animate={{ opacity: 1 }} />
+
+// ❌ WRONG: React Spring
+import { useSpring } from '@react-spring/web';
+
+// ❌ WRONG: Custom useEffect animations
+useEffect(() => {
+  // ❌ Don't write custom animation code
+}, []);
+```
+
+**✅ CORRECT: GSAP via ATOM animations**
+```tsx
+// ✅ Just call initAllAnimations() in the layout
+import { initAllAnimations } from '@atomchat.io/animations';
+initAllAnimations();
+
+// ✅ Components automatically animate via data attributes
+<Button data-hover-rotate>  {/* Auto-animated */}
+<Badge data-pulse>           {/* Auto-animated */}
+<Spinner data-spin>          {/* Auto-animated */}
 ```
 
 ## Theme Toggle (if Light + Dark selected)

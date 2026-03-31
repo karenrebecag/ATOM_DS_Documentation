@@ -1,5 +1,60 @@
 # ATOM Design System — Badge Component Implementation Prompt
 
+---
+
+## ⚠️ CRITICAL INSTRUCTIONS FOR AI CODE GENERATORS (v0, Cursor, Claude, etc.)
+
+**THIS IS THE ATOM BADGE COMPONENT — NOT A shadcn/ui BADGE**
+
+### 🚫 FORBIDDEN — DO NOT USE:
+
+**Prohibited Packages:**
+- ❌ `@radix-ui/react-*` — Do NOT use Radix
+- ❌ `tailwindcss` — Do NOT use Tailwind
+- ❌ `class-variance-authority` — Do NOT use CVA
+- ❌ Emojis as notification indicators
+
+**Prohibited Code Patterns:**
+- ❌ Tailwind classes: `className="bg-red-500 rounded-full px-2"`
+- ❌ Inline hardcoded styles: `style={{ background: '#ef4444' }}`
+- ❌ Emojis: `<span>🔔 5</span>`
+
+### ✅ REQUIRED — YOU MUST USE:
+
+**Required Packages:**
+```bash
+@atomchat.io/tokens@1.0.3
+@atomchat.io/css@0.2.3
+@atomchat.io/components-astro@2.0.4  # If using Astro
+lucide-react@latest                  # For custom icons (optional)
+```
+
+**Required Styling Pattern:**
+```tsx
+// ✅ CORRECT: Use CSS custom properties
+<span style={{
+  background: 'var(--color-danger)',
+  color: 'var(--fg-inverse)',
+  padding: 'var(--xxs) var(--xs)',
+  borderRadius: 'var(--radius-full)'
+}} />
+
+// ❌ WRONG: Tailwind classes
+<span className="bg-red-500 text-white px-2 py-1 rounded-full" />
+```
+
+**Required Icon Pattern (if using icons):**
+```tsx
+// ✅ CORRECT: Lucide icons
+import { Bell } from 'lucide-react';
+<Badge><Bell size={12} /> 5</Badge>
+
+// ❌ WRONG: Emojis
+<Badge>🔔 5</Badge>
+```
+
+---
+
 I need to implement the Badge component from the ATOM Design System. Before we start, I need to answer these questions:
 
 ## Question 1: Target Stack

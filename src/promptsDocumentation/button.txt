@@ -1,5 +1,89 @@
 # ATOM Design System — Button Component Implementation Prompt
 
+---
+
+## ⚠️ CRITICAL INSTRUCTIONS FOR AI CODE GENERATORS (v0, Cursor, Claude, etc.)
+
+**THIS IS THE ATOM BUTTON COMPONENT — NOT A shadcn/ui BUTTON**
+
+### 🚫 FORBIDDEN — DO NOT USE:
+
+**Prohibited Packages:**
+- ❌ `@radix-ui/react-*` — Do NOT use Radix Primitives
+- ❌ `tailwindcss` — Do NOT use Tailwind classes
+- ❌ `class-variance-authority` — Do NOT use CVA
+- ❌ `framer-motion` — Must use GSAP
+- ❌ `@types/gsap` — GSAP includes types natively
+
+**Prohibited Code Patterns:**
+- ❌ Tailwind classes: `className="bg-blue-500 px-4 py-2"`
+- ❌ Inline styles with hardcoded values: `style={{ padding: '8px' }}`
+- ❌ CSS-only hover effects: `.button:hover { transform: translateY(-2px); }`
+- ❌ Framer Motion: `<motion.button whileHover={{ scale: 1.05 }} />`
+- ❌ Emojis as icons: `<button>⚡ Click me</button>`
+
+### ✅ REQUIRED — YOU MUST USE:
+
+**Required Packages:**
+```bash
+@atomchat.io/tokens@1.0.3
+@atomchat.io/css@0.2.3
+@atomchat.io/components-astro@2.0.4  # If using Astro
+@atomchat.io/animations@1.2.1        # If animations enabled
+gsap@3.14.2                          # If animations enabled
+lucide-react@latest                  # For icons
+```
+
+**Required Styling Pattern:**
+```tsx
+// ✅ CORRECT: Use CSS custom properties
+<button style={{
+  background: 'var(--bg-primary)',
+  padding: 'var(--m) var(--l)',
+  borderRadius: 'var(--radius-m)'
+}} />
+
+// ❌ WRONG: Tailwind classes
+<button className="bg-blue-500 px-4 py-2 rounded-lg" />
+```
+
+**Required Animation Pattern (if enabled):**
+```tsx
+// ✅ CORRECT: Use data attributes + initAllAnimations()
+<button data-button data-hover-rotate>
+  <span data-button-label>Click me</span>
+  <span data-button-label-clone>Click me</span>
+</button>
+
+// Initialize once in layout/root:
+import { initAllAnimations } from '@atomchat.io/animations';
+useEffect(() => { initAllAnimations(); }, []);
+
+// ❌ WRONG: CSS-only animations
+<button className="hover:scale-105 transition" />
+
+// ❌ WRONG: Framer Motion
+<motion.button whileHover={{ scale: 1.05 }} />
+```
+
+**Required Icon Pattern:**
+```tsx
+// ✅ CORRECT: Lucide React icons
+import { ArrowRight } from 'lucide-react';
+<button>
+  Get Started
+  <ArrowRight size={20} />
+</button>
+
+// ❌ WRONG: Emojis
+<button>Get Started ➡️</button>
+
+// ❌ WRONG: Heroicons or other libraries
+import { ArrowRightIcon } from '@heroicons/react/24/solid';
+```
+
+---
+
 I need to implement the Button component from the ATOM Design System. Before we start, I need to answer these questions:
 
 ## Question 1: Target Stack
