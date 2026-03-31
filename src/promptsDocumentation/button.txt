@@ -29,13 +29,30 @@ Do you want to include GSAP hover rotation animations?
 
 ```bash
 # Install all required packages with exact versions
-pnpm add @atomchat.io/components-astro@2.0.2
-pnpm add @atomchat.io/tokens@1.0.2
-pnpm add @atomchat.io/css@0.2.2
+pnpm add @atomchat.io/components-astro@2.0.4
+pnpm add @atomchat.io/tokens@1.0.3
+pnpm add @atomchat.io/css@0.2.3
 
 # If animations enabled, also install:
 pnpm add @atomchat.io/animations gsap
 ```
+
+**⚠️ CRITICAL: DO NOT install @types/gsap**
+- GSAP 3.5+ includes TypeScript types natively in the main package
+- The `@types/gsap` package is obsolete (last version: 3.0.0 from 2019)
+- Only install `gsap` — no separate @types package needed
+- Attempting to install @types/gsap will cause installation errors
+
+### Install Lucide Icons (REQUIRED for icons)
+```bash
+pnpm add lucide-react
+```
+
+**🚫 CRITICAL RULE: NEVER USE EMOJIS**
+- **NEVER use emojis in buttons or any UI** unless the user explicitly requests them
+- **ALWAYS use Lucide React icons** for all visual icons in buttons
+- Emojis are inconsistent across platforms and break professional design
+- Browse icons at: https://lucide.dev/icons/
 
 **Usage (Astro):**
 ```astro
@@ -62,12 +79,18 @@ import '@atomchat.io/css';
 
 ```bash
 # Install design tokens and styles (required)
-pnpm add @atomchat.io/tokens@1.0.2
-pnpm add @atomchat.io/css@0.2.2
+pnpm add @atomchat.io/tokens@1.0.3
+pnpm add @atomchat.io/css@0.2.3
 
 # If animations enabled, also install:
 pnpm add @atomchat.io/animations gsap
 ```
+
+**⚠️ CRITICAL: DO NOT install @types/gsap**
+- GSAP 3.5+ includes TypeScript types natively
+- The `@types/gsap` package is obsolete (last release: 3.0.0 from 2019)
+- Only install `gsap` — no separate @types package needed
+- Installing @types/gsap will cause errors
 
 **Reference implementation:**
 - Source: `@atomchat.io/components-astro/src/atoms/Button.astro`
@@ -89,11 +112,11 @@ The Button component is the primary interactive element with:
 
 ## NPM Package Information
 
-**Package:** `@atomchat.io/components-astro@2.0.2`
+**Package:** `@atomchat.io/components-astro@2.0.4`
 **Component path:** `src/atoms/Button.astro`
 **Dependencies:**
-- `@atomchat.io/tokens@1.0.2` (design tokens)
-- `@atomchat.io/css@0.2.2` (compiled CSS from tokens)
+- `@atomchat.io/tokens@1.0.3` (design tokens)
+- `@atomchat.io/css@0.2.3` (compiled CSS from tokens)
 
 **Optional dependencies (for animations):**
 - `@atomchat.io/animations` (GSAP animation functions)
@@ -282,128 +305,481 @@ gap: var(--xxs);                        /* Icon-to-text gap */
 
 ## Animation System (if enabled)
 
-### Data Attributes Contract
-- `data-button` — Root element
-- `data-hover-rotate` — Enables hover rotation
-- `data-button-label` — Original label
-- `data-button-label-clone` — Clone label (must be pre-rendered)
-- `data-shimmer` — Loading text shimmer
-- `data-button-spinner` — Loading spinner
+### Overview
 
-### CSS Variables for Animation
+The button uses a **3-function animation system** that must be initialized in this order:
+
+1. **`initRotateClones()`** — Detects/creates clone labels (pre-render pattern)
+2. **`initRotateCalc()`** — Calculates `--y` transform-origin based on text length
+3. **`initHoverRotate()`** — Executes rotation animation on hover
+
+### Data Attributes Contract
+- `data-button` — Root element (discovery)
+- `data-hover-rotate` — Enables hover rotation
+- `data-button-label` — Original label (animated)
+- `data-button-label-clone` — Clone label (must be pre-rendered with `aria-hidden="true"`)
+- `data-clones-ready` — Set by `initRotateClones()` when setup complete
+- `data-shimmer` — Loading text shimmer effect
+- `data-button-spinner` — Loading spinner element
+
+### Required CSS Variables
 ```css
 .button {
-  --r: 20deg;  /* Rotation angle */
-  --y: 1100%;  /* Transform-origin Y (auto-calculated) */
+  --r: 20deg;      /* Rotation angle (read by GSAP) */
+  --y: 1100%;      /* Transform-origin Y (auto-calculated by initRotateCalc) */
 }
 ```
 
-### Hover Rotation Styles
+### Critical CSS Structure
+
+**Label Wrap (Grid for stacking original + clone):**
 ```css
 .button__label-wrap {
   display: grid;
-  grid-template-areas: "content";
   place-items: center;
+  overflow: hidden;
 }
+```
 
-.button__label,
-.button__label--clone {
-  grid-area: content;
-  display: flex;
-  align-items: center;
-  gap: var(--xxs);
-  transform-origin: 50% var(--y);
-}
-
+**Labels (both original and clone):**
+```css
 .button__label {
-  opacity: 1;
+  grid-area: 1 / 1;  /* Stack in same grid cell */
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s);
+  white-space: nowrap;
+  transform-origin: 50% var(--y, 1100%);
   transform: rotate(0deg);
 }
 
 .button__label--clone {
+  /* Initial state: rotated backwards and invisible */
+  transform: rotate(calc(var(--r) * -1));
   opacity: 0;
-  transform: rotate(calc(-1 * var(--r)));
 }
 ```
 
-### GSAP Animation Implementation
+### GSAP Configuration (config.ts)
 
-If animations are enabled, implement these functions:
-
-**initHoverRotate()** — Hover rotation effect
+**Register custom ease and set defaults:**
 ```typescript
-// On button hover:
-// 1. Rotate original label by +r and fade out
-// 2. Rotate clone label from -r to 0deg and fade in
-// Duration: 0.3s
-// Ease: cubic-bezier(0.625, 0.05, 0, 1)
-// Stagger: 0.075s per child
+import gsap from 'gsap';
+import { CustomEase } from 'gsap/CustomEase';
+
+gsap.registerPlugin(CustomEase);
+
+// Create "atom" ease curve (matches design tokens)
+CustomEase.create('atom', '0.625, 0.05, 0, 1');
+
+// Duration constants (matches design tokens)
+export const DURATION = {
+  quarter: 0.15,
+  half: 0.3,
+  threeQuarters: 0.45,
+  default: 0.6,
+} as const;
+
+// Set global defaults
+gsap.defaults({
+  ease: 'atom',
+  duration: DURATION.default,
+});
+
+export { gsap };
 ```
 
-**initRotateClones()** — Detect/create clone labels
+### Function 1: initRotateClones()
+
+**Purpose:** Detect pre-rendered clones or create them dynamically
+
 ```typescript
-// Checks for pre-rendered clones (Astro pattern)
-// If not found, creates clones dynamically
-// Marks with data-clones-ready attribute
+import { gsap } from './config';
+
+const LABEL_SELECTORS = '.button__label';
+
+export function initRotateClones() {
+  const elements = document.querySelectorAll<HTMLElement>('[data-hover-rotate]');
+  if (!elements.length) return () => {};
+
+  elements.forEach((el) => {
+    if (el.hasAttribute('data-clones-ready')) return;
+
+    // Check if clone is pre-rendered (Astro pattern)
+    const hasPreRenderedClone = el.querySelector('[aria-hidden="true"]');
+    if (hasPreRenderedClone) {
+      el.setAttribute('data-clones-ready', '');
+      return;
+    }
+
+    // Fallback: create clone dynamically (non-Astro)
+    const items = el.querySelectorAll<HTMLElement>(LABEL_SELECTORS);
+    if (!items.length) return;
+
+    const r = parseFloat(getComputedStyle(el).getPropertyValue('--r')) || 20;
+
+    items.forEach((item) => {
+      const clone = item.cloneNode(true) as HTMLElement;
+      clone.setAttribute('aria-hidden', 'true');
+      clone.style.position = 'absolute';
+      clone.style.width = '100%';
+      clone.style.height = '100%';
+      clone.style.transformOrigin = `50% var(--y, 1100%)`;
+      clone.style.transform = `rotate(${-r}deg)`;
+      clone.style.opacity = '0';
+
+      item.parentElement!.style.position = 'relative';
+      item.parentElement!.appendChild(clone);
+    });
+
+    el.setAttribute('data-clones-ready', '');
+  });
+
+  return () => {}; // No cleanup needed (DOM structure)
+}
 ```
 
-**initRotateCalc()** — Calculate transform-origin
+### Function 2: initRotateCalc()
+
+**Purpose:** Calculate `--y` transform-origin based on text length
+
 ```typescript
-// Calculates --y CSS variable based on character count
-// Uses MutationObserver to recalculate on text changes
+import { gsap } from './config';
+
+const LABEL_SELECTORS = '.button__label';
+const Y_PADDING = 30;
+const Y_BASE_OFFSET = 12;
+const Y_CHAR_MULTIPLIER = 6;
+const Y_MIN = 100;
+const Y_MAX = 10000;
+
+export function initRotateCalc() {
+  const elements = document.querySelectorAll<HTMLElement>('[data-hover-rotate]');
+  if (!elements.length) return () => {};
+
+  function getMaxChars(el: HTMLElement): number {
+    const labels = el.querySelectorAll<HTMLElement>(LABEL_SELECTORS);
+    if (!labels.length) return (el.textContent || '').trim().length;
+
+    let max = 0;
+    labels.forEach((label) => {
+      // Skip clones (only count originals)
+      if (label.getAttribute('aria-hidden') === 'true') return;
+      const len = (label.textContent || '').trim().length;
+      if (len > max) max = len;
+    });
+    return max;
+  }
+
+  function computeY(chars: number): number {
+    let y = Math.round(Y_MIN + Y_PADDING * (Y_BASE_OFFSET + Y_CHAR_MULTIPLIER * chars));
+    return Math.max(Y_MIN, Math.min(y, Y_MAX));
+  }
+
+  function update(el: HTMLElement) {
+    const chars = getMaxChars(el);
+    const y = computeY(chars);
+    el.style.setProperty('--y', y + '%');
+  }
+
+  // Initial calculation
+  elements.forEach((el) => update(el));
+
+  // Watch for text changes
+  const observer = new MutationObserver((mutations) => {
+    const touched = new Set<HTMLElement>();
+    mutations.forEach((m) => {
+      const target = m.target.nodeType === Node.TEXT_NODE
+        ? m.target.parentElement
+        : (m.target as HTMLElement);
+      if (!target) return;
+      const root = target.closest<HTMLElement>('[data-hover-rotate]');
+      if (root) touched.add(root);
+    });
+    touched.forEach((el) => update(el));
+  });
+
+  observer.observe(document.body, {
+    characterData: true,
+    childList: true,
+    subtree: true,
+  });
+
+  // Recalculate on resize
+  let resizeTimer: ReturnType<typeof setTimeout>;
+  const onResize = () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => elements.forEach((el) => update(el)), 150);
+  };
+  window.addEventListener('resize', onResize);
+
+  return () => {
+    observer.disconnect();
+    window.removeEventListener('resize', onResize);
+    clearTimeout(resizeTimer);
+  };
+}
 ```
 
-### Loading Spinner CSS
+### Function 3: initHoverRotate()
+
+**Purpose:** Execute rotation animation on hover
+
+```typescript
+import { gsap, DURATION } from './config';
+
+const LABEL_SELECTORS = '.button__label';
+
+function prefersReducedMotion(): boolean {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function isClone(item: HTMLElement): boolean {
+  return (
+    item.getAttribute('aria-hidden') === 'true' ||
+    item.classList.contains('button__label--clone')
+  );
+}
+
+export function initHoverRotate() {
+  const elements = document.querySelectorAll<HTMLElement>('[data-hover-rotate]');
+  if (!elements.length) return () => {};
+
+  const listeners: Array<{ el: HTMLElement; handler: EventListener }> = [];
+
+  elements.forEach((el) => {
+    let lastTime = 0;
+    const COOLDOWN = 100; // Prevent spam
+
+    const onEnter = () => {
+      if (prefersReducedMotion()) return;
+
+      const now = performance.now();
+      if (now - lastTime < COOLDOWN) return;
+      lastTime = now;
+
+      const targets = el.querySelectorAll<HTMLElement>(LABEL_SELECTORS);
+      const items = targets.length ? Array.from(targets) : [el];
+
+      const r = parseFloat(getComputedStyle(el).getPropertyValue('--r')) || 20;
+      const duration = DURATION.half; // 0.3s
+
+      const originals: HTMLElement[] = [];
+      const clones: HTMLElement[] = [];
+      items.forEach((item) => {
+        if (isClone(item)) {
+          clones.push(item);
+        } else {
+          originals.push(item);
+        }
+      });
+
+      // Kill previous animation and reset to rest state
+      if ((el as any)._rotTl) {
+        (el as any)._rotTl.kill();
+      }
+      originals.forEach((orig) => gsap.set(orig, { rotation: 0, opacity: 1 }));
+      clones.forEach((clone) => gsap.set(clone, { rotation: -r, opacity: 0 }));
+
+      // Show clones
+      clones.forEach((clone) => gsap.set(clone, { opacity: 1 }));
+
+      // Create timeline
+      const tl = gsap.timeline({
+        onComplete: () => {
+          // Reset to rest state
+          originals.forEach((orig) => gsap.set(orig, { rotation: 0, opacity: 1 }));
+          clones.forEach((clone) => gsap.set(clone, { rotation: -r, opacity: 0 }));
+          (el as any)._rotTl = null;
+        },
+      });
+
+      // Animate originals: rotate +r and fade out
+      tl.to(
+        originals,
+        {
+          rotation: `+=${r}`,
+          opacity: 0,
+          duration,
+          ease: 'atom',
+          stagger: 0.075,
+        },
+        0,
+      );
+
+      // Animate clones: rotate from -r to 0 and fade in
+      tl.to(
+        clones,
+        {
+          rotation: 0,
+          opacity: 1,
+          duration,
+          ease: 'atom',
+          stagger: 0.075,
+        },
+        0,
+      );
+
+      (el as any)._rotTl = tl;
+    };
+
+    el.addEventListener('pointerenter', onEnter);
+    listeners.push({ el, handler: onEnter });
+  });
+
+  return () => {
+    listeners.forEach(({ el, handler }) => {
+      el.removeEventListener('pointerenter', handler);
+      if ((el as any)._rotTl) {
+        (el as any)._rotTl.kill();
+        (el as any)._rotTl = null;
+      }
+    });
+  };
+}
+```
+
+### Initialization Order (Critical)
+
+```typescript
+// In your main app entry (layout, _app, etc.)
+import { initRotateClones, initRotateCalc, initHoverRotate } from './animations';
+
+document.addEventListener('DOMContentLoaded', () => {
+  // MUST be called in this order
+  initRotateClones();  // 1. Setup clones
+  initRotateCalc();    // 2. Calculate --y
+  initHoverRotate();   // 3. Enable animations
+});
+```
+
+### Loading Spinner (CSS Only)
+
 ```css
+/* Spinner keyframe */
 @keyframes button-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
+/* Spinner element */
 .button__spinner {
-  width: var(--icon-s);
+  width: var(--icon-s);        /* 16px from tokens */
   height: var(--icon-s);
-  border: 2px solid currentColor;
-  border-top-color: transparent;
-  border-radius: 50%;
+  border: var(--stroke-xs) solid currentColor;
+  border-radius: var(--radius-pill);
+  clip-path: polygon(50% 0%, 100% 0%, 100% 50%, 50% 50%); /* Quarter circle */
   animation: button-spin var(--duration-default) linear infinite;
+  flex-shrink: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .button__spinner {
-    animation-duration: 1.5s;
+    animation-duration: 1.5s; /* Slower for reduced motion */
   }
 }
 ```
 
-### Shimmer Effect CSS
+### Shimmer Effect (GSAP Animation)
+
+**CSS Setup:**
 ```css
-.button__loading-text[data-shimmer] {
-  background: linear-gradient(
-    90deg,
-    var(--fg-disabled) 0%,
-    var(--fg-default) 50%,
-    var(--fg-disabled) 100%
-  );
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 1.5s infinite linear;
+.button__loading-content {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s);
+  white-space: nowrap;
 }
 
-@keyframes shimmer {
-  from { background-position: 200% 0; }
-  to { background-position: -200% 0; }
+.button__loading-text {
+  display: inline;
+}
+```
+
+**GSAP Shimmer Function:**
+```typescript
+import { gsap } from './config';
+
+function prefersReducedMotion(): boolean {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .button__loading-text[data-shimmer] {
-    animation: none;
-    background: var(--fg-disabled);
-    -webkit-text-fill-color: var(--fg-disabled);
-  }
+export function initShimmerText() {
+  const elements = document.querySelectorAll<HTMLElement>('[data-shimmer]');
+  if (!elements.length) return () => {};
+
+  // Respect reduced motion preference
+  if (prefersReducedMotion()) return () => {};
+
+  const tweens: gsap.core.Tween[] = [];
+  const styledElements: HTMLElement[] = [];
+
+  elements.forEach((el) => {
+    const duration = parseFloat(el.getAttribute('data-shimmer') || '') || 2;
+
+    // Use semantic token colors (customizable via CSS vars)
+    const baseColor = 'var(--shimmer-base, var(--fg-tertiary))';
+    const shimmerColor = 'var(--shimmer-highlight, var(--fg-primary))';
+
+    // Apply shimmer background inline
+    Object.assign(el.style, {
+      background: `
+        linear-gradient(
+          90deg,
+          ${baseColor} 0%,
+          ${baseColor} 35%,
+          ${shimmerColor} 50%,
+          ${baseColor} 65%,
+          ${baseColor} 100%
+        )
+      `.trim(),
+      backgroundSize: '300% 100%',
+      backgroundClip: 'text',
+      WebkitBackgroundClip: 'text',
+      WebkitTextFillColor: 'transparent',
+      backgroundPositionX: '100%',
+    });
+
+    styledElements.push(el);
+
+    // Animate backgroundPositionX from 100% → 0%
+    const tween = gsap.fromTo(
+      el,
+      { backgroundPositionX: '100%' },
+      {
+        backgroundPositionX: '0%',
+        duration,
+        ease: 'none',
+        repeat: -1,
+        repeatDelay: 0.3,
+      },
+    );
+
+    tweens.push(tween);
+  });
+
+  return () => {
+    tweens.forEach((t) => t.kill());
+    styledElements.forEach((el) => {
+      Object.assign(el.style, {
+        background: '',
+        backgroundSize: '',
+        backgroundClip: '',
+        WebkitBackgroundClip: '',
+        WebkitTextFillColor: '',
+        backgroundPositionX: '',
+      });
+    });
+  };
 }
+```
+
+**Usage:**
+```typescript
+// Initialize shimmer on page load
+document.addEventListener('DOMContentLoaded', () => {
+  initShimmerText();
+});
 ```
 
 ## Accessibility Requirements
@@ -439,12 +815,56 @@ If animations are enabled, implement these functions:
 </Button>
 ```
 
-### Button with Icon
-```tsx
+### Button with Lucide Icon (Left)
+```astro
+---
+import { Upload } from 'lucide-react';
+import { Button } from '@atomchat.io/components-astro';
+---
+
 <Button variant="Secondary" size="l">
-  <IconLeft slot="icon-left" />
+  <Upload slot="icon-left" size={20} client:load />
   Upload File
 </Button>
+```
+
+### Button with Lucide Icon (Right)
+```astro
+---
+import { ArrowRight } from 'lucide-react';
+import { Button } from '@atomchat.io/components-astro';
+---
+
+<Button variant="Primary" size="m">
+  Get Started
+  <ArrowRight slot="icon-right" size={18} client:load />
+</Button>
+```
+
+### Button with Icons (Both Sides)
+```astro
+---
+import { Download, ExternalLink } from 'lucide-react';
+import { Button } from '@atomchat.io/components-astro';
+---
+
+<Button variant="Tertiary" size="m">
+  <Download slot="icon-left" size={18} client:load />
+  Export Data
+  <ExternalLink slot="icon-right" size={16} client:load />
+</Button>
+```
+
+### Icon-Only Button
+```astro
+---
+import { Settings } from 'lucide-react';
+import { IconButton } from '@atomchat.io/components-astro';
+---
+
+<IconButton variant="Ghost" size="m" aria-label="Settings">
+  <Settings size={20} client:load />
+</IconButton>
 ```
 
 ### Loading Button

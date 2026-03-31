@@ -17,7 +17,7 @@ The fastest way to start using AtomChat DS is via the **jsDelivr CDN**:
 
 ```html
 <!-- Add to your HTML <head> -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/tokens.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.3/build/css/tokens.css">
 ```
 
 ### Layer-Specific Imports
@@ -26,16 +26,16 @@ Import only the layers you need:
 
 ```html
 <!-- Foundation layer (primitives) -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/foundation.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.3/build/css/foundation.css">
 
 <!-- Semantic layer -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/semantic.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.3/build/css/semantic.css">
 
 <!-- Component layer -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/components.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.3/build/css/components.css">
 
 <!-- Dark theme -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/dark.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.3/build/css/dark.css">
 ```
 
 :::tip[Version Pinning]
@@ -94,7 +94,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/tokens.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.3/build/css/tokens.css" />
       </head>
       <body>{children}</body>
     </html>
@@ -146,7 +146,7 @@ export function AnimationProvider() {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/tokens.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.3/build/css/tokens.css">
   </head>
   <body>
     <slot />
@@ -191,7 +191,7 @@ import '@atomchat.io/css';
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/tokens.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.3/build/css/tokens.css">
   </head>
   <body>
     <div id="app"></div>
@@ -223,7 +223,7 @@ createApp(App).mount('#app');
   <title>My App</title>
 
   <!-- AtomChat DS Tokens -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/tokens.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.3/build/css/tokens.css">
 
   <style>
     .my-button {
@@ -262,12 +262,12 @@ createApp(App).mount('#app');
 **CDN:**
 ```html
 <!-- Complete bundle -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/tokens.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.3/build/css/tokens.css">
 
 <!-- Or layer-specific -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/foundation.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/semantic.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/components.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.3/build/css/foundation.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.3/build/css/semantic.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.3/build/css/components.css">
 ```
 
 **npm:**
@@ -347,16 +347,77 @@ All files available on jsDelivr CDN:
 
 **Base URL:**
 ```
-https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/
+https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.3/build/css/
 ```
+
+## Import Patterns
+
+All packages support **multiple import patterns** thanks to improved package.json exports configuration:
+
+### Tokens Package
+
+```typescript
+// Shorthand (recommended)
+import '@atomchat.io/tokens/css'
+import '@atomchat.io/tokens/scss'
+
+// Full path (also supported)
+import '@atomchat.io/tokens/build/css/tokens.css'
+import '@atomchat.io/tokens/build/scss/_tokens.scss'
+import '@atomchat.io/tokens/build/json/tokens.json'
+
+// JavaScript/TypeScript
+import tokens from '@atomchat.io/tokens'
+// or with full path
+import tokens from '@atomchat.io/tokens/build/js/tokens.js'
+```
+
+### CSS Package
+
+```typescript
+// Shorthand (recommended)
+import '@atomchat.io/css'
+
+// Alternative paths (all work)
+import '@atomchat.io/css/atom.css'
+import '@atomchat.io/css/dist/atom.css'
+```
+
+### Animations Package
+
+```typescript
+// Shorthand (recommended)
+import { initBadge } from '@atomchat.io/animations/badge'
+
+// Full path (also supported)
+import { initBadge } from '@atomchat.io/animations/dist/badge.js'
+
+// Import all
+import { initAllAnimations } from '@atomchat.io/animations'
+```
+
+### Components Package (Astro)
+
+```typescript
+// Shorthand (recommended)
+import Button from '@atomchat.io/components-astro/atoms/Button.astro'
+
+// Full path (also supported)
+import Button from '@atomchat.io/components-astro/src/atoms/Button.astro'
+```
+
+:::tip[Import Flexibility]
+All packages now support both shorthand and full path imports. Use whichhand for cleaner code, or full paths if you need explicit directory references.
+:::
 
 ## Package Versions
 
 | Package | Current Version | npm Link |
 |---------|-----------------|----------|
-| @atomchat.io/tokens | 1.0.0 | [View on npm](https://www.npmjs.com/package/@atomchat.io/tokens) |
-| @atomchat.io/css | Latest | [View on npm](https://www.npmjs.com/package/@atomchat.io/css) |
-| @atomchat.io/animations | Latest | [View on npm](https://www.npmjs.com/package/@atomchat.io/animations) |
+| @atomchat.io/tokens | 1.0.3 | [View on npm](https://www.npmjs.com/package/@atomchat.io/tokens) |
+| @atomchat.io/css | 0.2.3 | [View on npm](https://www.npmjs.com/package/@atomchat.io/css) |
+| @atomchat.io/animations | 1.2.1 | [View on npm](https://www.npmjs.com/package/@atomchat.io/animations) |
+| @atomchat.io/components-astro | 2.0.4 | [View on npm](https://www.npmjs.com/package/@atomchat.io/components-astro) |
 
 ## Next Steps
 

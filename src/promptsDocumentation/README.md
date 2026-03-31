@@ -2,6 +2,57 @@
 
 This directory contains reusable AI prompts for implementing ATOM Design System components in any framework.
 
+---
+
+## ⚠️ CRITICAL UPDATE (2025-03-31)
+
+### GSAP Types Issue — FIXED
+
+**All prompts now include explicit warnings about `@types/gsap`.**
+
+**The Problem:**
+When using these prompts with v0 or similar tools, they attempt to install `@types/gsap@^3.12.11`, which **does not exist**. This causes installation failures.
+
+**Why It Happens:**
+GSAP 3.5+ includes TypeScript types natively. The `@types/gsap` package is obsolete (last version: 3.0.0 from 2019).
+
+**The Fix:**
+✅ **Only install `gsap` — no @types package needed**
+
+```bash
+# ✅ CORRECT
+pnpm add gsap
+
+# ❌ WRONG
+pnpm add gsap @types/gsap
+```
+
+**All prompts now include:**
+- Explicit warning sections about `@types/gsap`
+- Clear installation commands
+- Troubleshooting guidance
+
+See `GSAP_TYPES_FIX.md` for complete documentation.
+
+### Button Prompt — MASSIVELY IMPROVED
+
+**Before:** Abstract descriptions of animations
+**After:** **300+ lines of complete, copy-paste-ready code**
+
+**New additions to `button.txt`:**
+- ✅ Complete `initRotateClones()` function (47 lines)
+- ✅ Complete `initRotateCalc()` function (62 lines)
+- ✅ Complete `initHoverRotate()` function (97 lines)
+- ✅ Complete `initShimmerText()` function (50 lines)
+- ✅ GSAP config with CustomEase "atom" setup
+- ✅ Critical CSS structure with grid layout
+- ✅ Initialization order documentation
+- ✅ Motion preferences handling
+
+**v0 can now copy the exact implementation instead of guessing.**
+
+---
+
 ## Overview
 
 Each `.txt` file contains a comprehensive, sequential prompt that guides an AI assistant (like Claude Code) through either:
@@ -10,14 +61,14 @@ Each `.txt` file contains a comprehensive, sequential prompt that guides an AI a
 
 ## NPM Package Information
 
-**Official Package:** `@atomchat.io/components-astro@2.0.2`
+**Official Package:** `@atomchat.io/components-astro@2.0.4`
 
 **Core Dependencies:**
-- `@atomchat.io/tokens@1.0.2` — Design token definitions
-- `@atomchat.io/css@0.2.2` — Compiled CSS from tokens
+- `@atomchat.io/tokens@1.0.3` — Design token definitions
+- `@atomchat.io/css@0.2.3` — Compiled CSS from tokens
 
 **Optional Dependencies:**
-- `@atomchat.io/animations` — GSAP animation functions
+- `@atomchat.io/animations@1.2.1` — GSAP animation functions
 - `gsap` — Animation library
 
 ## Available Components (23 total)
@@ -91,14 +142,60 @@ import { Toggle } from '@atomchat.io/components-astro';
 ... etc
 ```
 
+## Import Pattern Flexibility (Updated 2026-03-31)
+
+All ATOM packages now support **multiple import patterns** thanks to improved package.json exports configuration following Node.js best practices.
+
+### Tokens Package
+```typescript
+// Shorthand (recommended)
+import '@atomchat.io/tokens/css'
+import '@atomchat.io/tokens/scss'
+
+// Full path (also supported)
+import '@atomchat.io/tokens/build/css/tokens.css'
+import '@atomchat.io/tokens/build/scss/_tokens.scss'
+import '@atomchat.io/tokens/build/json/tokens.json'
+```
+
+### CSS Package
+```typescript
+// Shorthand (recommended)
+import '@atomchat.io/css'
+
+// Alternative paths (all work)
+import '@atomchat.io/css/atom.css'
+import '@atomchat.io/css/dist/atom.css'
+```
+
+### Animations Package
+```typescript
+// Shorthand (recommended)
+import { initBadge } from '@atomchat.io/animations/badge'
+
+// Full path (also supported)
+import { initBadge } from '@atomchat.io/animations/dist/badge.js'
+```
+
+### Components Package
+```typescript
+// Shorthand (recommended)
+import Button from '@atomchat.io/components-astro/atoms/Button.astro'
+
+// Full path (also supported)
+import Button from '@atomchat.io/components-astro/src/atoms/Button.astro'
+```
+
+**Why this matters:** AI tools and bundlers may generate imports with different path styles. All patterns now work correctly, providing better compatibility and developer experience.
+
 ## Installation Flow
 
 ### If User Chooses Astro:
 ```bash
 # Install the complete component library from npm
-pnpm add @atomchat.io/components-astro@2.0.2
-pnpm add @atomchat.io/tokens@1.0.2
-pnpm add @atomchat.io/css@0.2.2
+pnpm add @atomchat.io/components-astro@2.0.4
+pnpm add @atomchat.io/tokens@1.0.3
+pnpm add @atomchat.io/css@0.2.3
 ```
 
 **Result:** Direct usage, no conversion needed. All 23 components ready to import.
@@ -106,8 +203,8 @@ pnpm add @atomchat.io/css@0.2.2
 ### If User Chooses Another Framework:
 ```bash
 # Install only the design system foundation
-pnpm add @atomchat.io/tokens@1.0.2
-pnpm add @atomchat.io/css@0.2.2
+pnpm add @atomchat.io/tokens@1.0.3
+pnpm add @atomchat.io/css@0.2.3
 ```
 
 **Result:** User must convert the Astro component source to their chosen framework while maintaining:
@@ -247,19 +344,19 @@ Prompts guide conversion from Astro (npm source) to any target framework while p
 **Component:** Button
 **NPM Path:** `@atomchat.io/components-astro/src/atoms/Button.astro`
 **Features:** 6 variants, 5 sizes, loading state, icon support, GSAP animations
-**Versions:** @2.0.2 (components), @1.0.2 (tokens), @0.2.2 (css)
+**Versions:** @2.0.4 (components), @1.0.3 (tokens), @0.2.3 (css)
 
 ### ✅ `badge.txt`
 **Component:** Badge
 **NPM Path:** `@atomchat.io/components-astro/src/atoms/Badge.astro`
 **Features:** 3 types, 3 states, smart overflow (99+, +50), auto-hide on zero
-**Versions:** @2.0.2 (components), @1.0.2 (tokens), @0.2.2 (css)
+**Versions:** @2.0.4 (components), @1.0.3 (tokens), @0.2.3 (css)
 
 ### ✅ `checkbox.txt`
 **Component:** Checkbox
 **NPM Path:** `@atomchat.io/components-astro/src/atoms/Checkbox.astro`
 **Features:** Light/dark themes, SVG checkmark, disabled state, GSAP animations
-**Versions:** @2.0.2 (components), @1.0.2 (tokens), @0.2.2 (css)
+**Versions:** @2.0.4 (components), @1.0.3 (tokens), @0.2.3 (css)
 
 ### 📋 Remaining Components (no prompts yet)
 These components are available in npm but don't have prompts yet:

@@ -61,18 +61,41 @@ When prompted:
 ### Step 2 — Install ATOM Design System packages
 ```bash
 # Core packages (required)
-pnpm add @atomchat.io/tokens@1.0.2
-pnpm add @atomchat.io/css@0.2.2
-pnpm add @atomchat.io/components-astro@2.0.2
+pnpm add @atomchat.io/tokens@1.0.3
+pnpm add @atomchat.io/css@0.2.3
+pnpm add @atomchat.io/components-astro@2.0.4
 ```
 
 ### Step 3 — Install animations (if enabled)
 ```bash
-pnpm add @atomchat.io/animations@1.2.0
+pnpm add @atomchat.io/animations@1.2.1
 pnpm add gsap@3.14.2
 ```
 
-### Step 4 — Verify installation
+**⚠️ CRITICAL: DO NOT install @types/gsap**
+- GSAP 3.5+ includes TypeScript types natively
+- The `@types/gsap` package is obsolete and will cause errors
+- Only install `gsap` — no separate @types package needed
+
+### Step 4 — Install Lucide Icons (REQUIRED)
+```bash
+pnpm add lucide-react
+```
+
+**🚫 CRITICAL RULE: NEVER USE EMOJIS**
+- **NEVER use emojis in UI** unless the user explicitly requests them
+- **ALWAYS use Lucide React icons** for all visual icons
+- Emojis are inconsistent across platforms and break professional design
+- Lucide provides 1000+ consistent, accessible SVG icons
+
+**Why Lucide?**
+- ✅ Consistent rendering across all platforms
+- ✅ Accessible (proper ARIA labels)
+- ✅ Scalable vector graphics
+- ✅ Tree-shakeable (only import what you use)
+- ✅ Matches ATOM Design System aesthetic
+
+### Step 5 — Verify installation
 ```bash
 pnpm dev
 ```
@@ -88,15 +111,77 @@ getComputedStyle(document.documentElement).getPropertyValue('--bg-primary');
 
 ### Install tokens and styles only
 ```bash
-pnpm add @atomchat.io/tokens@1.0.2
-pnpm add @atomchat.io/css@0.2.2
+pnpm add @atomchat.io/tokens@1.0.3
+pnpm add @atomchat.io/css@0.2.3
 
 # If animations enabled:
-pnpm add @atomchat.io/animations@1.2.0 gsap@3.14.2
+pnpm add @atomchat.io/animations@1.2.1 gsap@3.14.2
 ```
+
+**⚠️ CRITICAL: DO NOT install @types/gsap**
+- GSAP 3.5+ includes TypeScript types natively
+- The `@types/gsap` package is obsolete (last version: 3.0.0 from 2019)
+- Only install `gsap` — no separate @types package needed
 
 You will need to convert Astro components to your framework. Reference source:
 `node_modules/@atomchat.io/components-astro/src/`
+
+---
+
+# Import Pattern Flexibility (Updated 2026-03-31)
+
+All ATOM packages support **multiple import patterns** thanks to improved package.json exports configuration following Node.js best practices. This means AI tools and bundlers can generate imports in different styles, and they'll all work correctly.
+
+## Supported Import Styles
+
+### Tokens Package
+```typescript
+// Shorthand (recommended)
+import '@atomchat.io/tokens/css'
+import '@atomchat.io/tokens/scss'
+
+// Full path (also supported)
+import '@atomchat.io/tokens/build/css/tokens.css'
+import '@atomchat.io/tokens/build/scss/_tokens.scss'
+import '@atomchat.io/tokens/build/json/tokens.json'
+
+// JavaScript/TypeScript
+import tokens from '@atomchat.io/tokens'
+// or with full path
+import tokens from '@atomchat.io/tokens/build/js/tokens.js'
+```
+
+### CSS Package
+```typescript
+// Shorthand (recommended)
+import '@atomchat.io/css'
+
+// Alternative paths (all work)
+import '@atomchat.io/css/atom.css'
+import '@atomchat.io/css/dist/atom.css'
+```
+
+### Animations Package
+```typescript
+// Shorthand (recommended)
+import { initBadge } from '@atomchat.io/animations/badge'
+import { initAllAnimations } from '@atomchat.io/animations'
+
+// Full path (also supported)
+import { initBadge } from '@atomchat.io/animations/dist/badge.js'
+import { initAllAnimations } from '@atomchat.io/animations/dist/index.js'
+```
+
+### Components Package (Astro)
+```typescript
+// Shorthand (recommended)
+import Button from '@atomchat.io/components-astro/atoms/Button.astro'
+
+// Full path (also supported)
+import Button from '@atomchat.io/components-astro/src/atoms/Button.astro'
+```
+
+**Use whichever style your tooling prefers** — they're all valid and resolve correctly.
 
 ---
 
@@ -127,6 +212,7 @@ my-project/
 Create `src/layouts/Layout.astro`:
 ```astro
 ---
+import '@atomchat.io/tokens/css';
 import '@atomchat.io/css';
 
 interface Props {
@@ -150,6 +236,11 @@ const { title, description = '' } = Astro.props;
   </body>
 </html>
 ```
+
+**⚠️ CRITICAL IMPORT ORDER:**
+- **Tokens MUST be imported BEFORE CSS**: The component styles in `@atomchat.io/css` depend on CSS custom properties defined in `@atomchat.io/tokens/css`
+- If you import CSS before tokens, components will render without styles (all `var()` references will be empty)
+- Always maintain this order: tokens → css → your custom styles
 
 ### If animations are enabled, add this script to the layout:
 ```astro
@@ -237,8 +328,8 @@ Add theme toggle to your layout or navigation:
 ## How to import and use components:
 ```astro
 ---
-import { Button, Container, Stack, Heading, Text } from '@atomchat.io/components-astro';
-import '@atomchat.io/css';
+import Layout from '../layouts/Layout.astro';
+import { Button, Container, Stack, Section, Heading, Text } from '@atomchat.io/components-astro';
 ---
 
 <Layout title="My Page">
@@ -255,6 +346,174 @@ import '@atomchat.io/css';
   </Section>
 </Layout>
 ```
+
+**Note:** CSS imports (`@atomchat.io/tokens/css` and `@atomchat.io/css`) should be in the Layout component, not in individual pages.
+
+---
+
+## Using Lucide Icons (REQUIRED READING)
+
+**🚫 CRITICAL RULE: NEVER USE EMOJIS IN UI**
+
+Unless the user explicitly requests emojis, you MUST use Lucide React icons for all visual elements.
+
+### Installation
+```bash
+pnpm add lucide-react
+```
+
+### Basic Usage in Astro
+
+```astro
+---
+import { Zap, Lock, BarChart3 } from 'lucide-react';
+import { Stack, Heading, Text } from '@atomchat.io/components-astro';
+---
+
+<Stack gap="m" class="feature-card">
+  <Zap size={24} strokeWidth={2} color="var(--fg-accent)" client:load />
+  <Heading level={3}>Lightning Fast</Heading>
+  <Text>Blazing-fast performance for your team.</Text>
+</Stack>
+```
+
+### Icon Sizing Guidelines
+
+Use ATOM spacing tokens for consistent icon sizes:
+
+```astro
+---
+import { CheckCircle, AlertCircle, Info } from 'lucide-react';
+---
+
+<!-- Small icons (16px) -->
+<CheckCircle size={16} strokeWidth={2} client:load />
+
+<!-- Medium icons (20px) -->
+<Info size={20} strokeWidth={2} client:load />
+
+<!-- Large icons (24px) - DEFAULT -->
+<AlertCircle size={24} strokeWidth={2} client:load />
+
+<!-- Extra large icons (32px) -->
+<CheckCircle size={32} strokeWidth={1.5} client:load />
+
+<!-- Hero icons (48px) -->
+<Zap size={48} strokeWidth={1.5} client:load />
+```
+
+### Icon Colors
+
+Always use ATOM design tokens for colors:
+
+```astro
+<!-- Primary accent color -->
+<Star color="var(--fg-accent)" client:load />
+
+<!-- Default text color -->
+<User color="var(--fg-default)" client:load />
+
+<!-- Secondary text color -->
+<Clock color="var(--fg-secondary)" client:load />
+
+<!-- Success/Error/Warning states -->
+<CheckCircle color="var(--color-success)" client:load />
+<XCircle color="var(--color-danger)" client:load />
+<AlertTriangle color="var(--color-warning)" client:load />
+```
+
+### Common Icon Use Cases
+
+```astro
+---
+import {
+  Zap, Lock, BarChart3, Users, Rocket, Sparkles,
+  Check, X, AlertCircle, Info, HelpCircle,
+  ChevronRight, ChevronDown, Menu, X as CloseIcon,
+  Search, Filter, Settings, Download, Upload,
+  Heart, Star, Bookmark, Share2, ExternalLink
+} from 'lucide-react';
+---
+
+<!-- Feature cards -->
+<Zap size={24} client:load />        <!-- Performance -->
+<Lock size={24} client:load />       <!-- Security -->
+<BarChart3 size={24} client:load />  <!-- Analytics -->
+<Users size={24} client:load />      <!-- Collaboration -->
+<Rocket size={24} client:load />     <!-- Speed/Launch -->
+<Sparkles size={24} client:load />   <!-- AI/Magic -->
+
+<!-- Status indicators -->
+<Check size={16} client:load />         <!-- Success -->
+<X size={16} client:load />             <!-- Error/Close -->
+<AlertCircle size={16} client:load />   <!-- Warning -->
+<Info size={16} client:load />          <!-- Information -->
+
+<!-- Navigation -->
+<ChevronRight size={16} client:load />  <!-- Next/Forward -->
+<Menu size={24} client:load />          <!-- Menu toggle -->
+<Search size={20} client:load />        <!-- Search -->
+
+<!-- Actions -->
+<Heart size={20} client:load />         <!-- Like/Favorite -->
+<Share2 size={20} client:load />        <!-- Share -->
+<Download size={20} client:load />      <!-- Download -->
+```
+
+### Icons in Buttons
+
+```astro
+---
+import { ArrowRight, Download, ExternalLink } from 'lucide-react';
+import { Button, Inline } from '@atomchat.io/components-astro';
+---
+
+<Button variant="Primary" size="l">
+  <Inline gap="xs" align="center">
+    <span>Get Started</span>
+    <ArrowRight size={20} client:load />
+  </Inline>
+</Button>
+
+<Button variant="Secondary" size="m">
+  <Inline gap="xs" align="center">
+    <Download size={18} client:load />
+    <span>Download</span>
+  </Inline>
+</Button>
+```
+
+### Icon-Only Buttons
+
+```astro
+---
+import { Settings, Bell, User } from 'lucide-react';
+import { IconButton } from '@atomchat.io/components-astro';
+---
+
+<IconButton variant="Ghost" size="m" aria-label="Settings">
+  <Settings size={20} client:load />
+</IconButton>
+
+<IconButton variant="Primary" size="m" aria-label="Notifications">
+  <Bell size={20} client:load />
+</IconButton>
+```
+
+### Finding Icons
+
+Browse all icons at: https://lucide.dev/icons/
+
+**Common categories:**
+- Arrows & Navigation: `ArrowRight`, `ChevronDown`, `ChevronsUp`
+- UI & Editor: `Edit`, `Trash`, `Copy`, `Save`
+- Communication: `Mail`, `MessageCircle`, `Phone`
+- Media: `Play`, `Pause`, `Volume`, `Camera`
+- Files: `File`, `FileText`, `Folder`, `Download`
+- Business: `Briefcase`, `Calendar`, `CreditCard`
+- Social: `Heart`, `Share2`, `ThumbsUp`, `Star`
+
+**🚫 Remember: NO emojis unless explicitly requested by the user!**
 
 ---
 
@@ -485,6 +744,7 @@ Visit the component documentation to learn the complete API for each component b
 4. **Accessible** — All interactive elements must have ARIA labels, keyboard support, and focus states
 5. **Responsive** — Mobile-first approach, test at 320px, 768px, 1024px, 1440px
 6. **Performance** — Astro ships zero JS by default. Only add `client:load` when interactivity is required
+7. **NO EMOJIS** — NEVER use emojis in UI unless explicitly requested. ALWAYS use Lucide React icons (`lucide-react`)
 
 ## Quick Reference — Common Patterns
 
@@ -533,6 +793,82 @@ Visit the component documentation to learn the complete API for each component b
   </Container>
 </Section>
 ```
+
+---
+
+# Troubleshooting: Styles Not Loading
+
+If components render without styles (plain HTML with no colors, spacing, or borders), verify the following:
+
+## 1. Check CSS Custom Properties in Browser Console
+
+```javascript
+// Run in browser DevTools console
+const root = getComputedStyle(document.documentElement);
+console.log({
+  '--bg-primary': root.getPropertyValue('--bg-primary'),
+  '--fg-default': root.getPropertyValue('--fg-default'),
+  '--l': root.getPropertyValue('--l')
+});
+```
+
+**Expected result:** All values should return colors/sizes, NOT empty strings.
+
+**If all values are empty (`""`):**
+- ❌ Tokens CSS is missing or not loaded
+- ✅ Fix: Import `@atomchat.io/tokens/css` BEFORE `@atomchat.io/css` in Layout.astro
+
+## 2. Check Import Order in Layout
+
+```astro
+---
+// ✅ CORRECT ORDER
+import '@atomchat.io/tokens/css';  // FIRST: Define CSS custom properties
+import '@atomchat.io/css';         // SECOND: Use those custom properties
+import '../styles/global.css';     // THIRD: Your overrides
+
+// ❌ WRONG ORDER
+import '@atomchat.io/css';         // Component styles load before tokens are defined
+import '@atomchat.io/tokens/css';  // Too late! CSS already tried to use var() references
+```
+
+## 3. Verify CSS Files Loaded
+
+```javascript
+// Run in browser DevTools console
+performance.getEntriesByType('resource')
+  .filter(r => r.name.includes('.css'))
+  .map(r => ({
+    name: r.name.split('/').pop(),
+    size: r.transferSize + ' bytes'
+  }));
+```
+
+**Expected result:** Should show `atom.css` (~73KB) and `tokens.css` loaded.
+
+## 4. Check Component Classes
+
+```javascript
+// Run in browser DevTools console
+const btn = document.querySelector('[data-button]');
+console.log({
+  classes: btn?.className,
+  background: getComputedStyle(btn)?.background
+});
+```
+
+**Expected result:**
+- `classes`: Should be `"button button--primary button--l"` or similar
+- `background`: Should be a color value, NOT `rgba(0, 0, 0, 0) none...`
+
+## Common Issues
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| All tokens are `""` | Tokens not imported | Add `import '@atomchat.io/tokens/css'` to Layout |
+| Tokens exist but styles don't apply | Wrong import order | Move tokens import BEFORE css import |
+| `atom.css` not found in network | Package not installed | Run `pnpm add @atomchat.io/css@latest` |
+| Components have classes but no styles | CSS file corrupt or blocked | Clear node_modules and reinstall |
 
 ---
 

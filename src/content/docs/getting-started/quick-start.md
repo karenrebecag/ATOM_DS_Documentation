@@ -16,7 +16,7 @@ Make sure you have [installed @atomchat.io/tokens](/getting-started/installation
 Add to your HTML `<head>`:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/tokens.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.3/build/css/tokens.css">
 ```
 
 ### Via npm
@@ -267,7 +267,7 @@ Here's a complete button component using best practices:
 <html lang="en" data-theme="light">
 <head>
   <!-- Using CDN -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.0/build/css/tokens.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@1.0.3/build/css/tokens.css">
   <style>
     .atom-button {
       display: inline-flex;

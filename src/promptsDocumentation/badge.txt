@@ -29,13 +29,29 @@ Do you want to include optional appearance animations?
 
 ```bash
 # Install all required packages with exact versions
-pnpm add @atomchat.io/components-astro@2.0.2
-pnpm add @atomchat.io/tokens@1.0.2
-pnpm add @atomchat.io/css@0.2.2
+pnpm add @atomchat.io/components-astro@2.0.4
+pnpm add @atomchat.io/tokens@1.0.3
+pnpm add @atomchat.io/css@0.2.3
 
 # If animations enabled, also install:
 pnpm add @atomchat.io/animations gsap
 ```
+
+**⚠️ CRITICAL: DO NOT install @types/gsap**
+- GSAP 3.5+ includes TypeScript types natively in the main package
+- The `@types/gsap` package is obsolete (last version: 3.0.0 from 2019)
+- Only install `gsap` — no separate @types package needed
+- Installing @types/gsap will cause installation errors
+
+### Install Lucide Icons (OPTIONAL for custom badge content)
+```bash
+pnpm add lucide-react
+```
+
+**🚫 CRITICAL RULE: NEVER USE EMOJIS**
+- **NEVER use emojis in badges or any UI** unless the user explicitly requests them
+- **ALWAYS use Lucide React icons** if you need visual indicators in badges
+- Browse icons at: https://lucide.dev/icons/
 
 **Usage (Astro):**
 ```astro
@@ -62,12 +78,17 @@ import '@atomchat.io/css';
 
 ```bash
 # Install design tokens and styles (required)
-pnpm add @atomchat.io/tokens@1.0.2
-pnpm add @atomchat.io/css@0.2.2
+pnpm add @atomchat.io/tokens@1.0.3
+pnpm add @atomchat.io/css@0.2.3
 
 # If animations enabled, also install:
 pnpm add @atomchat.io/animations gsap
 ```
+
+**⚠️ CRITICAL: DO NOT install @types/gsap**
+- GSAP 3.5+ includes TypeScript types natively
+- The `@types/gsap` package is obsolete (last release: 3.0.0 from 2019)
+- Only install `gsap` — no separate @types package needed
 
 **Reference implementation:**
 - Source: `@atomchat.io/components-astro/src/atoms/Badge.astro`
@@ -91,11 +112,11 @@ The Badge component is a notification indicator that displays count information 
 
 ## NPM Package Information
 
-**Package:** `@atomchat.io/components-astro@2.0.2`
+**Package:** `@atomchat.io/components-astro@2.0.4`
 **Component path:** `src/atoms/Badge.astro`
 **Dependencies:**
-- `@atomchat.io/tokens@1.0.2` (design tokens)
-- `@atomchat.io/css@0.2.2` (compiled CSS from tokens)
+- `@atomchat.io/tokens@1.0.3` (design tokens)
+- `@atomchat.io/css@0.2.3` (compiled CSS from tokens)
 
 **Optional dependencies (for animations):**
 - `@atomchat.io/animations` (GSAP animation functions)
