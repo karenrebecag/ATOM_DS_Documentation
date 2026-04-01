@@ -1,0 +1,681 @@
+---
+title: Inline
+description: Horizontal flex layout primitive for arranging content in a row with wrapping support.
+---
+
+## Overview
+
+The Inline component is a foundational layout primitive that arranges its children horizontally with consistent spacing between them. It's built on CSS Flexbox and wraps content by default for responsive behavior, making it perfect for tag lists, button groups, breadcrumbs, and horizontal navigation.
+
+:::tip[Interactive Playground]
+**[Open Inline Playground →](/playground/inline)**
+
+View all Inline configurations with live spacing adjustments and wrapping behavior in an isolated environment.
+:::
+
+**Key Features:**
+- Horizontal flex layout (row direction)
+- Wraps content by default for responsive layouts
+- 5 gap sizes (xs, s, m, l, xl) powered by design tokens
+- Flexible vertical alignment options (start, center, end, baseline)
+- Horizontal distribution control (start, center, end, between, around)
+- Optional nowrap mode for strict horizontal layouts
+- Polymorphic element rendering (div, nav, ul, etc.)
+- Zero hardcoded values — fully token-driven
+
+---
+
+## Demo
+
+:::tip[Live Demo]
+**[Open Inline Playground →](/playground/inline)** to see all gap sizes, alignment options, and wrapping behavior with live interactions.
+:::
+
+---
+
+## Installation
+
+```bash
+# Install component package
+pnpm add @atomchat.io/components-astro
+
+# Install required dependencies
+pnpm add @atomchat.io/css @atomchat.io/tokens
+```
+
+**CSS Import (required):**
+```astro
+---
+// In your layout or page
+import '@atomchat.io/css';
+---
+```
+
+---
+
+## Anatomy
+
+The Inline component uses CSS Flexbox to arrange children horizontally with wrapping:
+
+```
+┌────────────────────────────────────────┐
+│  .inline (container)                   │  ← Flexbox row
+│  ┌──────┐ gap ┌──────┐ gap ┌──────┐  │
+│  │Child1│ ↔   │Child2│ ↔   │Child3│  │
+│  └──────┘     └──────┘     └──────┘  │
+│  ↓ (wraps if needed)                  │
+│  ┌──────┐ gap ┌──────┐                │
+│  │Child4│ ↔   │Child5│                │
+│  └──────┘     └──────┘                │
+└────────────────────────────────────────┘
+```
+
+**DOM Structure:**
+```html
+<div class="inline inline--gap-m inline--align-center">
+  <span>Tag 1</span>
+  <span>Tag 2</span>
+  <span>Tag 3</span>
+</div>
+```
+
+**With custom alignment:**
+```html
+<nav class="inline inline--gap-s inline--align-baseline inline--justify-between">
+  <a href="#home">Home</a>
+  <a href="#about">About</a>
+  <a href="#contact">Contact</a>
+</nav>
+```
+
+---
+
+## Framework Support
+
+The Inline component is available for multiple frameworks with shared design tokens and styles.
+
+import FrameworkSwitcher from '../../../../components/FrameworkSwitcher.astro';
+
+<FrameworkSwitcher
+  frameworks={[
+    { name: 'astro', label: 'Astro', icon: 'https://svgl.app/library/astro-icon-dark.svg' },
+    { name: 'react', label: 'React', icon: 'https://svgl.app/library/react_dark.svg' },
+    { name: 'nextjs', label: 'Next.js', icon: 'https://svgl.app/library/nextjs_icon_dark.svg' },
+    { name: 'vue', label: 'Vue', icon: 'https://svgl.app/library/vue.svg' },
+    { name: 'angular', label: 'Angular', icon: 'https://svgl.app/library/angular.svg' },
+  ]}
+>
+  <div data-framework="astro" data-active="true">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-astro @atomchat.io/css
+```
+
+### Usage
+
+```astro
+---
+import { Inline } from '@atomchat.io/components-astro';
+import { Tag } from '@atomchat.io/components-astro';
+import '@atomchat.io/css';
+---
+
+<Inline gap="s">
+  <Tag>React</Tag>
+  <Tag>TypeScript</Tag>
+  <Tag>Astro</Tag>
+</Inline>
+
+<Inline gap="m" justify="between" as="nav">
+  <a href="#home">Home</a>
+  <a href="#about">About</a>
+  <a href="#contact">Contact</a>
+</Inline>
+
+<Inline gap="xs" align="baseline">
+  <h2>Price:</h2>
+  <span class="price">$99</span>
+  <span class="caption">/month</span>
+</Inline>
+```
+
+  </div>
+
+  <div data-framework="react">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+import { Inline, Tag } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+
+function Example() {
+  return (
+    <>
+      <Inline gap="s">
+        <Tag>React</Tag>
+        <Tag>TypeScript</Tag>
+        <Tag>Astro</Tag>
+      </Inline>
+
+      <Inline gap="m" justify="between" as="nav">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </Inline>
+
+      <Inline gap="xs" align="baseline">
+        <h2>Price:</h2>
+        <span className="price">$99</span>
+        <span className="caption">/month</span>
+      </Inline>
+    </>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="nextjs">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+import { Inline, Tag } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+
+export default function Example() {
+  return (
+    <>
+      <Inline gap="s">
+        <Tag>React</Tag>
+        <Tag>TypeScript</Tag>
+        <Tag>Next.js</Tag>
+      </Inline>
+
+      <Inline gap="m" justify="between" as="nav">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </Inline>
+    </>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="vue">
+
+:::caution[Coming Soon]
+Vue components are currently in development. Check back soon or follow our [GitHub repository](https://github.com/your-org/atom-design-system) for updates.
+:::
+
+### Planned API
+
+```vue
+<script setup>
+import { Inline, Tag } from '@atomchat.io/components-vue';
+import '@atomchat.io/css';
+</script>
+
+<template>
+  <Inline gap="s">
+    <Tag>Vue</Tag>
+    <Tag>TypeScript</Tag>
+    <Tag>Vite</Tag>
+  </Inline>
+</template>
+```
+
+  </div>
+
+  <div data-framework="angular">
+
+:::caution[Coming Soon]
+Angular Inline component is currently in development. Check back soon or follow our [GitHub repository](https://github.com/your-org/atom-design-system) for updates.
+:::
+
+### Planned API
+
+```typescript
+import { InlineComponent, TagComponent } from '@atomchat.io/components-angular';
+import '@atomchat.io/css';
+
+@Component({
+  imports: [InlineComponent, TagComponent],
+  template: `
+    <atom-inline gap="s">
+      <atom-tag>Angular</atom-tag>
+      <atom-tag>TypeScript</atom-tag>
+      <atom-tag>Signals</atom-tag>
+    </atom-inline>
+  `
+})
+export class ExampleComponent {}
+```
+
+  </div>
+</FrameworkSwitcher>
+
+---
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `gap` | `"xs" \| "s" \| "m" \| "l" \| "xl"` | `"m"` | Space between children (uses design tokens) |
+| `align` | `"start" \| "center" \| "end" \| "baseline"` | `"center"` | Vertical alignment (align-items in Flexbox) |
+| `justify` | `"start" \| "center" \| "end" \| "between" \| "around"` | `"start"` | Horizontal distribution (justify-content in Flexbox) |
+| `nowrap` | `boolean?` | `false` | Prevents content from wrapping to next line |
+| `as` | `string?` | `"div"` | HTML element to render as (div, nav, ul, etc.) |
+| `class` | `string?` | — | Additional CSS classes |
+
+---
+
+## Variants
+
+### Gap Sizes
+
+Inline uses the same spacing scale as Stack for consistency:
+
+| Gap | Token | Value | Use Case |
+|-----|-------|-------|----------|
+| **xs** | `--gap-xs` | 8px | Tight spacing (icon + text, breadcrumbs) |
+| **s** | `--gap-s` | 12px | Compact spacing (tags, chips) |
+| **m** | `--gap-m` | 16px | Default spacing (button groups, nav links) |
+| **l** | `--gap-l` | 24px | Generous spacing (hero buttons, features) |
+| **xl** | `--gap-xl` | 32px | Extra spacing (section elements) |
+
+### Alignment Options
+
+#### Vertical Alignment (`align`)
+
+| Value | Behavior | Visual | Use Case |
+|-------|----------|--------|----------|
+| **start** | Align to top | `▀──` | Icons with text |
+| **center** | Align to middle (default) | `─▄─` | Tags, badges, buttons |
+| **end** | Align to bottom | `──▄` | Footer elements |
+| **baseline** | Align to text baseline | `A─a` | Mixed typography |
+
+#### Horizontal Distribution (`justify`)
+
+| Value | Behavior | Visual | Use Case |
+|-------|----------|--------|----------|
+| **start** | Pack items left (default) | `▄▄▄  ` | Tag lists |
+| **center** | Pack items center | ` ▄▄▄ ` | Centered navigation |
+| **end** | Pack items right | `  ▄▄▄` | Right-aligned actions |
+| **between** | Distribute with space between | `▄ ▄ ▄` | Header layouts |
+| **around** | Distribute with space around | ` ▄ ▄ ▄ ` | Social icons |
+
+### Wrapping Behavior
+
+| Mode | Behavior | Use Case |
+|------|----------|----------|
+| **Default (wraps)** | Content wraps to next line when width is exceeded | Tag lists, responsive navigation |
+| **nowrap={true}** | Content stays in single line, may overflow | Strict horizontal layouts, scrollable areas |
+
+---
+
+## Usage Examples
+
+### Tag List (Wrapping)
+
+```astro
+---
+import { Inline, Tag } from '@atomchat.io/components-astro';
+---
+
+<Inline gap="s">
+  <Tag>React</Tag>
+  <Tag>TypeScript</Tag>
+  <Tag>Next.js</Tag>
+  <Tag>Tailwind CSS</Tag>
+  <Tag>Vercel</Tag>
+  <Tag>PostgreSQL</Tag>
+</Inline>
+```
+
+### Button Group
+
+```astro
+---
+import { Inline, Button } from '@atomchat.io/components-astro';
+---
+
+<Inline gap="m">
+  <Button variant="Primary">Save</Button>
+  <Button variant="Secondary">Cancel</Button>
+  <Button variant="Tertiary">Delete</Button>
+</Inline>
+```
+
+### Breadcrumbs
+
+```astro
+<Inline gap="xs" align="center" as="nav" aria-label="Breadcrumb">
+  <a href="/">Home</a>
+  <span>/</span>
+  <a href="/products">Products</a>
+  <span>/</span>
+  <span aria-current="page">Sneakers</span>
+</Inline>
+```
+
+### Header Navigation
+
+```astro
+<header>
+  <Inline gap="l" justify="between" align="center">
+    <img src="/logo.svg" alt="Logo" style="height: 32px;" />
+
+    <Inline gap="m" as="nav">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#docs">Docs</a>
+    </Inline>
+
+    <Inline gap="s">
+      <Button variant="Tertiary" size="s">Log In</Button>
+      <Button variant="Primary" size="s">Sign Up</Button>
+    </Inline>
+  </Inline>
+</header>
+```
+
+### Icon + Text Combinations
+
+```astro
+<Inline gap="xs" align="center">
+  <svg width="16" height="16">...</svg>
+  <span>Settings</span>
+</Inline>
+
+<Inline gap="xs" align="baseline">
+  <h3>Price:</h3>
+  <span class="price-large">$99</span>
+  <span class="price-small">/month</span>
+</Inline>
+```
+
+### Social Links
+
+```astro
+<Inline gap="m" align="center" as="nav" aria-label="Social media">
+  <a href="#twitter" aria-label="Twitter">
+    <svg width="20" height="20">...</svg>
+  </a>
+  <a href="#github" aria-label="GitHub">
+    <svg width="20" height="20">...</svg>
+  </a>
+  <a href="#linkedin" aria-label="LinkedIn">
+    <svg width="20" height="20">...</svg>
+  </a>
+</Inline>
+```
+
+### Chip Filters (Wrapping)
+
+```astro
+---
+import { Inline, Chip } from '@atomchat.io/components-astro';
+---
+
+<Inline gap="s">
+  <Chip selected>All</Chip>
+  <Chip>Design</Chip>
+  <Chip>Development</Chip>
+  <Chip>Marketing</Chip>
+  <Chip>Sales</Chip>
+  <Chip>Support</Chip>
+</Inline>
+```
+
+### Horizontal Scrollable List (nowrap)
+
+```astro
+<div style="overflow-x: auto;">
+  <Inline gap="m" nowrap>
+    <div class="card">Card 1</div>
+    <div class="card">Card 2</div>
+    <div class="card">Card 3</div>
+    <div class="card">Card 4</div>
+    <div class="card">Card 5</div>
+  </Inline>
+</div>
+```
+
+---
+
+## Structure Tokens
+
+Inline uses the same spacing tokens as Stack:
+
+### Gap Tokens (from `@atomchat.io/tokens`)
+
+```css
+--gap-xs: 8px;
+--gap-s: 12px;
+--gap-m: 16px;   /* Default gap */
+--gap-l: 24px;
+--gap-xl: 32px;
+```
+
+### Component Classes
+
+```css
+/* Base */
+.inline {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;  /* Wraps by default */
+}
+
+/* Gap modifiers */
+.inline--gap-xs { gap: var(--gap-xs); }
+.inline--gap-s  { gap: var(--gap-s); }
+.inline--gap-m  { gap: var(--gap-m); }  /* Default */
+.inline--gap-l  { gap: var(--gap-l); }
+.inline--gap-xl { gap: var(--gap-xl); }
+
+/* Alignment modifiers */
+.inline--align-start    { align-items: flex-start; }
+.inline--align-center   { align-items: center; }  /* Default */
+.inline--align-end      { align-items: flex-end; }
+.inline--align-baseline { align-items: baseline; }
+
+/* Justify modifiers */
+.inline--justify-start   { justify-content: flex-start; }  /* Default */
+.inline--justify-center  { justify-content: center; }
+.inline--justify-end     { justify-content: flex-end; }
+.inline--justify-between { justify-content: space-between; }
+.inline--justify-around  { justify-content: space-around; }
+
+/* Nowrap modifier */
+.inline--nowrap {
+  flex-wrap: nowrap;
+}
+```
+
+---
+
+## Dependencies
+
+### Required Packages
+
+```json
+{
+  "@atomchat.io/components-astro": "latest",
+  "@atomchat.io/css": "latest",
+  "@atomchat.io/tokens": "latest"
+}
+```
+
+### Semantic Tokens Used
+
+Inline uses primitive spacing tokens directly:
+
+| Category | Token | Purpose |
+|----------|-------|---------|
+| **Spacing** | `--gap-xs` | Extra small gap (8px) |
+| **Spacing** | `--gap-s` | Small gap (12px) |
+| **Spacing** | `--gap-m` | Medium gap (16px) — default |
+| **Spacing** | `--gap-l` | Large gap (24px) |
+| **Spacing** | `--gap-xl` | Extra large gap (32px) |
+
+---
+
+## Accessibility
+
+### Semantic HTML
+
+Use appropriate HTML elements via the `as` prop:
+
+```astro
+<!-- Navigation -->
+<Inline as="nav" gap="m" aria-label="Main navigation">...</Inline>
+
+<!-- List of items -->
+<Inline as="ul" gap="s" role="list">...</Inline>
+
+<!-- Breadcrumbs -->
+<Inline as="nav" gap="xs" aria-label="Breadcrumb">...</Inline>
+```
+
+**Best Practices:**
+- ✅ Use `<nav>` for navigation menus
+- ✅ Use `<ul>` for lists of similar items
+- ✅ Add `aria-label` for navigation contexts
+- ✅ Use `aria-current="page"` for active breadcrumb items
+- ❌ Don't use Inline for stacking content vertically (use Stack instead)
+
+### Focus Order
+
+Inline maintains natural tab order:
+
+```astro
+<!-- ✅ GOOD: Left-to-right focus order -->
+<Inline gap="m" as="nav">
+  <a href="#home">Home</a>       <!-- Tab 1 -->
+  <a href="#about">About</a>     <!-- Tab 2 -->
+  <a href="#contact">Contact</a> <!-- Tab 3 -->
+</Inline>
+```
+
+### Wrapping Behavior
+
+When content wraps, ensure visual hierarchy remains clear:
+
+```astro
+<!-- Tags with clear visual grouping -->
+<section>
+  <h3>Skills</h3>
+  <Inline gap="s">
+    <Tag>JavaScript</Tag>
+    <Tag>TypeScript</Tag>
+    <Tag>React</Tag>
+    <!-- Wraps naturally on small screens -->
+  </Inline>
+</section>
+```
+
+---
+
+## Composition Patterns
+
+### Inline + Stack (Complex Layouts)
+
+```astro
+---
+import { Stack, Inline, Button } from '@atomchat.io/components-astro';
+---
+
+<Stack gap="xl">
+  <h1>Product Page</h1>
+
+  <Stack gap="m">
+    <h2>Features</h2>
+    <Inline gap="s">
+      <Tag>Fast</Tag>
+      <Tag>Secure</Tag>
+      <Tag>Scalable</Tag>
+    </Inline>
+  </Stack>
+
+  <Inline gap="m">
+    <Button variant="Primary">Buy Now</Button>
+    <Button variant="Secondary">Learn More</Button>
+  </Inline>
+</Stack>
+```
+
+### Responsive Header with Inline
+
+```astro
+<header>
+  <Stack gap="m" class="mobile-stack">
+    <Inline justify="between" align="center">
+      <img src="/logo.svg" alt="Logo" />
+      <button class="menu-toggle">Menu</button>
+    </Inline>
+
+    <Inline gap="m" as="nav" class="desktop-nav">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#docs">Docs</a>
+    </Inline>
+  </Stack>
+</header>
+```
+
+---
+
+## Design Tokens in Action
+
+### Custom Gap Example
+
+```astro
+<Inline gap="m" style="--gap-m: 20px;">
+  <button>Action 1</button>
+  <button>Action 2</button>
+</Inline>
+```
+
+---
+
+## Build with AI
+
+Use this prompt with Claude Code:
+
+```
+Create a horizontal layout using the Inline component from @atomchat.io/components-astro.
+
+Requirements:
+- Install @atomchat.io/components-astro, @atomchat.io/css, @atomchat.io/tokens
+- Use ONLY design tokens for spacing: var(--gap-xs), var(--gap-s), var(--gap-m), var(--gap-l), var(--gap-xl)
+- Do NOT hardcode any spacing values
+- Use semantic HTML elements via the 'as' prop
+- Content wraps by default (use nowrap only when necessary)
+- Include proper accessibility attributes
+
+Available props:
+- gap: "xs" | "s" | "m" | "l" | "xl" (default: "m")
+- align: "start" | "center" | "end" | "baseline" (default: "center")
+- justify: "start" | "center" | "end" | "between" | "around" (default: "start")
+- nowrap: boolean (default: false)
+- as: string (default: "div")
+```
+

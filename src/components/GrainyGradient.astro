@@ -1,7 +1,27 @@
 ---
 /**
  * GrainyGradient - Animated WebGL gradient with grain/noise effect
- * Port of react-bits Grainient to vanilla Astro using OGL
+ *
+ * DOCUMENTATION-ONLY COMPONENT (NOT PART OF DESIGN SYSTEM)
+ * This is a hardcoded visual effect component specific to the ATOMDS documentation site.
+ * It is NOT distributed as part of @atomchat.io packages.
+ *
+ * PURPOSE:
+ * Renders GPU-accelerated animated gradients with grain/noise effects using WebGL.
+ * Port of react-bits Grainient library to vanilla Astro using the OGL rendering library.
+ * Provides rich, animated backgrounds for documentation UI elements.
+ *
+ * USAGE CONTEXT:
+ * - Used as background in CopyPromptButton (branded prompt copy buttons)
+ * - Used as background in TemplateCard (installation.mdx starter template card)
+ * - Supports extensive customization via props (colors, warp, grain, timing)
+ * - Automatically initializes on DOMContentLoaded and astro:page-load events
+ * - Respects container size via ResizeObserver
+ *
+ * WHY HARDCODED:
+ * This is a branded visual effect specific to the documentation's design language.
+ * It includes heavy WebGL shader code and animation logic that's not part of
+ * the core ATOM design system. It's a documentation-specific flourish.
  */
 
 interface Props {

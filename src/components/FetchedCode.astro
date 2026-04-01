@@ -1,0 +1,43 @@
+---
+/**
+ * FetchedCode Component
+ *
+ * Fetches component source code from npm at build-time and displays it
+ * with syntax highlighting using Starlight's Code component.
+ *
+ * Props:
+ * - component: Component name (e.g., "Button")
+ * - framework: Framework name ("react" | "vue" | "angular" | "astro")
+ * - version: Optional version (defaults to latest published version)
+ * - filePath: Optional file path override
+ */
+
+import { Code } from '@astrojs/starlight/components';
+import { fetchComponentSource, createComponentSource, type Framework } from '../utils/fetchComponentSource';
+
+interface Props {
+  component: string;
+  framework: Framework;
+  version?: string;
+  filePath?: string;
+}
+
+const { component, framework, version, filePath } = Astro.props;
+
+// Fetch source code from npm at build time
+const sourceCode = await fetchComponentSource({
+  component,
+  framework,
+  version,
+  filePath,
+});
+
+// Create component source metadata
+const componentSource = createComponentSource(sourceCode, framework, component);
+---
+
+<Code
+  code={componentSource.content}
+  lang={componentSource.language}
+  title={componentSource.path}
+/>

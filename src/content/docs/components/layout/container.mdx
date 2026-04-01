@@ -1,0 +1,795 @@
+---
+title: Container
+description: Max-width container primitive for centering and constraining content width with responsive breakpoints.
+---
+
+## Overview
+
+The Container component is a fundamental layout primitive that constrains content to a maximum width and centers it horizontally. It provides six size variants based on common breakpoints, ensuring content remains readable and well-proportioned across all screen sizes.
+
+:::tip[Interactive Playground]
+**[Open Container Playground →](/playground/container)**
+
+Explore all Container sizes with live width adjustments and nested content examples in an isolated environment.
+:::
+
+**Key Features:**
+- Six size variants (sm, md, lg, xl, 2xl, full)
+- Automatic horizontal centering with padding
+- Responsive padding that adapts to viewport width
+- Max-width constraints for optimal readability
+- Polymorphic element rendering
+- Zero hardcoded values — fully token-driven
+- Mobile-first responsive design
+- Works seamlessly with other layout primitives
+
+---
+
+## Demo
+
+:::tip[Live Demo]
+**[Open Container Playground →](/playground/container)** to see all size variants, nesting patterns, and responsive behaviors with live interactions.
+:::
+
+---
+
+## Installation
+
+```bash
+# Install component package
+pnpm add @atomchat.io/components-astro
+
+# Install required dependencies
+pnpm add @atomchat.io/css @atomchat.io/tokens
+```
+
+**CSS Import (required):**
+```astro
+---
+import '@atomchat.io/css';
+---
+```
+
+---
+
+## Anatomy
+
+The Container component creates a centered, max-width wrapper with responsive padding:
+
+```
+┌─────────────────────────────────────────┐
+│  Viewport (full width)                  │
+│  ╔═════════════════════════════════╗    │
+│  ║  .container (centered)          ║    │  ← Auto margins center
+│  ║  padding: var(--container-px)   ║    │  ← Responsive padding
+│  ║  max-width: var(--container-*)  ║    │  ← Constrained width
+│  ║  ┌───────────────────────────┐  ║    │
+│  ║  │  Content (full width)     │  ║    │
+│  ║  └───────────────────────────┘  ║    │
+│  ╚═════════════════════════════════╝    │
+└─────────────────────────────────────────┘
+```
+
+**DOM Structure:**
+```html
+<div class="container container--lg">
+  <h1>Centered Content</h1>
+  <p>Content is constrained to max-width and centered horizontally.</p>
+</div>
+```
+
+**Nested containers:**
+```html
+<div class="container container--xl">
+  <header>Full width header within container</header>
+  <div class="container container--md">
+    <article>Narrower content for better readability</article>
+  </div>
+</div>
+```
+
+---
+
+## Framework Support
+
+The Container component is available for multiple frameworks with shared design tokens and styles.
+
+import FrameworkSwitcher from '../../../../components/FrameworkSwitcher.astro';
+
+<FrameworkSwitcher
+  frameworks={[
+    { name: 'astro', label: 'Astro', icon: 'https://svgl.app/library/astro-icon-dark.svg' },
+    { name: 'react', label: 'React', icon: 'https://svgl.app/library/react_dark.svg' },
+    { name: 'nextjs', label: 'Next.js', icon: 'https://svgl.app/library/nextjs_icon_dark.svg' },
+    { name: 'vue', label: 'Vue', icon: 'https://svgl.app/library/vue.svg' },
+    { name: 'angular', label: 'Angular', icon: 'https://svgl.app/library/angular.svg' },
+  ]}
+>
+  <div data-framework="astro" data-active="true">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-astro @atomchat.io/css
+```
+
+### Usage
+
+```astro
+---
+import { Container } from '@atomchat.io/components-astro';
+import '@atomchat.io/css';
+---
+
+{/* Default container (lg) */}
+<Container>
+  <h1>Centered Content</h1>
+  <p>Content constrained to 1024px max-width.</p>
+</Container>
+
+{/* Small container for narrow content */}
+<Container size="sm">
+  <article>
+    <h2>Blog Post Title</h2>
+    <p>Optimized for reading comfort with 640px max-width.</p>
+  </article>
+</Container>
+
+{/* Extra large container */}
+<Container size="xl">
+  <div class="dashboard">
+    <h1>Dashboard</h1>
+    <!-- Wide dashboard content -->
+  </div>
+</Container>
+
+{/* Full width container (no max-width) */}
+<Container size="full">
+  <section>Full viewport width with padding</section>
+</Container>
+```
+
+  </div>
+
+  <div data-framework="react">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+import { Container } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+
+function Example() {
+  return (
+    <>
+      {/* Default container (lg) */}
+      <Container>
+        <h1>Centered Content</h1>
+        <p>Content constrained to 1024px max-width.</p>
+      </Container>
+
+      {/* Small container for narrow content */}
+      <Container size="sm">
+        <article>
+          <h2>Blog Post Title</h2>
+          <p>Optimized for reading comfort with 640px max-width.</p>
+        </article>
+      </Container>
+
+      {/* Extra large container */}
+      <Container size="xl">
+        <div className="dashboard">
+          <h1>Dashboard</h1>
+          {/* Wide dashboard content */}
+        </div>
+      </Container>
+
+      {/* Full width container (no max-width) */}
+      <Container size="full">
+        <section>Full viewport width with padding</section>
+      </Container>
+    </>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="nextjs">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+import { Container } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+
+export default function Example() {
+  return (
+    <>
+      {/* Default container (lg) */}
+      <Container>
+        <h1>Centered Content</h1>
+        <p>Content constrained to 1024px max-width.</p>
+      </Container>
+
+      {/* Small container for narrow content */}
+      <Container size="sm">
+        <article>
+          <h2>Blog Post Title</h2>
+          <p>Optimized for reading comfort with 640px max-width.</p>
+        </article>
+      </Container>
+
+      {/* Extra large container */}
+      <Container size="xl">
+        <div className="dashboard">
+          <h1>Dashboard</h1>
+          {/* Wide dashboard content */}
+        </div>
+      </Container>
+
+      {/* Full width container (no max-width) */}
+      <Container size="full">
+        <section>Full viewport width with padding</section>
+      </Container>
+    </>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="vue">
+
+:::caution[Coming Soon]
+Vue components are currently in development. Check back soon or follow our [GitHub repository](https://github.com/atomchat-io/atom-design-system) for updates.
+:::
+
+### Planned API
+
+```vue
+<script setup>
+import { Container } from '@atomchat.io/components-vue';
+import '@atomchat.io/css';
+</script>
+
+<template>
+  <Container size="lg">
+    <h1>Centered Content</h1>
+    <p>Content constrained to 1024px max-width.</p>
+  </Container>
+</template>
+```
+
+  </div>
+
+  <div data-framework="angular">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-angular @atomchat.io/css
+```
+
+### Usage
+
+```typescript
+import { ContainerComponent } from '@atomchat.io/components-angular';
+import '@atomchat.io/css';
+
+@Component({
+  imports: [ContainerComponent],
+  template: `
+    <!-- Default container (lg) -->
+    <atom-container>
+      <h1>Centered Content</h1>
+      <p>Content constrained to 1024px max-width.</p>
+    </atom-container>
+
+    <!-- Small container for narrow content -->
+    <atom-container size="sm">
+      <article>
+        <h2>Blog Post Title</h2>
+        <p>Optimized for reading comfort with 640px max-width.</p>
+      </article>
+    </atom-container>
+
+    <!-- Extra large container -->
+    <atom-container size="xl">
+      <div class="dashboard">
+        <h1>Dashboard</h1>
+        <!-- Wide dashboard content -->
+      </div>
+    </atom-container>
+
+    <!-- Full width container (no max-width) -->
+    <atom-container size="full">
+      <section>Full viewport width with padding</section>
+    </atom-container>
+  `
+})
+export class ExampleComponent {}
+```
+
+  </div>
+</FrameworkSwitcher>
+
+---
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `"sm" \| "md" \| "lg" \| "xl" \| "2xl" \| "full"` | `"lg"` | Maximum width of the container |
+| `as` | `string?` | `"div"` | HTML element to render as (div, section, main, article, etc.) |
+| `class` | `string?` | — | Additional CSS classes |
+
+---
+
+## Variants
+
+### Size Options
+
+Container provides six size variants optimized for different content types:
+
+| Size | Max-Width | Use Case |
+|------|-----------|----------|
+| **sm** | 640px | Blog posts, narrow text content, single-column forms |
+| **md** | 768px | Documentation, articles, reading-optimized content |
+| **lg** | 1024px | General page layouts, default content width (default) |
+| **xl** | 1280px | Dashboards, wide tables, multi-column layouts |
+| **2xl** | 1536px | Full-featured applications, complex dashboards |
+| **full** | none | Edge-to-edge layouts with padding only |
+
+### Responsive Padding
+
+Container uses responsive horizontal padding that adapts to viewport width:
+
+| Viewport Width | Padding | Token |
+|----------------|---------|-------|
+| **< 640px** | 16px | `--gap-m` |
+| **640px - 1024px** | 24px | `--gap-l` |
+| **> 1024px** | 32px | `--gap-xl` |
+
+This ensures content never touches the viewport edges while maximizing usable space.
+
+---
+
+## Usage Examples
+
+### Basic Page Layout
+
+```astro
+---
+import { Container } from '@atomchat.io/components-astro';
+---
+
+<Container>
+  <h1>Welcome to Our Site</h1>
+  <p>This content is centered and constrained to 1024px max-width.</p>
+  <button>Get Started</button>
+</Container>
+```
+
+### Blog Post Layout
+
+```astro
+<Container size="sm" as="article">
+  <header>
+    <h1>Understanding Design Tokens</h1>
+    <p class="meta">By Jane Doe • March 31, 2026</p>
+  </header>
+  
+  <p>
+    Design tokens are the foundation of modern design systems.
+    They provide a single source of truth for design decisions...
+  </p>
+  
+  <p>
+    In this article, we'll explore how to implement and use
+    design tokens effectively in your projects.
+  </p>
+</Container>
+```
+
+### Dashboard Layout
+
+```astro
+<Container size="xl" as="main">
+  <header>
+    <h1>Dashboard</h1>
+    <nav><!-- Dashboard navigation --></nav>
+  </header>
+  
+  <Grid columns={3} gap="l">
+    <div class="stat-card">Users: 1,234</div>
+    <div class="stat-card">Revenue: $45,678</div>
+    <div class="stat-card">Orders: 567</div>
+  </Grid>
+  
+  <section class="charts">
+    <!-- Wide charts and data visualizations -->
+  </section>
+</Container>
+```
+
+### Nested Containers (Mixed Widths)
+
+```astro
+---
+import { Container, Stack } from '@atomchat.io/components-astro';
+---
+
+<Container size="xl">
+  <Stack gap="xl">
+    {/* Wide hero section */}
+    <section class="hero">
+      <h1>Build Better Products</h1>
+      <p>Full-width hero content within xl container</p>
+    </section>
+    
+    {/* Narrow body content */}
+    <Container size="md">
+      <Stack gap="l">
+        <h2>About Our Platform</h2>
+        <p>Narrower content optimized for reading comfort...</p>
+        <p>This uses nested containers for better typography.</p>
+      </Stack>
+    </Container>
+  </Stack>
+</Container>
+```
+
+### Full-Width Sections with Container
+
+```astro
+<div class="full-width-background">
+  <Container>
+    <h2>Features</h2>
+    <Grid columns={3} gap="l">
+      <div class="feature">Feature 1</div>
+      <div class="feature">Feature 2</div>
+      <div class="feature">Feature 3</div>
+    </Grid>
+  </Container>
+</div>
+
+<style>
+  .full-width-background {
+    background: var(--bg-secondary);
+    padding: var(--gap-xl) 0;
+  }
+</style>
+```
+
+### Marketing Page Layout
+
+```astro
+---
+import { Container, Stack, Grid } from '@atomchat.io/components-astro';
+---
+
+<Container size="lg">
+  <Stack gap="xl">
+    {/* Hero */}
+    <Stack gap="l" align="center">
+      <h1>Welcome to ATOM</h1>
+      <p>Build faster with our design system</p>
+      <button>Get Started</button>
+    </Stack>
+    
+    {/* Features */}
+    <Grid columns="auto-fit" gap="l">
+      <Stack gap="s">
+        <h3>🎨 Token-Driven</h3>
+        <p>Every value from design tokens</p>
+      </Stack>
+      <Stack gap="s">
+        <h3>⚡ Fast</h3>
+        <p>Optimized for performance</p>
+      </Stack>
+      <Stack gap="s">
+        <h3>♿ Accessible</h3>
+        <p>WCAG 2.1 AA compliant</p>
+      </Stack>
+    </Grid>
+    
+    {/* Testimonial (narrower) */}
+    <Container size="md">
+      <blockquote>
+        "ATOM transformed our design workflow and made our
+        products more consistent across all platforms."
+        <footer>— Sarah Johnson, Design Lead</footer>
+      </blockquote>
+    </Container>
+  </Stack>
+</Container>
+```
+
+### Documentation Layout
+
+```astro
+<Container size="md" as="article">
+  <Stack gap="l">
+    <header>
+      <h1>API Reference</h1>
+      <p>Complete guide to the Container component</p>
+    </header>
+    
+    <section>
+      <h2>Installation</h2>
+      <pre><code>pnpm add @atomchat.io/components-astro</code></pre>
+    </section>
+    
+    <section>
+      <h2>Usage</h2>
+      <p>Import and use the Container component...</p>
+    </section>
+  </Stack>
+</Container>
+```
+
+### App Shell with Container
+
+```astro
+<div class="app-shell">
+  <header class="app-header">
+    <Container>
+      <nav><!-- Navigation --></nav>
+    </Container>
+  </header>
+  
+  <main class="app-main">
+    <Container size="xl">
+      <Stack gap="xl">
+        <!-- Main app content -->
+      </Stack>
+    </Container>
+  </main>
+  
+  <footer class="app-footer">
+    <Container>
+      <p>© 2026 ATOM Design System</p>
+    </Container>
+  </footer>
+</div>
+```
+
+---
+
+## Structure Tokens
+
+Container uses design tokens for max-width constraints and responsive padding:
+
+### Width Tokens (from `@atomchat.io/tokens`)
+
+```css
+--container-sm: 640px;
+--container-md: 768px;
+--container-lg: 1024px;
+--container-xl: 1280px;
+--container-2xl: 1536px;
+
+/* Responsive padding */
+--container-px: var(--gap-m);  /* 16px on mobile */
+
+@media (min-width: 640px) {
+  --container-px: var(--gap-l);  /* 24px on tablet */
+}
+
+@media (min-width: 1024px) {
+  --container-px: var(--gap-xl);  /* 32px on desktop */
+}
+```
+
+### Component Classes
+
+```css
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-px);
+  padding-right: var(--container-px);
+}
+
+.container--sm   { max-width: var(--container-sm); }
+.container--md   { max-width: var(--container-md); }
+.container--lg   { max-width: var(--container-lg); }
+.container--xl   { max-width: var(--container-xl); }
+.container--2xl  { max-width: var(--container-2xl); }
+.container--full { max-width: none; }
+```
+
+---
+
+## Dependencies
+
+### Required Packages
+
+```json
+{
+  "@atomchat.io/components-astro": "latest",
+  "@atomchat.io/css": "latest",
+  "@atomchat.io/tokens": "latest"
+}
+```
+
+### Semantic Tokens Used
+
+Container uses primitive sizing and spacing tokens:
+
+| Category | Token | Purpose |
+|----------|-------|---------|
+| **Sizing** | `--container-sm` | Small max-width (640px) |
+| **Sizing** | `--container-md` | Medium max-width (768px) |
+| **Sizing** | `--container-lg` | Large max-width (1024px) |
+| **Sizing** | `--container-xl` | Extra large max-width (1280px) |
+| **Sizing** | `--container-2xl` | 2X large max-width (1536px) |
+| **Spacing** | `--container-px` | Responsive horizontal padding |
+| **Spacing** | `--gap-m` | Base padding (16px) |
+| **Spacing** | `--gap-l` | Tablet padding (24px) |
+| **Spacing** | `--gap-xl` | Desktop padding (32px) |
+
+---
+
+## Accessibility
+
+### Semantic HTML
+
+Container supports rendering as any HTML element via the `as` prop:
+
+```astro
+<!-- Main content wrapper -->
+<Container as="main">...</Container>
+
+<!-- Article wrapper -->
+<Container as="article">...</Container>
+
+<!-- Section wrapper -->
+<Container as="section">...</Container>
+
+<!-- Header wrapper -->
+<Container as="header">...</Container>
+```
+
+**Best Practices:**
+- ✅ Use `<main>` for primary page content
+- ✅ Use `<article>` for self-contained content (blog posts, news articles)
+- ✅ Use `<section>` for thematic grouping
+- ✅ Use `<header>` or `<footer>` for site-wide headers/footers
+- ❌ Don't nest landmark elements incorrectly (e.g., `<main>` inside `<main>`)
+
+### Landmark Navigation
+
+Container with semantic elements creates navigable landmarks for screen readers:
+
+```astro
+<Container as="header">
+  <nav aria-label="Main navigation">
+    <!-- Navigation links -->
+  </nav>
+</Container>
+
+<Container as="main">
+  <h1>Main Content</h1>
+  <!-- Primary content -->
+</Container>
+
+<Container as="footer">
+  <p>© 2026 Company Name</p>
+</Container>
+```
+
+### Focus Management
+
+Container doesn't interfere with focus order, maintaining natural tab flow:
+
+```astro
+<Container>
+  <a href="#content">Skip to content</a>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+  </nav>
+</Container>
+```
+
+---
+
+## Composition Patterns
+
+### Container + Stack (Vertical Sections)
+
+```astro
+---
+import { Container, Stack } from '@atomchat.io/components-astro';
+---
+
+<Container>
+  <Stack gap="xl">
+    <section>Section 1</section>
+    <section>Section 2</section>
+    <section>Section 3</section>
+  </Stack>
+</Container>
+```
+
+### Container + Grid (Responsive Layouts)
+
+```astro
+---
+import { Container, Grid } from '@atomchat.io/components-astro';
+---
+
+<Container size="xl">
+  <Grid columns="auto-fit" gap="l">
+    <div class="card">Card 1</div>
+    <div class="card">Card 2</div>
+    <div class="card">Card 3</div>
+  </Grid>
+</Container>
+```
+
+### Nested Containers (Progressive Width)
+
+```astro
+<Container size="xl">
+  <Stack gap="xl">
+    <section class="hero">Wide hero section</section>
+    
+    <Container size="lg">
+      <section>Standard content width</section>
+    </Container>
+    
+    <Container size="sm">
+      <article>Narrow reading width</article>
+    </Container>
+  </Stack>
+</Container>
+```
+
+---
+
+## Design Tokens in Action
+
+Container demonstrates responsive design with token-driven breakpoints:
+
+### Custom Width Override
+
+```astro
+<Container size="lg" style="--container-lg: 900px;">
+  <!-- Custom max-width for this instance -->
+  <p>Content constrained to 900px instead of 1024px.</p>
+</Container>
+```
+
+### Custom Padding
+
+```astro
+<Container class="custom-padding">
+  <p>Custom horizontal padding applied.</p>
+</Container>
+
+<style>
+  .custom-padding {
+    --container-px: var(--gap-xl);
+  }
+</style>
+```
+
+---
+
+## Build with AI
+

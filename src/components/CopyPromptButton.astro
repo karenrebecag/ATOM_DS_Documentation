@@ -1,26 +1,52 @@
 ---
-import GrainyGradient from './GrainyGradient.astro'
-
 /**
- * CopyPromptButton - Reusable component to copy AI prompts for component replication
- * Reads prompt content from /src/promptsDocumentation/{componentName}.txt
+ * CopyPromptButton - Framework-aware AI prompt copy button
+ *
+ * DOCUMENTATION-ONLY COMPONENT (NOT PART OF DESIGN SYSTEM)
+ * This is a hardcoded utility component specific to the ATOMDS documentation site.
+ * It is NOT distributed as part of @atomchat.io packages.
+ *
+ * PURPOSE:
+ * Displays a branded button that copies Claude AI prompts to clipboard.
+ * Reads structured prompts from /src/promptsDocumentation/{componentName}.ts
+ * and dynamically selects the appropriate prompt based on current framework
+ * selection (Astro, React, Vue, Angular).
+ *
+ * USAGE CONTEXT:
+ * - Embedded in component documentation pages (e.g., button.mdx, avatar.mdx)
+ * - Syncs with FrameworkSwitcher to show framework-specific prompts
+ * - Features animated gradient background via GrainyGradient component
+ * - Provides one-click prompt copying for Claude Code users
+ *
+ * WHY HARDCODED:
+ * This component is tightly coupled to the documentation structure and
+ * prompt file conventions. It's not a reusable design system component,
+ * but rather infrastructure for the documentation experience.
  */
 
+import GrainyGradient from './GrainyGradient.astro'
+
 interface Props {
-  componentName: string
+  component: string          // Component name (e.g., "button")
+  framework?: string          // Initial framework (default: "astro")
   variant?: 'primary' | 'secondary'
 }
 
-const { componentName, variant = 'primary' } = Astro.props
+const { component, framework = 'astro', variant = 'primary' } = Astro.props
 
-// Read prompt file content
-let promptContent = ''
+// Import structured prompts
+let prompts: Record<string, any> = {}
+let promptsJson = '{}'
+
 try {
-  const promptFile = await import(`../promptsDocumentation/${componentName}.txt?raw`)
-  promptContent = promptFile.default
+  const promptModule = await import(`../promptsDocumentation/${component}.ts`)
+  prompts = promptModule[`${component}Prompts`] || {}
+  promptsJson = JSON.stringify(prompts)
 } catch (error) {
-  console.error(`Prompt file not found for component: ${componentName}`)
-  promptContent = `# Prompt file missing\nPlease create: src/promptsDocumentation/${componentName}.txt`
+  // Fallback to placeholder prompts when component-specific prompts don't exist
+  const placeholderModule = await import(`../promptsDocumentation/_placeholder.ts`)
+  prompts = placeholderModule.placeholderPrompts || {}
+  promptsJson = JSON.stringify(prompts)
 }
 ---
 
@@ -28,20 +54,22 @@ try {
   <button
     aria-label="Copy component prompt to clipboard"
     data-copy-prompt-button=""
-    data-prompt-content={promptContent}
+    data-component={component}
+    data-prompts={promptsJson}
+    data-initial-framework={framework}
     class={`copy-prompt-button copy-prompt-button--${variant}`}
   >
     <div class="copy-prompt-button__gradient-bg">
       <GrainyGradient
-        color1="#FF9FFC"
+        color1="#510147"
         color2="#715abf"
-        color3="#B19EEF"
-        timeSpeed={0.35}
+        color3="#715abf"
+        timeSpeed={0.15}
         colorBalance={0}
         warpStrength={1}
-        warpFrequency={5}
+        warpFrequency={2}
         warpSpeed={1}
-        warpAmplitude={50}
+        warpAmplitude={20}
         grainAmount={0.1}
         grainScale={2}
         contrast={1.5}
@@ -235,17 +263,107 @@ try {
 </style>
 
 <script>
+/**
+ * Framework-Aware Clipboard Handler
+ * Reads current framework from localStorage or data attribute
+ * Copies the appropriate framework-specific prompt
+ */
 function initCopyPromptClipboard() {
   const buttons = document.querySelectorAll('[data-copy-prompt-button]')
   if (!buttons.length) return
 
+  const getCurrentFramework = (button: HTMLButtonElement): string => {
+    // Priority 1: Detect active Starlight tab (for <Tabs> component)
+    // Find the closest .tablist-wrapper or starlight-tabs container
+    let container = button.closest('.tablist-wrapper') ||
+                    button.closest('[data-tabs]') ||
+                    button.parentElement
+
+    // Look for the parent that contains the tablist
+    while (container && !container.querySelector('[role="tablist"]')) {
+      container = container.parentElement
+    }
+
+    if (container) {
+      const activeTab = container.querySelector('[role="tab"][aria-selected="true"]')
+      if (activeTab) {
+        const tabLabel = activeTab.textContent?.trim().toLowerCase()
+        // Map tab labels to framework names
+        const frameworkMap: Record<string, string> = {
+          'astro': 'astro',
+          'react': 'react',
+          'vue': 'vue',
+          'angular': 'angular',
+          'next.js': 'nextjs',
+          'nextjs': 'nextjs'
+        }
+        if (tabLabel && frameworkMap[tabLabel]) {
+          console.log('Detected framework from tab:', frameworkMap[tabLabel])
+          return frameworkMap[tabLabel]
+        }
+      }
+    }
+
+    // Priority 2: Framework selector state (localStorage)
+    const storedFramework = localStorage.getItem('preferred-framework')
+    if (storedFramework) {
+      console.log('Using stored framework:', storedFramework)
+      return storedFramework
+    }
+
+    // Priority 3: Active framework from FrameworkSwitcher
+    const activeFrameworkTab = document.querySelector('[data-framework][data-active="true"]')
+    if (activeFrameworkTab) {
+      const framework = activeFrameworkTab.getAttribute('data-framework')
+      if (framework) {
+        console.log('Using FrameworkSwitcher framework:', framework)
+        return framework
+      }
+    }
+
+    // Priority 4: Initial framework from button data attribute
+    const initialFramework = button.getAttribute('data-initial-framework')
+    if (initialFramework) {
+      console.log('Using initial framework:', initialFramework)
+      return initialFramework
+    }
+
+    // Fallback: astro
+    console.log('Using fallback framework: astro')
+    return 'astro'
+  }
+
   const copyPrompt = (button: HTMLButtonElement) => {
-    const promptContent = button.getAttribute('data-prompt-content')
-    if (promptContent) {
-      navigator.clipboard.writeText(promptContent).then(() => {
+    try {
+      const promptsJson = button.getAttribute('data-prompts')
+      if (!promptsJson) {
+        console.error('No prompts data found')
+        return
+      }
+
+      const prompts = JSON.parse(promptsJson)
+      const currentFramework = getCurrentFramework(button)
+      const promptData = prompts[currentFramework]
+
+      if (!promptData || !promptData.prompt) {
+        console.error(`No prompt found for framework: ${currentFramework}`)
+        return
+      }
+
+      navigator.clipboard.writeText(promptData.prompt).then(() => {
         button.setAttribute('data-copy-prompt-button', 'copied')
-        button.setAttribute('aria-label', 'Prompt copied to clipboard!')
+        button.setAttribute('aria-label', `${promptData.title || 'Prompt'} copied to clipboard!`)
+
+        // Reset after 3 seconds
+        setTimeout(() => {
+          button.removeAttribute('data-copy-prompt-button')
+          button.setAttribute('aria-label', 'Copy component prompt to clipboard')
+        }, 3000)
+      }).catch((err) => {
+        console.error('Failed to copy prompt:', err)
       })
+    } catch (error) {
+      console.error('Error copying prompt:', error)
     }
   }
 
@@ -265,22 +383,36 @@ function initCopyPromptClipboard() {
     btn.addEventListener('click', handleInteraction)
     btn.addEventListener('keydown', handleInteraction)
     btn.addEventListener('mouseleave', () => {
-      btn.removeAttribute('data-copy-prompt-button')
+      // Don't reset if in "copied" state
+      if (btn.getAttribute('data-copy-prompt-button') !== 'copied') {
+        btn.removeAttribute('data-copy-prompt-button')
+      }
       btn.blur()
-      btn.setAttribute('aria-label', 'Copy component prompt to clipboard')
     })
     btn.addEventListener('blur', () => {
-      btn.removeAttribute('data-copy-prompt-button')
-      btn.setAttribute('aria-label', 'Copy component prompt to clipboard')
+      // Don't reset if in "copied" state
+      if (btn.getAttribute('data-copy-prompt-button') !== 'copied') {
+        btn.removeAttribute('data-copy-prompt-button')
+      }
     })
   })
 }
 
+// Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
   initCopyPromptClipboard()
 })
 
+// Reinitialize on Astro page transitions
 document.addEventListener('astro:page-load', () => {
   initCopyPromptClipboard()
+})
+
+// Listen for framework selector changes
+window.addEventListener('storage', (e) => {
+  if (e.key === 'preferred-framework') {
+    // Framework changed, buttons will read new value on next click
+    console.log('Framework changed to:', e.newValue)
+  }
 })
 </script>

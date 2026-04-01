@@ -1,4 +1,30 @@
 ---
+/**
+ * FrameworkSwitcher - Multi-framework code example switcher
+ *
+ * DOCUMENTATION-ONLY COMPONENT (NOT PART OF DESIGN SYSTEM)
+ * This is a hardcoded UI component specific to the ATOMDS documentation site.
+ * It is NOT distributed as part of @atomchat.io packages.
+ *
+ * PURPOSE:
+ * Provides tabbed navigation to switch between framework-specific code examples
+ * (Astro, React, Vue, Angular). Persists user's framework preference to localStorage
+ * and synchronizes across all documentation pages.
+ *
+ * USAGE CONTEXT:
+ * - Embedded in component documentation pages via MDX imports
+ * - Wraps framework-specific content blocks with data-framework attributes
+ * - Saves preference to localStorage key 'preferred-framework'
+ * - Syncs with CopyPromptButton to show matching prompts
+ * - Supports keyboard navigation (Arrow keys, Home, End)
+ * - Fully accessible with ARIA roles and states
+ *
+ * WHY HARDCODED:
+ * This component implements documentation-specific UX patterns like
+ * localStorage persistence, cross-page syncing, and framework filtering.
+ * It's infrastructure for the docs site, not a reusable design pattern.
+ */
+
 interface Props {
   frameworks: {
     name: string;

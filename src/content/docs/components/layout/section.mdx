@@ -1,0 +1,909 @@
+---
+title: Section
+description: Semantic section wrapper with consistent vertical padding for spacing page sections.
+---
+
+## Overview
+
+The Section component is a semantic layout primitive that provides consistent vertical padding for page sections. It's designed to create visual hierarchy and rhythm throughout your pages with five size variants, ensuring predictable spacing between major content blocks.
+
+:::tip[Interactive Playground]
+**[Open Section Playground →](/playground/section)**
+
+Explore all Section padding sizes and nesting patterns with live adjustments in an isolated environment.
+:::
+
+**Key Features:**
+- Semantic `<section>` element by default
+- Five padding sizes (xs, s, m, l, xl) powered by design tokens
+- Vertical padding only (preserves horizontal flow)
+- Polymorphic element rendering
+- Perfect for page layout rhythm and visual hierarchy
+- Zero hardcoded values — fully token-driven
+- Responsive padding that adapts to viewport width
+- Composable with Container and other layout primitives
+
+---
+
+## Demo
+
+:::tip[Live Demo]
+**[Open Section Playground →](/playground/section)** to see all padding sizes, nesting patterns, and composition examples with live interactions.
+:::
+
+---
+
+## Installation
+
+```bash
+# Install component package
+pnpm add @atomchat.io/components-astro
+
+# Install required dependencies
+pnpm add @atomchat.io/css @atomchat.io/tokens
+```
+
+**CSS Import (required):**
+```astro
+---
+import '@atomchat.io/css';
+---
+```
+
+---
+
+## Anatomy
+
+The Section component adds consistent vertical padding to create breathing room between page sections:
+
+```
+┌─────────────────────────────────────────┐
+│  .section (semantic <section>)          │
+│  ┌─────────────────────────────────┐    │
+│  │  padding-top: var(--section-*)  │    │  ← Vertical padding
+│  │  ┌───────────────────────────┐  │    │
+│  │  │  Content (full width)     │  │    │  ← No horizontal constraints
+│  │  └───────────────────────────┘  │    │
+│  │  padding-bottom: var(--sect-*) │    │  ← Vertical padding
+│  └─────────────────────────────────┘    │
+└─────────────────────────────────────────┘
+```
+
+**DOM Structure:**
+```html
+<section class="section section--m">
+  <h2>Section Title</h2>
+  <p>Section content with medium vertical padding.</p>
+</section>
+```
+
+**Composed with Container:**
+```html
+<section class="section section--l">
+  <div class="container container--lg">
+    <h2>Centered, Constrained Content</h2>
+    <p>Section provides vertical spacing, Container provides width constraint.</p>
+  </div>
+</section>
+```
+
+---
+
+## Framework Support
+
+The Section component is available for Astro framework with React, Vue, and Angular implementations coming soon.
+
+import FrameworkSwitcher from '../../../../components/FrameworkSwitcher.astro';
+
+<FrameworkSwitcher
+  frameworks={[
+    { name: 'astro', label: 'Astro', icon: 'https://svgl.app/library/astro-icon-dark.svg' },
+    { name: 'react', label: 'React', icon: 'https://svgl.app/library/react_dark.svg' },
+    { name: 'nextjs', label: 'Next.js', icon: 'https://svgl.app/library/nextjs_icon_dark.svg' },
+    { name: 'vue', label: 'Vue', icon: 'https://svgl.app/library/vue.svg' },
+    { name: 'angular', label: 'Angular', icon: 'https://svgl.app/library/angular.svg' },
+  ]}
+>
+  <div data-framework="astro" data-active="true">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-astro @atomchat.io/css
+```
+
+### Usage
+
+```astro
+---
+import { Section } from '@atomchat.io/components-astro';
+import '@atomchat.io/css';
+---
+
+{/* Default medium padding */}
+<Section>
+  <h2>Section Title</h2>
+  <p>Content with medium vertical padding.</p>
+</Section>
+
+{/* Large padding for major sections */}
+<Section size="l">
+  <Container>
+    <h2>Hero Section</h2>
+    <p>Large vertical spacing creates visual hierarchy.</p>
+  </Container>
+</Section>
+
+{/* Extra small padding for tight sections */}
+<Section size="xs">
+  <p>Compact section with minimal padding.</p>
+</Section>
+
+{/* Render as different element */}
+<Section as="article" size="l">
+  <h1>Blog Post</h1>
+  <p>Article content...</p>
+</Section>
+```
+
+  </div>
+
+  <div data-framework="react">
+
+:::caution[Coming Soon]
+React components are currently in development. Check back soon or follow our [GitHub repository](https://github.com/atomchat-io/atom-design-system) for updates.
+:::
+
+### Planned API
+
+```tsx
+import { Section } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+
+function Example() {
+  return (
+    <Section size="l">
+      <Container>
+        <h2>Hero Section</h2>
+        <p>Large vertical spacing creates visual hierarchy.</p>
+      </Container>
+    </Section>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="nextjs">
+
+:::caution[Coming Soon]
+Next.js components use the same React implementation, currently in development. Check back soon or follow our [GitHub repository](https://github.com/atomchat-io/atom-design-system) for updates.
+:::
+
+### Planned API
+
+```tsx
+import { Section } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+
+export default function Example() {
+  return (
+    <Section size="l">
+      <Container>
+        <h2>Hero Section</h2>
+        <p>Large vertical spacing creates visual hierarchy.</p>
+      </Container>
+    </Section>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="vue">
+
+:::caution[Coming Soon]
+Vue components are currently in development. Check back soon or follow our [GitHub repository](https://github.com/atomchat-io/atom-design-system) for updates.
+:::
+
+### Planned API
+
+```vue
+<script setup>
+import { Section } from '@atomchat.io/components-vue';
+import '@atomchat.io/css';
+</script>
+
+<template>
+  <Section size="l">
+    <Container>
+      <h2>Hero Section</h2>
+      <p>Large vertical spacing creates visual hierarchy.</p>
+    </Container>
+  </Section>
+</template>
+```
+
+  </div>
+
+  <div data-framework="angular">
+
+:::caution[Coming Soon]
+Angular components are currently in development. Check back soon or follow our [GitHub repository](https://github.com/atomchat-io/atom-design-system) for updates.
+:::
+
+### Planned API
+
+```typescript
+import { SectionComponent } from '@atomchat.io/components-angular';
+import '@atomchat.io/css';
+
+@Component({
+  imports: [SectionComponent],
+  template: `
+    <atom-section size="l">
+      <atom-container>
+        <h2>Hero Section</h2>
+        <p>Large vertical spacing creates visual hierarchy.</p>
+      </atom-container>
+    </atom-section>
+  `
+})
+export class ExampleComponent {}
+```
+
+  </div>
+</FrameworkSwitcher>
+
+---
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `"xs" \| "s" \| "m" \| "l" \| "xl"` | `"m"` | Vertical padding size (uses design tokens) |
+| `as` | `string?` | `"section"` | HTML element to render as (section, div, article, main, etc.) |
+| `class` | `string?` | — | Additional CSS classes |
+
+---
+
+## Variants
+
+### Padding Sizes
+
+Section provides five padding sizes for creating vertical rhythm:
+
+| Size | Padding (Y-axis) | Token | Use Case |
+|------|------------------|-------|----------|
+| **xs** | 24px | `--section-xs` | Tight sections, footer, compact areas |
+| **s** | 48px | `--section-s` | Sub-sections, card groups, compact layouts |
+| **m** | 80px | `--section-m` | Standard sections, default spacing (default) |
+| **l** | 120px | `--section-l` | Major sections, hero areas, emphasis |
+| **xl** | 160px | `--section-xl` | Extra emphasis, splash sections, spacious layouts |
+
+### Responsive Padding
+
+Section padding adapts to viewport width for better mobile experience:
+
+| Viewport Width | Multiplier | Example (m) |
+|----------------|------------|-------------|
+| **< 640px** | 0.6× | 48px (mobile) |
+| **640px - 1024px** | 0.8× | 64px (tablet) |
+| **> 1024px** | 1× | 80px (desktop) |
+
+This ensures sections don't consume excessive vertical space on small screens.
+
+---
+
+## Usage Examples
+
+### Basic Page Sections
+
+```astro
+---
+import { Section } from '@atomchat.io/components-astro';
+---
+
+<Section size="l">
+  <h1>Hero Section</h1>
+  <p>Large padding creates visual impact.</p>
+</Section>
+
+<Section>
+  <h2>About Us</h2>
+  <p>Default medium padding for standard content.</p>
+</Section>
+
+<Section size="s">
+  <h2>Footer</h2>
+  <p>Small padding for compact footer area.</p>
+</Section>
+```
+
+### Composed with Container
+
+```astro
+---
+import { Section, Container } from '@atomchat.io/components-astro';
+---
+
+<Section size="l">
+  <Container>
+    <h1>Centered Hero Content</h1>
+    <p>Section provides vertical spacing, Container constrains width.</p>
+  </Container>
+</Section>
+```
+
+### Marketing Landing Page
+
+```astro
+---
+import { Section, Container, Stack, Grid } from '@atomchat.io/components-astro';
+---
+
+{/* Hero */}
+<Section size="xl">
+  <Container>
+    <Stack gap="l" align="center">
+      <h1>Welcome to ATOM</h1>
+      <p>Build better products faster with our design system</p>
+      <button>Get Started</button>
+    </Stack>
+  </Container>
+</Section>
+
+{/* Features */}
+<Section size="l">
+  <Container>
+    <Stack gap="xl">
+      <h2>Features</h2>
+      <Grid columns="auto-fit" gap="l">
+        <Stack gap="s">
+          <h3>🎨 Token-Driven</h3>
+          <p>All values from design tokens</p>
+        </Stack>
+        <Stack gap="s">
+          <h3>⚡ Fast</h3>
+          <p>Optimized for performance</p>
+        </Stack>
+        <Stack gap="s">
+          <h3>♿ Accessible</h3>
+          <p>WCAG 2.1 AA compliant</p>
+        </Stack>
+      </Grid>
+    </Stack>
+  </Container>
+</Section>
+
+{/* Testimonials */}
+<Section>
+  <Container size="md">
+    <blockquote>
+      "ATOM transformed our design workflow..."
+      <footer>— Sarah Johnson</footer>
+    </blockquote>
+  </Container>
+</Section>
+
+{/* CTA */}
+<Section size="l">
+  <Container>
+    <Stack gap="m" align="center">
+      <h2>Ready to Get Started?</h2>
+      <button>Sign Up Free</button>
+    </Stack>
+  </Container>
+</Section>
+```
+
+### Blog Layout
+
+```astro
+{/* Hero */}
+<Section size="l" as="header">
+  <Container size="md">
+    <Stack gap="m">
+      <h1>Understanding Design Tokens</h1>
+      <p class="meta">By Jane Doe • March 31, 2026</p>
+    </Stack>
+  </Container>
+</Section>
+
+{/* Content */}
+<Section as="article">
+  <Container size="sm">
+    <Stack gap="l">
+      <p>Design tokens are the foundation of modern design systems...</p>
+      <p>In this article, we'll explore implementation strategies...</p>
+      <img src="/diagram.jpg" alt="Token diagram" />
+      <p>By using tokens consistently...</p>
+    </Stack>
+  </Container>
+</Section>
+
+{/* Related Posts */}
+<Section size="s">
+  <Container>
+    <Stack gap="m">
+      <h2>Related Articles</h2>
+      <Grid columns={3} gap="l">
+        <article>Post 1</article>
+        <article>Post 2</article>
+        <article>Post 3</article>
+      </Grid>
+    </Stack>
+  </Container>
+</Section>
+```
+
+### Alternating Background Sections
+
+```astro
+<Section size="l">
+  <Container>
+    <h2>Section with Default Background</h2>
+  </Container>
+</Section>
+
+<Section size="l" class="bg-alt">
+  <Container>
+    <h2>Section with Alternate Background</h2>
+  </Container>
+</Section>
+
+<Section size="l">
+  <Container>
+    <h2>Section with Default Background</h2>
+  </Container>
+</Section>
+
+<style>
+  .bg-alt {
+    background: var(--bg-secondary);
+  }
+</style>
+```
+
+### Dashboard Layout
+
+```astro
+{/* Stats Overview */}
+<Section size="m">
+  <Container size="xl">
+    <Stack gap="l">
+      <h1>Dashboard</h1>
+      <Grid columns={4} gap="l">
+        <div class="stat-card">Users: 1,234</div>
+        <div class="stat-card">Revenue: $45,678</div>
+        <div class="stat-card">Orders: 567</div>
+        <div class="stat-card">Growth: +23%</div>
+      </Grid>
+    </Stack>
+  </Container>
+</Section>
+
+{/* Charts */}
+<Section size="s">
+  <Container size="xl">
+    <Grid columns={2} gap="l">
+      <div class="chart">Revenue Chart</div>
+      <div class="chart">User Growth</div>
+    </Grid>
+  </Container>
+</Section>
+
+{/* Recent Activity */}
+<Section size="s">
+  <Container size="xl">
+    <h2>Recent Activity</h2>
+    <Stack gap="s">
+      <div class="activity-item">Activity 1</div>
+      <div class="activity-item">Activity 2</div>
+      <div class="activity-item">Activity 3</div>
+    </Stack>
+  </Container>
+</Section>
+```
+
+### Pricing Page
+
+```astro
+{/* Header */}
+<Section size="l">
+  <Container>
+    <Stack gap="m" align="center">
+      <h1>Simple, Transparent Pricing</h1>
+      <p>Choose the plan that fits your needs</p>
+    </Stack>
+  </Container>
+</Section>
+
+{/* Pricing Cards */}
+<Section>
+  <Container>
+    <Grid columns="auto-fit" gap="l">
+      <div class="pricing-card">
+        <Stack gap="l">
+          <Stack gap="s">
+            <h3>Starter</h3>
+            <p class="price">$9/mo</p>
+          </Stack>
+          <ul>
+            <li>Feature 1</li>
+            <li>Feature 2</li>
+            <li>Feature 3</li>
+          </ul>
+          <button>Choose Plan</button>
+        </Stack>
+      </div>
+      
+      <div class="pricing-card featured">
+        <Stack gap="l">
+          <Stack gap="s">
+            <h3>Pro</h3>
+            <p class="price">$29/mo</p>
+          </Stack>
+          <ul>
+            <li>All Starter features</li>
+            <li>Feature 4</li>
+            <li>Feature 5</li>
+          </ul>
+          <button>Choose Plan</button>
+        </Stack>
+      </div>
+      
+      <div class="pricing-card">
+        <Stack gap="l">
+          <Stack gap="s">
+            <h3>Enterprise</h3>
+            <p class="price">Custom</p>
+          </Stack>
+          <ul>
+            <li>All Pro features</li>
+            <li>Dedicated support</li>
+            <li>SLA guarantee</li>
+          </ul>
+          <button>Contact Sales</button>
+        </Stack>
+      </div>
+    </Grid>
+  </Container>
+</Section>
+
+{/* FAQ */}
+<Section size="m">
+  <Container size="md">
+    <Stack gap="l">
+      <h2>Frequently Asked Questions</h2>
+      <Stack gap="m">
+        <details>
+          <summary>Can I change plans later?</summary>
+          <p>Yes, you can upgrade or downgrade at any time.</p>
+        </details>
+        <details>
+          <summary>Is there a free trial?</summary>
+          <p>Yes, all plans include a 14-day free trial.</p>
+        </details>
+      </Stack>
+    </Stack>
+  </Container>
+</Section>
+```
+
+### Documentation Page
+
+```astro
+<Section size="m">
+  <Container size="md">
+    <Stack gap="xl">
+      <header>
+        <Stack gap="s">
+          <p class="breadcrumb">Docs / Components / Section</p>
+          <h1>Section Component</h1>
+          <p>Semantic section wrapper with consistent vertical padding.</p>
+        </Stack>
+      </header>
+      
+      <section>
+        <Stack gap="l">
+          <h2>Installation</h2>
+          <pre><code>pnpm add @atomchat.io/components-astro</code></pre>
+        </Stack>
+      </section>
+      
+      <section>
+        <Stack gap="l">
+          <h2>Usage</h2>
+          <p>Import and use the Section component...</p>
+        </Stack>
+      </section>
+    </Stack>
+  </Container>
+</Section>
+```
+
+---
+
+## Structure Tokens
+
+Section uses design tokens for all vertical padding, ensuring consistent rhythm:
+
+### Padding Tokens (from `@atomchat.io/tokens`)
+
+```css
+--section-xs: 24px;
+--section-s: 48px;
+--section-m: 80px;
+--section-l: 120px;
+--section-xl: 160px;
+```
+
+### Responsive Adjustments
+
+```css
+/* Mobile (< 640px) */
+@media (max-width: 639px) {
+  --section-xs: 16px;   /* 24px × 0.6 */
+  --section-s: 32px;    /* 48px × 0.6 */
+  --section-m: 48px;    /* 80px × 0.6 */
+  --section-l: 72px;    /* 120px × 0.6 */
+  --section-xl: 96px;   /* 160px × 0.6 */
+}
+
+/* Tablet (640px - 1024px) */
+@media (min-width: 640px) and (max-width: 1023px) {
+  --section-xs: 20px;   /* 24px × 0.8 */
+  --section-s: 40px;    /* 48px × 0.8 */
+  --section-m: 64px;    /* 80px × 0.8 */
+  --section-l: 96px;    /* 120px × 0.8 */
+  --section-xl: 128px;  /* 160px × 0.8 */
+}
+```
+
+### Component Classes
+
+```css
+.section {
+  padding-top: var(--section-m);
+  padding-bottom: var(--section-m);
+}
+
+.section--xs { 
+  padding-top: var(--section-xs); 
+  padding-bottom: var(--section-xs); 
+}
+
+.section--s { 
+  padding-top: var(--section-s); 
+  padding-bottom: var(--section-s); 
+}
+
+.section--m { 
+  padding-top: var(--section-m); 
+  padding-bottom: var(--section-m); 
+}
+
+.section--l { 
+  padding-top: var(--section-l); 
+  padding-bottom: var(--section-l); 
+}
+
+.section--xl { 
+  padding-top: var(--section-xl); 
+  padding-bottom: var(--section-xl); 
+}
+```
+
+---
+
+## Dependencies
+
+### Required Packages
+
+```json
+{
+  "@atomchat.io/components-astro": "latest",
+  "@atomchat.io/css": "latest",
+  "@atomchat.io/tokens": "latest"
+}
+```
+
+### Semantic Tokens Used
+
+Section uses primitive spacing tokens for vertical padding:
+
+| Category | Token | Purpose |
+|----------|-------|---------|
+| **Spacing** | `--section-xs` | Extra small padding (24px) |
+| **Spacing** | `--section-s` | Small padding (48px) |
+| **Spacing** | `--section-m` | Medium padding (80px) — default |
+| **Spacing** | `--section-l` | Large padding (120px) |
+| **Spacing** | `--section-xl` | Extra large padding (160px) |
+
+---
+
+## Accessibility
+
+### Semantic HTML
+
+Section renders as `<section>` by default, providing semantic meaning to page structure:
+
+```astro
+<!-- ✅ GOOD: Semantic section structure -->
+<Section>
+  <h2>Features</h2>
+  <p>Feature content...</p>
+</Section>
+
+<!-- ✅ GOOD: Article content -->
+<Section as="article">
+  <h1>Blog Post Title</h1>
+  <p>Post content...</p>
+</Section>
+
+<!-- ✅ GOOD: Main content area -->
+<Section as="main">
+  <h1>Page Title</h1>
+  <p>Main content...</p>
+</Section>
+```
+
+**Best Practices:**
+- ✅ Use `<section>` for thematic grouping of content
+- ✅ Each section should have a heading (h1-h6)
+- ✅ Use `as="article"` for self-contained content
+- ✅ Use `as="main"` for primary page content
+- ✅ Add `aria-label` or `aria-labelledby` when heading isn't immediately available
+- ❌ Don't use Section just for styling without semantic meaning
+
+### ARIA Labels
+
+Provide labels for sections without visible headings:
+
+```astro
+<Section aria-label="Product features">
+  <Grid columns={3} gap="l">
+    <div>Feature 1</div>
+    <div>Feature 2</div>
+    <div>Feature 3</div>
+  </Grid>
+</Section>
+```
+
+### Heading Hierarchy
+
+Maintain proper heading order within sections:
+
+```astro
+<!-- ✅ GOOD: Proper heading hierarchy -->
+<Section>
+  <h2>Main Topic</h2>
+  <Section size="s">
+    <h3>Subtopic</h3>
+    <p>Content...</p>
+  </Section>
+</Section>
+
+<!-- ❌ BAD: Skipped heading level -->
+<Section>
+  <h2>Main Topic</h2>
+  <Section size="s">
+    <h4>Subtopic</h4> <!-- Skipped h3 -->
+    <p>Content...</p>
+  </Section>
+</Section>
+```
+
+---
+
+## Composition Patterns
+
+### Section + Container (Most Common)
+
+```astro
+---
+import { Section, Container } from '@atomchat.io/components-astro';
+---
+
+<Section size="l">
+  <Container>
+    <h1>Centered Content with Vertical Padding</h1>
+  </Container>
+</Section>
+```
+
+### Section + Container + Stack
+
+```astro
+<Section size="l">
+  <Container>
+    <Stack gap="xl">
+      <h1>Title</h1>
+      <p>Content with consistent spacing</p>
+      <button>Action</button>
+    </Stack>
+  </Container>
+</Section>
+```
+
+### Section + Container + Grid
+
+```astro
+<Section>
+  <Container>
+    <Stack gap="l">
+      <h2>Features</h2>
+      <Grid columns="auto-fit" gap="l">
+        <div>Feature 1</div>
+        <div>Feature 2</div>
+        <div>Feature 3</div>
+      </Grid>
+    </Stack>
+  </Container>
+</Section>
+```
+
+### Nested Sections (Hierarchy)
+
+```astro
+<Section size="xl">
+  <Container>
+    <h1>Major Section</h1>
+    
+    <Section size="s">
+      <h2>Sub-section</h2>
+      <p>Nested sections create hierarchical spacing.</p>
+    </Section>
+    
+    <Section size="s">
+      <h2>Another Sub-section</h2>
+      <p>Each with its own padding control.</p>
+    </Section>
+  </Container>
+</Section>
+```
+
+---
+
+## Design Tokens in Action
+
+Section demonstrates vertical rhythm with token-driven spacing:
+
+### Custom Padding Override
+
+```astro
+<Section size="m" style="--section-m: 100px;">
+  <Container>
+    <p>Custom medium padding for this section.</p>
+  </Container>
+</Section>
+```
+
+### Responsive Padding Customization
+
+```astro
+<Section class="custom-section">
+  <Container>
+    <p>Custom responsive padding.</p>
+  </Container>
+</Section>
+
+<style>
+  .custom-section {
+    --section-m: 60px;
+  }
+  
+  @media (min-width: 768px) {
+    .custom-section {
+      --section-m: 100px;
+    }
+  }
+</style>
+```
+
+---
+
+## Build with AI
+

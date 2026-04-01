@@ -1,0 +1,824 @@
+---
+title: Grid
+description: CSS Grid layout primitive for creating responsive multi-column layouts with consistent spacing.
+---
+
+## Overview
+
+The Grid component is a powerful layout primitive that uses CSS Grid to create responsive multi-column layouts. It provides a declarative API for grid-based designs with automatic responsiveness and consistent spacing powered by design tokens.
+
+:::tip[Interactive Playground]
+**[Open Grid Playground →](/playground/grid)**
+
+Explore all Grid configurations with live column adjustments, gap sizes, and alignment options in an isolated environment.
+:::
+
+**Key Features:**
+- CSS Grid-based multi-column layouts
+- Fixed columns (1-6) or auto-fit responsive modes
+- 5 gap sizes (xs, s, m, l, xl) powered by design tokens
+- Item alignment control (start, center, end, stretch)
+- Content justification options
+- Preserve mode to prevent auto-spanning
+- Polymorphic element rendering
+- Zero hardcoded values — fully token-driven
+- Mobile-first responsive design
+
+---
+
+## Demo
+
+:::tip[Live Demo]
+**[Open Grid Playground →](/playground/grid)** to see all column configurations, gap sizes, and responsive behaviors with live interactions.
+:::
+
+---
+
+## Installation
+
+```bash
+# Install component package
+pnpm add @atomchat.io/components-astro
+
+# Install required dependencies
+pnpm add @atomchat.io/css @atomchat.io/tokens
+```
+
+**CSS Import (required):**
+```astro
+---
+import '@atomchat.io/css';
+---
+```
+
+---
+
+## Anatomy
+
+The Grid component creates a CSS Grid container with configurable columns and spacing:
+
+```
+┌─────────────────────────────────────────┐
+│  .grid (container)                      │  ← CSS Grid
+│  ┌──────────┐  ┌──────────┐  ┌────────┐│
+│  │  Cell 1  │  │  Cell 2  │  │ Cell 3 ││  ← Grid items
+│  └──────────┘  └──────────┘  └────────┘│
+│        ↕ gap         ↕ gap       ↕      │
+│  ┌──────────┐  ┌──────────┐  ┌────────┐│
+│  │  Cell 4  │  │  Cell 5  │  │ Cell 6 ││
+│  └──────────┘  └──────────┘  └────────┘│
+└─────────────────────────────────────────┘
+```
+
+**DOM Structure (3-column grid):**
+```html
+<div class="grid grid--cols-3 grid--gap-m">
+  <div>Cell 1</div>
+  <div>Cell 2</div>
+  <div>Cell 3</div>
+  <div>Cell 4</div>
+  <div>Cell 5</div>
+  <div>Cell 6</div>
+</div>
+```
+
+**Auto-fit responsive grid:**
+```html
+<div class="grid grid--auto-fit grid--gap-l" data-grid>
+  <article>Card 1</article>
+  <article>Card 2</article>
+  <article>Card 3</article>
+</div>
+```
+
+---
+
+## Framework Support
+
+The Grid component is available for multiple frameworks with shared design tokens and styles.
+
+import FrameworkSwitcher from '../../../../components/FrameworkSwitcher.astro';
+
+<FrameworkSwitcher
+  frameworks={[
+    { name: 'astro', label: 'Astro', icon: 'https://svgl.app/library/astro-icon-dark.svg' },
+    { name: 'react', label: 'React', icon: 'https://svgl.app/library/react_dark.svg' },
+    { name: 'nextjs', label: 'Next.js', icon: 'https://svgl.app/library/nextjs_icon_dark.svg' },
+    { name: 'vue', label: 'Vue', icon: 'https://svgl.app/library/vue.svg' },
+    { name: 'angular', label: 'Angular', icon: 'https://svgl.app/library/angular.svg' },
+  ]}
+>
+  <div data-framework="astro" data-active="true">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-astro @atomchat.io/css
+```
+
+### Usage
+
+```astro
+---
+import { Grid } from '@atomchat.io/components-astro';
+import '@atomchat.io/css';
+---
+
+{/* 3-column grid */}
+<Grid columns={3} gap="m">
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+</Grid>
+
+{/* Auto-fit responsive grid */}
+<Grid columns="auto-fit" gap="l">
+  <article>Card 1</article>
+  <article>Card 2</article>
+  <article>Card 3</article>
+</Grid>
+
+{/* 4-column grid with center alignment */}
+<Grid columns={4} gap="xl" align="center" justify="center">
+  <img src="/img1.jpg" alt="Gallery 1" />
+  <img src="/img2.jpg" alt="Gallery 2" />
+  <img src="/img3.jpg" alt="Gallery 3" />
+  <img src="/img4.jpg" alt="Gallery 4" />
+</Grid>
+```
+
+  </div>
+
+  <div data-framework="react">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+import { Grid } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+
+function Example() {
+  return (
+    <>
+      {/* 3-column grid */}
+      <Grid columns={3} gap="m">
+        <div>Item 1</div>
+        <div>Item 2</div>
+        <div>Item 3</div>
+      </Grid>
+
+      {/* Auto-fit responsive grid */}
+      <Grid columns="auto-fit" gap="l">
+        <article>Card 1</article>
+        <article>Card 2</article>
+        <article>Card 3</article>
+      </Grid>
+
+      {/* 4-column grid with center alignment */}
+      <Grid columns={4} gap="xl" align="center" justify="center">
+        <img src="/img1.jpg" alt="Gallery 1" />
+        <img src="/img2.jpg" alt="Gallery 2" />
+        <img src="/img3.jpg" alt="Gallery 3" />
+        <img src="/img4.jpg" alt="Gallery 4" />
+      </Grid>
+    </>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="nextjs">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+import { Grid } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+
+export default function Example() {
+  return (
+    <>
+      {/* 3-column grid */}
+      <Grid columns={3} gap="m">
+        <div>Item 1</div>
+        <div>Item 2</div>
+        <div>Item 3</div>
+      </Grid>
+
+      {/* Auto-fit responsive grid */}
+      <Grid columns="auto-fit" gap="l">
+        <article>Card 1</article>
+        <article>Card 2</article>
+        <article>Card 3</article>
+      </Grid>
+
+      {/* 4-column grid with center alignment */}
+      <Grid columns={4} gap="xl" align="center" justify="center">
+        <img src="/img1.jpg" alt="Gallery 1" />
+        <img src="/img2.jpg" alt="Gallery 2" />
+        <img src="/img3.jpg" alt="Gallery 3" />
+        <img src="/img4.jpg" alt="Gallery 4" />
+      </Grid>
+    </>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="vue">
+
+:::caution[Coming Soon]
+Vue components are currently in development. Check back soon or follow our [GitHub repository](https://github.com/atomchat-io/atom-design-system) for updates.
+:::
+
+### Planned API
+
+```vue
+<script setup>
+import { Grid } from '@atomchat.io/components-vue';
+import '@atomchat.io/css';
+</script>
+
+<template>
+  <Grid :columns="3" gap="m">
+    <div>Item 1</div>
+    <div>Item 2</div>
+    <div>Item 3</div>
+  </Grid>
+</template>
+```
+
+  </div>
+
+  <div data-framework="angular">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-angular @atomchat.io/css
+```
+
+### Usage
+
+```typescript
+import { GridComponent } from '@atomchat.io/components-angular';
+import '@atomchat.io/css';
+
+@Component({
+  imports: [GridComponent],
+  template: `
+    <!-- 3-column grid -->
+    <atom-grid [columns]="3" gap="m">
+      <div>Item 1</div>
+      <div>Item 2</div>
+      <div>Item 3</div>
+    </atom-grid>
+
+    <!-- Auto-fit responsive grid -->
+    <atom-grid columns="auto-fit" gap="l">
+      <article>Card 1</article>
+      <article>Card 2</article>
+      <article>Card 3</article>
+    </atom-grid>
+
+    <!-- 4-column grid with center alignment -->
+    <atom-grid [columns]="4" gap="xl" align="center" justify="center">
+      <img src="/img1.jpg" alt="Gallery 1" />
+      <img src="/img2.jpg" alt="Gallery 2" />
+      <img src="/img3.jpg" alt="Gallery 3" />
+      <img src="/img4.jpg" alt="Gallery 4" />
+    </atom-grid>
+  `
+})
+export class ExampleComponent {}
+```
+
+  </div>
+</FrameworkSwitcher>
+
+---
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `columns` | `1 \| 2 \| 3 \| 4 \| 5 \| 6 \| "auto-fit" \| "auto-fit-sm" \| "auto-fit-lg"` | `3` | Number of columns or auto-fit mode |
+| `gap` | `"xs" \| "s" \| "m" \| "l" \| "xl"` | `"m"` | Space between grid items (uses design tokens) |
+| `align` | `"start" \| "center" \| "end" \| "stretch"` | `"stretch"` | Vertical alignment of grid items (align-items) |
+| `justify` | `"start" \| "center" \| "end" \| "stretch"` | `"stretch"` | Horizontal alignment of grid items (justify-items) |
+| `preserve` | `boolean?` | `false` | Prevents automatic spanning to fill gaps |
+| `as` | `string?` | `"div"` | HTML element to render as (div, section, ul, etc.) |
+| `class` | `string?` | — | Additional CSS classes |
+
+---
+
+## Variants
+
+### Column Modes
+
+Grid supports fixed columns (1-6) and three auto-fit responsive modes:
+
+| Mode | Behavior | Min Column Width | Use Case |
+|------|----------|------------------|----------|
+| **1-6** | Fixed number of columns at all breakpoints | Auto-calculated | Precise control, custom responsive |
+| **auto-fit** | Auto-fills with 250px minimum columns | 250px | General purpose cards/items |
+| **auto-fit-sm** | Auto-fills with smaller 200px columns | 200px | Compact cards, avatars, chips |
+| **auto-fit-lg** | Auto-fills with larger 300px columns | 300px | Product cards, feature blocks |
+
+### Gap Sizes
+
+Grid uses the design system's spacing scale for consistent gap values:
+
+| Gap | Token | Value | Use Case |
+|-----|-------|-------|----------|
+| **xs** | `--gap-xs` | 8px | Tight spacing (form grids, compact lists) |
+| **s** | `--gap-s` | 12px | Compact spacing (card grids, galleries) |
+| **m** | `--gap-m` | 16px | Default spacing (general layouts) |
+| **l** | `--gap-l` | 24px | Generous spacing (feature grids, sections) |
+| **xl** | `--gap-xl` | 32px | Extra spacing (hero grids, large cards) |
+
+### Alignment Options
+
+#### Item Alignment (`align`)
+
+| Value | Behavior | Visual |
+|-------|----------|--------|
+| **start** | Align items to top of cell | `▄   ` |
+| **center** | Align items to center of cell | ` ▄  ` |
+| **end** | Align items to bottom of cell | `  ▄ ` |
+| **stretch** | Stretch items to fill cell height (default) | `▀▀▀▀` |
+
+#### Item Justification (`justify`)
+
+| Value | Behavior | Visual |
+|-------|----------|--------|
+| **start** | Justify items to left of cell | `├─┤ ` |
+| **center** | Justify items to center of cell | ` ┼ ` |
+| **end** | Justify items to right of cell | ` ├─┤` |
+| **stretch** | Stretch items to fill cell width (default) | `├───┤` |
+
+---
+
+## Usage Examples
+
+### Basic 3-Column Grid
+
+```astro
+---
+import { Grid } from '@atomchat.io/components-astro';
+---
+
+<Grid columns={3} gap="m">
+  <article class="card">Card 1</article>
+  <article class="card">Card 2</article>
+  <article class="card">Card 3</article>
+  <article class="card">Card 4</article>
+  <article class="card">Card 5</article>
+  <article class="card">Card 6</article>
+</Grid>
+```
+
+### Responsive Auto-Fit Grid
+
+```astro
+<Grid columns="auto-fit" gap="l">
+  <div class="feature-card">
+    <h3>Feature 1</h3>
+    <p>Description of the feature.</p>
+  </div>
+  <div class="feature-card">
+    <h3>Feature 2</h3>
+    <p>Description of the feature.</p>
+  </div>
+  <div class="feature-card">
+    <h3>Feature 3</h3>
+    <p>Description of the feature.</p>
+  </div>
+</Grid>
+```
+
+### Image Gallery
+
+```astro
+<Grid columns={4} gap="s" as="section">
+  <img src="/gallery-1.jpg" alt="Gallery image 1" />
+  <img src="/gallery-2.jpg" alt="Gallery image 2" />
+  <img src="/gallery-3.jpg" alt="Gallery image 3" />
+  <img src="/gallery-4.jpg" alt="Gallery image 4" />
+  <img src="/gallery-5.jpg" alt="Gallery image 5" />
+  <img src="/gallery-6.jpg" alt="Gallery image 6" />
+  <img src="/gallery-7.jpg" alt="Gallery image 7" />
+  <img src="/gallery-8.jpg" alt="Gallery image 8" />
+</Grid>
+```
+
+### Product Grid with Auto-Fit Large
+
+```astro
+<Grid columns="auto-fit-lg" gap="xl">
+  <article class="product-card">
+    <img src="/product-1.jpg" alt="Product 1" />
+    <h3>Product Name</h3>
+    <p class="price">$99.99</p>
+    <button>Add to Cart</button>
+  </article>
+  <article class="product-card">
+    <img src="/product-2.jpg" alt="Product 2" />
+    <h3>Product Name</h3>
+    <p class="price">$149.99</p>
+    <button>Add to Cart</button>
+  </article>
+  <article class="product-card">
+    <img src="/product-3.jpg" alt="Product 3" />
+    <h3>Product Name</h3>
+    <p class="price">$79.99</p>
+    <button>Add to Cart</button>
+  </article>
+</Grid>
+```
+
+### Dashboard Layout (Mixed Columns)
+
+```astro
+<Grid columns={2} gap="l">
+  <section class="stat-card">
+    <h3>Total Users</h3>
+    <p class="stat">1,234</p>
+  </section>
+  <section class="stat-card">
+    <h3>Revenue</h3>
+    <p class="stat">$45,678</p>
+  </section>
+</Grid>
+
+<Grid columns={3} gap="m">
+  <div class="chart">Chart 1</div>
+  <div class="chart">Chart 2</div>
+  <div class="chart">Chart 3</div>
+</Grid>
+```
+
+### Team Members Grid
+
+```astro
+---
+import { Grid, Stack } from '@atomchat.io/components-astro';
+---
+
+<Grid columns="auto-fit" gap="xl">
+  <Stack gap="s" align="center">
+    <img src="/team-1.jpg" alt="Jane Doe" style="width: 120px; border-radius: 50%;" />
+    <h3>Jane Doe</h3>
+    <p class="caption">CEO & Founder</p>
+    <p style="text-align: center;">Passionate about building great products.</p>
+  </Stack>
+  
+  <Stack gap="s" align="center">
+    <img src="/team-2.jpg" alt="John Smith" style="width: 120px; border-radius: 50%;" />
+    <h3>John Smith</h3>
+    <p class="caption">CTO</p>
+    <p style="text-align: center;">Tech enthusiast and problem solver.</p>
+  </Stack>
+  
+  <Stack gap="s" align="center">
+    <img src="/team-3.jpg" alt="Alice Johnson" style="width: 120px; border-radius: 50%;" />
+    <h3>Alice Johnson</h3>
+    <p class="caption">Lead Designer</p>
+    <p style="text-align: center;">Creating beautiful user experiences.</p>
+  </Stack>
+</Grid>
+```
+
+### Icon Grid (Compact)
+
+```astro
+<Grid columns="auto-fit-sm" gap="xs" align="center" justify="center">
+  <div class="icon-box">🎨</div>
+  <div class="icon-box">⚡</div>
+  <div class="icon-box">🚀</div>
+  <div class="icon-box">💡</div>
+  <div class="icon-box">🎯</div>
+  <div class="icon-box">✨</div>
+  <div class="icon-box">🔥</div>
+  <div class="icon-box">💎</div>
+</Grid>
+
+<style>
+  .icon-box {
+    padding: var(--gap-m);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-m);
+    font-size: 2rem;
+    text-align: center;
+  }
+</style>
+```
+
+### Blog Post Grid
+
+```astro
+<Grid columns="auto-fit-lg" gap="l" as="section">
+  <article class="blog-post">
+    <img src="/blog-1.jpg" alt="Blog post 1" />
+    <Stack gap="s">
+      <p class="category">Design</p>
+      <h3>Building Better Design Systems</h3>
+      <p>Learn how to create scalable design systems with design tokens...</p>
+      <a href="/blog/post-1">Read More →</a>
+    </Stack>
+  </article>
+  
+  <article class="blog-post">
+    <img src="/blog-2.jpg" alt="Blog post 2" />
+    <Stack gap="s">
+      <p class="category">Development</p>
+      <h3>Modern CSS Grid Techniques</h3>
+      <p>Explore advanced CSS Grid patterns for responsive layouts...</p>
+      <a href="/blog/post-2">Read More →</a>
+    </Stack>
+  </article>
+</Grid>
+```
+
+---
+
+## Structure Tokens
+
+Grid uses design tokens for all spacing values, ensuring consistency across the design system:
+
+### Gap Tokens (from `@atomchat.io/tokens`)
+
+```css
+--gap-xs: 8px;
+--gap-s: 12px;
+--gap-m: 16px;
+--gap-l: 24px;
+--gap-xl: 32px;
+```
+
+### Component Classes
+
+```css
+.grid {
+  display: grid;
+}
+
+/* Fixed columns */
+.grid--cols-1 { grid-template-columns: repeat(1, 1fr); }
+.grid--cols-2 { grid-template-columns: repeat(2, 1fr); }
+.grid--cols-3 { grid-template-columns: repeat(3, 1fr); }
+.grid--cols-4 { grid-template-columns: repeat(4, 1fr); }
+.grid--cols-5 { grid-template-columns: repeat(5, 1fr); }
+.grid--cols-6 { grid-template-columns: repeat(6, 1fr); }
+
+/* Auto-fit modes */
+.grid--auto-fit    { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+.grid--auto-fit-sm { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.grid--auto-fit-lg { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+
+/* Gap variants */
+.grid--gap-xs { gap: var(--gap-xs); }
+.grid--gap-s  { gap: var(--gap-s); }
+.grid--gap-m  { gap: var(--gap-m); }
+.grid--gap-l  { gap: var(--gap-l); }
+.grid--gap-xl { gap: var(--gap-xl); }
+
+/* Alignment */
+.grid--align-start   { align-items: start; }
+.grid--align-center  { align-items: center; }
+.grid--align-end     { align-items: end; }
+
+.grid--justify-start   { justify-items: start; }
+.grid--justify-center  { justify-items: center; }
+.grid--justify-end     { justify-items: end; }
+
+/* Preserve mode */
+.grid--preserve {
+  grid-auto-flow: dense;
+}
+```
+
+---
+
+## Dependencies
+
+### Required Packages
+
+```json
+{
+  "@atomchat.io/components-astro": "latest",
+  "@atomchat.io/css": "latest",
+  "@atomchat.io/tokens": "latest"
+}
+```
+
+### Semantic Tokens Used
+
+Grid uses primitive spacing tokens directly:
+
+| Category | Token | Purpose |
+|----------|-------|---------|
+| **Spacing** | `--gap-xs` | Extra small gap (8px) |
+| **Spacing** | `--gap-s` | Small gap (12px) |
+| **Spacing** | `--gap-m` | Medium gap (16px) — default |
+| **Spacing** | `--gap-l` | Large gap (24px) |
+| **Spacing** | `--gap-xl` | Extra large gap (32px) |
+
+No component-specific tokens — Grid uses the universal spacing scale.
+
+---
+
+## Accessibility
+
+### Semantic HTML
+
+Grid supports rendering as any HTML element via the `as` prop:
+
+```astro
+<!-- Section grid -->
+<Grid as="section" columns={3} gap="l">...</Grid>
+
+<!-- List grid -->
+<Grid as="ul" columns="auto-fit" gap="m">
+  <li>Item 1</li>
+  <li>Item 2</li>
+</Grid>
+
+<!-- Navigation grid -->
+<Grid as="nav" columns={4} gap="s">...</Grid>
+```
+
+**Best Practices:**
+- ✅ Use `<section>` for thematic content groups
+- ✅ Use `<ul>` or `<ol>` for lists of items
+- ✅ Use `<nav>` for navigation menus
+- ✅ Add ARIA labels when semantic meaning isn't clear
+- ❌ Don't use Grid purely for visual layout if content has semantic meaning
+
+### Reading Order
+
+Grid maintains natural document flow by default:
+
+```astro
+<!-- ✅ GOOD: Logical reading order matches visual order -->
+<Grid columns={2} gap="m">
+  <article>Post 1</article>
+  <article>Post 2</article>
+  <article>Post 3</article>
+  <article>Post 4</article>
+</Grid>
+
+<!-- ❌ BAD: CSS reordering breaks screen reader flow -->
+<Grid columns={2} gap="m">
+  <article style="order: 4">Post 4</article>
+  <article style="order: 1">Post 1</article>
+  <article style="order: 3">Post 3</article>
+  <article style="order: 2">Post 2</article>
+</Grid>
+```
+
+### Focus Management
+
+Ensure proper focus order in interactive grids:
+
+```astro
+<Grid columns={3} gap="m" role="group" aria-label="Product grid">
+  <article tabindex="0">
+    <h3>Product 1</h3>
+    <button>Add to Cart</button>
+  </article>
+  <article tabindex="0">
+    <h3>Product 2</h3>
+    <button>Add to Cart</button>
+  </article>
+  <article tabindex="0">
+    <h3>Product 3</h3>
+    <button>Add to Cart</button>
+  </article>
+</Grid>
+```
+
+---
+
+## Composition Patterns
+
+### Grid + Stack (Card Layouts)
+
+```astro
+---
+import { Grid, Stack } from '@atomchat.io/components-astro';
+---
+
+<Grid columns="auto-fit" gap="l">
+  <Stack gap="m" class="card">
+    <img src="/product-1.jpg" alt="Product 1" />
+    <Stack gap="s">
+      <h3>Product Name</h3>
+      <p class="price">$99.99</p>
+    </Stack>
+    <p>Product description goes here.</p>
+    <button>Add to Cart</button>
+  </Stack>
+  
+  <Stack gap="m" class="card">
+    <img src="/product-2.jpg" alt="Product 2" />
+    <Stack gap="s">
+      <h3>Product Name</h3>
+      <p class="price">$149.99</p>
+    </Stack>
+    <p>Product description goes here.</p>
+    <button>Add to Cart</button>
+  </Stack>
+</Grid>
+```
+
+### Grid + Container (Centered Grid)
+
+```astro
+---
+import { Grid, Container } from '@atomchat.io/components-astro';
+---
+
+<Container size="xl">
+  <Grid columns="auto-fit-lg" gap="xl">
+    <div class="feature">Feature 1</div>
+    <div class="feature">Feature 2</div>
+    <div class="feature">Feature 3</div>
+  </Grid>
+</Container>
+```
+
+### Nested Grids (Complex Layouts)
+
+```astro
+<Grid columns={2} gap="xl">
+  <!-- Left column: Single large item -->
+  <div class="hero-image">
+    <img src="/hero.jpg" alt="Hero" />
+  </div>
+  
+  <!-- Right column: Nested grid -->
+  <Grid columns={2} gap="m">
+    <div class="stat">Stat 1</div>
+    <div class="stat">Stat 2</div>
+    <div class="stat">Stat 3</div>
+    <div class="stat">Stat 4</div>
+  </Grid>
+</Grid>
+```
+
+---
+
+## Design Tokens in Action
+
+Grid demonstrates the token-first philosophy with every spacing value derived from design tokens:
+
+### Custom Gap Override
+
+```astro
+<Grid columns={3} gap="m" style="--gap-m: 20px;">
+  <!-- Custom medium gap for this instance -->
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+</Grid>
+```
+
+### Responsive Gap Adjustments
+
+```astro
+<Grid columns="auto-fit" gap="m" class="responsive-grid">
+  <div>Card 1</div>
+  <div>Card 2</div>
+  <div>Card 3</div>
+</Grid>
+
+<style>
+  .responsive-grid {
+    --gap-m: var(--gap-s);
+  }
+  
+  @media (min-width: 768px) {
+    .responsive-grid {
+      --gap-m: var(--gap-l);
+    }
+  }
+</style>
+```
+
+---
+
+## Build with AI
+

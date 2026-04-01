@@ -1,0 +1,771 @@
+---
+title: Stack
+description: Vertical flex layout primitive for arranging content with consistent spacing.
+---
+
+## Overview
+
+The Stack component is a foundational layout primitive that arranges its children vertically with consistent spacing between them. It's built on CSS Flexbox and provides a simple, declarative API for vertical layouts throughout your application.
+
+:::tip[Interactive Playground]
+**[Open Stack Playground →](/playground/stack)**
+
+View all Stack configurations with live spacing adjustments and alignment options in an isolated environment.
+:::
+
+**Key Features:**
+- Vertical flex layout (column direction)
+- 5 gap sizes (xs, s, m, l, xl) powered by design tokens
+- Flexible horizontal alignment options (start, center, end, stretch)
+- Vertical distribution control (start, center, end, between, around)
+- Full-height mode for viewport-spanning layouts
+- Polymorphic element rendering (div, section, nav, etc.)
+- Zero hardcoded values — fully token-driven
+- Responsive by default
+
+---
+
+## Demo
+
+:::tip[Live Demo]
+**[Open Stack Playground →](/playground/stack)** to see all gap sizes, alignment options, and composition patterns with live interactions.
+:::
+
+---
+
+## Installation
+
+```bash
+# Install component package
+pnpm add @atomchat.io/components-astro
+
+# Install required dependencies
+pnpm add @atomchat.io/css @atomchat.io/tokens
+```
+
+**CSS Import (required):**
+```astro
+---
+// In your layout or page
+import '@atomchat.io/css';
+---
+```
+
+---
+
+## Anatomy
+
+The Stack component is a simple container that uses CSS Flexbox to arrange children vertically:
+
+```
+┌──────────────────────────┐
+│  .stack (container)      │  ← Flexbox column
+│  ┌────────────────────┐  │
+│  │  Child 1           │  │
+│  └────────────────────┘  │
+│         ↓ gap            │
+│  ┌────────────────────┐  │
+│  │  Child 2           │  │
+│  └────────────────────┘  │
+│         ↓ gap            │
+│  ┌────────────────────┐  │
+│  │  Child 3           │  │
+│  └────────────────────┘  │
+└──────────────────────────┘
+```
+
+**DOM Structure:**
+```html
+<div class="stack stack--gap-m stack--align-stretch">
+  <div>Child 1</div>
+  <div>Child 2</div>
+  <div>Child 3</div>
+</div>
+```
+
+**With custom alignment:**
+```html
+<section class="stack stack--gap-l stack--align-center stack--justify-between stack--full-height">
+  <header>Header</header>
+  <main>Content</main>
+  <footer>Footer</footer>
+</section>
+```
+
+---
+
+## Framework Support
+
+The Stack component is available for multiple frameworks with shared design tokens and styles.
+
+import FrameworkSwitcher from '../../../../components/FrameworkSwitcher.astro';
+
+<FrameworkSwitcher
+  frameworks={[
+    { name: 'astro', label: 'Astro', icon: 'https://svgl.app/library/astro-icon-dark.svg' },
+    { name: 'react', label: 'React', icon: 'https://svgl.app/library/react_dark.svg' },
+    { name: 'nextjs', label: 'Next.js', icon: 'https://svgl.app/library/nextjs_icon_dark.svg' },
+    { name: 'vue', label: 'Vue', icon: 'https://svgl.app/library/vue.svg' },
+    { name: 'angular', label: 'Angular', icon: 'https://svgl.app/library/angular.svg' },
+  ]}
+>
+  <div data-framework="astro" data-active="true">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-astro @atomchat.io/css
+```
+
+### Usage
+
+```astro
+---
+import { Stack } from '@atomchat.io/components-astro';
+import '@atomchat.io/css';
+---
+
+<Stack gap="m">
+  <h2>Title</h2>
+  <p>Paragraph 1</p>
+  <p>Paragraph 2</p>
+</Stack>
+
+<Stack gap="l" align="center">
+  <img src="/avatar.jpg" alt="User" />
+  <h3>John Doe</h3>
+  <p>Software Engineer</p>
+</Stack>
+
+<Stack gap="xl" justify="between" fullHeight as="section">
+  <header>Header</header>
+  <main>Content</main>
+  <footer>Footer</footer>
+</Stack>
+```
+
+  </div>
+
+  <div data-framework="react">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+import { Stack } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+
+function Example() {
+  return (
+    <>
+      <Stack gap="m">
+        <h2>Title</h2>
+        <p>Paragraph 1</p>
+        <p>Paragraph 2</p>
+      </Stack>
+
+      <Stack gap="l" align="center">
+        <img src="/avatar.jpg" alt="User" />
+        <h3>John Doe</h3>
+        <p>Software Engineer</p>
+      </Stack>
+
+      <Stack gap="xl" justify="between" fullHeight as="section">
+        <header>Header</header>
+        <main>Content</main>
+        <footer>Footer</footer>
+      </Stack>
+    </>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="nextjs">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-react @atomchat.io/css
+```
+
+### Usage
+
+```tsx
+import { Stack } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+
+export default function Example() {
+  return (
+    <>
+      <Stack gap="m">
+        <h2>Title</h2>
+        <p>Paragraph 1</p>
+        <p>Paragraph 2</p>
+      </Stack>
+
+      <Stack gap="l" align="center">
+        <img src="/avatar.jpg" alt="User" />
+        <h3>John Doe</h3>
+        <p>Software Engineer</p>
+      </Stack>
+
+      <Stack gap="xl" justify="between" fullHeight as="section">
+        <header>Header</header>
+        <main>Content</main>
+        <footer>Footer</footer>
+      </Stack>
+    </>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="vue">
+
+:::caution[Coming Soon]
+Vue components are currently in development. Check back soon or follow our [GitHub repository](https://github.com/your-org/atom-design-system) for updates.
+:::
+
+### Planned API
+
+```vue
+<script setup>
+import { Stack } from '@atomchat.io/components-vue';
+import '@atomchat.io/css';
+</script>
+
+<template>
+  <Stack gap="m">
+    <h2>Title</h2>
+    <p>Paragraph 1</p>
+    <p>Paragraph 2</p>
+  </Stack>
+</template>
+```
+
+  </div>
+
+  <div data-framework="angular">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-angular @atomchat.io/css
+```
+
+### Usage
+
+```typescript
+import { StackComponent } from '@atomchat.io/components-angular';
+import '@atomchat.io/css';
+
+@Component({
+  imports: [StackComponent],
+  template: `
+    <atom-stack gap="m">
+      <h2>Title</h2>
+      <p>Paragraph 1</p>
+      <p>Paragraph 2</p>
+    </atom-stack>
+
+    <atom-stack gap="l" align="center">
+      <img src="/avatar.jpg" alt="User" />
+      <h3>John Doe</h3>
+      <p>Software Engineer</p>
+    </atom-stack>
+
+    <atom-stack gap="xl" justify="between" [fullHeight]="true" as="section">
+      <header>Header</header>
+      <main>Content</main>
+      <footer>Footer</footer>
+    </atom-stack>
+  `
+})
+export class ExampleComponent {}
+```
+
+  </div>
+</FrameworkSwitcher>
+
+---
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `gap` | `"xs" \| "s" \| "m" \| "l" \| "xl"` | `"m"` | Space between children (uses design tokens) |
+| `align` | `"start" \| "center" \| "end" \| "stretch"` | `"stretch"` | Horizontal alignment (align-items in Flexbox) |
+| `justify` | `"start" \| "center" \| "end" \| "between" \| "around"` | `"start"` | Vertical distribution (justify-content in Flexbox) |
+| `fullHeight` | `boolean?` | `false` | Makes stack take full viewport height (`100vh`) |
+| `as` | `string?` | `"div"` | HTML element to render as (div, section, nav, aside, etc.) |
+| `class` | `string?` | — | Additional CSS classes |
+
+---
+
+## Variants
+
+### Gap Sizes
+
+Stack uses the design system's spacing scale for consistent gap values across all components:
+
+| Gap | Token | Value | Use Case |
+|-----|-------|-------|----------|
+| **xs** | `--gap-xs` | 8px | Tight spacing (form labels, list items) |
+| **s** | `--gap-s` | 12px | Compact spacing (card content, navigation) |
+| **m** | `--gap-m` | 16px | Default spacing (paragraphs, sections) |
+| **l** | `--gap-l` | 24px | Generous spacing (major sections, cards) |
+| **xl** | `--gap-xl` | 32px | Extra spacing (page sections, hero blocks) |
+
+### Alignment Options
+
+#### Horizontal Alignment (`align`)
+
+| Value | Behavior | Visual |
+|-------|----------|--------|
+| **start** | Align children to the left edge | `├─┤ ` |
+| **center** | Align children to horizontal center | ` ┼ ` |
+| **end** | Align children to the right edge | ` ├─┤` |
+| **stretch** | Stretch children to full width (default) | `├───┤` |
+
+#### Vertical Distribution (`justify`)
+
+| Value | Behavior | Visual |
+|-------|----------|--------|
+| **start** | Pack children at the top (default) | `▄▄▄  ` |
+| **center** | Pack children in the middle | ` ▄▄▄ ` |
+| **end** | Pack children at the bottom | `  ▄▄▄` |
+| **between** | Distribute with space between | `▄ ▄ ▄` |
+| **around** | Distribute with space around | ` ▄ ▄ ▄ ` |
+
+---
+
+## Usage Examples
+
+### Basic Vertical Stack
+
+```astro
+---
+import { Stack } from '@atomchat.io/components-astro';
+---
+
+<Stack gap="m">
+  <h1>Welcome</h1>
+  <p>This is a simple vertical stack with medium spacing.</p>
+  <button>Get Started</button>
+</Stack>
+```
+
+### Form Layout
+
+```astro
+<Stack gap="l" as="form">
+  <Stack gap="xs">
+    <label for="name">Name</label>
+    <input id="name" type="text" />
+  </Stack>
+
+  <Stack gap="xs">
+    <label for="email">Email</label>
+    <input id="email" type="email" />
+  </Stack>
+
+  <Stack gap="xs">
+    <label for="message">Message</label>
+    <textarea id="message"></textarea>
+  </Stack>
+
+  <button type="submit">Send</button>
+</Stack>
+```
+
+### Card Content
+
+```astro
+<article class="card">
+  <Stack gap="s">
+    <img src="/product.jpg" alt="Product" />
+    <Stack gap="xs">
+      <h3>Product Name</h3>
+      <p class="caption">$99.99</p>
+    </Stack>
+    <p>Product description goes here with consistent spacing.</p>
+    <button>Add to Cart</button>
+  </Stack>
+</article>
+```
+
+### Centered Profile
+
+```astro
+<Stack gap="m" align="center">
+  <img src="/avatar.jpg" alt="User" style="width: 80px; border-radius: 50%;" />
+  <Stack gap="xs" align="center">
+    <h2>Jane Doe</h2>
+    <p class="caption">Product Designer</p>
+  </Stack>
+  <p style="text-align: center;">
+    Passionate about creating intuitive user experiences.
+  </p>
+  <button>Follow</button>
+</Stack>
+```
+
+### Full-Height Page Layout
+
+```astro
+<Stack gap="l" justify="between" fullHeight as="div" class="page-wrapper">
+  <header>
+    <nav>Header Navigation</nav>
+  </header>
+
+  <main>
+    <h1>Main Content Area</h1>
+    <p>This content is vertically centered between header and footer.</p>
+  </main>
+
+  <footer>
+    <p>© 2026 ATOM Design System</p>
+  </footer>
+</Stack>
+```
+
+### Sidebar Layout
+
+```astro
+<Stack gap="xl" as="aside" class="sidebar">
+  <Stack gap="m">
+    <h3>Navigation</h3>
+    <Stack gap="s">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </Stack>
+  </Stack>
+
+  <Stack gap="m">
+    <h3>Resources</h3>
+    <Stack gap="s">
+      <a href="#docs">Documentation</a>
+      <a href="#guides">Guides</a>
+      <a href="#api">API Reference</a>
+    </Stack>
+  </Stack>
+</Stack>
+```
+
+### Nested Stacks (Complex Layout)
+
+```astro
+<Stack gap="xl">
+  <!-- Hero Section -->
+  <Stack gap="m" align="center">
+    <h1>Welcome to ATOM</h1>
+    <p>Build faster with design tokens and composable components.</p>
+    <button>Get Started</button>
+  </Stack>
+
+  <!-- Features Grid (Stack + Inline) -->
+  <Stack gap="l">
+    <h2>Features</h2>
+    <Stack gap="m">
+      <Stack gap="s">
+        <h3>🎨 Token-Driven</h3>
+        <p>Every visual value comes from design tokens.</p>
+      </Stack>
+      <Stack gap="s">
+        <h3>⚡ Fast</h3>
+        <p>Optimized for performance and bundle size.</p>
+      </Stack>
+      <Stack gap="s">
+        <h3>♿ Accessible</h3>
+        <p>WCAG 2.1 AA compliant by default.</p>
+      </Stack>
+    </Stack>
+  </Stack>
+</Stack>
+```
+
+---
+
+## Structure Tokens
+
+Stack uses design tokens for all spacing values, ensuring consistency across the design system:
+
+### Gap Tokens (from `@atomchat.io/tokens`)
+
+```css
+--gap-xs: 8px;
+--gap-s: 12px;
+--gap-m: 16px;   /* Default gap */
+--gap-l: 24px;
+--gap-xl: 32px;
+```
+
+### Component Classes
+
+```css
+/* Base */
+.stack {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Gap modifiers */
+.stack--gap-xs { gap: var(--gap-xs); }
+.stack--gap-s  { gap: var(--gap-s); }
+.stack--gap-m  { gap: var(--gap-m); }  /* Default */
+.stack--gap-l  { gap: var(--gap-l); }
+.stack--gap-xl { gap: var(--gap-xl); }
+
+/* Alignment modifiers */
+.stack--align-start   { align-items: flex-start; }
+.stack--align-center  { align-items: center; }
+.stack--align-end     { align-items: flex-end; }
+.stack--align-stretch { align-items: stretch; }  /* Default */
+
+/* Justify modifiers */
+.stack--justify-start   { justify-content: flex-start; }  /* Default */
+.stack--justify-center  { justify-content: center; }
+.stack--justify-end     { justify-content: flex-end; }
+.stack--justify-between { justify-content: space-between; }
+.stack--justify-around  { justify-content: space-around; }
+
+/* Full-height modifier */
+.stack--full-height {
+  min-height: 100vh;
+}
+```
+
+---
+
+## Dependencies
+
+### Required Packages
+
+```json
+{
+  "@atomchat.io/components-astro": "latest",
+  "@atomchat.io/css": "latest",
+  "@atomchat.io/tokens": "latest"
+}
+```
+
+### Semantic Tokens Used
+
+Stack uses primitive spacing tokens directly:
+
+| Category | Token | Purpose |
+|----------|-------|---------|
+| **Spacing** | `--gap-xs` | Extra small gap (8px) |
+| **Spacing** | `--gap-s` | Small gap (12px) |
+| **Spacing** | `--gap-m` | Medium gap (16px) — default |
+| **Spacing** | `--gap-l` | Large gap (24px) |
+| **Spacing** | `--gap-xl` | Extra large gap (32px) |
+
+No component-specific tokens — Stack uses the universal spacing scale.
+
+---
+
+## Accessibility
+
+### Semantic HTML
+
+Stack supports rendering as any HTML element via the `as` prop:
+
+```astro
+<!-- Navigation sidebar -->
+<Stack as="nav" gap="m">...</Stack>
+
+<!-- Article section -->
+<Stack as="article" gap="l">...</Stack>
+
+<!-- Form layout -->
+<Stack as="form" gap="m">...</Stack>
+
+<!-- Aside content -->
+<Stack as="aside" gap="s">...</Stack>
+```
+
+**Best Practices:**
+- ✅ Use semantic elements that match the content's purpose
+- ✅ Use `<section>` for thematic grouping
+- ✅ Use `<nav>` for navigation menus
+- ✅ Use `<form>` for form layouts
+- ❌ Don't use `<div>` when a semantic element is available
+
+### Reading Order
+
+Stack maintains natural document flow, which is crucial for screen readers:
+
+```astro
+<!-- ✅ GOOD: Logical reading order -->
+<Stack gap="m">
+  <h2>Article Title</h2>
+  <p class="meta">By Jane Doe • March 31, 2026</p>
+  <p>Article content...</p>
+  <a href="#read-more">Read More</a>
+</Stack>
+
+<!-- ❌ BAD: Visual-only ordering (use justify instead) -->
+<Stack gap="m" class="reversed">
+  <a href="#read-more">Read More</a>
+  <p>Article content...</p>
+  <p class="meta">By Jane Doe • March 31, 2026</p>
+  <h2>Article Title</h2>
+</Stack>
+```
+
+### Focus Management
+
+When using Stack for interactive lists, ensure proper focus order:
+
+```astro
+<Stack gap="s" as="nav" role="navigation" aria-label="Main navigation">
+  <a href="#home">Home</a>
+  <a href="#about">About</a>
+  <a href="#contact">Contact</a>
+</Stack>
+```
+
+---
+
+## Composition Patterns
+
+### Stack + Inline (Responsive Layout)
+
+```astro
+---
+import { Stack, Inline } from '@atomchat.io/components-astro';
+---
+
+<Stack gap="xl">
+  <h1>Products</h1>
+  <Inline gap="m" class="product-grid">
+    <Stack gap="s" class="product-card">
+      <img src="/product1.jpg" alt="Product 1" />
+      <h3>Product 1</h3>
+      <p>$99</p>
+    </Stack>
+    <Stack gap="s" class="product-card">
+      <img src="/product2.jpg" alt="Product 2" />
+      <h3>Product 2</h3>
+      <p>$149</p>
+    </Stack>
+  </Inline>
+</Stack>
+```
+
+### Stack + Container (Centered Content)
+
+```astro
+---
+import { Stack, Container } from '@atomchat.io/components-astro';
+---
+
+<Container size="md">
+  <Stack gap="xl">
+    <Stack gap="m" align="center">
+      <h1>Pricing Plans</h1>
+      <p>Choose the perfect plan for your needs.</p>
+    </Stack>
+    <Stack gap="l">
+      <!-- Pricing cards here -->
+    </Stack>
+  </Stack>
+</Container>
+```
+
+### Stack + Grid (Flexible Layouts)
+
+```astro
+---
+import { Stack, Grid } from '@atomchat.io/components-astro';
+---
+
+<Stack gap="xl">
+  <h1>Team Members</h1>
+  <Grid columns={3} gap="l">
+    <Stack gap="s" align="center">
+      <img src="/team1.jpg" alt="Member 1" />
+      <h3>John Doe</h3>
+      <p>CEO</p>
+    </Stack>
+    <Stack gap="s" align="center">
+      <img src="/team2.jpg" alt="Member 2" />
+      <h3>Jane Smith</h3>
+      <p>CTO</p>
+    </Stack>
+    <Stack gap="s" align="center">
+      <img src="/team3.jpg" alt="Member 3" />
+      <h3>Bob Johnson</h3>
+      <p>Designer</p>
+    </Stack>
+  </Grid>
+</Stack>
+```
+
+---
+
+## Design Tokens in Action
+
+Stack is a perfect example of the token-first philosophy. Every spacing value comes from the design system:
+
+### Token Override Example
+
+You can override gap tokens for specific use cases:
+
+```astro
+<Stack gap="m" style="--gap-m: 20px;">
+  <!-- Custom medium gap for this instance -->
+  <p>Paragraph 1</p>
+  <p>Paragraph 2</p>
+</Stack>
+```
+
+### Custom Gap with Design Tokens
+
+```astro
+<Stack gap="m" class="custom-stack">
+  <div>Item 1</div>
+  <div>Item 2</div>
+</Stack>
+
+<style>
+  .custom-stack {
+    /* Use a different token for this stack */
+    --gap-m: var(--gap-l);
+  }
+</style>
+```
+
+---
+
+## Build with AI
+
+Use this prompt with Claude Code to generate Stack-based layouts:
+
+```
+Create a [layout type] using the Stack component from @atomchat.io/components-astro.
+
+Requirements:
+- Install @atomchat.io/components-astro, @atomchat.io/css, @atomchat.io/tokens
+- Use ONLY design tokens for spacing: var(--gap-xs), var(--gap-s), var(--gap-m), var(--gap-l), var(--gap-xl)
+- Do NOT hardcode any spacing values (no px, rem, em)
+- Use semantic HTML elements via the 'as' prop
+- Include proper accessibility attributes
+- Create [specific layout pattern]
+
+Props to use:
+- gap: "xs" | "s" | "m" | "l" | "xl"
+- align: "start" | "center" | "end" | "stretch"
+- justify: "start" | "center" | "end" | "between" | "around"
+- fullHeight: boolean (for full viewport layouts)
+- as: string (semantic HTML element)
+```
+

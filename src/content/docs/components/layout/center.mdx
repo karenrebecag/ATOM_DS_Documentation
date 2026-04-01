@@ -1,0 +1,664 @@
+---
+title: Center
+description: Flexbox utility for centering content horizontally and vertically with optional spacing and direction control.
+---
+
+## Overview
+
+The Center component is a utility primitive that centers its children both horizontally and vertically using CSS Flexbox. It's perfect for centering single elements, creating splash screens, loading states, and vertically centering content within containers.
+
+:::tip[Interactive Playground]
+**[Open Center Playground →](/playground/center)**
+
+Explore all Center configurations with live alignment, direction, and spacing options in an isolated environment.
+:::
+
+**Key Features:**
+- Horizontal and vertical centering with Flexbox
+- Row or column direction
+- Optional gap spacing (xs, s, m, l, xl)
+- Full-height mode for viewport-height centering
+- Full-width mode for edge-to-edge layouts
+- Inline mode for inline-flex behavior
+- Polymorphic element rendering
+- Zero hardcoded values — fully token-driven
+- Perfect for loading states, empty states, and splash screens
+
+---
+
+## Demo
+
+:::tip[Live Demo]
+**[Open Center Playground →](/playground/center)** to see all direction options, gap sizes, and common centering patterns with live interactions.
+:::
+
+---
+
+## Installation
+
+```bash
+# Install component package
+pnpm add @atomchat.io/components-astro
+
+# Install required dependencies
+pnpm add @atomchat.io/css @atomchat.io/tokens
+```
+
+**CSS Import (required):**
+```astro
+---
+import '@atomchat.io/css';
+---
+```
+
+---
+
+## Anatomy
+
+The Center component uses Flexbox to center content in both dimensions:
+
+```
+┌─────────────────────────────────────────┐
+│  .center (container)                    │
+│                                         │
+│          ┌──────────────┐               │
+│          │   Centered   │               │  ← justify-content: center
+│          │   Content    │               │  ← align-items: center
+│          └──────────────┘               │
+│                                         │
+└─────────────────────────────────────────┘
+```
+
+**DOM Structure (basic):**
+```html
+<div class="center center--row">
+  <p>Centered content</p>
+</div>
+```
+
+**With gap spacing:**
+```html
+<div class="center center--column center--gap-m">
+  <img src="/icon.svg" alt="Icon" />
+  <h2>Title</h2>
+  <p>Description</p>
+</div>
+```
+
+**Full-height centering:**
+```html
+<div class="center center--row center--full-height">
+  <div class="loading-spinner">Loading...</div>
+</div>
+```
+
+---
+
+## Framework Support
+
+The Center component is available for Astro framework with React, Vue, and Angular implementations coming soon.
+
+import FrameworkSwitcher from '../../../../components/FrameworkSwitcher.astro';
+
+<FrameworkSwitcher
+  frameworks={[
+    { name: 'astro', label: 'Astro', icon: 'https://svgl.app/library/astro-icon-dark.svg' },
+    { name: 'react', label: 'React', icon: 'https://svgl.app/library/react_dark.svg' },
+    { name: 'nextjs', label: 'Next.js', icon: 'https://svgl.app/library/nextjs_icon_dark.svg' },
+    { name: 'vue', label: 'Vue', icon: 'https://svgl.app/library/vue.svg' },
+    { name: 'angular', label: 'Angular', icon: 'https://svgl.app/library/angular.svg' },
+  ]}
+>
+  <div data-framework="astro" data-active="true">
+
+### Installation
+```bash
+pnpm add @atomchat.io/components-astro @atomchat.io/css
+```
+
+### Usage
+
+```astro
+---
+import { Center } from '@atomchat.io/components-astro';
+import '@atomchat.io/css';
+---
+
+{/* Basic horizontal centering */}
+<Center>
+  <button>Centered Button</button>
+</Center>
+
+{/* Vertical stack with centering */}
+<Center direction="column" gap="m">
+  <img src="/logo.svg" alt="Logo" />
+  <h1>Welcome</h1>
+  <p>Get started with ATOM</p>
+</Center>
+
+{/* Full-height loading state */}
+<Center fullHeight>
+  <div class="spinner">Loading...</div>
+</Center>
+
+{/* Full-width and full-height splash screen */}
+<Center direction="column" gap="l" fullHeight fullWidth>
+  <img src="/hero.jpg" alt="Hero" />
+  <h1>Welcome to Our Platform</h1>
+  <button>Get Started</button>
+</Center>
+```
+
+  </div>
+
+  <div data-framework="react">
+
+:::caution[Coming Soon]
+React components are currently in development. Check back soon or follow our [GitHub repository](https://github.com/atomchat-io/atom-design-system) for updates.
+:::
+
+### Planned API
+
+```tsx
+import { Center } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+
+function Example() {
+  return (
+    <Center direction="column" gap="m">
+      <img src="/logo.svg" alt="Logo" />
+      <h1>Welcome</h1>
+      <p>Get started with ATOM</p>
+    </Center>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="nextjs">
+
+:::caution[Coming Soon]
+Next.js components use the same React implementation, currently in development. Check back soon or follow our [GitHub repository](https://github.com/atomchat-io/atom-design-system) for updates.
+:::
+
+### Planned API
+
+```tsx
+import { Center } from '@atomchat.io/components-react';
+import '@atomchat.io/css';
+
+export default function Example() {
+  return (
+    <Center direction="column" gap="m">
+      <img src="/logo.svg" alt="Logo" />
+      <h1>Welcome</h1>
+      <p>Get started with ATOM</p>
+    </Center>
+  );
+}
+```
+
+  </div>
+
+  <div data-framework="vue">
+
+:::caution[Coming Soon]
+Vue components are currently in development. Check back soon or follow our [GitHub repository](https://github.com/atomchat-io/atom-design-system) for updates.
+:::
+
+### Planned API
+
+```vue
+<script setup>
+import { Center } from '@atomchat.io/components-vue';
+import '@atomchat.io/css';
+</script>
+
+<template>
+  <Center direction="column" gap="m">
+    <img src="/logo.svg" alt="Logo" />
+    <h1>Welcome</h1>
+    <p>Get started with ATOM</p>
+  </Center>
+</template>
+```
+
+  </div>
+
+  <div data-framework="angular">
+
+:::caution[Coming Soon]
+Angular components are currently in development. Check back soon or follow our [GitHub repository](https://github.com/atomchat-io/atom-design-system) for updates.
+:::
+
+### Planned API
+
+```typescript
+import { CenterComponent } from '@atomchat.io/components-angular';
+import '@atomchat.io/css';
+
+@Component({
+  imports: [CenterComponent],
+  template: `
+    <atom-center direction="column" gap="m">
+      <img src="/logo.svg" alt="Logo" />
+      <h1>Welcome</h1>
+      <p>Get started with ATOM</p>
+    </atom-center>
+  `
+})
+export class ExampleComponent {}
+```
+
+  </div>
+</FrameworkSwitcher>
+
+---
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `direction` | `"row" \| "column"` | `"row"` | Flex direction (row = horizontal, column = vertical) |
+| `gap` | `"xs" \| "s" \| "m" \| "l" \| "xl"?` | — | Space between children (optional) |
+| `fullHeight` | `boolean?` | `false` | Makes container take full viewport height (`100vh`) |
+| `fullWidth` | `boolean?` | `false` | Makes container take full width (`100%`) |
+| `inline` | `boolean?` | `false` | Uses `inline-flex` instead of `flex` |
+| `as` | `string?` | `"div"` | HTML element to render as (div, section, main, etc.) |
+| `class` | `string?` | — | Additional CSS classes |
+
+---
+
+## Variants
+
+### Direction Modes
+
+| Direction | Behavior | Visual | Use Case |
+|-----------|----------|--------|----------|
+| **row** | Horizontal centering (default) | `→ ● ←` | Centering single elements, buttons, icons |
+| **column** | Vertical stack with centering | `↑ ● ↓` | Splash screens, empty states, loading screens |
+
+### Gap Sizes (Optional)
+
+Center supports optional gap spacing when multiple children are present:
+
+| Gap | Token | Value | Use Case |
+|-----|-------|-------|----------|
+| **xs** | `--gap-xs` | 8px | Tight spacing (icon + label) |
+| **s** | `--gap-s` | 12px | Compact spacing (small groups) |
+| **m** | `--gap-m` | 16px | Default spacing (modal content) |
+| **l** | `--gap-l` | 24px | Generous spacing (splash screens) |
+| **xl** | `--gap-xl` | 32px | Extra spacing (hero sections) |
+
+### Full-Height Mode
+
+When `fullHeight={true}`, the Center component takes full viewport height:
+
+```astro
+<Center fullHeight>
+  <div class="loading-spinner">Loading...</div>
+</Center>
+```
+
+Perfect for:
+- Loading screens
+- Splash pages
+- 404 pages
+- Empty states
+- Modal overlays
+
+---
+
+## Usage Examples
+
+### Basic Centering (Single Element)
+
+```astro
+---
+import { Center } from '@atomchat.io/components-astro';
+---
+
+<Center>
+  <button>Centered Button</button>
+</Center>
+```
+
+### Loading Screen
+
+```astro
+<Center fullHeight>
+  <div class="spinner" aria-label="Loading">
+    <svg><!-- Loading spinner --></svg>
+  </div>
+</Center>
+```
+
+### Empty State
+
+```astro
+<Center direction="column" gap="m" fullHeight>
+  <svg width="64" height="64">
+    <circle cx="32" cy="32" r="30" fill="var(--bg-secondary)" />
+  </svg>
+  <h2>No Results Found</h2>
+  <p>Try adjusting your search filters.</p>
+  <button>Clear Filters</button>
+</Center>
+```
+
+### Splash Screen
+
+```astro
+<Center direction="column" gap="l" fullHeight fullWidth as="section">
+  <img src="/logo.svg" alt="Company Logo" style="width: 120px;" />
+  <h1>Welcome to ATOM</h1>
+  <p>Build faster with our design system</p>
+  <button>Get Started</button>
+</Center>
+```
+
+### 404 Page
+
+```astro
+<Center direction="column" gap="xl" fullHeight>
+  <h1 style="font-size: 6rem;">404</h1>
+  <h2>Page Not Found</h2>
+  <p>The page you're looking for doesn't exist.</p>
+  <a href="/">
+    <button>Go Home</button>
+  </a>
+</Center>
+```
+
+### Modal Content
+
+```astro
+<dialog open>
+  <Center direction="column" gap="m">
+    <h2>Confirm Action</h2>
+    <p>Are you sure you want to delete this item?</p>
+    <Center gap="s">
+      <button>Cancel</button>
+      <button class="danger">Delete</button>
+    </Center>
+  </Center>
+</dialog>
+```
+
+### Icon with Label
+
+```astro
+<Center gap="xs" inline>
+  <svg width="16" height="16">
+    <path d="..." fill="currentColor" />
+  </svg>
+  <span>Settings</span>
+</Center>
+```
+
+### Auth Form Centering
+
+```astro
+<Center fullHeight fullWidth>
+  <div class="auth-card">
+    <Stack gap="l">
+      <h1>Sign In</h1>
+      <form>
+        <Stack gap="m">
+          <input type="email" placeholder="Email" />
+          <input type="password" placeholder="Password" />
+          <button type="submit">Sign In</button>
+        </Stack>
+      </form>
+    </Stack>
+  </div>
+</Center>
+
+<style>
+  .auth-card {
+    max-width: 400px;
+    width: 100%;
+    padding: var(--gap-xl);
+    background: var(--bg-primary);
+    border-radius: var(--radius-l);
+    box-shadow: var(--elevation-l);
+  }
+</style>
+```
+
+---
+
+## Structure Tokens
+
+Center uses design tokens for spacing when gap is specified:
+
+### Gap Tokens (from `@atomchat.io/tokens`)
+
+```css
+--gap-xs: 8px;
+--gap-s: 12px;
+--gap-m: 16px;
+--gap-l: 24px;
+--gap-xl: 32px;
+```
+
+### Component Classes
+
+```css
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center--row {
+  flex-direction: row;
+}
+
+.center--column {
+  flex-direction: column;
+}
+
+.center--gap-xs { gap: var(--gap-xs); }
+.center--gap-s  { gap: var(--gap-s); }
+.center--gap-m  { gap: var(--gap-m); }
+.center--gap-l  { gap: var(--gap-l); }
+.center--gap-xl { gap: var(--gap-xl); }
+
+.center--full-height {
+  min-height: 100vh;
+}
+
+.center--full-width {
+  width: 100%;
+}
+
+.center--inline {
+  display: inline-flex;
+}
+```
+
+---
+
+## Dependencies
+
+### Required Packages
+
+```json
+{
+  "@atomchat.io/components-astro": "latest",
+  "@atomchat.io/css": "latest",
+  "@atomchat.io/tokens": "latest"
+}
+```
+
+### Semantic Tokens Used
+
+Center uses primitive spacing tokens when gap is specified:
+
+| Category | Token | Purpose |
+|----------|-------|---------|
+| **Spacing** | `--gap-xs` | Extra small gap (8px) |
+| **Spacing** | `--gap-s` | Small gap (12px) |
+| **Spacing** | `--gap-m` | Medium gap (16px) |
+| **Spacing** | `--gap-l` | Large gap (24px) |
+| **Spacing** | `--gap-xl` | Extra large gap (32px) |
+
+No component-specific tokens — Center uses the universal spacing scale.
+
+---
+
+## Accessibility
+
+### Semantic HTML
+
+Center supports rendering as any HTML element via the `as` prop:
+
+```astro
+<!-- Main content wrapper -->
+<Center as="main" fullHeight>...</Center>
+
+<!-- Section wrapper -->
+<Center as="section" direction="column" gap="l">...</Center>
+
+<!-- Article wrapper -->
+<Center as="article">...</Center>
+```
+
+**Best Practices:**
+- ✅ Use `<main>` for primary centered content
+- ✅ Use `<section>` for thematic centered sections
+- ✅ Add `aria-label` or `aria-labelledby` when semantic meaning isn't clear
+- ✅ Include loading announcements with `aria-live` for loading states
+- ❌ Don't overuse Center for all layouts (use semantically appropriate components)
+
+### Loading States
+
+Provide proper loading announcements for screen readers:
+
+```astro
+<Center fullHeight>
+  <div role="status" aria-live="polite" aria-label="Loading">
+    <div class="spinner"></div>
+    <span class="sr-only">Loading content, please wait...</span>
+  </div>
+</Center>
+
+<style>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+</style>
+```
+
+### Focus Management
+
+Ensure proper focus for centered interactive content:
+
+```astro
+<Center direction="column" gap="m" fullHeight>
+  <h1>Welcome</h1>
+  <p>Get started with your account</p>
+  <button autofocus>Continue</button>
+</Center>
+```
+
+---
+
+## Composition Patterns
+
+### Center + Stack (Vertical Layouts)
+
+```astro
+---
+import { Center, Stack } from '@atomchat.io/components-astro';
+---
+
+<Center fullHeight>
+  <Stack gap="l" align="center">
+    <img src="/logo.svg" alt="Logo" />
+    <h1>Welcome</h1>
+    <p>Build better products faster</p>
+    <button>Get Started</button>
+  </Stack>
+</Center>
+```
+
+### Center + Container (Constrained Width)
+
+```astro
+---
+import { Center, Container } from '@atomchat.io/components-astro';
+---
+
+<Center fullHeight>
+  <Container size="sm">
+    <Stack gap="l">
+      <h1>Sign Up</h1>
+      <form><!-- Form fields --></form>
+    </Stack>
+  </Container>
+</Center>
+```
+
+### Center + Grid (Centered Grid)
+
+```astro
+---
+import { Center, Grid } from '@atomchat.io/components-astro';
+---
+
+<Center fullHeight>
+  <Grid columns={2} gap="l">
+    <div class="feature">Feature 1</div>
+    <div class="feature">Feature 2</div>
+    <div class="feature">Feature 3</div>
+    <div class="feature">Feature 4</div>
+  </Grid>
+</Center>
+```
+
+---
+
+## Design Tokens in Action
+
+Center demonstrates minimal, utility-focused design with token-driven spacing:
+
+### Custom Gap Override
+
+```astro
+<Center direction="column" gap="m" style="--gap-m: 20px;">
+  <h1>Title</h1>
+  <p>Custom gap spacing</p>
+</Center>
+```
+
+### Custom Height
+
+```astro
+<Center class="custom-height">
+  <p>Centered in custom height container</p>
+</Center>
+
+<style>
+  .custom-height {
+    min-height: 400px;
+  }
+</style>
+```
+
+---
+
+## Build with AI
+
