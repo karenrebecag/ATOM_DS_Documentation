@@ -22,36 +22,58 @@ The Radio component is a single-selection control that allows users to choose ex
 
 ---
 
-## Demo
+## Playground
 
-:::tip[Interactive Playground]
-**[Open Radio Playground →](/playground/radio)**
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
 
-View all Radio states, sizes, and error handling in an isolated environment.
-:::
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-radio--playground" height={300} title="Radio interactive playground" />
 
 ---
 
 ## Installation
 
-```bash
-# Install component package
-pnpm add @atomchat.io/components-astro
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import CopyPromptButton from '../../../../components/CopyPromptButton.astro';
+import FetchedCode from '../../../../components/FetchedCode.astro';
 
-# Install required dependencies
-pnpm add @atomchat.io/css @atomchat.io/tokens
-
-# Optional: For animations
-pnpm add @atomchat.io/animations gsap
-```
-
-**CSS Import (required):**
-```astro
----
-// In your layout or page
-import '@atomchat.io/css';
----
-```
+<Tabs syncKey="framework">
+  <TabItem label="Astro" icon="astro">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-astro @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Radio" framework="astro" />
+    **Dependencies:** [`@atomchat.io/components-astro`](https://npmjs.com/package/@atomchat.io/components-astro) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css)
+  </TabItem>
+  <TabItem label="React" icon="seti:react">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-react @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Radio" framework="react" />
+    **Dependencies:** [`@atomchat.io/components-react`](https://npmjs.com/package/@atomchat.io/components-react) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`react`](https://npmjs.com/package/react)
+  </TabItem>
+  <TabItem label="Vue" icon="seti:vue">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-vue @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Radio" framework="vue" />
+    **Dependencies:** [`@atomchat.io/components-vue`](https://npmjs.com/package/@atomchat.io/components-vue) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`vue`](https://npmjs.com/package/vue)
+  </TabItem>
+  <TabItem label="Angular" icon="simple-icons:angular">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-angular @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Radio" framework="angular" />
+    **Dependencies:** [`@atomchat.io/components-angular`](https://npmjs.com/package/@atomchat.io/components-angular) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`@angular/core`](https://npmjs.com/package/@angular/core)
+  </TabItem>
+</Tabs>
 
 ---
 
@@ -164,304 +186,6 @@ The Radio component has two rendering modes:
 ```
 
 ---
-
-## Framework Support
-
-The Radio component is available for multiple frameworks with shared design tokens, styles, and behavior.
-
-import FrameworkSwitcher from '../../../../components/FrameworkSwitcher.astro';
-
-<FrameworkSwitcher
-  frameworks={[
-    { name: 'astro', label: 'Astro', icon: 'https://svgl.app/library/astro-icon-dark.svg' },
-    { name: 'react', label: 'React', icon: 'https://svgl.app/library/react_dark.svg' },
-    { name: 'nextjs', label: 'Next.js', icon: 'https://svgl.app/library/nextjs_icon_dark.svg' },
-    { name: 'vue', label: 'Vue', icon: 'https://svgl.app/library/vue.svg' },
-    { name: 'angular', label: 'Angular', icon: 'https://svgl.app/library/angular.svg' },
-  ]}
->
-  <div data-framework="astro" data-active="true">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-astro @atomchat.io/css
-```
-
-### Usage
-
-```astro
----
-import { Radio } from '@atomchat.io/components-astro';
-import '@atomchat.io/css';
----
-
-<fieldset>
-  <legend>Select an option</legend>
-
-  <Radio name="choice" value="option1" size="m">
-    Option 1
-  </Radio>
-
-  <Radio name="choice" value="option2" size="m" supportiveText="This option includes extra features">
-    Option 2
-  </Radio>
-
-  <Radio
-    name="choice"
-    value="option3"
-    size="m"
-    error
-    errorText="This option is unavailable"
-  >
-    Option 3 (Unavailable)
-  </Radio>
-</fieldset>
-```
-
-  </div>
-
-  <div data-framework="react">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-react @atomchat.io/css
-```
-
-### Usage
-
-```tsx
-import { Radio } from '@atomchat.io/components-react';
-import '@atomchat.io/css';
-import { useState } from 'react';
-
-function Example() {
-  const [selected, setSelected] = useState('option1');
-
-  return (
-    <fieldset>
-      <legend>Select an option</legend>
-
-      <Radio
-        name="choice"
-        value="option1"
-        size="m"
-        checked={selected === 'option1'}
-        onChange={(e) => setSelected(e.target.value)}
-      >
-        Option 1
-      </Radio>
-
-      <Radio
-        name="choice"
-        value="option2"
-        size="m"
-        supportiveText="This option includes extra features"
-        checked={selected === 'option2'}
-        onChange={(e) => setSelected(e.target.value)}
-      >
-        Option 2
-      </Radio>
-
-      <Radio
-        name="choice"
-        value="option3"
-        size="m"
-        error
-        errorText="This option is unavailable"
-        checked={selected === 'option3'}
-        onChange={(e) => setSelected(e.target.value)}
-      >
-        Option 3 (Unavailable)
-      </Radio>
-    </fieldset>
-  );
-}
-```
-
-  </div>
-
-  <div data-framework="nextjs">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-react @atomchat.io/css
-```
-
-### Usage
-
-```tsx
-'use client';
-
-import { Radio } from '@atomchat.io/components-react';
-import '@atomchat.io/css';
-import { useState } from 'react';
-
-export default function Example() {
-  const [selected, setSelected] = useState('option1');
-
-  return (
-    <fieldset>
-      <legend>Select an option</legend>
-
-      <Radio
-        name="choice"
-        value="option1"
-        size="m"
-        checked={selected === 'option1'}
-        onChange={(e) => setSelected(e.target.value)}
-      >
-        Option 1
-      </Radio>
-
-      <Radio
-        name="choice"
-        value="option2"
-        size="m"
-        supportiveText="This option includes extra features"
-        checked={selected === 'option2'}
-        onChange={(e) => setSelected(e.target.value)}
-      >
-        Option 2
-      </Radio>
-
-      <Radio
-        name="choice"
-        value="option3"
-        size="m"
-        error
-        errorText="This option is unavailable"
-        checked={selected === 'option3'}
-        onChange={(e) => setSelected(e.target.value)}
-      >
-        Option 3 (Unavailable)
-      </Radio>
-    </fieldset>
-  );
-}
-```
-
-  </div>
-
-  <div data-framework="vue">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-vue @atomchat.io/css
-```
-
-### Usage
-
-```vue
-<script setup>
-import { Radio } from '@atomchat.io/components-vue';
-import '@atomchat.io/css';
-import { ref } from 'vue';
-
-const selected = ref('option1');
-</script>
-
-<template>
-  <fieldset>
-    <legend>Select an option</legend>
-
-    <Radio
-      name="choice"
-      value="option1"
-      size="m"
-      :checked="selected === 'option1'"
-      @change="selected = 'option1'"
-    >
-      Option 1
-    </Radio>
-
-    <Radio
-      name="choice"
-      value="option2"
-      size="m"
-      supportiveText="This option includes extra features"
-      :checked="selected === 'option2'"
-      @change="selected = 'option2'"
-    >
-      Option 2
-    </Radio>
-
-    <Radio
-      name="choice"
-      value="option3"
-      size="m"
-      error
-      errorText="This option is unavailable"
-      :checked="selected === 'option3'"
-      @change="selected = 'option3'"
-    >
-      Option 3 (Unavailable)
-    </Radio>
-  </fieldset>
-</template>
-```
-
-  </div>
-
-  <div data-framework="angular">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-angular @atomchat.io/css
-```
-
-### Usage
-
-```typescript
-import { RadioComponent } from '@atomchat.io/components-angular';
-import '@atomchat.io/css';
-import { Component, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-
-@Component({
-  imports: [RadioComponent, FormsModule],
-  template: `
-    <fieldset>
-      <legend>Select an option</legend>
-
-      <atom-radio
-        name="choice"
-        value="option1"
-        size="m"
-        [(ngModel)]="selected"
-      >
-        Option 1
-      </atom-radio>
-
-      <atom-radio
-        name="choice"
-        value="option2"
-        size="m"
-        supportiveText="This option includes extra features"
-        [(ngModel)]="selected"
-      >
-        Option 2
-      </atom-radio>
-
-      <atom-radio
-        name="choice"
-        value="option3"
-        size="m"
-        [error]="true"
-        errorText="This option is unavailable"
-        [(ngModel)]="selected"
-      >
-        Option 3 (Unavailable)
-      </atom-radio>
-    </fieldset>
-  `
-})
-export class ExampleComponent {
-  selected = signal('option1');
-}
-```
-
-  </div>
-</FrameworkSwitcher>
 
 ---
 

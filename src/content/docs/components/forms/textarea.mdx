@@ -1,0 +1,237 @@
+---
+title: TextArea
+description: Multi-line text input with custom scrollbar, character counter, and full state coverage.
+---
+
+## Overview
+
+The TextArea component is a multi-line text input with built-in custom scrollbar, supportive text, character counter, and the same state system as TextField (filled, error, disabled). Available in two sizes: m and xl.
+
+**Key Features:**
+- 2 sizes (m, xl)
+- Custom scrollbar (hidden native scrollbar)
+- Supportive text with icon
+- Character counter
+- States: default · hover · focus · filled · error · disabled
+- `resize: none` — height controlled via tokens
+- Fully token-driven
+
+---
+
+## Playground
+
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
+
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-textarea--playground" height={300} title="TextArea interactive playground" />
+
+---
+
+## Installation
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import CopyPromptButton from '../../../../components/CopyPromptButton.astro';
+import FetchedCode from '../../../../components/FetchedCode.astro';
+
+<Tabs syncKey="framework">
+  <TabItem label="Astro" icon="astro">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-astro @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="TextArea" framework="astro" />
+    **Dependencies:** [`@atomchat.io/components-astro`](https://npmjs.com/package/@atomchat.io/components-astro) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css)
+  </TabItem>
+  <TabItem label="React" icon="seti:react">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-react @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="TextArea" framework="react" />
+    **Dependencies:** [`@atomchat.io/components-react`](https://npmjs.com/package/@atomchat.io/components-react) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`react`](https://npmjs.com/package/react)
+  </TabItem>
+  <TabItem label="Vue" icon="seti:vue">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-vue @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="TextArea" framework="vue" />
+    **Dependencies:** [`@atomchat.io/components-vue`](https://npmjs.com/package/@atomchat.io/components-vue) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`vue`](https://npmjs.com/package/vue)
+  </TabItem>
+  <TabItem label="Angular" icon="simple-icons:angular">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-angular @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="TextArea" framework="angular" />
+    **Dependencies:** [`@atomchat.io/components-angular`](https://npmjs.com/package/@atomchat.io/components-angular) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`@angular/core`](https://npmjs.com/package/@angular/core)
+  </TabItem>
+</Tabs>
+
+---
+
+## Anatomy
+
+```
+┌───────────────────────────────┐
+│ .textarea                     │
+│  .textarea__label             │  ← Label
+│  .textarea__field             │  ← Container (border, fixed height)
+│  │  .textarea__input          │  ← Native <textarea> (no resize)
+│  │  .textarea__scrollbar      │  ← Custom scrollbar track
+│  │    .textarea__scrollbar-thumb │
+│  .textarea__bottom            │
+│  │  .textarea__supportive     │  ← Helper text
+│  │  .textarea__counter        │  ← Character counter
+└───────────────────────────────┘
+```
+
+**DOM Structure:**
+```html
+<div class="textarea textarea--m">
+  <label class="textarea__label">Message</label>
+  <div class="textarea__field">
+    <textarea class="textarea__input" placeholder="Write your message..."></textarea>
+    <div class="textarea__scrollbar">
+      <div class="textarea__scrollbar-thumb"></div>
+    </div>
+  </div>
+  <div class="textarea__bottom">
+    <span class="textarea__supportive">
+      <span class="textarea__supportive-text">Describe your issue in detail</span>
+    </span>
+    <span class="textarea__counter">0 / 500</span>
+  </div>
+</div>
+```
+
+---
+
+## API Reference
+
+### Modifier Classes
+
+| Class | Description |
+|-------|-------------|
+| `textarea--m` | Medium size |
+| `textarea--xl` | Extra large size |
+| `textarea--filled` | Applied when textarea has content |
+| `textarea--error` | Error state |
+| `textarea--disabled` | Disabled state |
+
+### States
+
+| State | Trigger | Visual |
+|-------|---------|--------|
+| **Default** | Initial | Gray border |
+| **Hover** | `:hover` | Darker border |
+| **Focus** | `:focus` | Primary border + shadow |
+| **Filled** | `.textarea--filled` | Filled border color |
+| **Error** | `.textarea--error` | Red border |
+| **Disabled** | `.textarea--disabled` | Muted bg, no-drop cursor |
+
+---
+
+## Design Tokens
+
+```css
+/* Shared form-field tokens (same as TextField) */
+--form-fields-bg-enabled / --form-fields-bg-disabled
+--form-fields-border-enabled / hovered / focused / filled / disabled / error
+--form-fields-fg-enabled / hovered / focused / filled / disabled
+--form-fields-shadow-focus / --form-fields-shadow-focus-error
+
+/* TextArea-specific */
+--textarea-gap-vertical
+--textarea-border-radius
+--textarea-border-width
+--textarea-height-m             /* Fixed height for medium */
+--textarea-height-xl            /* Fixed height for xl */
+--textarea-padding-y-m / xl
+--textarea-padding-x-m / xl
+--textarea-font-size-m / xl
+--textarea-scrollbar-width
+--textarea-scrollbar-radius
+```
+
+---
+
+## Usage
+
+### Basic TextArea
+
+```html
+<div class="textarea textarea--m">
+  <label class="textarea__label">Bio</label>
+  <div class="textarea__field">
+    <textarea class="textarea__input" placeholder="Tell us about yourself..."></textarea>
+    <div class="textarea__scrollbar">
+      <div class="textarea__scrollbar-thumb"></div>
+    </div>
+  </div>
+</div>
+```
+
+### With Counter
+
+```html
+<div class="textarea textarea--m">
+  <label class="textarea__label">Message</label>
+  <div class="textarea__field">
+    <textarea class="textarea__input" maxlength="500"></textarea>
+    <div class="textarea__scrollbar">
+      <div class="textarea__scrollbar-thumb"></div>
+    </div>
+  </div>
+  <div class="textarea__bottom">
+    <span class="textarea__supportive">
+      <span class="textarea__supportive-text">Be concise and clear</span>
+    </span>
+    <span class="textarea__counter" id="char-counter">0 / 500</span>
+  </div>
+</div>
+```
+
+### Error State
+
+```html
+<div class="textarea textarea--m textarea--error textarea--filled">
+  <label class="textarea__label">Feedback</label>
+  <div class="textarea__field">
+    <textarea class="textarea__input">x</textarea>
+    <div class="textarea__scrollbar">
+      <div class="textarea__scrollbar-thumb"></div>
+    </div>
+  </div>
+  <div class="textarea__bottom">
+    <span class="textarea__supportive">
+      <span class="textarea__supportive-text">Please provide at least 20 characters</span>
+    </span>
+  </div>
+</div>
+```
+
+---
+
+## Accessibility
+
+```html
+<label class="textarea__label" for="message">Message</label>
+<div class="textarea__field">
+  <textarea
+    class="textarea__input"
+    id="message"
+    aria-describedby="message-hint"
+    rows="4"
+  ></textarea>
+  ...
+</div>
+<div class="textarea__bottom">
+  <span class="textarea__supportive" id="message-hint">
+    <span class="textarea__supportive-text">Maximum 500 characters</span>
+  </span>
+</div>
+```

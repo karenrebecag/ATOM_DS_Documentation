@@ -1,0 +1,63 @@
+import { buildPage, VERSIONS } from '../shared.js';
+
+export const filename = 'chip.html';
+
+export function generate(versions = VERSIONS) {
+  return buildPage({
+    versions,
+    extraStyle: `
+    .sb-preview { min-height: 80px; display: flex; align-items: center; justify-content: center; width: 100%; border-radius: 10px; background: var(--bg-surface, #f9fafb); border: 1px solid var(--border-subtle, #e5e7eb); padding: 16px; }`,
+    body: `  <div class="sb-playground">
+    <div class="sb-preview" id="chip-preview"></div>
+    <hr class="sb-separator"/>
+    <div class="sb-controls">
+      <div class="sb-control-row">
+        <label>Variant</label>
+        <div class="sb-chips" id="chip-variants">
+          <button class="sb-chip active" data-value="filled">filled</button>
+          <button class="sb-chip" data-value="outlined">outlined</button>
+        </div>
+      </div>
+      <div class="sb-control-row">
+        <label>Size</label>
+        <div class="sb-chips" id="chip-sizes">
+          <button class="sb-chip" data-value="xs">xs</button>
+          <button class="sb-chip" data-value="s">s</button>
+          <button class="sb-chip active" data-value="m">m</button>
+          <button class="sb-chip" data-value="l">l</button>
+          <button class="sb-chip" data-value="xl">xl</button>
+        </div>
+      </div>
+      <div class="sb-control-row">
+        <label>States</label>
+        <div class="sb-chips">
+          <button class="sb-chip-bool" id="chip-selected">Selected</button>
+          <button class="sb-chip-bool" id="chip-error">Error</button>
+          <button class="sb-chip-bool" id="chip-disabled">Disabled</button>
+          <button class="sb-chip-bool" id="chip-dismissible">Dismissible</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+  (function(){
+    const filterIcon='<svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><path d="M2 4h12v1.5L9.5 9v5l-3-1.5V9L2 5.5V4Z"/></svg>';
+    const closeIcon='<svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><path d="M12 4L4 12M4 4l8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+    let s={variant:'filled',size:'m',selected:false,error:false,disabled:false,dismissible:false};
+    function update(){
+      const cls=['chip',\`chip--\${s.variant}\`,\`chip--\${s.size}\`,s.selected?'chip--selected':'',s.error?'chip--error':'',s.disabled?'chip--disabled':''].filter(Boolean).join(' ');
+      const disAttr=s.disabled?'disabled aria-disabled="true"':'';
+      const dismissBtn=s.dismissible?\`<button class="chip__dismiss" type="button" aria-label="Remove" \${disAttr}>\${closeIcon}</button>\`:'';
+      document.getElementById('chip-preview').innerHTML=\`<button class="\${cls}" data-chip type="button" \${s.selected?'aria-pressed="true"':''} \${disAttr}><span class="chip__icon">\${filterIcon}</span><span class="chip__label">Filter chip</span>\${dismissBtn}</button>\`;
+    }
+    function chips(id,key){document.getElementById(id).addEventListener('click',e=>{const c=e.target.closest('.sb-chip');if(!c)return;s[key]=c.dataset.value;document.querySelectorAll(\`#\${id} .sb-chip\`).forEach(x=>x.classList.remove('active'));c.classList.add('active');update();});}
+    function bool(id,key){document.getElementById(id).addEventListener('click',e=>{s[key]=!s[key];e.currentTarget.classList.toggle('active',s[key]);update();});}
+    chips('chip-variants','variant');chips('chip-sizes','size');
+    bool('chip-selected','selected');bool('chip-error','error');bool('chip-disabled','disabled');bool('chip-dismissible','dismissible');
+    update();
+  })();
+  </script>`,
+  });
+}
+
+export default { filename, generate };

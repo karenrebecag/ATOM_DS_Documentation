@@ -1,0 +1,169 @@
+---
+title: Nav Link
+description: Inline navigation link with five states — inactive, hover, active, focused, and disabled.
+---
+
+## Overview
+
+NavLink is a minimal navigation anchor styled for horizontal navbars and menus. It uses a bottom border to indicate hover and active states, bold weight for active, and a focus ring for keyboard navigation.
+
+**Key Features:**
+- 5 states: inactive · hover · active · focused · disabled
+- Bottom border on hover and active
+- Bold weight on active
+- `data-active="true"` or `.nav-link--active` for active state
+- `aria-disabled` or `.nav-link--disabled` for disabled
+- Respects `prefers-reduced-motion`
+
+---
+
+## Playground
+
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
+
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-navlink--playground" height={300} title="NavLink interactive playground" />
+
+---
+
+## Installation
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import CopyPromptButton from '../../../../components/CopyPromptButton.astro';
+import FetchedCode from '../../../../components/FetchedCode.astro';
+
+<Tabs syncKey="framework">
+  <TabItem label="Astro" icon="astro">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-astro @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="NavLink" framework="astro" />
+    **Dependencies:** [`@atomchat.io/components-astro`](https://npmjs.com/package/@atomchat.io/components-astro) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css)
+  </TabItem>
+  <TabItem label="React" icon="seti:react">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-react @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="NavLink" framework="react" />
+    **Dependencies:** [`@atomchat.io/components-react`](https://npmjs.com/package/@atomchat.io/components-react) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`react`](https://npmjs.com/package/react)
+  </TabItem>
+  <TabItem label="Vue" icon="seti:vue">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-vue @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="NavLink" framework="vue" />
+    **Dependencies:** [`@atomchat.io/components-vue`](https://npmjs.com/package/@atomchat.io/components-vue) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`vue`](https://npmjs.com/package/vue)
+  </TabItem>
+  <TabItem label="Angular" icon="simple-icons:angular">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-angular @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="NavLink" framework="angular" />
+    **Dependencies:** [`@atomchat.io/components-angular`](https://npmjs.com/package/@atomchat.io/components-angular) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`@angular/core`](https://npmjs.com/package/@angular/core)
+  </TabItem>
+</Tabs>
+
+---
+
+## Anatomy
+
+```html
+<a class="nav-link" href="/docs">Documentation</a>
+
+<!-- Active -->
+<a class="nav-link nav-link--active" href="/components" data-active="true">
+  Components
+</a>
+
+<!-- Disabled -->
+<a class="nav-link nav-link--disabled" aria-disabled="true">
+  Coming Soon
+</a>
+```
+
+---
+
+## API Reference
+
+### States
+
+| Class / Attribute | State | Visual |
+|-------------------|-------|--------|
+| *(none)* | Default | No border |
+| `:hover` | Hover | Bottom border `--stroke-xs` |
+| `.nav-link--active` / `data-active="true"` | Active | Bottom border + bold |
+| `:focus-visible` | Focused | Blue border-radius outline |
+| `.nav-link--disabled` / `aria-disabled="true"` | Disabled | `opacity-20`, no pointer |
+
+---
+
+## Design Tokens
+
+```css
+--fg-primary                       /* Text and border color */
+--font-family-titles
+--text-body                        /* Font size */
+--font-weight-medium               /* Default weight */
+--font-weight-bold                 /* Active weight */
+--line-height-body
+--stroke-xs                        /* Bottom border width */
+--border-interactive-link-focused  /* Focus outline color */
+--radius-s                         /* Focus border radius */
+--opacity-20                       /* Disabled opacity */
+--duration-quarter                 /* Transition duration */
+```
+
+---
+
+## Usage
+
+### Horizontal Nav Bar
+
+```html
+<nav aria-label="Main navigation" style="display: flex; gap: var(--m); align-items: center;">
+  <a class="nav-link" href="/">Home</a>
+  <a class="nav-link nav-link--active" href="/components" data-active="true"
+    aria-current="page">Components</a>
+  <a class="nav-link" href="/foundations">Foundations</a>
+  <a class="nav-link nav-link--disabled" aria-disabled="true">Changelog</a>
+</nav>
+```
+
+### With JS Active State
+
+```javascript
+const links = document.querySelectorAll('.nav-link');
+const current = window.location.pathname;
+
+links.forEach(link => {
+  const isActive = link.getAttribute('href') === current;
+  link.classList.toggle('nav-link--active', isActive);
+  link.dataset.active = isActive;
+  if (isActive) link.setAttribute('aria-current', 'page');
+});
+```
+
+---
+
+## Accessibility
+
+- Use `aria-current="page"` on the active link
+- Disabled links: `aria-disabled="true"` + `tabindex="-1"` to remove from tab order
+- Wrap in `<nav aria-label="...">` for landmark recognition
+
+```html
+<nav aria-label="Primary navigation">
+  <a class="nav-link" href="/" aria-current="page">Home</a>
+  <a class="nav-link" href="/docs">Docs</a>
+  <a class="nav-link nav-link--disabled" aria-disabled="true" tabindex="-1">
+    API (soon)
+  </a>
+</nav>
+```

@@ -7,6 +7,10 @@ description: Flexible body text component with truncation, text wrapping, and op
 
 The Text component renders flexible typography elements for body text, captions, labels, and auxiliary content. It supports single-line truncation, multi-line clamping, text balancing, and optional GSAP animations.
 
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
+
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=typography-text--playground" height={300} title="Text interactive playground" />
+
 ### Key Features
 
 - **Flexible Element Types**: Render as `<p>`, `<span>`, `<div>`, or `<li>` for semantic variety
@@ -21,27 +25,48 @@ The Text component renders flexible typography elements for body text, captions,
 
 ## Installation
 
-To use the Text component in your project, install it from the Atom Design System package:
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import CopyPromptButton from '../../../../components/CopyPromptButton.astro';
+import FetchedCode from '../../../../components/FetchedCode.astro';
 
-```bash
-npm install @atomchat.io/components-astro
-# or
-pnpm add @atomchat.io/components-astro
-```
-
-Then import and include the CSS tokens and GSAP library (for animations):
-
-```astro
----
-import { Text } from '@atomchat.io/components-astro'
-import '@atomchat.io/components-astro/dist/tokens.css'
-
-// Optional: For animations
-import gsap from 'gsap'
-import SplitText from 'gsap/SplitText'
-gsap.registerPlugin(SplitText)
----
-```
+<Tabs syncKey="framework">
+  <TabItem label="Astro" icon="astro">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-astro @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Text" framework="astro" />
+    **Dependencies:** [`@atomchat.io/components-astro`](https://npmjs.com/package/@atomchat.io/components-astro) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css)
+  </TabItem>
+  <TabItem label="React" icon="seti:react">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-react @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Text" framework="react" />
+    **Dependencies:** [`@atomchat.io/components-react`](https://npmjs.com/package/@atomchat.io/components-react) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`react`](https://npmjs.com/package/react)
+  </TabItem>
+  <TabItem label="Vue" icon="seti:vue">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-vue @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Text" framework="vue" />
+    **Dependencies:** [`@atomchat.io/components-vue`](https://npmjs.com/package/@atomchat.io/components-vue) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`vue`](https://npmjs.com/package/vue)
+  </TabItem>
+  <TabItem label="Angular" icon="simple-icons:angular">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-angular @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Text" framework="angular" />
+    **Dependencies:** [`@atomchat.io/components-angular`](https://npmjs.com/package/@atomchat.io/components-angular) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`@angular/core`](https://npmjs.com/package/@angular/core)
+  </TabItem>
+</Tabs>
 
 ## Anatomy
 
@@ -79,89 +104,6 @@ The Text component renders a flexible element with typography modifiers:
 - `data-text-delay` - Animation delay in seconds
 - `style="--text-clamp-lines: N"` - Custom property for line clamping
 - `style="color: [value]"` - Applied for custom colors
-
-## Framework Support
-
-Text is available across multiple frameworks. Choose your preferred implementation:
-
-### Astro
-
-```astro
----
-import { Text } from '@atomchat.io/components-astro'
----
-
-<Text>Regular paragraph text.</Text>
-<Text size="caption" color="var(--fg-secondary)">Caption text</Text>
-<Text truncate={3}>Long text clamped to 3 lines...</Text>
-<Text as="span" animate="fade-up-load">Animated inline text</Text>
-```
-
-### React
-
-```jsx
-import { Text } from '@atomchat.io/components-astro/react'
-
-export function Article() {
-  return (
-    <>
-      <Text size="body">Main article content paragraph.</Text>
-      <Text size="caption" color="var(--fg-secondary)">
-        Metadata information
-      </Text>
-      <Text truncate={2}>Long description text...</Text>
-    </>
-  )
-}
-```
-
-### Next.js
-
-```tsx
-import { Text } from '@atomchat.io/components-astro'
-
-export default function Card() {
-  return (
-    <>
-      <Text size="body">Card description text.</Text>
-      <Text truncate as="span">Long title that might overflow...</Text>
-    </>
-  )
-}
-```
-
-### Vue
-
-```vue
-<template>
-  <div>
-    <Text size="body">Paragraph content</Text>
-    <Text as="span" size="caption">Secondary information</Text>
-    <Text truncate="{2}">Clamped to 2 lines</Text>
-  </div>
-</template>
-
-<script setup lang="ts">
-import { Text } from '@atomchat.io/components-astro/vue'
-</script>
-```
-
-### Angular
-
-```typescript
-import { TextComponent } from '@atomchat.io/components-astro/angular'
-
-@Component({
-  selector: 'app-description',
-  template: `
-    <text size="body">Main description text</text>
-    <text as="span" size="caption">Auxiliary information</text>
-    <text [truncate]="3">Multi-line clamped text</text>
-  `,
-  imports: [TextComponent]
-})
-export class DescriptionComponent {}
-```
 
 ## API Reference
 

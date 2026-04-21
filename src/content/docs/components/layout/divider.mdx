@@ -16,24 +16,41 @@ The Divider component is a semantic `<hr>` element that creates visual separatio
 - **Lightweight**: Minimal markup, single-element component
 - **Flexible**: Works in any layout context
 
+## Playground
+
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
+
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-divider--playground" height={300} title="Divider interactive playground" />
+
+---
+
 ## Installation
 
-To use the Divider component in your project, install it from the Atom Design System package:
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import FetchedCode from '../../../../components/FetchedCode.astro';
 
-```bash
-npm install @atomchat.io/components-astro
-# or
-pnpm add @atomchat.io/components-astro
-```
+<Tabs syncKey="framework">
+  <TabItem label="Astro" icon="astro">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-astro @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Divider" framework="astro" />
+    **Dependencies:** [`@atomchat.io/components-astro`](https://npmjs.com/package/@atomchat.io/components-astro) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css)
+  </TabItem>
+  <TabItem label="React" icon="seti:react">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-react @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Divider" framework="react" />
+    **Dependencies:** [`@atomchat.io/components-react`](https://npmjs.com/package/@atomchat.io/components-react) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css)
+  </TabItem>
+</Tabs>
 
-Then import and include the CSS tokens:
-
-```astro
 ---
-import { Divider } from '@atomchat.io/components-astro'
-import '@atomchat.io/components-astro/dist/tokens.css'
----
-```
 
 ## Anatomy
 

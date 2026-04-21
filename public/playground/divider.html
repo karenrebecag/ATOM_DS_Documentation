@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@2.2.0/build/css/tokens.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/css@1.2.0/dist/fonts.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/css@1.2.0/dist/atom.css"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; }
+    body { padding: 0; font-family: system-ui, -apple-system, sans-serif; background: transparent; display: flex; align-items: flex-start; justify-content: center; }
+    .sb-playground { display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 28px 24px; width: 100%; max-width: 560px; }
+    .sb-separator { width: 100%; border: none; border-top: 1px solid var(--border-subtle, #e5e7eb); }
+    .sb-controls { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+    .sb-control-row { display: flex; align-items: center; gap: 12px; }
+    .sb-control-row label { font-size: 11px; font-weight: 600; color: var(--fg-subtle, #6b7280); width: 70px; flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.05em; }
+    .sb-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+    .sb-chip { padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 500; border: 1px solid var(--border-default, #e5e7eb); background: var(--bg-primary, #fff); cursor: pointer; transition: border-color 0.12s, background 0.12s, color 0.12s; color: var(--fg-default, #374151); }
+    .sb-chip:hover { border-color: #9ca3af; }
+    .sb-chip.active { background: var(--fg-default, #111); color: var(--bg-primary, #fff); border-color: var(--fg-default, #111); }
+    .sb-chip-bool { padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 500; border: 1px solid var(--border-default, #e5e7eb); background: var(--bg-primary, #fff); cursor: pointer; transition: border-color 0.12s, background 0.12s, color 0.12s; color: var(--fg-default, #374151); }
+    .sb-chip-bool:hover { border-color: #9ca3af; }
+    .sb-chip-bool.active { background: #ef4444; color: #fff; border-color: #ef4444; }
+    .sb-preview { min-height: 80px; display: flex; flex-direction: column; gap: 16px; justify-content: center; width: 100%; border-radius: 10px; background: var(--bg-surface, #f9fafb); border: 1px solid var(--border-subtle, #e5e7eb); padding: 16px; }
+    .sb-range-row { display: flex; align-items: center; gap: 8px; }
+    .sb-range-val { font-size: 12px; font-weight: 600; color: var(--fg-default, #374151); min-width: 36px; }
+    input[type="range"] { cursor: pointer; width: 160px; }
+    .preview-text { font-size: 14px; color: var(--fg-default, #374151); }</style>
+</head>
+<body>
+  <div class="sb-playground">
+    <div class="sb-preview" id="div-preview">
+      <p class="preview-text">Above divider content</p>
+      <hr class="divider" data-divider id="div-el" style="opacity:1"/>
+      <p class="preview-text">Below divider content</p>
+    </div>
+    <hr class="sb-separator"/>
+    <div class="sb-controls">
+      <div class="sb-control-row">
+        <label>Opacity</label>
+        <div class="sb-range-row">
+          <input type="range" id="div-opacity" min="0" max="1" step="0.05" value="1"/>
+          <span class="sb-range-val" id="div-opacity-val">1</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+  (function(){
+    const slider=document.getElementById('div-opacity');
+    const val=document.getElementById('div-opacity-val');
+    const el=document.getElementById('div-el');
+    slider.addEventListener('input',()=>{
+      const v=parseFloat(slider.value).toFixed(2);
+      val.textContent=v;
+      el.style.opacity=v;
+    });
+  })();
+  </script>
+</body>
+</html>

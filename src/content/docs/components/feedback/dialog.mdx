@@ -1,0 +1,218 @@
+---
+title: Dialog
+description: Composable modal dialog with backdrop, headline variants, content area, and action footer.
+---
+
+## Overview
+
+The Dialog component is a composable modal system with a separate backdrop layer. The headline supports two alignment variants (left and center). Actions can stretch to fill or hug the content. CSS animations handle entrance without JavaScript.
+
+**Key Features:**
+- 3 sizes (s, m, l)
+- Two headline variants: left-aligned and centered
+- Center headline: icon + title + supporting text
+- Dialog actions: hug (right-aligned) or fill (stretched)
+- CSS entrance animations (`dialog-enter`, `backdrop-enter`)
+- Centered positioning utility via `dialog--centered`
+- Fully token-driven (z-index, shadows, bg, borders)
+
+---
+
+## Playground
+
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
+
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-dialog--playground" height={300} title="Dialog interactive playground" />
+
+---
+
+## Installation
+
+```bash
+pnpm add @atomchat.io/css
+```
+
+---
+
+## Anatomy
+
+```
+┌─────────────────────────────────────┐
+│ .dialog-backdrop                    │  ← Fixed overlay
+│  ┌────────────────────────────────┐ │
+│  │ .dialog .dialog--m             │ │
+│  │  .dialog-headline--left        │ │  ← OR --center
+│  │  │  .dialog-headline__title    │ │
+│  │  │  .dialog-headline__close    │ │
+│  │  .dialog-content               │ │  ← Custom content
+│  │  .dialog-actions--hug          │ │  ← OR --fill
+│  │  │  <button> Cancel            │ │
+│  │  │  <button> Confirm           │ │
+│  └────────────────────────────────┘ │
+└─────────────────────────────────────┘
+```
+
+---
+
+## API Reference
+
+### Dialog Root
+
+| Class | Description |
+|-------|-------------|
+| `.dialog` | Dialog surface |
+| `.dialog--s/m/l` | Width variant |
+| `.dialog--centered` | Fixed centering (50% / 50%) |
+| `.dialog--visible` | Triggers entrance animation |
+
+### Backdrop
+
+| Class | Description |
+|-------|-------------|
+| `.dialog-backdrop` | Fixed full-screen overlay |
+| `.dialog-backdrop--visible` | Triggers fade-in |
+| `.dialog-backdrop--hidden` | `display: none` |
+
+### Headline
+
+| Class | Description |
+|-------|-------------|
+| `.dialog-headline` | Header wrapper |
+| `.dialog-headline--left` | Icon + title row |
+| `.dialog-headline--center` | Centered icon + title + supporting |
+| `.dialog-headline__icon` | Decorative icon (center variant) |
+| `.dialog-headline__title` | Dialog title |
+| `.dialog-headline__supporting` | Subtitle (center variant only) |
+| `.dialog-headline__back` | Back button |
+| `.dialog-headline__close` | Close button |
+
+### Actions
+
+| Class | Description |
+|-------|-------------|
+| `.dialog-actions` | Footer row |
+| `.dialog-actions--hug` | Right-aligned buttons |
+| `.dialog-actions--fill` | Stretched full-width buttons |
+| `.dialog-actions__counter` | Left-side counter text |
+
+---
+
+## Design Tokens
+
+```css
+--dialog-bg-default        /* Dialog surface bg */
+--dialog-border-default    /* Dialog border */
+--dialog-fg-primary        /* Title color */
+--dialog-fg-secondary      /* Supporting + counter color */
+--dialog-width-s/m/l       /* Width per size */
+--elevation-dialog         /* Box shadow */
+--backdrop-overlay         /* Backdrop color (rgba) */
+--z-dialog                 /* z-index */
+--z-dialog-backdrop        /* z-index */
+```
+
+---
+
+## Usage
+
+### Confirmation Dialog (Left Headline)
+
+```html
+<div class="dialog-backdrop dialog-backdrop--visible"></div>
+<div class="dialog dialog--m dialog--centered dialog--visible">
+
+  <div class="dialog-headline dialog-headline--left">
+    <p class="dialog-headline__title">Delete Item</p>
+    <button class="icon-button icon-button--tertiary icon-button--s dialog-headline__close"
+      aria-label="Close dialog">
+      <!-- × icon -->
+    </button>
+  </div>
+
+  <div class="dialog-content" style="padding: var(--m);">
+    <p>This action cannot be undone. The item will be permanently removed.</p>
+  </div>
+
+  <div class="dialog-actions dialog-actions--hug">
+    <button class="button button--secondary button--m">Cancel</button>
+    <button class="button button--danger-primary button--m">Delete</button>
+  </div>
+
+</div>
+```
+
+### Centered Headline Dialog
+
+```html
+<div class="dialog dialog--s dialog--centered dialog--visible">
+
+  <div class="dialog-headline dialog-headline--center">
+    <div class="dialog-headline__icon">
+      <!-- icon -->
+    </div>
+    <p class="dialog-headline__title">Account Created</p>
+    <p class="dialog-headline__supporting">
+      Your account is ready. You can now access all features.
+    </p>
+    <button class="icon-button icon-button--tertiary icon-button--s dialog-headline__close"
+      aria-label="Close"><!-- × --></button>
+  </div>
+
+  <div class="dialog-actions dialog-actions--fill">
+    <button class="button button--primary button--m">Get Started</button>
+  </div>
+
+</div>
+```
+
+### Multi-step with Counter
+
+```html
+<div class="dialog dialog--l dialog--centered">
+  <div class="dialog-headline dialog-headline--left">
+    <button class="dialog-headline__back icon-button icon-button--tertiary icon-button--s"
+      aria-label="Back"><!-- ← --></button>
+    <p class="dialog-headline__title">Setup Wizard</p>
+    <button class="dialog-headline__close icon-button icon-button--tertiary icon-button--s"
+      aria-label="Close"><!-- × --></button>
+  </div>
+
+  <div class="dialog-content"><!-- step content --></div>
+
+  <div class="dialog-actions dialog-actions--hug">
+    <span class="dialog-actions__counter">Step 2 of 4</span>
+    <button class="button button--secondary button--m">Back</button>
+    <button class="button button--primary button--m">Continue</button>
+  </div>
+</div>
+```
+
+---
+
+## Accessibility
+
+```html
+<div
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="dialog-title"
+  aria-describedby="dialog-desc"
+  class="dialog dialog--m dialog--centered"
+>
+  <div class="dialog-headline dialog-headline--left">
+    <p class="dialog-headline__title" id="dialog-title">Confirm Action</p>
+    <button class="dialog-headline__close" aria-label="Close dialog"><!-- × --></button>
+  </div>
+  <div class="dialog-content">
+    <p id="dialog-desc">This will permanently delete the selected items.</p>
+  </div>
+  <div class="dialog-actions dialog-actions--hug">
+    <button class="button button--secondary button--m">Cancel</button>
+    <button class="button button--danger-primary button--m">Delete</button>
+  </div>
+</div>
+```
+
+- Trap focus inside the dialog when open
+- Return focus to trigger element on close
+- `Escape` key should close the dialog

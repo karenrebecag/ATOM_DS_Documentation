@@ -1,0 +1,232 @@
+---
+title: Card
+description: Composable card system with header, body, footer, and image slot. Supports hover lift animation.
+---
+
+## Overview
+
+The Card component is a composable container built from independent sections — header, body, footer, and an optional image slot. Each section can be used independently or combined. The card supports hover lift animation via `data-card-hover`.
+
+**Key Features:**
+- Fully composable — use only the sections you need
+- Header: avatar/icon + title + subtitle + action
+- Body: headline + subhead + text + custom content slot
+- Footer: button group or tag group
+- Image slot between any two sections
+- Hover lift animation via `@atomchat.io/animations`
+- Fully token-driven
+
+---
+
+## Playground
+
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
+
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-card--playground" height={300} title="Card interactive playground" />
+
+---
+
+## Installation
+
+```bash
+pnpm add @atomchat.io/css @atomchat.io/animations gsap
+```
+
+---
+
+## Anatomy
+
+```
+┌────────────────────────────────┐
+│ .card                          │
+│  ┌──────────────────────────┐  │
+│  │ .card-header             │  │  ← Optional
+│  │  .card-header__image     │  │  ← Avatar/icon
+│  │  .card-header__text      │  │  ← Title + subtitle
+│  │  .card-header__action    │  │  ← Button/icon
+│  └──────────────────────────┘  │
+│  ┌──────────────────────────┐  │
+│  │ .card__image-slot        │  │  ← Optional image
+│  └──────────────────────────┘  │
+│  ┌──────────────────────────┐  │
+│  │ .card-body               │  │  ← Optional
+│  │  .card-body__head        │  │  ← Headline + subhead
+│  │  .card-body__text        │  │  ← Description text
+│  │  .card-body__content     │  │  ← Custom content
+│  └──────────────────────────┘  │
+│  ┌──────────────────────────┐  │
+│  │ .card-footer             │  │  ← Optional
+│  │  .card-footer--buttons   │  │  ← Right-aligned actions
+│  │  .card-footer--tags      │  │  ← Left-aligned tags
+│  └──────────────────────────┘  │
+└────────────────────────────────┘
+```
+
+---
+
+## API Reference
+
+### Card Root
+
+| Class | Description |
+|-------|-------------|
+| `.card` | Base card container |
+| `data-card-hover` | Enables hover lift animation |
+
+### Card Header
+
+| Class | Description |
+|-------|-------------|
+| `.card-header` | Header row |
+| `.card-header__content` | Image + text wrapper |
+| `.card-header__image` | Avatar/icon container |
+| `.card-header__text` | Text column |
+| `.card-header__headline` | Primary heading |
+| `.card-header__supporting` | Secondary subtitle |
+| `.card-header__action` | Trailing action slot |
+
+### Card Body
+
+| Class | Description |
+|-------|-------------|
+| `.card-body` | Content area |
+| `.card-body__head` | Headline + subhead group |
+| `.card-body__headline` | Large body heading |
+| `.card-body__subhead` | Smaller subheading |
+| `.card-body__text` | Description paragraph |
+| `.card-body__content` | Custom content slot |
+
+### Card Footer
+
+| Class | Description |
+|-------|-------------|
+| `.card-footer` | Footer row |
+| `.card-footer--buttons` | Right-aligned (for CTAs) |
+| `.card-footer--tags` | Left-aligned (for tags/chips) |
+
+### Image Slot
+
+| Class | Description |
+|-------|-------------|
+| `.card__image-slot` | Full-width image container |
+
+---
+
+## Design Tokens
+
+```css
+--card-bg-default          /* Card background */
+--card-border-default      /* Card border color */
+--card-fg-primary          /* Primary text (headline) */
+--card-fg-secondary        /* Secondary text (supporting, body) */
+```
+
+---
+
+## Usage
+
+### Simple Content Card
+
+```html
+<div class="card">
+  <div class="card-body">
+    <div class="card-body__head">
+      <p class="card-body__headline">Card Title</p>
+      <p class="card-body__subhead">Subtitle here</p>
+    </div>
+    <p class="card-body__text">
+      A brief description of the card content goes here.
+      Keep it concise and focused on the key information.
+    </p>
+  </div>
+  <div class="card-footer card-footer--buttons">
+    <button class="button button--secondary button--s">Cancel</button>
+    <button class="button button--primary button--s">Confirm</button>
+  </div>
+</div>
+```
+
+### Profile Card (Header + Body)
+
+```html
+<div class="card" data-card-hover>
+  <div class="card-header">
+    <div class="card-header__content">
+      <div class="card-header__image">
+        <div class="avatar avatar--m"><!-- avatar --></div>
+      </div>
+      <div class="card-header__text">
+        <p class="card-header__headline">Karen Ortiz</p>
+        <p class="card-header__supporting">Lead Designer</p>
+      </div>
+    </div>
+    <div class="card-header__action">
+      <button class="icon-button icon-button--tertiary icon-button--s"><!-- ··· --></button>
+    </div>
+  </div>
+  <div class="card-body">
+    <p class="card-body__text">
+      Design systems advocate with 8+ years building consistent UI at scale.
+    </p>
+  </div>
+</div>
+```
+
+### Media Card (Image + Body + Footer)
+
+```html
+<div class="card">
+  <div class="card__image-slot">
+    <img src="cover.jpg" alt="Article cover" />
+  </div>
+  <div class="card-body">
+    <div class="card-body__head">
+      <p class="card-body__headline">Getting Started with Design Tokens</p>
+    </div>
+    <p class="card-body__text">
+      Learn how to structure a scalable token system using W3C DTCG format.
+    </p>
+  </div>
+  <div class="card-footer card-footer--tags">
+    <span class="tag tag--neutral">Tokens</span>
+    <span class="tag tag--neutral">Design Systems</span>
+  </div>
+</div>
+```
+
+---
+
+## Animations
+
+The Card supports hover lift via `data-card-hover` and `initCardHover()` from `@atomchat.io/animations`.
+
+```typescript
+import { initCardHover } from '@atomchat.io/animations/hover';
+
+document.addEventListener('DOMContentLoaded', () => {
+  initCardHover();
+});
+```
+
+The animation reads DS tokens at init time:
+- `--xs` — lift distance
+- `--elevation-card` — rest shadow
+- `--elevation-popover` — hover shadow
+
+---
+
+## Accessibility
+
+- Card itself is not interactive — don't add `role="button"` unless it's entirely clickable
+- For clickable cards, wrap in `<a>` and style accordingly
+- Action buttons in the card must have descriptive labels
+
+```html
+<!-- Entirely clickable card -->
+<a class="card" href="/article/design-tokens" style="text-decoration: none;">
+  <div class="card-body">
+    <p class="card-body__headline">Design Tokens Guide</p>
+    <p class="card-body__text">A complete reference for the token system.</p>
+  </div>
+</a>
+```

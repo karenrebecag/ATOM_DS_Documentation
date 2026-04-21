@@ -20,36 +20,58 @@ The Checkbox component is a binary selection control that allows users to choose
 
 ---
 
-## Demo
+## Playground
 
-:::tip[Interactive Playground]
-**[Open Checkbox Playground →](/playground/checkbox)**
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
 
-View all Checkbox states, themes, and interactions with live animations in an isolated environment.
-:::
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-checkbox--playground" height={300} title="Checkbox interactive playground" />
 
 ---
 
 ## Installation
 
-```bash
-# Install component package
-pnpm add @atomchat.io/components-astro
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import CopyPromptButton from '../../../../components/CopyPromptButton.astro';
+import FetchedCode from '../../../../components/FetchedCode.astro';
 
-# Install required dependencies
-pnpm add @atomchat.io/css @atomchat.io/tokens
-
-# Optional: For animations
-pnpm add @atomchat.io/animations gsap
-```
-
-**CSS Import (required):**
-```astro
----
-// In your layout or page
-import '@atomchat.io/css';
----
-```
+<Tabs syncKey="framework">
+  <TabItem label="Astro" icon="astro">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-astro @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Checkbox" framework="astro" />
+    **Dependencies:** [`@atomchat.io/components-astro`](https://npmjs.com/package/@atomchat.io/components-astro) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css)
+  </TabItem>
+  <TabItem label="React" icon="seti:react">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-react @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Checkbox" framework="react" />
+    **Dependencies:** [`@atomchat.io/components-react`](https://npmjs.com/package/@atomchat.io/components-react) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`react`](https://npmjs.com/package/react)
+  </TabItem>
+  <TabItem label="Vue" icon="seti:vue">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-vue @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Checkbox" framework="vue" />
+    **Dependencies:** [`@atomchat.io/components-vue`](https://npmjs.com/package/@atomchat.io/components-vue) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`vue`](https://npmjs.com/package/vue)
+  </TabItem>
+  <TabItem label="Angular" icon="simple-icons:angular">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-angular @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Checkbox" framework="angular" />
+    **Dependencies:** [`@atomchat.io/components-angular`](https://npmjs.com/package/@atomchat.io/components-angular) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`@angular/core`](https://npmjs.com/package/@angular/core)
+  </TabItem>
+</Tabs>
 
 ---
 
@@ -115,249 +137,6 @@ The Checkbox component consists of a semantic label wrapping an input element wi
 ```
 
 ---
-
-## Framework Support
-
-The Checkbox component is available for multiple frameworks with shared design tokens, styles, and behavior.
-
-import FrameworkSwitcher from '../../../../components/FrameworkSwitcher.astro';
-
-<FrameworkSwitcher
-  frameworks={[
-    { name: 'astro', label: 'Astro', icon: 'https://svgl.app/library/astro-icon-dark.svg' },
-    { name: 'react', label: 'React', icon: 'https://svgl.app/library/react_dark.svg' },
-    { name: 'nextjs', label: 'Next.js', icon: 'https://svgl.app/library/nextjs_icon_dark.svg' },
-    { name: 'vue', label: 'Vue', icon: 'https://svgl.app/library/vue.svg' },
-    { name: 'angular', label: 'Angular', icon: 'https://svgl.app/library/angular.svg' },
-  ]}
->
-  <div data-framework="astro" data-active="true">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-astro @atomchat.io/css
-```
-
-### Usage
-
-```astro
----
-import { Checkbox } from '@atomchat.io/components-astro';
-import '@atomchat.io/css';
----
-
-<Checkbox name="subscribe" value="yes">
-  Subscribe to newsletter
-</Checkbox>
-
-<Checkbox name="terms" value="agree" checked>
-  I agree to the terms
-</Checkbox>
-
-<Checkbox name="privacy" value="accept" theme="dark">
-  Accept privacy policy
-</Checkbox>
-```
-
-  </div>
-
-  <div data-framework="react">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-react @atomchat.io/css
-```
-
-### Usage
-
-```tsx
-import { Checkbox } from '@atomchat.io/components-react';
-import '@atomchat.io/css';
-import { useState } from 'react';
-
-function Example() {
-  const [checked, setChecked] = useState(false);
-
-  return (
-    <>
-      <Checkbox
-        name="subscribe"
-        value="yes"
-        onChange={(e) => setChecked(e.target.checked)}
-      >
-        Subscribe to newsletter
-      </Checkbox>
-
-      <Checkbox
-        name="terms"
-        value="agree"
-        defaultChecked
-      >
-        I agree to the terms
-      </Checkbox>
-
-      <Checkbox
-        name="privacy"
-        value="accept"
-        theme="dark"
-      >
-        Accept privacy policy
-      </Checkbox>
-    </>
-  );
-}
-```
-
-  </div>
-
-  <div data-framework="nextjs">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-react @atomchat.io/css
-```
-
-### Usage
-
-```tsx
-'use client';
-
-import { Checkbox } from '@atomchat.io/components-react';
-import '@atomchat.io/css';
-import { useState } from 'react';
-
-export default function Example() {
-  const [checked, setChecked] = useState(false);
-
-  return (
-    <>
-      <Checkbox
-        name="subscribe"
-        value="yes"
-        onChange={(e) => setChecked(e.target.checked)}
-      >
-        Subscribe to newsletter
-      </Checkbox>
-
-      <Checkbox
-        name="terms"
-        value="agree"
-        defaultChecked
-      >
-        I agree to the terms
-      </Checkbox>
-
-      <Checkbox
-        name="privacy"
-        value="accept"
-        theme="dark"
-      >
-        Accept privacy policy
-      </Checkbox>
-    </>
-  );
-}
-```
-
-  </div>
-
-  <div data-framework="vue">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-vue @atomchat.io/css
-```
-
-### Usage
-
-```vue
-<script setup>
-import { Checkbox } from '@atomchat.io/components-vue';
-import '@atomchat.io/css';
-import { ref } from 'vue';
-
-const isSubscribed = ref(false);
-</script>
-
-<template>
-  <Checkbox
-    name="subscribe"
-    value="yes"
-    v-model="isSubscribed"
-  >
-    Subscribe to newsletter
-  </Checkbox>
-
-  <Checkbox
-    name="terms"
-    value="agree"
-    :checked="true"
-  >
-    I agree to the terms
-  </Checkbox>
-
-  <Checkbox
-    name="privacy"
-    value="accept"
-    theme="dark"
-  >
-    Accept privacy policy
-  </Checkbox>
-</template>
-```
-
-  </div>
-
-  <div data-framework="angular">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-angular @atomchat.io/css
-```
-
-### Usage
-
-```typescript
-import { CheckboxComponent } from '@atomchat.io/components-angular';
-import '@atomchat.io/css';
-import { Component, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-
-@Component({
-  imports: [CheckboxComponent, FormsModule],
-  template: `
-    <atom-checkbox
-      name="subscribe"
-      value="yes"
-      [(ngModel)]="isSubscribed"
-    >
-      Subscribe to newsletter
-    </atom-checkbox>
-
-    <atom-checkbox
-      name="terms"
-      value="agree"
-      [checked]="true"
-    >
-      I agree to the terms
-    </atom-checkbox>
-
-    <atom-checkbox
-      name="privacy"
-      value="accept"
-      theme="dark"
-    >
-      Accept privacy policy
-    </atom-checkbox>
-  `
-})
-export class ExampleComponent {
-  isSubscribed = signal(false);
-}
-```
-
-  </div>
-</FrameworkSwitcher>
 
 ---
 

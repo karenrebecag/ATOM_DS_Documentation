@@ -1,0 +1,243 @@
+---
+title: SearchField
+description: Search input with leading icon, keyboard shortcut badge, and clear button.
+---
+
+## Overview
+
+The SearchField component is a specialized input for search interactions. It displays a leading search icon, an optional keyboard shortcut badge (e.g. `⌘K`), and a clear button that appears when the field has a value. Available in three sizes.
+
+**Key Features:**
+- 3 sizes (s, m, l)
+- Leading search icon
+- Keyboard shortcut slot (hidden when filled)
+- Clear button (shown when filled)
+- States: default · hover · focus · active · filled · disabled
+- No label — designed as a standalone search bar
+- Fully token-driven
+
+---
+
+## Playground
+
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
+
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-searchfield--playground" height={300} title="SearchField interactive playground" />
+
+---
+
+## Installation
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import CopyPromptButton from '../../../../components/CopyPromptButton.astro';
+import FetchedCode from '../../../../components/FetchedCode.astro';
+
+<Tabs syncKey="framework">
+  <TabItem label="Astro" icon="astro">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-astro @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="SearchField" framework="astro" />
+    **Dependencies:** [`@atomchat.io/components-astro`](https://npmjs.com/package/@atomchat.io/components-astro) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css)
+  </TabItem>
+  <TabItem label="React" icon="seti:react">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-react @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="SearchField" framework="react" />
+    **Dependencies:** [`@atomchat.io/components-react`](https://npmjs.com/package/@atomchat.io/components-react) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`react`](https://npmjs.com/package/react)
+  </TabItem>
+  <TabItem label="Vue" icon="seti:vue">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-vue @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="SearchField" framework="vue" />
+    **Dependencies:** [`@atomchat.io/components-vue`](https://npmjs.com/package/@atomchat.io/components-vue) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`vue`](https://npmjs.com/package/vue)
+  </TabItem>
+  <TabItem label="Angular" icon="simple-icons:angular">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-angular @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="SearchField" framework="angular" />
+    **Dependencies:** [`@atomchat.io/components-angular`](https://npmjs.com/package/@atomchat.io/components-angular) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`@angular/core`](https://npmjs.com/package/@angular/core)
+  </TabItem>
+</Tabs>
+
+---
+
+## Anatomy
+
+```
+┌──────────────────────────────────────────┐
+│ .search-field                            │
+│  .search-field__field                    │  ← Input container
+│  │  .search-field__leading               │
+│  │  │  .search-field__icon               │  ← Search icon (always visible)
+│  │  .search-field__input                 │  ← Native <input>
+│  │  .search-field__trailing              │
+│  │  │  .search-field__shortcut           │  ← "⌘K" badge (hides when filled)
+│  │  │  .search-field__clear              │  ← × button (shows when filled)
+└──────────────────────────────────────────┘
+```
+
+**DOM Structure:**
+```html
+<div class="search-field search-field--m">
+  <div class="search-field__field">
+    <div class="search-field__leading">
+      <span class="search-field__icon">
+        <svg><!-- search icon --></svg>
+      </span>
+    </div>
+    <input class="search-field__input" type="search" placeholder="Search..." />
+    <div class="search-field__trailing">
+      <span class="search-field__shortcut">⌘K</span>
+      <button class="search-field__clear" type="button" aria-label="Clear search">
+        <svg><!-- × icon --></svg>
+      </button>
+    </div>
+  </div>
+</div>
+```
+
+---
+
+## API Reference
+
+### Modifier Classes
+
+| Class | Description |
+|-------|-------------|
+| `search-field--s/m/l` | Size variant |
+| `search-field--filled` | Applied when input has a value — hides shortcut, shows clear button |
+
+### States
+
+| State | Visual Change |
+|-------|--------------|
+| **Default** | Gray border, search icon + shortcut visible |
+| **Hover** | Darker border |
+| **Focus** | Primary border + focus shadow |
+| **Active** | Pressed border color |
+| **Filled** | Filled border, shortcut hidden, clear button shown |
+| **Disabled** | Muted bg + text, no-drop cursor |
+
+---
+
+## Design Tokens
+
+```css
+/* Shared form-field tokens */
+--form-fields-bg-enabled / --form-fields-bg-disabled
+--form-fields-border-enabled / hovered / focused / pressed / filled / disabled
+--form-fields-fg-enabled / hovered / focused / pressed / filled / disabled
+--form-fields-shadow-focus
+
+/* SearchField-specific */
+--search-field-border-radius
+--search-field-border-width
+--search-field-gap-inner
+--search-field-gap-container
+--search-field-icon-size
+--search-field-font-family
+--search-field-font-size
+--search-field-font-weight
+--search-field-font-line-height
+--search-field-padding-y-s/m/l
+--search-field-padding-x-s/m/l
+```
+
+---
+
+## Usage
+
+### Basic Search
+
+```html
+<div class="search-field search-field--m">
+  <div class="search-field__field">
+    <div class="search-field__leading">
+      <span class="search-field__icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+      </span>
+    </div>
+    <input class="search-field__input" type="search" placeholder="Search..." />
+    <div class="search-field__trailing">
+      <span class="search-field__shortcut">⌘K</span>
+      <button class="search-field__clear" type="button" aria-label="Clear">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+```
+
+### Filled State (JS-driven)
+
+Add `search-field--filled` to the root when the input has a value:
+
+```javascript
+const input = document.querySelector('.search-field__input');
+const root  = document.querySelector('.search-field');
+
+input.addEventListener('input', () => {
+  root.classList.toggle('search-field--filled', input.value.length > 0);
+});
+
+document.querySelector('.search-field__clear').addEventListener('click', () => {
+  input.value = '';
+  root.classList.remove('search-field--filled');
+  input.focus();
+});
+```
+
+### Global Search (Large)
+
+```html
+<div class="search-field search-field--l" style="max-width: 480px;">
+  <div class="search-field__field">
+    <div class="search-field__leading">
+      <span class="search-field__icon"><!-- icon --></span>
+    </div>
+    <input class="search-field__input" type="search"
+      placeholder="Search components, tokens, docs..." />
+    <div class="search-field__trailing">
+      <span class="search-field__shortcut">⌘K</span>
+      <button class="search-field__clear" aria-label="Clear"><!-- × --></button>
+    </div>
+  </div>
+</div>
+```
+
+---
+
+## Accessibility
+
+- `type="search"` provides semantic search role
+- Clear button must have `aria-label`
+- Keyboard shortcut is decorative — `aria-hidden="true"` recommended
+- Use `role="search"` on a wrapping `<form>` or `<section>` for landmark
+
+```html
+<form role="search" class="search-field search-field--m">
+  <div class="search-field__field">
+    <input class="search-field__input" type="search"
+      placeholder="Search..." aria-label="Search" />
+    ...
+  </div>
+</form>
+```

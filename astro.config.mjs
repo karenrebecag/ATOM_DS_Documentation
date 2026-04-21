@@ -91,6 +91,26 @@ export default defineConfig({
 							autogenerate: { directory: 'components/layout' },
 						},
 						{
+							label: 'Forms',
+							autogenerate: { directory: 'components/forms' },
+						},
+						{
+							label: 'Containers',
+							autogenerate: { directory: 'components/containers' },
+						},
+						{
+							label: 'Feedback',
+							autogenerate: { directory: 'components/feedback' },
+						},
+						{
+							label: 'Navigation',
+							autogenerate: { directory: 'components/navigation' },
+						},
+						{
+							label: 'Lists',
+							autogenerate: { directory: 'components/lists' },
+						},
+						{
 							label: 'Molecules',
 							autogenerate: { directory: 'components/molecules' },
 						},

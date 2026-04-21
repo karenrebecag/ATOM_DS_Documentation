@@ -1,17 +1,4 @@
 ---
-/**
- * FetchedCode Component
- *
- * Fetches component source code from npm at build-time and displays it
- * with syntax highlighting using Starlight's Code component.
- *
- * Props:
- * - component: Component name (e.g., "Button")
- * - framework: Framework name ("react" | "vue" | "angular" | "astro")
- * - version: Optional version (defaults to latest published version)
- * - filePath: Optional file path override
- */
-
 import { Code } from '@astrojs/starlight/components';
 import { fetchComponentSource, createComponentSource, type Framework } from '../utils/fetchComponentSource';
 
@@ -24,20 +11,28 @@ interface Props {
 
 const { component, framework, version, filePath } = Astro.props;
 
-// Fetch source code from npm at build time
-const sourceCode = await fetchComponentSource({
-  component,
-  framework,
-  version,
-  filePath,
-});
+let sourceCode: string | null = null;
+let fetchError: string | null = null;
 
-// Create component source metadata
-const componentSource = createComponentSource(sourceCode, framework, component);
+try {
+  sourceCode = await fetchComponentSource({ component, framework, version, filePath });
+} catch (e) {
+  fetchError = e instanceof Error ? e.message : String(e);
+}
+
+const componentSource = sourceCode !== null
+  ? createComponentSource(sourceCode, framework, component)
+  : null;
 ---
 
-<Code
-  code={componentSource.content}
-  lang={componentSource.language}
-  title={componentSource.path}
-/>
+{fetchError ? (
+  <p style="font-size: 0.8rem; color: var(--sl-color-gray-3); font-style: italic; margin: 0.5rem 0;">
+    Source unavailable for this framework.
+  </p>
+) : componentSource ? (
+  <Code
+    code={componentSource.content}
+    lang={componentSource.language}
+    title={componentSource.path}
+  />
+) : null}

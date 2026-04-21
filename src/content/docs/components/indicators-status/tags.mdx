@@ -20,34 +20,41 @@ The Tag component is a status indicator that communicates state or status with s
 
 ---
 
-## Demo
+## Playground
 
-:::tip[Interactive Playground]
-**[Open Tag Playground →](/playground/tag)**
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
 
-View all Tag states, types (filled/outlined), status dots, and icon/avatar integration with live examples.
-:::
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-tag--playground" height={300} title="Tag interactive playground" />
 
 ---
 
 ## Installation
 
-To use the Tag component in your project, install it from the Atom Design System package:
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import FetchedCode from '../../../../components/FetchedCode.astro';
 
-```bash
-npm install @atomchat.io/components-astro
-# or
-pnpm add @atomchat.io/components-astro
-```
+<Tabs syncKey="framework">
+  <TabItem label="Astro" icon="astro">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-astro @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Tag" framework="astro" />
+    **Dependencies:** [`@atomchat.io/components-astro`](https://npmjs.com/package/@atomchat.io/components-astro) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css)
+  </TabItem>
+  <TabItem label="React" icon="seti:react">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-react @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Tag" framework="react" />
+    **Dependencies:** [`@atomchat.io/components-react`](https://npmjs.com/package/@atomchat.io/components-react) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css)
+  </TabItem>
+</Tabs>
 
-Then import and include the CSS tokens:
-
-```astro
 ---
-import { Tag } from '@atomchat.io/components-astro'
-import '@atomchat.io/components-astro/dist/tokens.css'
----
-```
 
 ## Anatomy
 

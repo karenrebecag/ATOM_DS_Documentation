@@ -1,0 +1,264 @@
+---
+title: TextField
+description: Single-line text input with label, leading/trailing slots, supportive text, and character counter.
+---
+
+## Overview
+
+The TextField component is a single-line text input that supports labels, leading/trailing icon slots, supportive text, character counters, and four semantic states: default, filled, error, and disabled. Sizes range from xs to xl.
+
+**Key Features:**
+- 5 sizes (xs, s, m, l, xl)
+- Leading and trailing icon/action slots
+- Supportive text with optional icon
+- Character counter
+- States: default · hover · focus · filled · error · disabled
+- Fully token-driven — no hardcoded values
+- Accessible label association
+
+---
+
+## Playground
+
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
+
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-textfield--playground" height={300} title="TextField interactive playground" />
+
+---
+
+## Installation
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import CopyPromptButton from '../../../../components/CopyPromptButton.astro';
+import FetchedCode from '../../../../components/FetchedCode.astro';
+
+<Tabs syncKey="framework">
+  <TabItem label="Astro" icon="astro">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-astro @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="TextField" framework="astro" />
+    **Dependencies:** [`@atomchat.io/components-astro`](https://npmjs.com/package/@atomchat.io/components-astro) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css)
+  </TabItem>
+  <TabItem label="React" icon="seti:react">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-react @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="TextField" framework="react" />
+    **Dependencies:** [`@atomchat.io/components-react`](https://npmjs.com/package/@atomchat.io/components-react) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`react`](https://npmjs.com/package/react)
+  </TabItem>
+  <TabItem label="Vue" icon="seti:vue">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-vue @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="TextField" framework="vue" />
+    **Dependencies:** [`@atomchat.io/components-vue`](https://npmjs.com/package/@atomchat.io/components-vue) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`vue`](https://npmjs.com/package/vue)
+  </TabItem>
+  <TabItem label="Angular" icon="simple-icons:angular">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-angular @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="TextField" framework="angular" />
+    **Dependencies:** [`@atomchat.io/components-angular`](https://npmjs.com/package/@atomchat.io/components-angular) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`@angular/core`](https://npmjs.com/package/@angular/core)
+  </TabItem>
+</Tabs>
+
+---
+
+## Anatomy
+
+```
+┌─────────────────────────────┐
+│ .text-field                 │
+│  .text-field__label         │  ← Field label
+│  .text-field__field         │  ← Input container (border, bg)
+│  │  .text-field__leading    │  ← Optional icon / prefix
+│  │  .text-field__input      │  ← Native <input>
+│  │  .text-field__trailing   │  ← Optional icon / action
+│  .text-field__bottom        │
+│  │  .text-field__supportive │  ← Helper text + icon
+│  │  .text-field__counter    │  ← Character counter (optional)
+└─────────────────────────────┘
+```
+
+**DOM Structure:**
+```html
+<div class="text-field text-field--m">
+  <label class="text-field__label">Email</label>
+  <div class="text-field__field">
+    <span class="text-field__leading"><!-- icon --></span>
+    <input class="text-field__input" type="email" placeholder="you@example.com" />
+    <span class="text-field__trailing"><!-- action --></span>
+  </div>
+  <div class="text-field__bottom">
+    <span class="text-field__supportive">
+      <span class="text-field__supportive-icon"><!-- icon --></span>
+      <span class="text-field__supportive-text">Enter your work email</span>
+    </span>
+    <span class="text-field__counter">0 / 100</span>
+  </div>
+</div>
+```
+
+---
+
+## API Reference
+
+### Modifier Classes
+
+| Class | Description |
+|-------|-------------|
+| `text-field--xs/s/m/l/xl` | Size variant |
+| `text-field--filled` | Applied when input has a value |
+| `text-field--error` | Error state — red border + label |
+| `text-field--disabled` | Disabled state |
+
+### States
+
+| State | Trigger | Visual |
+|-------|---------|--------|
+| **Default** | Initial | Gray border |
+| **Hover** | `:hover` on field | Darker border |
+| **Focus** | `:focus` on input | Primary border + shadow |
+| **Filled** | `.text-field--filled` | Filled border color |
+| **Error** | `.text-field--error` | Red border, red label |
+| **Disabled** | `.text-field--disabled` | Muted bg + text |
+
+### Size Variants
+
+| Size | Use Case |
+|------|---------|
+| `xs` | Compact tables, dense UIs |
+| `s` | Toolbars, secondary forms |
+| `m` | Default — most forms |
+| `l` | Prominent single inputs |
+| `xl` | Hero inputs, search bars |
+
+---
+
+## Design Tokens
+
+```css
+/* Form-field shared tokens (used by TextField, TextArea, SearchField) */
+--form-fields-bg-enabled
+--form-fields-bg-disabled
+--form-fields-border-enabled
+--form-fields-border-hovered
+--form-fields-border-focused
+--form-fields-border-filled
+--form-fields-border-disabled
+--form-fields-border-error
+--form-fields-border-error-filled
+--form-fields-border-error-focused
+--form-fields-fg-enabled
+--form-fields-fg-hovered
+--form-fields-fg-focused
+--form-fields-fg-filled
+--form-fields-fg-disabled
+--form-fields-shadow-focus
+--form-fields-shadow-focus-error
+
+/* TextField-specific structure tokens */
+--text-field-gap-vertical
+--text-field-border-radius
+--text-field-border-width
+--text-field-padding-y-{size}
+--text-field-padding-x-{size}
+--text-field-font-size-{size}
+--text-field-icon-size-{size}
+```
+
+---
+
+## Usage
+
+### Basic Input
+
+```html
+<div class="text-field text-field--m">
+  <label class="text-field__label">Full Name</label>
+  <div class="text-field__field">
+    <input class="text-field__input" type="text" placeholder="John Doe" />
+  </div>
+</div>
+```
+
+### With Supportive Text
+
+```html
+<div class="text-field text-field--m">
+  <label class="text-field__label">Password</label>
+  <div class="text-field__field">
+    <input class="text-field__input" type="password" />
+  </div>
+  <div class="text-field__bottom">
+    <span class="text-field__supportive">
+      <span class="text-field__supportive-text">Minimum 8 characters</span>
+    </span>
+  </div>
+</div>
+```
+
+### Error State
+
+```html
+<div class="text-field text-field--m text-field--error text-field--filled">
+  <label class="text-field__label">Email</label>
+  <div class="text-field__field">
+    <input class="text-field__input" type="email" value="invalid" />
+  </div>
+  <div class="text-field__bottom">
+    <span class="text-field__supportive">
+      <span class="text-field__supportive-text">Please enter a valid email address</span>
+    </span>
+  </div>
+</div>
+```
+
+### Disabled State
+
+```html
+<div class="text-field text-field--m text-field--disabled">
+  <label class="text-field__label">Username</label>
+  <div class="text-field__field">
+    <input class="text-field__input" disabled value="johndoe" />
+  </div>
+</div>
+```
+
+---
+
+## Accessibility
+
+- `<label>` must be associated to `<input>` via `for`/`id` or wrapping
+- Error state requires `aria-describedby` pointing to the supportive text
+- Disabled inputs automatically receive `:disabled` styles
+- Supportive icon is decorative — use `aria-hidden="true"`
+
+```html
+<div class="text-field text-field--m text-field--error">
+  <label class="text-field__label" for="email">Email</label>
+  <div class="text-field__field">
+    <input
+      class="text-field__input"
+      id="email"
+      type="email"
+      aria-describedby="email-error"
+      aria-invalid="true"
+    />
+  </div>
+  <div class="text-field__bottom">
+    <span class="text-field__supportive" id="email-error" role="alert">
+      <span class="text-field__supportive-text">Invalid email address</span>
+    </span>
+  </div>
+</div>
+```

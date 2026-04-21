@@ -1,0 +1,162 @@
+---
+title: Text Animations
+description: GSAP-powered text animation effects — masked reveal, scramble, fade, highlight, and odometer for headings and body text.
+---
+
+## Overview
+
+The ATOM animation system provides a set of GSAP-powered text effects that work through a `data-*` attribute contract. Animations are applied to existing Heading and Text components without modifying the components themselves — the animation layer discovers elements by their data attributes and attaches behaviors.
+
+**Available effects:**
+- **Masked reveal** — lines, words, or characters slide up from behind a mask
+- **Fade up** — elements fade in with upward motion on load
+- **Scramble load** — text scrambles into place on load
+- **Scramble hover** — text scrambles on mouse hover
+- **Highlight scroll** — text highlights as it enters the viewport
+- **Scramble scroll** — text scrambles as it scrolls into view
+- **Odometer** — numbers count up with a rolling animation
+
+---
+
+## Playground
+
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
+
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=animations-text--masked-reveal" height={400} title="Masked Reveal animation" />
+
+---
+
+## Installation
+
+```bash
+pnpm add @atomchat.io/animations gsap
+```
+
+---
+
+## Usage
+
+Text animations work via `data-text` attributes on any element. No JS needed in the component — initialize globally in your layout.
+
+```astro
+<!-- Layout.astro -->
+<script>
+  import {
+    initMaskedReveal,
+    initFadeUpLoad,
+    initScrambleLoad,
+    initScrambleHover,
+    initHighlightScroll,
+    initScrambleScroll,
+  } from '@atomchat.io/animations/effects/text/text';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initMaskedReveal();
+    initFadeUpLoad();
+    initScrambleLoad();
+    initScrambleHover();
+    initHighlightScroll();
+    initScrambleScroll();
+  });
+</script>
+```
+
+Then add `data-text` attributes to any element:
+
+```html
+<!-- Masked reveal on load (lines) -->
+<h2 data-text data-text-animate="masked-lines" data-text-trigger="load">
+  Design systems scale your product team
+</h2>
+
+<!-- Masked reveal by words -->
+<h3 data-text data-text-animate="masked-words" data-text-trigger="load">
+  Every component follows the same token architecture
+</h3>
+
+<!-- Masked reveal by characters -->
+<h4 data-text data-text-animate="masked-chars" data-text-trigger="load">
+  Tokens → CSS → Components → Frameworks
+</h4>
+
+<!-- Scramble on hover -->
+<span data-text data-text-animate="scramble-hover">Hover me</span>
+
+<!-- Highlight on scroll -->
+<p data-text data-text-animate="highlight-scroll">
+  This text highlights as it enters the viewport
+</p>
+```
+
+---
+
+## Odometer
+
+Numbers count up with a rolling animation, triggered on scroll or load.
+
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=animations-text--odometer" height={300} title="Odometer animation" />
+
+```html
+<!-- Single odometer -->
+<h2 data-odometer-element data-odometer-start="0" data-odometer-duration="2">
+  €248.750
+</h2>
+
+<!-- Staggered group -->
+<div data-odometer-group data-odometer-stagger="0.2">
+  <h3 data-odometer-element data-odometer-duration="1.5">42K</h3>
+  <h3 data-odometer-element data-odometer-duration="1.5">1,621</h3>
+  <h3 data-odometer-element data-odometer-duration="1.5">99.9%</h3>
+</div>
+```
+
+```js
+import { initOdometer } from '@atomchat.io/animations/odometer';
+initOdometer();
+```
+
+---
+
+## Data Attribute Reference
+
+### `data-text-animate` values
+
+| Value | Effect | Trigger |
+|-------|--------|---------|
+| `masked-lines` | Lines slide up from mask | `load` or `scroll` |
+| `masked-words` | Words slide up from mask | `load` or `scroll` |
+| `masked-chars` | Characters slide up from mask | `load` or `scroll` |
+| `fade-up` | Element fades in with upward motion | `load` |
+| `scramble-load` | Text scrambles into place | `load` |
+| `scramble-hover` | Text scrambles on hover | hover |
+| `scramble-scroll` | Text scrambles on scroll entry | scroll |
+| `highlight-scroll` | Text highlights on scroll entry | scroll |
+
+### `data-text-trigger` values
+
+| Value | Description |
+|-------|-------------|
+| `load` | Animates immediately on page load |
+| `scroll` | Animates when element enters the viewport |
+
+### Odometer attributes
+
+| Attribute | Description |
+|-----------|-------------|
+| `data-odometer-element` | Marks element as an odometer |
+| `data-odometer-group` | Groups multiple odometers for staggered play |
+| `data-odometer-start` | Starting value (e.g. `"0"`, `"€0"`) |
+| `data-odometer-duration` | Animation duration in seconds |
+| `data-odometer-stagger` | Stagger delay between group items |
+
+---
+
+## Accessibility
+
+All text animations respect the three-tier motion control system:
+
+1. **OS level** — `prefers-reduced-motion: reduce` disables animations globally
+2. **Site level** — `<html data-motion="reduced">` overrides for the whole site
+3. **Element level** — `data-motion-exempt` bypasses reduced motion for specific elements
+
+When motion is reduced, text renders in its final state immediately with no animation.

@@ -7,6 +7,10 @@ description: Semantic heading component with level/size decoupling, flexible typ
 
 The Heading component renders semantic HTML headings (h1-h6) with flexible typography styling and optional GSAP animations. It decouples HTML heading level from visual size, allowing proper semantic markup while maintaining design flexibility.
 
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
+
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=typography-heading--playground" height={300} title="Heading interactive playground" />
+
 ### Key Features
 
 - **Level/Size Decoupling**: Use h3 semantically styled as h1 size
@@ -22,27 +26,48 @@ The Heading component renders semantic HTML headings (h1-h6) with flexible typog
 
 ## Installation
 
-To use the Heading component in your project, install it from the Atom Design System package:
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import CopyPromptButton from '../../../../components/CopyPromptButton.astro';
+import FetchedCode from '../../../../components/FetchedCode.astro';
 
-```bash
-npm install @atomchat.io/components-astro
-# or
-pnpm add @atomchat.io/components-astro
-```
-
-Then import and include the CSS tokens and GSAP library (for animations):
-
-```astro
----
-import { Heading } from '@atomchat.io/components-astro'
-import '@atomchat.io/components-astro/dist/tokens.css'
-
-// Optional: For animations
-import gsap from 'gsap'
-import SplitText from 'gsap/SplitText'
-gsap.registerPlugin(SplitText)
----
-```
+<Tabs syncKey="framework">
+  <TabItem label="Astro" icon="astro">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-astro @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Heading" framework="astro" />
+    **Dependencies:** [`@atomchat.io/components-astro`](https://npmjs.com/package/@atomchat.io/components-astro) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css)
+  </TabItem>
+  <TabItem label="React" icon="seti:react">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-react @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Heading" framework="react" />
+    **Dependencies:** [`@atomchat.io/components-react`](https://npmjs.com/package/@atomchat.io/components-react) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`react`](https://npmjs.com/package/react)
+  </TabItem>
+  <TabItem label="Vue" icon="seti:vue">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-vue @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Heading" framework="vue" />
+    **Dependencies:** [`@atomchat.io/components-vue`](https://npmjs.com/package/@atomchat.io/components-vue) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`vue`](https://npmjs.com/package/vue)
+  </TabItem>
+  <TabItem label="Angular" icon="simple-icons:angular">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-angular @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Heading" framework="angular" />
+    **Dependencies:** [`@atomchat.io/components-angular`](https://npmjs.com/package/@atomchat.io/components-angular) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`@angular/core`](https://npmjs.com/package/@angular/core)
+  </TabItem>
+</Tabs>
 
 ## Anatomy
 
@@ -75,95 +100,6 @@ The Heading component renders a semantic HTML heading element with typography mo
 - `data-text-split` - SplitText split type (chars, words, lines)
 - `data-text-delay` - Animation delay in seconds
 - `style="color: [value]"` - Applied for custom colors
-
-## Framework Support
-
-Heading is available across multiple frameworks. Choose your preferred implementation:
-
-### Astro
-
-```astro
----
-import { Heading } from '@atomchat.io/components-astro'
----
-
-<Heading level={1} size="display-xl">Hero Heading</Heading>
-<Heading level={2}>Section Title</Heading>
-<Heading level={3} size="h1" animate="masked-lines">Styled as h1</Heading>
-<Heading level={4} weight="medium" align="center">Subtitle</Heading>
-```
-
-### React
-
-```jsx
-import { Heading } from '@atomchat.io/components-astro/react'
-
-export function PageHeader() {
-  return (
-    <>
-      <Heading level={1} size="display-xl" animate="fade-up-load">
-        Welcome
-      </Heading>
-      <Heading level={2} align="center">
-        Section Title
-      </Heading>
-    </>
-  )
-}
-```
-
-### Next.js
-
-```tsx
-import { Heading } from '@atomchat.io/components-astro'
-
-export default function Page() {
-  return (
-    <Heading level={1} size="huge-title" animate="masked-words" trigger="scroll">
-      Featured Content
-    </Heading>
-  )
-}
-```
-
-### Vue
-
-```vue
-<template>
-  <div>
-    <Heading level="1" size="display-xl" animate="scramble-load">
-      Page Title
-    </Heading>
-    <Heading level="2" weight="medium">Subsection</Heading>
-  </div>
-</template>
-
-<script setup lang="ts">
-import { Heading } from '@atomchat.io/components-astro/vue'
-</script>
-```
-
-### Angular
-
-```typescript
-import { HeadingComponent } from '@atomchat.io/components-astro/angular'
-
-@Component({
-  selector: 'app-hero',
-  template: `
-    <heading
-      level="1"
-      size="display-xl"
-      animate="masked-lines"
-      trigger="load"
-    >
-      Welcome to Our Site
-    </heading>
-  `,
-  imports: [HeadingComponent]
-})
-export class HeroComponent {}
-```
 
 ## API Reference
 

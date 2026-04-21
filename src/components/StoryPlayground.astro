@@ -1,0 +1,48 @@
+---
+/**
+ * StoryPlayground
+ *
+ * Generic iframe wrapper for any standalone playground HTML file
+ * living in public/playground/*.html.
+ *
+ * Usage:
+ *   <StoryPlayground src="/playground/button.html" />
+ *   <StoryPlayground src="/playground/icon-button.html" height={240} />
+ */
+
+interface Props {
+  src: string;
+  height?: number;
+  title?: string;
+}
+
+const { src, height = 280, title = 'Interactive playground' } = Astro.props;
+---
+
+<div class="story-playground-wrap">
+  <iframe
+    src={src}
+    title={title}
+    width="100%"
+    height={height}
+    style={`height:${height}px;`}
+    loading="lazy"
+    sandbox="allow-scripts allow-same-origin"
+  ></iframe>
+</div>
+
+<style>
+  .story-playground-wrap {
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--sl-color-bg);
+    margin-block: 1.5rem;
+  }
+
+  iframe {
+    display: block;
+    border: none;
+    width: 100%;
+  }
+</style>

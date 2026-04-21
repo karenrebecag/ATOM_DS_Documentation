@@ -1,0 +1,212 @@
+---
+title: Accordion
+description: CSS grid-driven expand/collapse sections with animated chevron and GSAP integration.
+---
+
+## Overview
+
+The Accordion component uses CSS `grid-template-rows` to animate expand/collapse without JavaScript measuring. Open state is controlled by `data-accordion-status="active"` on each item. Optional GSAP integration adds staggered reveals via `initAccordion()`.
+
+**Key Features:**
+- Pure CSS expand/collapse — no height calculation needed
+- `data-accordion-status` attribute contract
+- Animated chevron icon (180° rotation)
+- Hover background on items
+- GSAP integration via `@atomchat.io/animations`
+- Fully token-driven
+
+---
+
+## Playground
+
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
+
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-accordion--playground" height={300} title="Accordion interactive playground" />
+
+---
+
+## Installation
+
+```bash
+pnpm add @atomchat.io/css @atomchat.io/animations gsap
+```
+
+---
+
+## Anatomy
+
+```
+┌──────────────────────────────────┐
+│ .accordion                       │
+│  .accordion__list                │
+│  │  .accordion__item             │  ← [data-accordion-status="active"]
+│  │  │  .accordion__header        │  ← Click target
+│  │  │  │  .accordion__title      │  ← Question / label
+│  │  │  │  .accordion__icon       │  ← Chevron (rotates 180°)
+│  │  │  │  │  .accordion__icon-svg│
+│  │  │  .accordion__body          │  ← grid-template-rows: 0fr → 1fr
+│  │  │  │  .accordion__body-wrap  │  ← overflow: hidden
+│  │  │  │  │  .accordion__body-content │  ← Actual content
+└──────────────────────────────────┘
+```
+
+**DOM Structure:**
+```html
+<div class="accordion">
+  <ul class="accordion__list">
+    <li class="accordion__item" data-accordion-status="active">
+      <div class="accordion__header" data-accordion-header>
+        <p class="accordion__title">What is ATOM Design System?</p>
+        <div class="accordion__icon">
+          <svg class="accordion__icon-svg"><!-- chevron --></svg>
+        </div>
+      </div>
+      <div class="accordion__body">
+        <div class="accordion__body-wrap">
+          <div class="accordion__body-content">
+            <p>ATOM is a multi-framework design system built on W3C DTCG tokens.</p>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li class="accordion__item">
+      <!-- another item (closed by default) -->
+    </li>
+  </ul>
+</div>
+```
+
+---
+
+## API Reference
+
+### Data Attributes
+
+| Attribute | Value | Description |
+|-----------|-------|-------------|
+| `data-accordion-status` | `"active"` | Open state on `.accordion__item` |
+| `data-accordion-header` | — | Click target for JS toggle |
+
+### Modifier Classes
+
+| Class | Description |
+|-------|-------------|
+| `.accordion__item` | Each row — gets `data-accordion-status` |
+| `.accordion__icon` | Rotates `180deg` → `0deg` when active |
+| `.accordion__body` | `grid-template-rows: 0fr` ↔ `1fr` |
+
+---
+
+## Design Tokens
+
+```css
+--accordion-bg-item            /* Item rest background */
+--accordion-bg-item-hovered    /* Item hover background */
+--accordion-fg-title           /* Title text color */
+--accordion-fg-body            /* Body text color */
+--accordion-fg-icon            /* Chevron color */
+--accordion-bg-icon            /* Icon bg pill */
+--accordion-bg-icon-hovered    /* Icon bg hover */
+--accordion-structure-item-gap
+--accordion-structure-border-radius
+--accordion-structure-header-padding-x / y
+--accordion-structure-header-gap
+--accordion-structure-icon-size
+--accordion-structure-icon-svg-size
+--accordion-structure-content-padding-x / bottom
+```
+
+---
+
+## Toggle Logic (Vanilla JS)
+
+```javascript
+document.querySelectorAll('[data-accordion-header]').forEach(header => {
+  header.addEventListener('click', () => {
+    const item = header.closest('.accordion__item');
+    const isActive = item.dataset.accordionStatus === 'active';
+    item.dataset.accordionStatus = isActive ? '' : 'active';
+  });
+});
+```
+
+### Single-open Pattern
+
+```javascript
+document.querySelectorAll('[data-accordion-header]').forEach(header => {
+  header.addEventListener('click', () => {
+    const item   = header.closest('.accordion__item');
+    const list   = item.closest('.accordion__list');
+    const isOpen = item.dataset.accordionStatus === 'active';
+
+    // Close all
+    list.querySelectorAll('.accordion__item').forEach(i => {
+      i.dataset.accordionStatus = '';
+    });
+
+    // Open clicked (toggle)
+    if (!isOpen) item.dataset.accordionStatus = 'active';
+  });
+});
+```
+
+---
+
+## Usage
+
+### FAQ Accordion
+
+```html
+<div class="accordion">
+  <ul class="accordion__list">
+    <li class="accordion__item" data-accordion-status="active">
+      <div class="accordion__header" data-accordion-header>
+        <p class="accordion__title">How do I install the design system?</p>
+        <div class="accordion__icon">
+          <svg class="accordion__icon-svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path d="m18 15-6-6-6 6"/>
+          </svg>
+        </div>
+      </div>
+      <div class="accordion__body">
+        <div class="accordion__body-wrap">
+          <div class="accordion__body-content">
+            <p>Run <code>pnpm add @atomchat.io/css @atomchat.io/tokens</code> in your project.</p>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+```
+
+---
+
+## Accessibility
+
+- Use `<button>` or set `role="button"` on `.accordion__header`
+- Add `aria-expanded` toggled by JS
+- Associate header with body via `aria-controls` / `id`
+
+```html
+<li class="accordion__item" data-accordion-status="active">
+  <button
+    class="accordion__header"
+    data-accordion-header
+    aria-expanded="true"
+    aria-controls="faq-1-body"
+  >
+    <p class="accordion__title">What is ATOM?</p>
+    <div class="accordion__icon"><!-- chevron --></div>
+  </button>
+  <div class="accordion__body" id="faq-1-body" role="region">
+    <div class="accordion__body-wrap">
+      <div class="accordion__body-content">
+        <p>A token-driven, multi-framework design system.</p>
+      </div>
+    </div>
+  </div>
+</li>
+```

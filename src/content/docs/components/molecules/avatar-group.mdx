@@ -1,0 +1,194 @@
+---
+title: Avatar Group
+description: Overlapping avatar stack with a counter for additional members. Three sizes.
+---
+
+## Overview
+
+The AvatarGroup component stacks Avatar elements with a negative-margin overlap and appends a counter element for any members beyond the visible limit. Available in three sizes (s, m, l) matching the Avatar component sizes.
+
+**Key Features:**
+- Overlapping avatars via negative `margin-right`
+- Counter element styled to match avatar dimensions
+- 3 sizes: s, m, l (no xs — not in Figma spec)
+- Counter uses `--bg-tertiary` background and `--fg-primary` text
+- Fully composable — bring your own Avatar atoms
+
+---
+
+## Playground
+
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
+
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-avatargroup--playground" height={300} title="AvatarGroup interactive playground" />
+
+---
+
+## Installation
+
+```bash
+pnpm add @atomchat.io/components-astro @atomchat.io/css
+```
+
+---
+
+## Anatomy
+
+```
+┌───────────────────────────────────────┐
+│ .avatar-group .avatar-group--m        │
+│  [Avatar]  [Avatar]  [Avatar]  [+5]  │
+│  ↑ negative margin overlap            │
+└───────────────────────────────────────┘
+```
+
+**DOM Structure:**
+```html
+<div class="avatar-group avatar-group--m">
+  <div class="avatar-group__item">
+    <div class="avatar avatar--m">
+      <img src="alice.jpg" alt="Alice" />
+    </div>
+  </div>
+  <div class="avatar-group__item">
+    <div class="avatar avatar--m">
+      <img src="bob.jpg" alt="Bob" />
+    </div>
+  </div>
+  <div class="avatar-group__item">
+    <div class="avatar avatar--m">
+      <img src="carol.jpg" alt="Carol" />
+    </div>
+  </div>
+  <div class="avatar-group__counter" aria-label="5 more members">+5</div>
+</div>
+```
+
+---
+
+## API Reference
+
+### Modifier Classes
+
+| Class | Description |
+|-------|-------------|
+| `.avatar-group--s` | Small — matches `avatar--s` |
+| `.avatar-group--m` | Medium — matches `avatar--m` |
+| `.avatar-group--l` | Large — matches `avatar--l` |
+
+### Counter Sizing (per size)
+
+| Size | Width/Height | Border Radius | Padding |
+|------|-------------|---------------|---------|
+| s | `--avatar-structure-size-s` | `--radius-m` | `var(--s) var(--xs)` |
+| m | `--avatar-structure-size-m` | `--radius-md` | `var(--sm) var(--xs)` |
+| l | `--avatar-structure-size-l` | `--radius-l` | `var(--sm) var(--xs)` |
+
+---
+
+## Design Tokens
+
+```css
+--avatar-structure-size-s/m/l  /* Matches Avatar sizes */
+--radius-m/md/l                /* Counter border radius */
+--bg-tertiary                  /* Counter background */
+--fg-primary                   /* Counter text */
+--font-body
+--text-label-regular           /* s, m counter font */
+--text-caption-regular         /* l counter font */
+--line-height-label / caption
+```
+
+---
+
+## Usage
+
+### Team Members (Medium)
+
+```html
+<div class="avatar-group avatar-group--m">
+  <div class="avatar-group__item">
+    <div class="avatar avatar--m" style="border-radius: var(--radius-md);">
+      <img src="alice.jpg" alt="Alice" />
+    </div>
+  </div>
+  <div class="avatar-group__item">
+    <div class="avatar avatar--m" style="border-radius: var(--radius-md);">
+      <img src="bob.jpg" alt="Bob" />
+    </div>
+  </div>
+  <div class="avatar-group__item">
+    <div class="avatar avatar--m" style="border-radius: var(--radius-md);">
+      <img src="carol.jpg" alt="Carol" />
+    </div>
+  </div>
+  <div class="avatar-group__counter" aria-label="12 more members">+12</div>
+</div>
+```
+
+### Small (Inline / Compact)
+
+```html
+<div class="avatar-group avatar-group--s">
+  <div class="avatar-group__item">
+    <div class="avatar avatar--s"><!-- img --></div>
+  </div>
+  <div class="avatar-group__item">
+    <div class="avatar avatar--s"><!-- img --></div>
+  </div>
+  <div class="avatar-group__counter" aria-label="3 more">+3</div>
+</div>
+```
+
+### Display Logic (JS)
+
+```javascript
+const MAX_VISIBLE = 3;
+
+function renderGroup(members, container, size) {
+  container.className = `avatar-group avatar-group--${size}`;
+  const visible = members.slice(0, MAX_VISIBLE);
+  const extra   = members.length - MAX_VISIBLE;
+
+  visible.forEach(member => {
+    const item = document.createElement('div');
+    item.className = 'avatar-group__item';
+    item.innerHTML = `<div class="avatar avatar--${size}">
+      <img src="${member.avatar}" alt="${member.name}" />
+    </div>`;
+    container.appendChild(item);
+  });
+
+  if (extra > 0) {
+    const counter = document.createElement('div');
+    counter.className = 'avatar-group__counter';
+    counter.setAttribute('aria-label', `${extra} more members`);
+    counter.textContent = `+${extra}`;
+    container.appendChild(counter);
+  }
+}
+```
+
+---
+
+## Accessibility
+
+- Each Avatar image should have a meaningful `alt` with the person's name
+- The counter element should have `aria-label` describing the additional count
+- Wrap in a `<ul>` with `role="list"` for semantic list structure if needed
+
+```html
+<ul class="avatar-group avatar-group--m" role="list" aria-label="Project members">
+  <li class="avatar-group__item">
+    <div class="avatar avatar--m">
+      <img src="alice.jpg" alt="Alice Johnson" />
+    </div>
+  </li>
+  <li class="avatar-group__item">
+    <div class="avatar avatar--m">
+      <img src="bob.jpg" alt="Bob Smith" />
+    </div>
+  </li>
+  <li class="avatar-group__counter" aria-label="8 more members">+8</li>
+</ul>
+```

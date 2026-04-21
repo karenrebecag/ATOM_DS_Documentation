@@ -1,0 +1,44 @@
+---
+/**
+ * ButtonPlayground
+ *
+ * Embeds the interactive Button playground as an iframe.
+ * The playground source lives in public/playground/button.html and loads
+ * ATOM CSS from jsDelivr, so it works without any build-time setup.
+ */
+
+interface Props {
+  /** iframe height in px (default 280) */
+  height?: number;
+}
+
+const { height = 280 } = Astro.props;
+---
+
+<div class="btn-playground-wrap">
+  <iframe
+    src="/playground/button.html"
+    title="Button interactive playground"
+    width="100%"
+    height={height}
+    style={`height: ${height}px;`}
+    loading="lazy"
+    sandbox="allow-scripts allow-same-origin"
+  ></iframe>
+</div>
+
+<style>
+  .btn-playground-wrap {
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--sl-color-bg);
+    margin-block: 1.5rem;
+  }
+
+  iframe {
+    display: block;
+    border: none;
+    width: 100%;
+  }
+</style>

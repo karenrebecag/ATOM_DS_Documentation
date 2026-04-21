@@ -38,14 +38,18 @@ ATOM includes a **token sync pipeline** that pulls design variables directly fro
          └─────────────────────┬─────────────────────┘
                                │
          ┌─────────────────────▼─────────────────────┐
-         │              PHASE 3: DIFF                 │
-         │  pull.tsx --dry-run → shows what changes   │
-         │  Never writes, just compares               │
+         │              PHASE 3: DIFF (smart routing) │
+         │  pull.tsx --dry-run:                       │
+         │  1. Indexes ALL existing tokens in figma/  │
+         │  2. Routes each incoming token to the file │
+         │     that already owns it                   │
+         │  3. Shows real diff (added/updated/same)   │
          └─────────────────────┬─────────────────────┘
                                │
          ┌─────────────────────▼─────────────────────┐
          │              PHASE 4: MERGE                │
          │  pull.tsx --backup --yes → writes files    │
+         │  Updates tokens in-place across all dirs   │
          │  Creates .backup-{timestamp}/ first        │
          └─────────────────────┬─────────────────────┘
                                │
@@ -56,14 +60,18 @@ ATOM includes a **token sync pipeline** that pulls design variables directly fro
                                │
                                ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  packages/tokens/src/figma/primitives/                          │
-│  ├── colors.json        (220+ tokens)                           │
-│  ├── typography.json    (35 tokens)                             │
-│  ├── spacing.json       (27 tokens)                             │
-│  ├── radius.json        (16 tokens)                             │
-│  ├── opacity.json       (9 tokens)                              │
-│  ├── stroke.json        (5 tokens)                              │
-│  └── breakpoints.json   (2 tokens)                              │
+│  packages/tokens/src/figma/                                     │
+│  ├── primitives/                                                │
+│  │   ├── colors.json        (246 tokens)                        │
+│  │   ├── typography.json    (36 tokens)                         │
+│  │   ├── spacing.json       (27 tokens)                         │
+│  │   ├── radius.json        (16 tokens)                         │
+│  │   ├── opacity.json       (9 tokens)                          │
+│  │   ├── stroke.json        (5 tokens)                          │
+│  │   └── breakpoints.json   (2 tokens)                          │
+│  └── semantics/                                                 │
+│      ├── semantic.json      (155 tokens)                        │
+│      └── components.json    (305 tokens)                        │
 └──────────────────────────────┬──────────────────────────────────┘
                                │
                     ┌──────────▼──────────┐
@@ -90,6 +98,38 @@ The sync pipeline is modeled after git's workflow:
 | `git stash` | `--backup` | Timestamped copy of files before overwrite |
 
 **Key guarantee:** the merge **never deletes tokens**. It only adds new ones or updates existing values. If a token is removed in Figma, it stays in the local JSON (protection against accidental deletions).
+
+### Smart routing (no duplication)
+
+Unlike a naive sync that creates a new folder per Figma file, the pull tool uses **dynamic token indexing** to route each incoming token to the file that already owns it:
+
+```
+Incoming: figma.colors.primitive.blue.950 = #162456
+                     │
+         ┌───────────▼────────────┐
+         │   Build token index    │
+         │   Scan ALL .json in    │
+         │   figma/ subdirs       │
+         └───────────┬────────────┘
+                     │
+         ┌───────────▼────────────┐
+         │   Lookup in index:     │
+         │   figma.colors.*.blue  │
+         │   → primitives/colors  │
+         └───────────┬────────────┘
+                     │
+                     ▼
+         primitives/colors.json   ← updated IN-PLACE
+```
+
+The routing priority:
+
+1. **Exact path match** — token path already exists in a file → update that file
+2. **Collection key match** — the second-level key (e.g. `colors`) exists in exactly one file → add to that file
+3. **Sibling proximity** — if the collection key spans multiple files, check which file contains sibling tokens at the same parent path
+4. **Fallback** — genuinely new tokens with no match → create a new file
+
+This means you can pull from **any** Figma file (regardless of its name) and tokens always land in their canonical location. No hardcoded folder mappings — the index is built dynamically by scanning what already exists on disk.
 
 ---
 
@@ -186,7 +226,7 @@ The intermediate JSON that flows between the MCP extraction and the pull CLI:
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `fileName` | string | Figma file name (used to generate output folder) |
+| `fileName` | string | Figma file name (used as fallback folder for unmatched tokens only) |
 | `collections[].name` | string | Variable collection name |
 | `variables[].name` | string | Variable path (slash-separated) |
 | `variables[].type` | `COLOR` \| `FLOAT` \| `STRING` \| `BOOLEAN` | Figma variable type |
@@ -237,24 +277,29 @@ The format `{figma.collection-name.path.segments}` is what Style Dictionary reso
 
 ## Output structure
 
-Files are written to `packages/tokens/src/figma/{sanitized-file-name}/`:
+Tokens are routed to their **canonical files** across `packages/tokens/src/figma/`. The tool does not create a new folder per Figma file — instead, it updates existing files in-place based on the token index.
 
 ```
 packages/tokens/src/figma/
-└── atom-ds/                    ← sanitized from "ATOM DS"
-    ├── colors.json             ← from collection "Colors"
-    ├── spacing.json            ← from collection "Spacing"
-    ├── typography.json         ← from collection "Typography"
-    ├── radius.json
-    ├── opacity.json
-    ├── stroke.json
-    ├── breakpoints.json
-    └── .backup-2026-04-20T14-30-00/  ← auto-backup
-        ├── colors.json
-        └── spacing.json
+├── primitives/                     ← Primitive tokens (Colors, Spacing, etc.)
+│   ├── colors.json                 ← 246 color tokens
+│   ├── typography.json             ← 36 tokens (font families, sizes, weights)
+│   ├── spacing.json                ← 27 spacing scale tokens
+│   ├── radius.json                 ← 16 border radius tokens
+│   ├── opacity.json                ← 9 opacity tokens
+│   ├── stroke.json                 ← 5 stroke width tokens
+│   └── breakpoints.json            ← 2 breakpoint tokens
+├── semantics/                      ← Semantic & component alias tokens
+│   ├── semantic.json               ← bg, fg, border aliases
+│   └── components.json             ← button, form-field, toggle aliases
+├── .backup-2026-04-21T14-30-00/    ← auto-backup (at figma/ root)
+│   └── primitives/
+│       └── colors.json
+└── web-library/                    ← fallback for genuinely new tokens only
+    └── (created only if tokens don't match any existing file)
 ```
 
-Each JSON wraps tokens under a `figma` namespace:
+Each JSON wraps tokens under a `figma` namespace with the collection key:
 
 ```json
 {
@@ -272,6 +317,10 @@ Each JSON wraps tokens under a `figma` namespace:
 
 This means downstream references use `{figma.colors.primitive.blue.500}`.
 
+<Aside type="tip">
+  The Figma file name no longer determines the output folder. Whether you pull from a file called "Primitives", "Web-Library", or "My Copy", tokens are routed to wherever they already live. A fallback folder (sanitized from the file name) is only used for tokens that don't match anything on disk.
+</Aside>
+
 ---
 
 ## Token lifecycle
@@ -280,7 +329,7 @@ A token flows through 4 layers from Figma to your app:
 
 ```
 Layer 1 — Figma (read-only, auto-synced)
-  src/figma/atom-ds/colors.json
+  src/figma/primitives/colors.json
   { "figma": { "colors": { "primitive": { "blue": { "500": { "$value": "#3B82F6" } } } } } }
         │
         ▼
@@ -312,20 +361,34 @@ CSS Output:
 
 ## Merge behavior
 
-The merge strategy is intentionally conservative:
+The merge strategy is intentionally conservative and uses **smart routing**:
 
 | Scenario | Action |
 |----------|--------|
-| Token exists, same value | No change |
-| Token exists, new value | Updated (old value overwritten) |
-| New token from Figma | Added |
+| Token exists in `primitives/`, same value | No change (routed to existing file) |
+| Token exists in `primitives/`, new value | Updated in-place (old value overwritten) |
+| Token exists in `semantics/`, new value | Updated in `semantics/` (not duplicated) |
+| New token, collection key matches existing file | Added to that file |
+| Genuinely new token, no match anywhere | Added to fallback file |
 | Token removed in Figma | **NOT deleted** (stays in local JSON) |
 | Corrupted local JSON | Treated as new file |
 
+### How routing works internally
+
+Before any merge, the tool builds a **token index** by scanning every `.json` file under `src/figma/` (skipping `.backup-*` directories). This index maps each token path (e.g. `figma.colors.primitive.blue.950`) to the file that owns it.
+
+For each incoming token from Figma:
+1. Look up the token path in the index → if found, merge into that file
+2. If not found, check if the collection key (e.g. `colors`) maps to exactly one file → add to that file
+3. If the collection key spans multiple files, find the file that contains sibling tokens at the same parent path
+4. If nothing matches, create a new file in a fallback directory
+
 This means:
 - Running `/figma-pull` is always safe — worst case it adds tokens you can review
+- Tokens are never duplicated across folders — the index prevents it
 - Manual edits to figma layer files won't be lost (tokens aren't removed)
 - Backups give you a recovery path if a bulk update goes wrong
+- **You can pull from any Figma file** regardless of its name — routing is based on content, not file names
 
 ---
 
@@ -367,6 +430,8 @@ Figma variables can have different values per mode (Light, Dark, etc.). The pull
 | Aliases showing `{alias:unresolved:id}` | The referenced variable doesn't exist — check for broken links in Figma |
 | Wrong mode values pulled | Check the mode names in Figma match "Light", "Base", or "Default" |
 | Pull overwrites manual edits | Don't edit files in `src/figma/` manually — they're Figma-owned. Edit foundation/semantic layers instead |
+| Tokens landing in fallback folder | The token path didn't match any existing file. Move the fallback file contents to the correct location and re-run |
+| Duplicate tokens across folders | Delete the duplicate file and re-run — the index will route to the remaining canonical file |
 
 ---
 

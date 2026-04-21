@@ -1,0 +1,242 @@
+---
+title: Segment Control
+description: Tab-bar style selector with icon, label, and info icon slots. Five sizes and selected/disabled states.
+---
+
+## Overview
+
+The Segment Control is a horizontal group of toggle buttons used to switch between views or filter content. Each item can display an icon, a text label, and an optional trailing info icon. Selected state is applied via a modifier class on the item.
+
+**Key Features:**
+- 5 sizes (xs, s, m, l, xl)
+- Per-item slots: icon · label · info icon (all optional)
+- States: enabled · hover · focus · selected · disabled
+- Selected: border + bg + icon color change
+- Disabled: muted colors, pointer-events none
+- Fully token-driven
+
+---
+
+## Playground
+
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
+
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-segmentcontrol--playground" height={300} title="SegmentControl interactive playground" />
+
+---
+
+## Installation
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import CopyPromptButton from '../../../../components/CopyPromptButton.astro';
+import FetchedCode from '../../../../components/FetchedCode.astro';
+
+<Tabs syncKey="framework">
+  <TabItem label="Astro" icon="astro">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-astro @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="SegmentControl" framework="astro" />
+    **Dependencies:** [`@atomchat.io/components-astro`](https://npmjs.com/package/@atomchat.io/components-astro) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css)
+  </TabItem>
+  <TabItem label="React" icon="seti:react">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-react @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="SegmentControl" framework="react" />
+    **Dependencies:** [`@atomchat.io/components-react`](https://npmjs.com/package/@atomchat.io/components-react) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`react`](https://npmjs.com/package/react)
+  </TabItem>
+  <TabItem label="Vue" icon="seti:vue">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-vue @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="SegmentControl" framework="vue" />
+    **Dependencies:** [`@atomchat.io/components-vue`](https://npmjs.com/package/@atomchat.io/components-vue) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`vue`](https://npmjs.com/package/vue)
+  </TabItem>
+  <TabItem label="Angular" icon="simple-icons:angular">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-angular @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="SegmentControl" framework="angular" />
+    **Dependencies:** [`@atomchat.io/components-angular`](https://npmjs.com/package/@atomchat.io/components-angular) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`@angular/core`](https://npmjs.com/package/@angular/core)
+  </TabItem>
+</Tabs>
+
+---
+
+## Anatomy
+
+```
+┌──────────────────────────────────────────────┐
+│ .segment-control .segment-control--m         │
+│  [Item 1]  [Item 2 — selected]  [Item 3]    │
+└──────────────────────────────────────────────┘
+
+Each item:
+┌─────────────────────────┐
+│ .segment-control__item  │
+│  .segment-control__     │
+│   content               │
+│  │  .segment-control__  │
+│  │   icon               │  ← Optional SVG
+│  │  .segment-control__  │
+│  │   label              │  ← Text label
+│  │  .segment-control__  │
+│  │   info               │  ← Optional trailing icon
+└─────────────────────────┘
+```
+
+**DOM Structure:**
+```html
+<div class="segment-control segment-control--m" role="tablist">
+  <button class="segment-control__item" role="tab" aria-selected="false">
+    <div class="segment-control__content">
+      <span class="segment-control__icon"><svg><!-- icon --></svg></span>
+      <span class="segment-control__label">List</span>
+    </div>
+  </button>
+
+  <button class="segment-control__item segment-control__item--selected"
+    role="tab" aria-selected="true">
+    <div class="segment-control__content">
+      <span class="segment-control__icon"><svg><!-- icon --></svg></span>
+      <span class="segment-control__label">Grid</span>
+    </div>
+  </button>
+
+  <button class="segment-control__item segment-control__item--disabled"
+    role="tab" aria-selected="false" disabled>
+    <div class="segment-control__content">
+      <span class="segment-control__label">Map</span>
+    </div>
+  </button>
+</div>
+```
+
+---
+
+## API Reference
+
+### Container
+
+| Class | Description |
+|-------|-------------|
+| `.segment-control` | Wrapper |
+| `.segment-control--xs/s/m/l/xl` | Size variant |
+
+### Item States
+
+| Class | Description |
+|-------|-------------|
+| `.segment-control__item` | Individual segment button |
+| `.segment-control__item--selected` | Selected — bg + border + icon color |
+| `.segment-control__item--disabled` | Disabled — muted, no pointer events |
+
+---
+
+## Design Tokens
+
+```css
+--segment-control-bg-selected
+--segment-control-bg-hovered
+--segment-control-bg-enabled
+--segment-control-bg-disabled
+--segment-control-border-selected
+--segment-control-border-disabled
+--segment-control-fg-enabled
+--segment-control-fg-selected
+--segment-control-fg-hovered
+--segment-control-fg-disabled
+--segment-control-shadow-focus
+```
+
+---
+
+## Usage
+
+### View Switcher
+
+```html
+<div class="segment-control segment-control--m" role="tablist" aria-label="View mode">
+  <button class="segment-control__item" role="tab" aria-selected="false"
+    aria-controls="list-panel" id="tab-list">
+    <div class="segment-control__content">
+      <span class="segment-control__icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2">
+          <line x1="8" y1="6" x2="21" y2="6"/>
+          <line x1="8" y1="12" x2="21" y2="12"/>
+          <line x1="8" y1="18" x2="21" y2="18"/>
+        </svg>
+      </span>
+      <span class="segment-control__label">List</span>
+    </div>
+  </button>
+
+  <button class="segment-control__item segment-control__item--selected"
+    role="tab" aria-selected="true" aria-controls="grid-panel" id="tab-grid">
+    <div class="segment-control__content">
+      <span class="segment-control__icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+        </svg>
+      </span>
+      <span class="segment-control__label">Grid</span>
+    </div>
+  </button>
+</div>
+```
+
+### Toggle Logic (JS)
+
+```javascript
+document.querySelectorAll('.segment-control__item').forEach(item => {
+  item.addEventListener('click', () => {
+    const control = item.closest('.segment-control');
+
+    control.querySelectorAll('.segment-control__item').forEach(i => {
+      i.classList.remove('segment-control__item--selected');
+      i.setAttribute('aria-selected', 'false');
+    });
+
+    item.classList.add('segment-control__item--selected');
+    item.setAttribute('aria-selected', 'true');
+  });
+});
+```
+
+### Icon Only (No Label)
+
+```html
+<div class="segment-control segment-control--s">
+  <button class="segment-control__item segment-control__item--selected" aria-label="Bold">
+    <div class="segment-control__content">
+      <span class="segment-control__icon"><svg><!-- B --></svg></span>
+    </div>
+  </button>
+  <button class="segment-control__item" aria-label="Italic">
+    <div class="segment-control__content">
+      <span class="segment-control__icon"><svg><!-- I --></svg></span>
+    </div>
+  </button>
+</div>
+```
+
+---
+
+## Accessibility
+
+- Use `role="tablist"` on the container and `role="tab"` on each item
+- Manage `aria-selected` via JS
+- For keyboard navigation, implement arrow key movement between tabs
+- Icon-only items must have `aria-label`

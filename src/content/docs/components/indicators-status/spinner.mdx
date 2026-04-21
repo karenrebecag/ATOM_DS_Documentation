@@ -21,33 +21,58 @@ The Spinner component is a loading indicator that displays continuous rotation a
 
 ---
 
-## Demo
+## Playground
 
-:::tip[Interactive Playground]
-**[Open Spinner Playground →](/playground/spinner)**
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
 
-View all Spinner sizes and animation behaviors in an isolated environment.
-:::
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-spinner--playground" height={300} title="Spinner interactive playground" />
 
 ---
 
 ## Installation
 
-```bash
-# Install component package
-pnpm add @atomchat.io/components-astro
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import CopyPromptButton from '../../../../components/CopyPromptButton.astro';
+import FetchedCode from '../../../../components/FetchedCode.astro';
 
-# Install required dependencies
-pnpm add @atomchat.io/css @atomchat.io/tokens
-```
-
-**CSS Import (required):**
-```astro
----
-// In your layout or page
-import '@atomchat.io/css';
----
-```
+<Tabs syncKey="framework">
+  <TabItem label="Astro" icon="astro">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-astro @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Spinner" framework="astro" />
+    **Dependencies:** [`@atomchat.io/components-astro`](https://npmjs.com/package/@atomchat.io/components-astro) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css)
+  </TabItem>
+  <TabItem label="React" icon="seti:react">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-react @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Spinner" framework="react" />
+    **Dependencies:** [`@atomchat.io/components-react`](https://npmjs.com/package/@atomchat.io/components-react) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`react`](https://npmjs.com/package/react)
+  </TabItem>
+  <TabItem label="Vue" icon="seti:vue">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-vue @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Spinner" framework="vue" />
+    **Dependencies:** [`@atomchat.io/components-vue`](https://npmjs.com/package/@atomchat.io/components-vue) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`vue`](https://npmjs.com/package/vue)
+  </TabItem>
+  <TabItem label="Angular" icon="simple-icons:angular">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-angular @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Spinner" framework="angular" />
+    **Dependencies:** [`@atomchat.io/components-angular`](https://npmjs.com/package/@atomchat.io/components-angular) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`@angular/core`](https://npmjs.com/package/@angular/core)
+  </TabItem>
+</Tabs>
 
 ---
 
@@ -93,195 +118,6 @@ The Spinner component has a simple two-layer structure for rotation effect:
 ```
 
 ---
-
-## Framework Support
-
-The Spinner component is available for multiple frameworks with shared design tokens, styles, and behavior.
-
-import FrameworkSwitcher from '../../../../components/FrameworkSwitcher.astro';
-
-<FrameworkSwitcher
-  frameworks={[
-    { name: 'astro', label: 'Astro', icon: 'https://svgl.app/library/astro-icon-dark.svg' },
-    { name: 'react', label: 'React', icon: 'https://svgl.app/library/react_dark.svg' },
-    { name: 'nextjs', label: 'Next.js', icon: 'https://svgl.app/library/nextjs_icon_dark.svg' },
-    { name: 'vue', label: 'Vue', icon: 'https://svgl.app/library/vue.svg' },
-    { name: 'angular', label: 'Angular', icon: 'https://svgl.app/library/angular.svg' },
-  ]}
->
-  <div data-framework="astro" data-active="true">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-astro @atomchat.io/css
-```
-
-### Usage
-
-```astro
----
-import { Spinner } from '@atomchat.io/components-astro';
-import '@atomchat.io/css';
----
-
-<Spinner size="m" />
-
-<Spinner size="xs" />
-
-<Spinner size="xl" />
-
-<div style="display: flex; gap: var(--m);">
-  <Spinner size="s" />
-  <span>Loading data...</span>
-</div>
-```
-
-  </div>
-
-  <div data-framework="react">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-react @atomchat.io/css
-```
-
-### Usage
-
-```tsx
-import { Spinner } from '@atomchat.io/components-react';
-import '@atomchat.io/css';
-import { useState } from 'react';
-
-function Example() {
-  const [isLoading, setIsLoading] = useState(false);
-
-  return (
-    <>
-      <Spinner size="m" />
-
-      <Spinner size="xs" />
-
-      <Spinner size="xl" />
-
-      <div style={{ display: 'flex', gap: '1rem' }}>
-        <Spinner size="s" />
-        <span>Loading data...</span>
-      </div>
-    </>
-  );
-}
-```
-
-  </div>
-
-  <div data-framework="nextjs">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-react @atomchat.io/css
-```
-
-### Usage
-
-```tsx
-'use client';
-
-import { Spinner } from '@atomchat.io/components-react';
-import '@atomchat.io/css';
-import { useState } from 'react';
-
-export default function Example() {
-  const [isLoading, setIsLoading] = useState(false);
-
-  return (
-    <>
-      <Spinner size="m" />
-
-      <Spinner size="xs" />
-
-      <Spinner size="xl" />
-
-      <div style={{ display: 'flex', gap: '1rem' }}>
-        <Spinner size="s" />
-        <span>Loading data...</span>
-      </div>
-    </>
-  );
-}
-```
-
-  </div>
-
-  <div data-framework="vue">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-vue @atomchat.io/css
-```
-
-### Usage
-
-```vue
-<script setup>
-import { Spinner } from '@atomchat.io/components-vue';
-import '@atomchat.io/css';
-import { ref } from 'vue';
-
-const isLoading = ref(false);
-</script>
-
-<template>
-  <Spinner size="m" />
-
-  <Spinner size="xs" />
-
-  <Spinner size="xl" />
-
-  <div style="display: flex; gap: 1rem;">
-    <Spinner size="s" />
-    <span>Loading data...</span>
-  </div>
-</template>
-```
-
-  </div>
-
-  <div data-framework="angular">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-angular @atomchat.io/css
-```
-
-### Usage
-
-```typescript
-import { SpinnerComponent } from '@atomchat.io/components-angular';
-import '@atomchat.io/css';
-import { Component, signal } from '@angular/core';
-
-@Component({
-  imports: [SpinnerComponent],
-  template: `
-    <atom-spinner size="m"></atom-spinner>
-
-    <atom-spinner size="xs"></atom-spinner>
-
-    <atom-spinner size="xl"></atom-spinner>
-
-    <div style="display: flex; gap: 1rem;">
-      <atom-spinner size="s"></atom-spinner>
-      <span>Loading data...</span>
-    </div>
-  `
-})
-export class ExampleComponent {
-  isLoading = signal(false);
-}
-```
-
-  </div>
-</FrameworkSwitcher>
 
 ---
 

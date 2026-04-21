@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@2.2.0/build/css/tokens.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/css@1.2.0/dist/fonts.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/css@1.2.0/dist/atom.css"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; }
+    body { padding: 0; font-family: system-ui, -apple-system, sans-serif; background: transparent; display: flex; align-items: flex-start; justify-content: center; }
+    .sb-playground { display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 28px 24px; width: 100%; max-width: 560px; }
+    .sb-separator { width: 100%; border: none; border-top: 1px solid var(--border-subtle, #e5e7eb); }
+    .sb-controls { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+    .sb-control-row { display: flex; align-items: center; gap: 12px; }
+    .sb-control-row label { font-size: 11px; font-weight: 600; color: var(--fg-subtle, #6b7280); width: 70px; flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.05em; }
+    .sb-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+    .sb-chip { padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 500; border: 1px solid var(--border-default, #e5e7eb); background: var(--bg-primary, #fff); cursor: pointer; transition: border-color 0.12s, background 0.12s, color 0.12s; color: var(--fg-default, #374151); }
+    .sb-chip:hover { border-color: #9ca3af; }
+    .sb-chip.active { background: var(--fg-default, #111); color: var(--bg-primary, #fff); border-color: var(--fg-default, #111); }
+    .sb-chip-bool { padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 500; border: 1px solid var(--border-default, #e5e7eb); background: var(--bg-primary, #fff); cursor: pointer; transition: border-color 0.12s, background 0.12s, color 0.12s; color: var(--fg-default, #374151); }
+    .sb-chip-bool:hover { border-color: #9ca3af; }
+    .sb-chip-bool.active { background: #ef4444; color: #fff; border-color: #ef4444; }
+    .sb-preview { min-height: 72px; display: flex; align-items: center; justify-content: center; width: 100%; border-radius: 10px; background: var(--bg-surface, #f9fafb); border: 1px solid var(--border-subtle, #e5e7eb); }</style>
+</head>
+<body>
+  <div class="sb-playground">
+    <div class="sb-preview" id="ib-preview"></div>
+    <hr class="sb-separator"/>
+    <div class="sb-controls">
+      <div class="sb-control-row">
+        <label>Variant</label>
+        <div class="sb-chips" id="ib-variants"></div>
+      </div>
+      <div class="sb-control-row">
+        <label>Size</label>
+        <div class="sb-chips" id="ib-sizes"></div>
+      </div>
+      <div class="sb-control-row">
+        <label>States</label>
+        <div class="sb-chips">
+          <button class="sb-chip-bool" id="ib-loading">Loading</button>
+          <button class="sb-chip-bool" id="ib-disabled">Disabled</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="module">
+    import { initRotateClones, initRotateCalc, initHoverRotate }
+      from 'https://esm.sh/@atomchat.io/animations@1.4.0/hover';
+    window.__atomAnimations = { initRotateClones, initRotateCalc, initHoverRotate };
+    window.dispatchEvent(new CustomEvent('atom:animations-ready'));
+  </script>
+  <script>
+  (function(){
+    const VARIANTS = ['primary','secondary','tertiary','danger-primary','danger-secondary','danger-tertiary'];
+    const SIZES    = ['xs','s','m','l','xl'];
+    const ICON = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M11 17.5C14.5899 17.5 17.5 14.5899 17.5 11C17.5 7.41015 14.5899 4.5 11 4.5C7.41015 4.5 4.5 7.41015 4.5 11C4.5 14.5899 7.41015 17.5 11 17.5Z" stroke="currentColor"/><path d="M13.5 11H8.5" stroke="currentColor" stroke-miterlimit="10"/><path d="M11 13.5V8.5" stroke="currentColor" stroke-miterlimit="10"/><path d="M20.4 20.5L15.5 15.7" stroke="currentColor"/></svg>';
+    let state = { variant:'primary', size:'m', loading:false, disabled:false };
+    let cleanupHover = null;
+
+    function buildChips(id, items, activeIdx){
+      document.getElementById(id).innerHTML = items.map((v,i)=>
+        `<button class="sb-chip${i===activeIdx?' active':''}" data-value="${v}">${v}</button>`
+      ).join('');
+    }
+    buildChips('ib-variants', VARIANTS, 0);
+    buildChips('ib-sizes', SIZES, 2);
+
+    function renderBtn(){
+      const { variant, size, loading, disabled } = state;
+      const cls = ['icon-button',`icon-button--${variant}`,`icon-button--${size}`,disabled&&'icon-button--disabled',loading&&'icon-button--loading'].filter(Boolean).join(' ');
+      const disabledAttrs = (disabled||loading) ? 'disabled aria-disabled="true"' : '';
+      const busyAttr = loading ? 'aria-busy="true"' : '';
+      return `<button class="${cls}" data-icon-button data-hover-rotate type="button" aria-label="Settings" ${disabledAttrs} ${busyAttr}>
+        <span class="icon-button__icon-wrap">
+          <span class="icon-button__icon" data-icon-button-icon>${loading?'':ICON}</span>
+          <span class="icon-button__icon icon-button__icon--clone" data-icon-button-icon-clone aria-hidden="true">${loading?'':ICON}</span>
+        </span>
+        ${loading?`<span class="icon-button__loader" aria-hidden="true"><span class="icon-button__spinner" data-button-spinner></span></span>`:''}
+      </button>`;
+    }
+
+    function update(){
+      if(cleanupHover){ cleanupHover(); cleanupHover=null; }
+      const preview = document.getElementById('ib-preview');
+      preview.innerHTML = renderBtn();
+      const anim = window.__atomAnimations;
+      if(anim){
+        anim.initRotateClones({scope:preview});
+        anim.initRotateCalc({scope:preview});
+        cleanupHover = anim.initHoverRotate({scope:preview});
+      }
+    }
+
+    function bindChips(id,key){
+      document.getElementById(id).addEventListener('click',e=>{
+        const c=e.target.closest('.sb-chip'); if(!c)return;
+        state[key]=c.dataset.value;
+        document.querySelectorAll(`#${id} .sb-chip`).forEach(x=>x.classList.remove('active'));
+        c.classList.add('active'); update();
+      });
+    }
+    function bindBool(id,key){
+      document.getElementById(id).addEventListener('click',e=>{
+        state[key]=!state[key]; e.currentTarget.classList.toggle('active',state[key]); update();
+      });
+    }
+
+    bindChips('ib-variants','variant'); bindChips('ib-sizes','size');
+    bindBool('ib-loading','loading'); bindBool('ib-disabled','disabled');
+    update();
+    window.addEventListener('atom:animations-ready', update, {once:true});
+  })();
+  </script>
+</body>
+</html>

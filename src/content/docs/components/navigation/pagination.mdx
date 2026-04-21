@@ -1,0 +1,235 @@
+---
+title: Pagination
+description: Table footer pagination with page-size selector, page info, and navigation buttons.
+---
+
+## Overview
+
+The Pagination component is a table footer row that combines a records-per-page selector, a page info label (e.g. "1–10 of 120"), and previous/next navigation buttons. It also supports a loading skeleton state.
+
+**Key Features:**
+- Left: "Records per page" label + select dropdown
+- Center: "1–10 of 120" page info text
+- Right: Previous / Next navigation buttons
+- Loading state: `pagination--loading` shows skeleton placeholders
+- Navigation buttons use secondary button token system
+- Fully token-driven
+
+---
+
+## Playground
+
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
+
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-pagination--playground" height={300} title="Pagination interactive playground" />
+
+---
+
+## Installation
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import CopyPromptButton from '../../../../components/CopyPromptButton.astro';
+import FetchedCode from '../../../../components/FetchedCode.astro';
+
+<Tabs syncKey="framework">
+  <TabItem label="Astro" icon="astro">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-astro @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Pagination" framework="astro" />
+    **Dependencies:** [`@atomchat.io/components-astro`](https://npmjs.com/package/@atomchat.io/components-astro) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css)
+  </TabItem>
+  <TabItem label="React" icon="seti:react">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-react @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Pagination" framework="react" />
+    **Dependencies:** [`@atomchat.io/components-react`](https://npmjs.com/package/@atomchat.io/components-react) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`react`](https://npmjs.com/package/react)
+  </TabItem>
+  <TabItem label="Vue" icon="seti:vue">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-vue @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Pagination" framework="vue" />
+    **Dependencies:** [`@atomchat.io/components-vue`](https://npmjs.com/package/@atomchat.io/components-vue) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`vue`](https://npmjs.com/package/vue)
+  </TabItem>
+  <TabItem label="Angular" icon="simple-icons:angular">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-angular @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Pagination" framework="angular" />
+    **Dependencies:** [`@atomchat.io/components-angular`](https://npmjs.com/package/@atomchat.io/components-angular) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`@angular/core`](https://npmjs.com/package/@angular/core)
+  </TabItem>
+</Tabs>
+
+---
+
+## Anatomy
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│ .pagination                                                  │
+│  .pagination__left                                           │
+│  │  .pagination__label    "Records per page"                │
+│  │  .pagination__select   [10 ▾]                           │
+│  .pagination__center      "1–10 of 120 records"             │
+│  .pagination__nav                                            │
+│  │  .pagination__nav-button  [‹]                           │
+│  │  .pagination__nav-button  [›]                           │
+└──────────────────────────────────────────────────────────────┘
+```
+
+**DOM Structure:**
+```html
+<div class="pagination">
+  <div class="pagination__left">
+    <span class="pagination__label">Records per page</span>
+    <div class="pagination__select">
+      <span>10</span>
+      <span class="pagination__select-icon">
+        <svg><!-- chevron --></svg>
+      </span>
+    </div>
+  </div>
+
+  <span class="pagination__center">1–10 of 120 records</span>
+
+  <div class="pagination__nav">
+    <button class="pagination__nav-button" disabled aria-label="Previous page">
+      <span class="pagination__nav-button-icon">
+        <svg><!-- ‹ --></svg>
+      </span>
+    </button>
+    <button class="pagination__nav-button" aria-label="Next page">
+      <span class="pagination__nav-button-icon">
+        <svg><!-- › --></svg>
+      </span>
+    </button>
+  </div>
+</div>
+```
+
+---
+
+## API Reference
+
+### Modifier Classes
+
+| Class | Description |
+|-------|-------------|
+| `pagination--loading` | Shows skeleton in select + center, disables nav buttons |
+
+### Nav Button States
+
+| State | CSS |
+|-------|-----|
+| Enabled | Secondary button tokens |
+| Hover | `--buttons-bg-secondary-hovered` |
+| Active | `--buttons-bg-secondary-pressed` |
+| Disabled | Muted bg, no-drop cursor |
+
+---
+
+## Design Tokens
+
+```css
+--pagination-height
+--pagination-bg-enabled
+--pagination-border-width
+--pagination-border-color
+
+/* Navigation buttons (reuse button tokens) */
+--buttons-bg-secondary-enabled / hovered / pressed / disabled
+--buttons-border-secondary-enabled / hovered / pressed
+--buttons-fg-secondary-enabled / hovered / pressed / disabled
+
+/* Skeleton loading */
+--pagination-skeleton-select-width
+--pagination-skeleton-info-width
+```
+
+---
+
+## Usage
+
+### Basic Pagination
+
+```html
+<div class="pagination">
+  <div class="pagination__left">
+    <span class="pagination__label">Records per page</span>
+    <div class="pagination__select">
+      <span>10</span>
+      <span class="pagination__select-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2">
+          <path d="m6 9 6 6 6-6"/>
+        </svg>
+      </span>
+    </div>
+  </div>
+
+  <span class="pagination__center">1–10 of 120 records</span>
+
+  <div class="pagination__nav">
+    <button class="pagination__nav-button" disabled aria-label="Previous page">
+      <span class="pagination__nav-button-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2">
+          <path d="m15 18-6-6 6-6"/>
+        </svg>
+      </span>
+    </button>
+    <button class="pagination__nav-button" aria-label="Next page">
+      <span class="pagination__nav-button-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2">
+          <path d="m9 18 6-6-6-6"/>
+        </svg>
+      </span>
+    </button>
+  </div>
+</div>
+```
+
+### Loading State
+
+```html
+<div class="pagination pagination--loading">
+  <div class="pagination__left">
+    <span class="pagination__label">Records per page</span>
+    <div class="pagination__select pagination__select--skeleton">10</div>
+  </div>
+  <span class="pagination__center pagination__center--skeleton">Loading...</span>
+  <div class="pagination__nav">
+    <button class="pagination__nav-button" disabled aria-label="Previous"><!-- ‹ --></button>
+    <button class="pagination__nav-button" disabled aria-label="Next"><!-- › --></button>
+  </div>
+</div>
+```
+
+---
+
+## Accessibility
+
+- Navigation buttons must have `aria-label`
+- Disable previous button on first page, next button on last page
+- Announce page changes with `aria-live`
+
+```html
+<div class="pagination" aria-label="Table pagination">
+  <!-- ... -->
+  <span class="pagination__center" aria-live="polite" aria-atomic="true">
+    1–10 of 120 records
+  </span>
+  <!-- ... -->
+</div>
+```

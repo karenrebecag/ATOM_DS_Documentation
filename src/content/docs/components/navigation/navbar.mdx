@@ -1,0 +1,136 @@
+---
+title: Navbar
+description: Positioning and scroll-behaviour utilities for the application navbar — fixed, sticky, and pill modes.
+---
+
+## Overview
+
+The Navbar CSS provides positioning utilities and a **pill-style** scroll behaviour that reduces outer padding as the user scrolls down. Show/hide animation for mobile is driven by `data-nav-hidden`. The navbar's visual shell (logo, links, actions) is composed separately.
+
+**Key Features:**
+- `navbar-fixed` — `position: fixed` at top of viewport
+- `navbar-sticky` — `position: sticky`
+- `navbar-pill` — padding transition on scroll
+- `data-nav-scrolled` — compact padding when truthy
+- `data-nav-hidden` — slides navbar out / in (mobile)
+- Respects `prefers-reduced-motion`
+- All transitions use duration tokens
+
+---
+
+## Playground
+
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
+
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-navbar--playground" height={300} title="Navbar interactive playground" />
+
+---
+
+## Anatomy
+
+```
+┌─────────────────────────────────────────────┐
+│ .navbar-fixed OR .navbar-sticky             │  ← Positioning
+│  .navbar-pill [data-nav-scrolled="false"]   │  ← Outer padding
+│  │  <!-- your navbar shell -->              │
+└─────────────────────────────────────────────┘
+```
+
+---
+
+## API Reference
+
+### Positioning Classes
+
+| Class | Position | z-index |
+|-------|----------|---------|
+| `.navbar-fixed` | `fixed` top-left-right | `--navbar-z-index` |
+| `.navbar-sticky` | `sticky` top | `--z-sticky` |
+
+### Pill Behaviour
+
+| Attribute | Value | Effect |
+|-----------|-------|--------|
+| `data-nav-scrolled` | `"true"` | Reduced vertical padding |
+| `data-nav-scrolled` | `"false"` | Full padding |
+| `data-nav-hidden` | `"true"` | Slide up (`translateY(-100%)`) |
+| `data-nav-hidden` | `"false"` | Slide down (`translateY(0)`) |
+
+---
+
+## Design Tokens
+
+```css
+--navbar-z-index
+--navbar-padding-outer          /* Default outer padding (pill) */
+--navbar-padding-outer-scrolled /* Reduced padding on scroll */
+--z-sticky
+--duration-half                 /* Transition duration */
+```
+
+---
+
+## Usage
+
+### Fixed Navbar with Scroll Behaviour
+
+```html
+<header class="navbar-fixed navbar-pill" data-nav-scrolled="false" id="navbar">
+  <nav style="display: flex; align-items: center; justify-content: space-between;
+              background: var(--bg-primary); border-radius: var(--sm);
+              padding: var(--sm) var(--m);">
+    <a href="/">Logo</a>
+    <div style="display: flex; gap: var(--m);">
+      <a class="nav-link" href="/docs">Docs</a>
+      <a class="nav-link" href="/components">Components</a>
+    </div>
+    <button class="button button--primary button--s">Get Started</button>
+  </nav>
+</header>
+```
+
+### Scroll Script
+
+```javascript
+const navbar = document.getElementById('navbar');
+let lastY = 0;
+
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+
+  // Compact pill on scroll
+  navbar.dataset.navScrolled = y > 20 ? 'true' : 'false';
+
+  // Hide on scroll down, show on scroll up (mobile)
+  navbar.dataset.navHidden = y > lastY && y > 80 ? 'true' : 'false';
+  lastY = y;
+}, { passive: true });
+```
+
+### Sticky Navbar (no pill)
+
+```html
+<header class="navbar-sticky">
+  <nav><!-- content --></nav>
+</header>
+```
+
+---
+
+## Accessibility
+
+- Use `<header>` as the landmark element
+- Include `<nav>` with `aria-label` inside
+- Provide a skip-to-content link before the navbar
+
+```html
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header class="navbar-fixed navbar-pill" data-nav-scrolled="false">
+  <nav aria-label="Main navigation">
+    <!-- links -->
+  </nav>
+</header>
+
+<main id="main"><!-- page content --></main>
+```

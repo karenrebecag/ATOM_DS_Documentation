@@ -7,11 +7,9 @@ description: Primary interactive component with multiple variants, sizes, and st
 
 The Button component is the primary interactive element used to trigger actions throughout the application. It supports 6 visual variants, 5 sizes, and multiple states including loading and disabled.
 
-:::tip[Interactive Playground]
-**[Open Button Playground →](/playground/button)**
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
 
-View all Button variants with live hover animations and working states in an isolated environment.
-:::
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?id=components-button--playground&viewMode=story" />
 
 **Key Features:**
 - 6 visual variants (Primary, Secondary, Tertiary, Destructive variants)
@@ -91,7 +89,7 @@ import FetchedCode from '../../../../components/FetchedCode.astro';
 
     ### Component source
 
-    <FetchedCode component="Button" framework="angular" filePath="button.component.ts" />
+    <FetchedCode component="Button" framework="angular" />
 
     <CopyPromptButton component="button" framework="angular" variant="primary" />
 

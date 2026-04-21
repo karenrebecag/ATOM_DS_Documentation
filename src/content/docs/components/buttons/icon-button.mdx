@@ -7,11 +7,9 @@ description: Icon-only button with hover rotation animation and loading states.
 
 The **IconButton** component is an icon-only button designed for compact interfaces where space is limited or when an icon alone can clearly convey the action. It features built-in hover rotation animations and loading states, sharing the same token system as the standard Button component.
 
-:::tip[Interactive Playground]
-**[Open IconButton Playground →](/playground/icon-button)**
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
 
-View all IconButton variants with live hover animations and working states in an isolated environment.
-:::
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?id=components-iconbutton--playground&viewMode=story" height={240} title="IconButton interactive playground" />
 
 **Key Features:**
 - 6 semantic variants (Primary, Secondary, Tertiary + Destructive variants)
@@ -25,34 +23,50 @@ View all IconButton variants with live hover animations and working states in an
 
 ---
 
-## Demo
-
-:::tip[Live Demo]
-**[Open IconButton Playground →](/playground/icon-button)** to see all variants, sizes, and states rendered with live interactions.
-:::
-
----
-
 ## Installation
 
-```bash
-# Install component package
-pnpm add @atomchat.io/components-astro
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import CopyPromptButton from '../../../../components/CopyPromptButton.astro';
+import FetchedCode from '../../../../components/FetchedCode.astro';
 
-# Install required dependencies
-pnpm add @atomchat.io/css @atomchat.io/tokens
-
-# Optional: For GSAP animations
-pnpm add @atomchat.io/animations gsap
-```
-
-**CSS Import (required):**
-```astro
----
-// In your layout or page
-import '@atomchat.io/css';
----
-```
+<Tabs syncKey="framework">
+  <TabItem label="Astro" icon="astro">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-astro @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="IconButton" framework="astro" />
+    **Dependencies:** [`@atomchat.io/components-astro`](https://npmjs.com/package/@atomchat.io/components-astro) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css)
+  </TabItem>
+  <TabItem label="React" icon="seti:react">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-react @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="IconButton" framework="react" />
+    **Dependencies:** [`@atomchat.io/components-react`](https://npmjs.com/package/@atomchat.io/components-react) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`react`](https://npmjs.com/package/react)
+  </TabItem>
+  <TabItem label="Vue" icon="seti:vue">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-vue @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="IconButton" framework="vue" />
+    **Dependencies:** [`@atomchat.io/components-vue`](https://npmjs.com/package/@atomchat.io/components-vue) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`vue`](https://npmjs.com/package/vue)
+  </TabItem>
+  <TabItem label="Angular" icon="simple-icons:angular">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-angular @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="IconButton" framework="angular" />
+    **Dependencies:** [`@atomchat.io/components-angular`](https://npmjs.com/package/@atomchat.io/components-angular) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`@angular/core`](https://npmjs.com/package/@angular/core)
+  </TabItem>
+</Tabs>
 
 ---
 
@@ -97,153 +111,6 @@ The IconButton component consists of nested elements to support hover animations
 ```
 
 ---
-
-## Framework Support
-
-The IconButton component is available for multiple frameworks with shared design tokens, styles, and behavior.
-
-import FrameworkSwitcher from '../../../../components/FrameworkSwitcher.astro';
-
-<FrameworkSwitcher
-  frameworks={[
-    { name: 'astro', label: 'Astro', icon: 'https://svgl.app/library/astro-icon-dark.svg' },
-    { name: 'react', label: 'React', icon: 'https://svgl.app/library/react_dark.svg' },
-    { name: 'nextjs', label: 'Next.js', icon: 'https://svgl.app/library/nextjs_icon_dark.svg' },
-    { name: 'vue', label: 'Vue', icon: 'https://svgl.app/library/vue.svg' },
-    { name: 'angular', label: 'Angular', icon: 'https://svgl.app/library/angular.svg' },
-  ]}
->
-  <div data-framework="astro" data-active="true">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-astro @atomchat.io/css
-```
-
-### Usage
-```astro
----
-import { IconButton } from '@atomchat.io/components-astro';
-import '@atomchat.io/css';
----
-
-<IconButton variant="Primary" size="m" label="Settings">
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-    <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492z"/>
-  </svg>
-</IconButton>
-```
-
-  </div>
-
-  <div data-framework="react">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-react @atomchat.io/css
-```
-
-### Usage
-```tsx
-import { IconButton } from '@atomchat.io/components-react';
-import '@atomchat.io/css';
-
-function Example() {
-  return (
-    <IconButton variant="Primary" size="m" label="Settings">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-        <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492z"/>
-      </svg>
-    </IconButton>
-  );
-}
-```
-
-  </div>
-
-  <div data-framework="nextjs">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-react @atomchat.io/css
-```
-
-### Usage
-```tsx
-'use client';
-
-import { IconButton } from '@atomchat.io/components-react';
-import '@atomchat.io/css';
-
-export default function Example() {
-  return (
-    <IconButton variant="Primary" size="m" label="Settings">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-        <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492z"/>
-      </svg>
-    </IconButton>
-  );
-}
-```
-
-  </div>
-
-  <div data-framework="vue">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-vue @atomchat.io/css
-```
-
-### Usage
-```vue
-<script setup>
-import { IconButton } from '@atomchat.io/components-vue';
-import '@atomchat.io/css';
-</script>
-
-<template>
-  <IconButton variant="Primary" size="m" label="Settings">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-      <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492z"/>
-    </svg>
-  </IconButton>
-</template>
-```
-
-  </div>
-
-  <div data-framework="angular">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-angular @atomchat.io/css
-```
-
-### Usage
-```typescript
-import { Component } from '@angular/core';
-import { IconButtonComponent } from '@atomchat.io/components-angular';
-import '@atomchat.io/css';
-
-@Component({
-  selector: 'app-example',
-  standalone: true,
-  imports: [IconButtonComponent],
-  template: `
-    <atom-icon-button variant="Primary" size="m" label="Settings">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-        <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492z"/>
-      </svg>
-    </atom-icon-button>
-  `
-})
-export class ExampleComponent {}
-```
-
-  </div>
-</FrameworkSwitcher>
-
 
 ## API Reference
 

@@ -7,11 +7,9 @@ description: User profile image or placeholder with status indicators.
 
 The Avatar component displays user profile images, initials, or icons with optional status badges. It's a versatile atom-level component that adapts to various contexts through size, shape, and type variants.
 
-:::tip[Interactive Playground]
-**[Open Avatar Playground →](/playground/avatar)**
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
 
-View all Avatar variants with live examples including badges, shapes, and sizes in an isolated environment.
-:::
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-avatar--playground" height={300} title="Avatar interactive playground" />
 
 **Key Features:**
 - 4 size variants (xs, s, m, l)
@@ -26,21 +24,48 @@ View all Avatar variants with live examples including badges, shapes, and sizes 
 
 ## Installation
 
-```bash
-# Install component package
-pnpm add @atomchat.io/components-astro
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import CopyPromptButton from '../../../../components/CopyPromptButton.astro';
+import FetchedCode from '../../../../components/FetchedCode.astro';
 
-# Install required dependencies
-pnpm add @atomchat.io/css @atomchat.io/tokens
-```
-
-**CSS Import (required):**
-```astro
----
-// In your layout or page
-import '@atomchat.io/css';
----
-```
+<Tabs syncKey="framework">
+  <TabItem label="Astro" icon="astro">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-astro @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Avatar" framework="astro" />
+    **Dependencies:** [`@atomchat.io/components-astro`](https://npmjs.com/package/@atomchat.io/components-astro) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css)
+  </TabItem>
+  <TabItem label="React" icon="seti:react">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-react @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Avatar" framework="react" />
+    **Dependencies:** [`@atomchat.io/components-react`](https://npmjs.com/package/@atomchat.io/components-react) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`react`](https://npmjs.com/package/react)
+  </TabItem>
+  <TabItem label="Vue" icon="seti:vue">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-vue @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Avatar" framework="vue" />
+    **Dependencies:** [`@atomchat.io/components-vue`](https://npmjs.com/package/@atomchat.io/components-vue) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`vue`](https://npmjs.com/package/vue)
+  </TabItem>
+  <TabItem label="Angular" icon="simple-icons:angular">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-angular @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Avatar" framework="angular" />
+    **Dependencies:** [`@atomchat.io/components-angular`](https://npmjs.com/package/@atomchat.io/components-angular) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`@angular/core`](https://npmjs.com/package/@angular/core)
+  </TabItem>
+</Tabs>
 
 ---
 
@@ -477,147 +502,6 @@ Every visual property of the Avatar component is controlled by design tokens. Th
 ```
 
 ---
-
-## Framework Support
-
-The Avatar component is available for multiple frameworks:
-
-| Package | Framework | Status |
-|---------|-----------|--------|
-| `@atomchat.io/components-astro` | Astro | Stable |
-| `@atomchat.io/components-react` | React | Stable |
-| `@atomchat.io/components-vue` | Vue 3 | Stable |
-| `@atomchat.io/components-angular` | Angular | Stable |
-
-All implementations share the same:
-- CSS styles (`@atomchat.io/css`)
-- Design tokens (`@atomchat.io/tokens`)
-- API interface (props)
-- Visual appearance
-
----
-
-## Framework Examples
-
-### Astro
-
-**Installation:**
-```bash
-pnpm add @atomchat.io/components-astro @atomchat.io/css
-```
-
-**Usage:**
-```astro
----
-import { Avatar } from '@atomchat.io/components-astro';
-import '@atomchat.io/css';
----
-
-<Avatar
-  src="/user.jpg"
-  alt="John Doe"
-  size="l"
-  badge="verified"
-/>
-```
-
-### React
-
-**Installation:**
-```bash
-pnpm add @atomchat.io/components-react @atomchat.io/css
-```
-
-**Usage:**
-```tsx
-import { Avatar } from '@atomchat.io/components-react';
-import '@atomchat.io/css';
-
-function UserProfile() {
-  return (
-    <Avatar
-      src="/user.jpg"
-      alt="John Doe"
-      size="l"
-      badge="verified"
-    />
-  );
-}
-```
-
-### Next.js
-
-**Installation:**
-```bash
-pnpm add @atomchat.io/components-react @atomchat.io/css
-```
-
-**Usage:**
-```tsx
-import { Avatar } from '@atomchat.io/components-react';
-import '@atomchat.io/css';
-
-export default function UserProfile() {
-  return (
-    <Avatar
-      src="/user.jpg"
-      alt="John Doe"
-      size="l"
-      badge="verified"
-    />
-  );
-}
-```
-
-### Vue
-
-**Installation:**
-```bash
-pnpm add @atomchat.io/components-vue @atomchat.io/css
-```
-
-**Usage:**
-```vue
-<script setup>
-import { Avatar } from '@atomchat.io/components-vue';
-import '@atomchat.io/css';
-</script>
-
-<template>
-  <Avatar
-    src="/user.jpg"
-    alt="John Doe"
-    size="l"
-    badge="verified"
-  />
-</template>
-```
-
-### Angular
-
-**Installation:**
-```bash
-pnpm add @atomchat.io/components-angular @atomchat.io/css
-```
-
-**Usage:**
-```typescript
-import { AvatarComponent } from '@atomchat.io/components-angular';
-import '@atomchat.io/css';
-
-@Component({
-  imports: [AvatarComponent],
-  template: `
-    <atom-avatar
-      src="/user.jpg"
-      alt="John Doe"
-      size="l"
-      badge="verified"
-    ></atom-avatar>
-  `
-})
-export class UserProfileComponent {}
-```
 
 ---
 

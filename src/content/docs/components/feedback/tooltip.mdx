@@ -1,0 +1,178 @@
+---
+title: Tooltip
+description: Contextual overlays in two variants — plain (dark label) and rich (card-like with headline, supporting text, and actions).
+---
+
+## Overview
+
+The Tooltip component provides contextual information in two distinct variants: **plain** (a minimal dark overlay for short labels) and **rich** (a card-like panel with headline, supporting text, an extra content slot, and action buttons).
+
+**Key Features:**
+- Two variants: plain and rich
+- Plain: backdrop-blur + dark background, single text line
+- Rich: headline + supporting + custom slot + action buttons
+- Position classes: top, bottom, left, right
+- CSS show/hide: `tooltip--visible` / `tooltip--hidden`
+- Fully token-driven
+
+---
+
+## Playground
+
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
+
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-tooltip--playground" height={300} title="Tooltip interactive playground" />
+
+---
+
+## Installation
+
+import FetchedCode from '../../../../components/FetchedCode.astro';
+
+### Install packages
+```bash
+pnpm add @atomchat.io/components-astro @atomchat.io/css
+```
+
+### Component source
+
+<FetchedCode component="Tooltip" framework="astro" />
+
+**Dependencies:** [`@atomchat.io/components-astro`](https://npmjs.com/package/@atomchat.io/components-astro) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css)
+
+---
+
+## Anatomy
+
+### Plain Variant
+```
+┌──────────────────────┐
+│ .tooltip--plain      │  ← Dark bg, backdrop-blur
+│   .tooltip__text     │  ← Single line label
+└──────────────────────┘
+```
+
+### Rich Variant
+```
+┌──────────────────────────────┐
+│ .tooltip--rich               │
+│  .tooltip__content           │
+│  │  .tooltip__headline       │  ← Bold title
+│  │  .tooltip__supporting     │  ← Body text
+│  │  .tooltip__extra          │  ← Custom content slot
+│  .tooltip__action            │  ← Button row
+└──────────────────────────────┘
+```
+
+---
+
+## API Reference
+
+### Modifier Classes
+
+| Class | Description |
+|-------|-------------|
+| `.tooltip--plain` | Minimal dark overlay |
+| `.tooltip--rich` | Card-like with sections |
+| `.tooltip--top/bottom/left/right` | Position relative to trigger |
+| `.tooltip--visible` | Show with animation |
+| `.tooltip--hidden` | `display: none` |
+
+---
+
+## Design Tokens
+
+```css
+/* Plain */
+--tooltip-plain-bg              /* Dark background */
+--tooltip-plain-fg              /* Text color */
+--tooltip-plain-max-width
+--tooltip-plain-min-height
+--tooltip-plain-max-height
+--tooltip-plain-padding
+--tooltip-plain-backdrop-blur
+
+/* Rich */
+--tooltip-rich-bg
+--tooltip-rich-border-color
+--tooltip-rich-border-width
+--tooltip-rich-shadow
+--tooltip-rich-max-width
+--tooltip-rich-gap
+--tooltip-rich-content-gap
+--tooltip-rich-content-padding
+--tooltip-rich-action-padding
+```
+
+---
+
+## Usage
+
+### Plain Tooltip
+
+```html
+<div class="tooltip tooltip--plain tooltip--visible tooltip--top">
+  <span class="tooltip__text">Copy to clipboard</span>
+</div>
+```
+
+### Rich Tooltip
+
+```html
+<div class="tooltip tooltip--rich tooltip--visible tooltip--bottom">
+  <div class="tooltip__content">
+    <p class="tooltip__headline">Design Tokens</p>
+    <p class="tooltip__supporting">
+      W3C DTCG-compliant tokens that power all component styles.
+    </p>
+    <div class="tooltip__extra">
+      <!-- optional: image, code snippet, etc. -->
+    </div>
+  </div>
+  <div class="tooltip__action">
+    <button class="button button--tertiary button--s">Dismiss</button>
+    <button class="button button--secondary button--s">Learn More</button>
+  </div>
+</div>
+```
+
+### Positioning Pattern (JS)
+
+Position the tooltip relative to its trigger using absolute/fixed coordinates:
+
+```javascript
+function showTooltip(trigger, tooltip) {
+  const rect = trigger.getBoundingClientRect();
+  tooltip.style.position = 'fixed';
+  tooltip.style.top  = `${rect.bottom + 8}px`;
+  tooltip.style.left = `${rect.left + rect.width / 2}px`;
+  tooltip.style.transform = 'translateX(-50%)';
+  tooltip.classList.remove('tooltip--hidden');
+  tooltip.classList.add('tooltip--visible');
+}
+```
+
+---
+
+## Accessibility
+
+- Plain tooltip: use `role="tooltip"` and `aria-describedby` on the trigger
+- Rich tooltip: treat as a popover with `role="dialog"` if interactive
+- Never put essential information only in a tooltip
+
+```html
+<!-- Plain -->
+<button aria-describedby="tip-copy">Copy</button>
+<div id="tip-copy" role="tooltip" class="tooltip tooltip--plain">
+  <span class="tooltip__text">Copy to clipboard</span>
+</div>
+
+<!-- Rich (informational, non-interactive) -->
+<span aria-describedby="tip-tokens" tabindex="0">Tokens ⓘ</span>
+<div id="tip-tokens" role="tooltip" class="tooltip tooltip--rich">
+  <div class="tooltip__content">
+    <p class="tooltip__headline">Design Tokens</p>
+    <p class="tooltip__supporting">CSS custom properties from the token system.</p>
+  </div>
+</div>
+```

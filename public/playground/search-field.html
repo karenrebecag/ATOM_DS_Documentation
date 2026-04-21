@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@2.2.0/build/css/tokens.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/css@1.2.0/dist/fonts.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/css@1.2.0/dist/atom.css"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; }
+    body { padding: 0; font-family: system-ui, -apple-system, sans-serif; background: transparent; display: flex; align-items: flex-start; justify-content: center; }
+    .sb-playground { display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 28px 24px; width: 100%; max-width: 560px; }
+    .sb-separator { width: 100%; border: none; border-top: 1px solid var(--border-subtle, #e5e7eb); }
+    .sb-controls { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+    .sb-control-row { display: flex; align-items: center; gap: 12px; }
+    .sb-control-row label { font-size: 11px; font-weight: 600; color: var(--fg-subtle, #6b7280); width: 70px; flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.05em; }
+    .sb-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+    .sb-chip { padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 500; border: 1px solid var(--border-default, #e5e7eb); background: var(--bg-primary, #fff); cursor: pointer; transition: border-color 0.12s, background 0.12s, color 0.12s; color: var(--fg-default, #374151); }
+    .sb-chip:hover { border-color: #9ca3af; }
+    .sb-chip.active { background: var(--fg-default, #111); color: var(--bg-primary, #fff); border-color: var(--fg-default, #111); }
+    .sb-chip-bool { padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 500; border: 1px solid var(--border-default, #e5e7eb); background: var(--bg-primary, #fff); cursor: pointer; transition: border-color 0.12s, background 0.12s, color 0.12s; color: var(--fg-default, #374151); }
+    .sb-chip-bool:hover { border-color: #9ca3af; }
+    .sb-chip-bool.active { background: #ef4444; color: #fff; border-color: #ef4444; }
+    .sb-preview { min-height: 80px; display: flex; align-items: center; justify-content: center; width: 100%; border-radius: 10px; background: var(--bg-surface, #f9fafb); border: 1px solid var(--border-subtle, #e5e7eb); padding: 16px; }</style>
+</head>
+<body>
+  <div class="sb-playground">
+    <div class="sb-preview" id="sf-preview"></div>
+    <hr class="sb-separator"/>
+    <div class="sb-controls">
+      <div class="sb-control-row">
+        <label>Size</label>
+        <div class="sb-chips" id="sf-sizes">
+          <button class="sb-chip" data-value="s">s</button>
+          <button class="sb-chip active" data-value="m">m</button>
+          <button class="sb-chip" data-value="l">l</button>
+        </div>
+      </div>
+      <div class="sb-control-row">
+        <label>States</label>
+        <div class="sb-chips">
+          <button class="sb-chip-bool" id="sf-disabled">Disabled</button>
+          <button class="sb-chip-bool" id="sf-clear">Show clear</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="module">
+    import { initFormValidation, validateAll, validateField, resetField }
+      from 'https://esm.sh/@atomchat.io/animations@1.4.0/components/forms';
+    window.__atomForms = { initFormValidation, validateAll, validateField, resetField };
+    window.dispatchEvent(new CustomEvent('atom:forms-ready'));
+  </script>
+  <script>
+  (function(){
+    const searchIcon='<svg viewBox="0 0 16 16" fill="none" width="16" height="16"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+    const clearIcon='<svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><path d="M12 4L4 12M4 4l8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>';
+    let s={size:'m',disabled:false,showClear:false};
+    let formCleanup=null;
+
+    function update(){
+      const disAttr=s.disabled?'disabled':'';
+      const clearBtn=s.showClear?`<button class="search-field__clear" type="button" aria-label="Clear search" ${disAttr}>${clearIcon}</button>`:'';
+      document.getElementById('sf-preview').innerHTML=`<div class="search-field search-field--${s.size}${s.disabled?' search-field--disabled':''}" data-search-field style="width:100%;max-width:320px;"><span class="search-field__icon">${searchIcon}</span><input class="search-field__input" type="search" placeholder="Search…" aria-label="Search" ${disAttr}/>${clearBtn}</div>`;
+      if(formCleanup){formCleanup();formCleanup=null;}
+      const forms=window.__atomForms;
+      if(forms) formCleanup=forms.initFormValidation({scope:document.getElementById('sf-preview')})||null;
+    }
+
+    function chips(id,key){document.getElementById(id).addEventListener('click',e=>{const c=e.target.closest('.sb-chip');if(!c)return;s[key]=c.dataset.value;document.querySelectorAll(`#${id} .sb-chip`).forEach(x=>x.classList.remove('active'));c.classList.add('active');update();});}
+    function bool(id,key){document.getElementById(id).addEventListener('click',e=>{s[key]=!s[key];e.currentTarget.classList.toggle('active',s[key]);update();});}
+
+    chips('sf-sizes','size');
+    bool('sf-disabled','disabled');bool('sf-clear','showClear');
+    window.addEventListener('atom:forms-ready',update,{once:true});
+    update();
+  })();
+  </script>
+</body>
+</html>

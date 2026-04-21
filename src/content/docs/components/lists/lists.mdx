@@ -1,0 +1,144 @@
+---
+title: Lists
+description: Styled bullet and numbered list items with support for bold text and inline links.
+---
+
+## Overview
+
+The Lists system provides two styled list-item components — `bullet-item` and `number-item` — that replace bare `<li>` elements with token-driven typography and consistent spacing. Both support inline `<strong>` emphasis and `<a>` links.
+
+**Key Features:**
+- `.bullet-item` — custom `•` bullet via `::before`
+- `.number-item` — ordered list item (counter via CSS or HTML `<ol>`)
+- `<strong>` inside: medium weight, primary color
+- `<a>` inside: underline with hover transition
+- `margin-bottom: var(--s)` between items, zero on `:last-child`
+- Fully token-driven typography
+
+---
+
+## Playground
+
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
+
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-lists--playground" height={300} title="Lists interactive playground" />
+
+---
+
+## Anatomy
+
+```html
+<!-- Unordered list -->
+<ul style="list-style: none; padding: 0;">
+  <li class="bullet-item">First item</li>
+  <li class="bullet-item">Second item with <strong>emphasis</strong></li>
+  <li class="bullet-item">Item with <a href="#">a link</a></li>
+</ul>
+
+<!-- Ordered list (number-item) -->
+<ol style="list-style: none; padding: 0; counter-reset: list-counter;">
+  <li class="number-item">First step</li>
+  <li class="number-item">Second step</li>
+</ol>
+```
+
+---
+
+## API Reference
+
+### BulletItem
+
+| Selector | Description |
+|----------|-------------|
+| `.bullet-item` | List item with `•` before pseudo-element |
+| `.bullet-item strong` | Medium weight, `--fg-primary` color |
+| `.bullet-item a` | Underline + hover color transition |
+| `.bullet-item:last-child` | Zero bottom margin |
+
+---
+
+## Design Tokens
+
+```css
+/* BulletItem */
+--font-body              /* Font family */
+--text-body              /* Font size */
+--font-weight-regular    /* Default weight */
+--font-weight-medium     /* <strong> weight */
+--font-weight-bold       /* Bullet character weight */
+--line-height-body
+--fg-secondary           /* Item text color */
+--fg-primary             /* Bullet + <strong> + link color */
+--duration-quarter       /* Link hover transition */
+```
+
+---
+
+## Usage
+
+### Feature List
+
+```html
+<ul style="list-style: none; padding: 0; margin: 0;">
+  <li class="bullet-item">
+    <strong>Token-driven</strong> — every value from the design system
+  </li>
+  <li class="bullet-item">
+    <strong>Multi-framework</strong> — Astro, React, Vue, Angular
+  </li>
+  <li class="bullet-item">
+    GSAP animations with <a href="/foundations/animations">motion preferences</a>
+  </li>
+  <li class="bullet-item">
+    W3C DTCG-compliant token format
+  </li>
+</ul>
+```
+
+### Step-by-step Instructions
+
+```html
+<ol style="list-style: none; padding: 0; margin: 0; counter-reset: steps;">
+  <li class="number-item">
+    Install the packages: <code>pnpm add @atomchat.io/css</code>
+  </li>
+  <li class="number-item">
+    Import the CSS in your entry file
+  </li>
+  <li class="number-item">
+    Use components with token-driven class names
+  </li>
+</ol>
+```
+
+### Inside a Card
+
+```html
+<div class="card">
+  <div class="card-body">
+    <div class="card-body__head">
+      <p class="card-body__headline">What's included</p>
+    </div>
+    <ul style="list-style: none; padding: 0; margin: 0;">
+      <li class="bullet-item">1,621 design tokens</li>
+      <li class="bullet-item">28 animation modules</li>
+      <li class="bullet-item">31 Astro components</li>
+    </ul>
+  </div>
+</div>
+```
+
+---
+
+## Accessibility
+
+- Always use semantic `<ul>` or `<ol>` as the parent element
+- `list-style: none` on the parent is acceptable — screen readers still announce list role
+- If using `list-style: none` with CSS-driven bullets, add `role="list"` on the `<ul>` for VoiceOver compatibility
+
+```html
+<ul role="list" style="list-style: none; padding: 0;">
+  <li class="bullet-item">Item one</li>
+  <li class="bullet-item">Item two</li>
+</ul>
+```

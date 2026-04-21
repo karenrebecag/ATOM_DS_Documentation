@@ -1,0 +1,205 @@
+---
+title: Skeleton
+description: Animated loading placeholder tokens for text lines, avatars, buttons, and cards.
+---
+
+## Overview
+
+The Skeleton system provides CSS custom properties for building consistent loading state placeholders. It is not a single component but a set of tokens and patterns applied to placeholder elements. A pulse animation conveys loading state.
+
+**Key Features:**
+- Token-based — all values come from the design system
+- Covers: text lines, avatars, buttons, cards
+- Dark mode variant via `--skeleton-bg-dark`
+- Configurable pulse via duration and opacity tokens
+- Five text-line widths for natural-looking skeletons
+
+---
+
+## Playground
+
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
+
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-skeleton--playground" height={300} title="Skeleton interactive playground" />
+
+---
+
+## Installation
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import FetchedCode from '../../../../components/FetchedCode.astro';
+
+<Tabs syncKey="framework">
+  <TabItem label="React" icon="seti:react">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-react @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Skeleton" framework="react" />
+    **Dependencies:** [`@atomchat.io/components-react`](https://npmjs.com/package/@atomchat.io/components-react) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css)
+  </TabItem>
+</Tabs>
+
+---
+
+## Anatomy
+
+Skeleton elements are plain `<div>` or `<span>` elements styled with background and radius tokens. There is no special class — you apply the skeleton tokens directly.
+
+```html
+<!-- Avatar skeleton -->
+<div style="
+  width: var(--skeleton-avatar-size);
+  height: var(--skeleton-avatar-size);
+  border-radius: var(--skeleton-radius-circle);
+  background: var(--skeleton-bg);
+  animation: skeleton-pulse var(--skeleton-pulse-duration)
+             var(--skeleton-pulse-easing) infinite alternate;
+"></div>
+
+<!-- Text line skeleton -->
+<div style="
+  height: var(--skeleton-body-h);
+  width: var(--skeleton-line-width-1);
+  border-radius: var(--skeleton-radius-line);
+  background: var(--skeleton-bg);
+"></div>
+```
+
+---
+
+## Available Tokens
+
+### Background
+```css
+--skeleton-bg           /* Light bg (Zinc-200) */
+--skeleton-bg-dark      /* Dark bg (inverse-secondary) */
+```
+
+### Pulse Animation
+```css
+--skeleton-pulse-duration   /* 1.5s */
+--skeleton-pulse-easing     /* ease */
+--skeleton-pulse-opacity    /* 0.4 */
+```
+
+### Border Radius
+```css
+--skeleton-radius        /* Default element */
+--skeleton-radius-circle /* Avatar / circular */
+--skeleton-radius-line   /* Text line (xxs) */
+--skeleton-radius-card   /* Card shell */
+--skeleton-radius-btn    /* Button placeholder */
+```
+
+### Sizes
+```css
+--skeleton-avatar-size   /* 48px */
+--skeleton-heading-h     /* 16px */
+--skeleton-body-h        /* 12px */
+--skeleton-btn-h         /* 32px */
+--skeleton-btn-w         /* 80px */
+```
+
+### Text Line Widths
+```css
+--skeleton-line-width-1  /* 100% */
+--skeleton-line-width-2  /* 90%  */
+--skeleton-line-width-3  /* 75%  */
+--skeleton-line-width-4  /* 85%  */
+--skeleton-line-width-5  /* 60%  */
+```
+
+### Spacing
+```css
+--skeleton-lines-gap     /* Gap between text lines */
+--skeleton-card-padding
+--skeleton-card-gap
+--skeleton-card-border
+--skeleton-card-bg-dark  /* Card bg in dark mode */
+```
+
+---
+
+## Usage
+
+### Pulse Keyframe
+
+Define once in your global CSS (or use the animation token):
+
+```css
+@keyframes skeleton-pulse {
+  from { opacity: 1; }
+  to   { opacity: var(--skeleton-pulse-opacity); }
+}
+```
+
+### Profile Card Skeleton
+
+```html
+<div style="
+  display: flex; align-items: center; gap: var(--m);
+  padding: var(--skeleton-card-padding);
+  border: var(--skeleton-card-border);
+  border-radius: var(--skeleton-radius-card);
+  width: 280px;
+">
+  <!-- Avatar -->
+  <div style="
+    width: var(--skeleton-avatar-size);
+    height: var(--skeleton-avatar-size);
+    border-radius: var(--skeleton-radius-circle);
+    background: var(--skeleton-bg);
+    flex-shrink: 0;
+    animation: skeleton-pulse var(--skeleton-pulse-duration)
+               var(--skeleton-pulse-easing) infinite alternate;
+  "></div>
+
+  <!-- Text lines -->
+  <div style="display: flex; flex-direction: column; gap: var(--skeleton-lines-gap); flex: 1;">
+    <div style="
+      height: var(--skeleton-heading-h);
+      width: var(--skeleton-line-width-3);
+      border-radius: var(--skeleton-radius-line);
+      background: var(--skeleton-bg);
+      animation: skeleton-pulse var(--skeleton-pulse-duration)
+                 var(--skeleton-pulse-easing) infinite alternate;
+    "></div>
+    <div style="
+      height: var(--skeleton-body-h);
+      width: var(--skeleton-line-width-5);
+      border-radius: var(--skeleton-radius-line);
+      background: var(--skeleton-bg);
+      animation: skeleton-pulse var(--skeleton-pulse-duration)
+                 var(--skeleton-pulse-easing) 0.15s infinite alternate;
+    "></div>
+  </div>
+</div>
+```
+
+### Button Skeleton
+
+```html
+<div style="
+  height: var(--skeleton-btn-h);
+  width: var(--skeleton-btn-w);
+  border-radius: var(--skeleton-radius-btn);
+  background: var(--skeleton-bg);
+  animation: skeleton-pulse 1.5s ease infinite alternate;
+"></div>
+```
+
+---
+
+## Accessibility
+
+- Add `aria-busy="true"` to the container while loading
+- Replace skeleton with real content once loaded and set `aria-busy="false"`
+- Optionally add a visually-hidden loading message
+
+```html
+<div aria-busy="true" aria-label="Loading user profile">
+  <!-- skeleton elements -->
+</div>
+```

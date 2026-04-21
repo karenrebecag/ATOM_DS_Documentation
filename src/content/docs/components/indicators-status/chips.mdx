@@ -21,33 +21,58 @@ Chips are compact, interactive elements that represent selections, filters, or c
 
 ---
 
-## Demo
+## Playground
 
-:::tip[Interactive Playground]
-**[Open Chip Playground →](/playground/chip)**
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
 
-View all Chip sizes, states, dismissible variants, and icon arrangements with live interactions.
-:::
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-chip--playground" height={300} title="Chip interactive playground" />
 
 ---
 
 ## Installation
 
-```bash
-# Install component package
-pnpm add @atomchat.io/components-astro
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import CopyPromptButton from '../../../../components/CopyPromptButton.astro';
+import FetchedCode from '../../../../components/FetchedCode.astro';
 
-# Install required dependencies
-pnpm add @atomchat.io/css @atomchat.io/tokens
-```
-
-**CSS Import (required):**
-```astro
----
-// In your layout or page
-import '@atomchat.io/css';
----
-```
+<Tabs syncKey="framework">
+  <TabItem label="Astro" icon="astro">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-astro @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Chip" framework="astro" />
+    **Dependencies:** [`@atomchat.io/components-astro`](https://npmjs.com/package/@atomchat.io/components-astro) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css)
+  </TabItem>
+  <TabItem label="React" icon="seti:react">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-react @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Chip" framework="react" />
+    **Dependencies:** [`@atomchat.io/components-react`](https://npmjs.com/package/@atomchat.io/components-react) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`react`](https://npmjs.com/package/react)
+  </TabItem>
+  <TabItem label="Vue" icon="seti:vue">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-vue @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Chip" framework="vue" />
+    **Dependencies:** [`@atomchat.io/components-vue`](https://npmjs.com/package/@atomchat.io/components-vue) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`vue`](https://npmjs.com/package/vue)
+  </TabItem>
+  <TabItem label="Angular" icon="simple-icons:angular">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-angular @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Chip" framework="angular" />
+    **Dependencies:** [`@atomchat.io/components-angular`](https://npmjs.com/package/@atomchat.io/components-angular) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`@angular/core`](https://npmjs.com/package/@angular/core)
+  </TabItem>
+</Tabs>
 
 ---
 
@@ -119,217 +144,6 @@ The Chip component is a flexible, icon-aware button element:
 ```
 
 ---
-
-## Framework Support
-
-The Chip component is available for multiple frameworks with shared design tokens, styles, and behavior.
-
-import FrameworkSwitcher from '../../../../components/FrameworkSwitcher.astro';
-
-<FrameworkSwitcher
-  frameworks={[
-    { name: 'astro', label: 'Astro', icon: 'https://svgl.app/library/astro-icon-dark.svg' },
-    { name: 'react', label: 'React', icon: 'https://svgl.app/library/react_dark.svg' },
-    { name: 'nextjs', label: 'Next.js', icon: 'https://svgl.app/library/nextjs_icon_dark.svg' },
-    { name: 'vue', label: 'Vue', icon: 'https://svgl.app/library/vue.svg' },
-    { name: 'angular', label: 'Angular', icon: 'https://svgl.app/library/angular.svg' },
-  ]}
->
-  <div data-framework="astro" data-active="true">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-astro @atomchat.io/css
-```
-
-### Usage
-
-```astro
----
-import { Chip } from '@atomchat.io/components-astro';
-import '@atomchat.io/css';
----
-
-<Chip size="m">Default</Chip>
-
-<Chip size="m" selected>Selected</Chip>
-
-<Chip size="m" disabled>Disabled</Chip>
-
-<Chip size="m">
-  <svg slot="icon-start" viewBox="0 0 24 24">
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
-  </svg>
-  With Icon
-</Chip>
-```
-
-  </div>
-
-  <div data-framework="react">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-react @atomchat.io/css
-```
-
-### Usage
-
-```tsx
-import { Chip } from '@atomchat.io/components-react';
-import '@atomchat.io/css';
-import { useState } from 'react';
-
-function Example() {
-  const [selected, setSelected] = useState(false);
-
-  return (
-    <>
-      <Chip size="m">Default</Chip>
-
-      <Chip size="m" selected={selected} onClick={() => setSelected(!selected)}>
-        Selected
-      </Chip>
-
-      <Chip size="m" disabled>Disabled</Chip>
-
-      <Chip size="m">
-        <svg slot="icon-start" viewBox="0 0 24 24">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
-        </svg>
-        With Icon
-      </Chip>
-    </>
-  );
-}
-```
-
-  </div>
-
-  <div data-framework="nextjs">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-react @atomchat.io/css
-```
-
-### Usage
-
-```tsx
-'use client';
-
-import { Chip } from '@atomchat.io/components-react';
-import '@atomchat.io/css';
-import { useState } from 'react';
-
-export default function Example() {
-  const [selected, setSelected] = useState(false);
-
-  return (
-    <>
-      <Chip size="m">Default</Chip>
-
-      <Chip size="m" selected={selected} onClick={() => setSelected(!selected)}>
-        Selected
-      </Chip>
-
-      <Chip size="m" disabled>Disabled</Chip>
-
-      <Chip size="m">
-        <svg slot="icon-start" viewBox="0 0 24 24">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
-        </svg>
-        With Icon
-      </Chip>
-    </>
-  );
-}
-```
-
-  </div>
-
-  <div data-framework="vue">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-vue @atomchat.io/css
-```
-
-### Usage
-
-```vue
-<script setup>
-import { Chip } from '@atomchat.io/components-vue';
-import '@atomchat.io/css';
-import { ref } from 'vue';
-
-const isSelected = ref(false);
-</script>
-
-<template>
-  <Chip size="m">Default</Chip>
-
-  <Chip size="m" :selected="isSelected" @click="isSelected = !isSelected">
-    Selected
-  </Chip>
-
-  <Chip size="m" disabled>Disabled</Chip>
-
-  <Chip size="m">
-    <svg slot="icon-start" viewBox="0 0 24 24">
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
-    </svg>
-    With Icon
-  </Chip>
-</template>
-```
-
-  </div>
-
-  <div data-framework="angular">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-angular @atomchat.io/css
-```
-
-### Usage
-
-```typescript
-import { ChipComponent } from '@atomchat.io/components-angular';
-import '@atomchat.io/css';
-import { Component, signal } from '@angular/core';
-
-@Component({
-  imports: [ChipComponent],
-  template: `
-    <atom-chip size="m">Default</atom-chip>
-
-    <atom-chip
-      size="m"
-      [selected]="isSelected()"
-      (click)="isSelected.set(!isSelected())"
-    >
-      Selected
-    </atom-chip>
-
-    <atom-chip size="m" disabled>Disabled</atom-chip>
-
-    <atom-chip size="m">
-      <svg slot="icon-start" viewBox="0 0 24 24">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
-      </svg>
-      With Icon
-    </atom-chip>
-  `
-})
-export class ExampleComponent {
-  isSelected = signal(false);
-}
-```
-
-  </div>
-</FrameworkSwitcher>
 
 ---
 

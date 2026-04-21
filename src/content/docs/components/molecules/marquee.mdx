@@ -1,0 +1,145 @@
+---
+title: Marquee
+description: Continuously scrolling strip for text or logo content with speed, direction, and fade controls.
+---
+
+## Overview
+
+The Marquee component creates an infinite horizontal scroll strip — ideal for logo walls, feature lists, and social proof sections. It supports text and logo variants, configurable speed, reverse direction, and edge fade effects. Animation is handled by `@atomchat.io/animations` via a GSAP-powered scroll loop.
+
+**Key Features:**
+- 2 variants: `text` (with star separators) and `logos` (image strip)
+- 4 sizes: `s`, `m`, `l`, `xl`
+- 3 speed presets: `slow`, `default`, `fast`
+- Reverse direction support
+- Edge fade via CSS mask
+- Dark mode support via `dark` prop
+- Pause on hover
+- Accessible — respects `prefers-reduced-motion`
+
+---
+
+## Playground
+
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
+
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-marquee--playground" height={300} title="Marquee interactive playground" />
+
+---
+
+## Installation
+
+```bash
+pnpm add @atomchat.io/components-astro @atomchat.io/css @atomchat.io/animations
+```
+
+---
+
+## Usage
+
+```astro
+---
+import { Marquee } from '@atomchat.io/components-astro';
+---
+
+<!-- Text marquee -->
+<Marquee variant="text" size="m">
+  <div class="marquee__item">
+    <p class="marquee__text">Design System</p>
+    <svg class="marquee__separator" viewBox="0 0 50 50" fill="currentColor">
+      <path d="M17.68 32.32C12.99 27.63 6.63 25 0 25c6.63 0 12.99-2.63 17.68-7.32C22.37 12.99 25 6.63 25 0c0 6.63 2.63 12.99 7.32 17.68C37.01 22.37 43.37 25 50 25c-6.63 0-12.99 2.63-17.68 7.32C27.63 37.01 25 43.37 25 50c0-6.63-2.63-12.99-7.32-17.68z"/>
+    </svg>
+  </div>
+  <div class="marquee__item">
+    <p class="marquee__text">Component Library</p>
+    <!-- separator -->
+  </div>
+</Marquee>
+
+<!-- Logo marquee -->
+<Marquee variant="logos" size="m">
+  <div class="marquee__item">
+    <img class="marquee__logo" src="/logos/figma.svg" alt="Figma" />
+  </div>
+  <div class="marquee__item">
+    <img class="marquee__logo" src="/logos/react.svg" alt="React" />
+  </div>
+</Marquee>
+
+<!-- Double row, opposite directions -->
+<Marquee variant="text" size="m" dark>...</Marquee>
+<Marquee variant="text" size="m" dark reverse>...</Marquee>
+```
+
+```tsx
+// React
+import { Marquee } from '@atomchat.io/components-react';
+
+<Marquee variant="text" size="m" fade speed="default">
+  {/* marquee items */}
+</Marquee>
+```
+
+---
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `"text" \| "logos"` | `"text"` | Content type — affects item layout and sizing |
+| `size` | `"s" \| "m" \| "l" \| "xl"` | `"m"` | Strip height and text size |
+| `speed` | `"slow" \| "default" \| "fast"` | `"default"` | Scroll speed |
+| `reverse` | `boolean` | `false` | Scrolls right-to-left instead of left-to-right |
+| `dark` | `boolean` | `false` | Applies inverted color scheme |
+| `fade` | `boolean` | `true` | Fades edges with CSS mask |
+
+### Slots / Children
+
+Place `marquee__item` elements as children. The component clones them automatically to fill the strip.
+
+**Text item:**
+```html
+<div class="marquee__item">
+  <p class="marquee__text">Your text</p>
+  <svg class="marquee__separator" ...></svg>
+</div>
+```
+
+**Logo item:**
+```html
+<div class="marquee__item">
+  <img class="marquee__logo" src="..." alt="Brand" />
+</div>
+```
+
+---
+
+## Patterns
+
+### Social proof / logo wall
+
+```astro
+<Marquee variant="logos" size="m" fade>
+  <div class="marquee__item"><img class="marquee__logo" src="/figma.svg" alt="Figma" /></div>
+  <div class="marquee__item"><img class="marquee__logo" src="/react.svg" alt="React" /></div>
+  <div class="marquee__item"><img class="marquee__logo" src="/vue.svg" alt="Vue" /></div>
+</Marquee>
+```
+
+### Double row, opposite directions
+
+```astro
+<Marquee variant="text" size="l" dark><!-- items --></Marquee>
+<Marquee variant="text" size="l" dark reverse><!-- items --></Marquee>
+```
+
+---
+
+## Accessibility
+
+- Animation pauses on hover
+- Respects `prefers-reduced-motion` — static display when motion is reduced
+- Logo images require meaningful `alt` text
+- Text content is fully readable without animation

@@ -1,0 +1,218 @@
+---
+title: Empty State
+description: Centered placeholder for no-data scenarios — two sizes with icon, heading, and supporting text.
+---
+
+## Overview
+
+The EmptyState component provides a centered, visually calm placeholder for screens or sections that have no content to display. Available in two sizes: small (compact, inline) and medium (full-section).
+
+**Key Features:**
+- 2 sizes: s (compact) and m (full section)
+- Icon container with bg pill
+- Heading + supporting text
+- Small size: adds a bold result text below supporting
+- Token-driven widths and icon sizes
+- No interactive elements — pair with a Button if needed
+
+---
+
+## Playground
+
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
+
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-emptystate--playground" height={300} title="EmptyState interactive playground" />
+
+---
+
+## Installation
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import FetchedCode from '../../../../components/FetchedCode.astro';
+
+<Tabs syncKey="framework">
+  <TabItem label="Astro" icon="astro">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-astro @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="EmptyState" framework="astro" />
+    **Dependencies:** [`@atomchat.io/components-astro`](https://npmjs.com/package/@atomchat.io/components-astro) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css)
+  </TabItem>
+  <TabItem label="React" icon="seti:react">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-react @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="EmptyState" framework="react" />
+    **Dependencies:** [`@atomchat.io/components-react`](https://npmjs.com/package/@atomchat.io/components-react) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css)
+  </TabItem>
+</Tabs>
+
+---
+
+## Anatomy
+
+### Small (s)
+```
+┌──────────────────────────┐
+│ .empty-state--s          │
+│  .empty-state__icon      │  ← Icon (smaller pill)
+│  .empty-state__heading   │  ← Bold label
+│  .empty-state__           │
+│   supporting-group       │
+│  │  .empty-state__        │
+│  │   supporting          │  ← Body text
+│  │  .empty-state__result │  ← Bold result (e.g. "0 results")
+└──────────────────────────┘
+```
+
+### Medium (m)
+```
+┌──────────────────────────┐
+│ .empty-state--m          │
+│  .empty-state__icon      │  ← Icon (padded pill)
+│  .empty-state__text-group│
+│  │  .empty-state__heading│  ← Heading
+│  │  .empty-state__        │
+│  │   supporting          │  ← Caption text
+└──────────────────────────┘
+```
+
+**DOM Structure (medium):**
+```html
+<div class="empty-state empty-state--m">
+  <div class="empty-state__icon">
+    <svg><!-- icon --></svg>
+  </div>
+  <div class="empty-state__text-group">
+    <p class="empty-state__heading">No results found</p>
+    <p class="empty-state__supporting">
+      Try adjusting your search or filters to find what you're looking for.
+    </p>
+  </div>
+</div>
+```
+
+**DOM Structure (small):**
+```html
+<div class="empty-state empty-state--s">
+  <div class="empty-state__icon">
+    <svg><!-- icon --></svg>
+  </div>
+  <p class="empty-state__heading">No items</p>
+  <div class="empty-state__supporting-group">
+    <p class="empty-state__supporting">Add items to get started</p>
+    <p class="empty-state__result">0 items</p>
+  </div>
+</div>
+```
+
+---
+
+## API Reference
+
+### Modifier Classes
+
+| Class | Description |
+|-------|-------------|
+| `.empty-state--s` | Compact — for inline/table empty sections |
+| `.empty-state--m` | Full-section — for main page areas |
+
+---
+
+## Design Tokens
+
+```css
+--empty-state-width-s             /* Max width for small */
+--empty-state-width-m             /* Max width for medium */
+--empty-state-icon-svg-s          /* Icon SVG size (small) */
+--empty-state-icon-svg-m          /* Icon SVG size (medium) */
+
+/* Inherited semantic tokens */
+--bg-quaternary                   /* Icon container bg */
+--radius-s                        /* Icon container radius */
+--fg-primary                      /* Heading color */
+--fg-quaternary                   /* Supporting text color */
+--font-family-titles
+--font-family-content
+```
+
+---
+
+## Usage
+
+### Search — No Results (Small)
+
+```html
+<div class="empty-state empty-state--s">
+  <div class="empty-state__icon">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+  </div>
+  <p class="empty-state__heading">No results</p>
+  <div class="empty-state__supporting-group">
+    <p class="empty-state__supporting">Try a different search term</p>
+    <p class="empty-state__result">0 results for "xyz"</p>
+  </div>
+</div>
+```
+
+### Inbox — Empty (Medium)
+
+```html
+<div class="empty-state empty-state--m">
+  <div class="empty-state__icon">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="1.5">
+      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+      <polyline points="22,6 12,13 2,6"/>
+    </svg>
+  </div>
+  <div class="empty-state__text-group">
+    <p class="empty-state__heading">Your inbox is empty</p>
+    <p class="empty-state__supporting">
+      When you receive messages, they'll appear here.
+    </p>
+  </div>
+</div>
+```
+
+### With CTA Button
+
+```html
+<div class="empty-state empty-state--m">
+  <div class="empty-state__icon"><!-- icon --></div>
+  <div class="empty-state__text-group">
+    <p class="empty-state__heading">No projects yet</p>
+    <p class="empty-state__supporting">Create your first project to get started.</p>
+  </div>
+  <button class="button button--primary button--m" style="margin-top: var(--m);">
+    Create Project
+  </button>
+</div>
+```
+
+---
+
+## Accessibility
+
+- Wrap in a `<section>` or `<div>` with `aria-live="polite"` for dynamic content
+- Icon is decorative — use `aria-hidden="true"` on the SVG
+- Heading should use the appropriate heading level for the page hierarchy
+
+```html
+<section aria-live="polite" aria-label="Search results">
+  <div class="empty-state empty-state--m">
+    <div class="empty-state__icon" aria-hidden="true"><!-- icon --></div>
+    <div class="empty-state__text-group">
+      <h3 class="empty-state__heading">No results found</h3>
+      <p class="empty-state__supporting">Adjust your search and try again.</p>
+    </div>
+  </div>
+</section>
+```

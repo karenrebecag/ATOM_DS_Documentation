@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/tokens@2.2.0/build/css/tokens.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/css@1.1.0/dist/fonts.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@atomchat.io/css@1.1.0/dist/atom.css"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; }
+    body { padding: 0; font-family: system-ui, -apple-system, sans-serif; background: transparent; display: flex; align-items: flex-start; justify-content: center; }
+    .sb-playground { display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 28px 24px; width: 100%; max-width: 560px; }
+    .sb-preview { min-height: 160px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 48px; width: 100%; border-radius: 10px; background: var(--bg-surface, #f9fafb); border: 1px solid var(--border-subtle, #e5e7eb); padding: 64px 40px; }
+    .sb-separator { width: 100%; border: none; border-top: 1px solid var(--border-subtle, #e5e7eb); }
+    .sb-hint { font-size: 11px; color: var(--fg-subtle, #6b7280); text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="sb-playground">
+    <div class="sb-preview" id="tt-preview">
+      <!-- Top center -->
+      <span class="tooltip-wrapper" data-tooltip-wrapper style="position:relative;display:inline-flex;">
+        <button class="button button--secondary button--m" data-button type="button" aria-describedby="tt1">
+          <span class="button__label-wrap"><span class="button__label">Hover me (top)</span><span class="button__label button__label--clone" aria-hidden="true">Hover me (top)</span></span>
+        </button>
+        <span class="tooltip tooltip--center tooltip--top" data-tooltip id="tt1" role="tooltip">
+          <span class="tooltip__content">Helpful tooltip text</span>
+          <span class="tooltip__tip" aria-hidden="true">
+            <svg viewBox="0 0 12 6" width="12" height="6" fill="currentColor"><path d="M0 0 L6 6 L12 0Z"/></svg>
+          </span>
+        </span>
+      </span>
+
+      <!-- Bottom center -->
+      <span class="tooltip-wrapper" data-tooltip-wrapper style="position:relative;display:inline-flex;">
+        <button class="button button--secondary button--m" data-button type="button" aria-describedby="tt2">
+          <span class="button__label-wrap"><span class="button__label">Hover me (bottom)</span><span class="button__label button__label--clone" aria-hidden="true">Hover me (bottom)</span></span>
+        </button>
+        <span class="tooltip tooltip--center tooltip--bottom" data-tooltip id="tt2" role="tooltip">
+          <span class="tooltip__content">Another tooltip</span>
+          <span class="tooltip__tip" aria-hidden="true">
+            <svg viewBox="0 0 12 6" width="12" height="6" fill="currentColor"><path d="M0 6 L6 0 L12 6Z"/></svg>
+          </span>
+        </span>
+      </span>
+    </div>
+    <p class="sb-hint">Hover the buttons to see the tooltips</p>
+  </div>
+</body>
+</html>

@@ -21,33 +21,58 @@ The Badge component is a notification indicator that displays count information 
 
 ---
 
-## Demo
+## Playground
 
-:::tip[Interactive Playground]
-**[Open Badge Playground →](/playground/badge)**
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
 
-View all Badge types, states, and overflow behavior in an isolated environment.
-:::
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-badge--playground" height={300} title="Badge interactive playground" />
 
 ---
 
 ## Installation
 
-```bash
-# Install component package
-pnpm add @atomchat.io/components-astro
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import CopyPromptButton from '../../../../components/CopyPromptButton.astro';
+import FetchedCode from '../../../../components/FetchedCode.astro';
 
-# Install required dependencies
-pnpm add @atomchat.io/css @atomchat.io/tokens
-```
-
-**CSS Import (required):**
-```astro
----
-// In your layout or page
-import '@atomchat.io/css';
----
-```
+<Tabs syncKey="framework">
+  <TabItem label="Astro" icon="astro">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-astro @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Badge" framework="astro" />
+    **Dependencies:** [`@atomchat.io/components-astro`](https://npmjs.com/package/@atomchat.io/components-astro) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css)
+  </TabItem>
+  <TabItem label="React" icon="seti:react">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-react @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Badge" framework="react" />
+    **Dependencies:** [`@atomchat.io/components-react`](https://npmjs.com/package/@atomchat.io/components-react) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`react`](https://npmjs.com/package/react)
+  </TabItem>
+  <TabItem label="Vue" icon="seti:vue">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-vue @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Badge" framework="vue" />
+    **Dependencies:** [`@atomchat.io/components-vue`](https://npmjs.com/package/@atomchat.io/components-vue) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`vue`](https://npmjs.com/package/vue)
+  </TabItem>
+  <TabItem label="Angular" icon="simple-icons:angular">
+    ### Install packages
+    ```bash
+    pnpm add @atomchat.io/components-angular @atomchat.io/css
+    ```
+    ### Component source
+    <FetchedCode component="Badge" framework="angular" />
+    **Dependencies:** [`@atomchat.io/components-angular`](https://npmjs.com/package/@atomchat.io/components-angular) · [`@atomchat.io/css`](https://npmjs.com/package/@atomchat.io/css) · [`@angular/core`](https://npmjs.com/package/@angular/core)
+  </TabItem>
+</Tabs>
 
 ---
 
@@ -102,185 +127,6 @@ The Badge component is a self-contained, minimal indicator:
 ```
 
 ---
-
-## Framework Support
-
-The Badge component is available for multiple frameworks with shared design tokens, styles, and behavior.
-
-import FrameworkSwitcher from '../../../../components/FrameworkSwitcher.astro';
-
-<FrameworkSwitcher
-  frameworks={[
-    { name: 'astro', label: 'Astro', icon: 'https://svgl.app/library/astro-icon-dark.svg' },
-    { name: 'react', label: 'React', icon: 'https://svgl.app/library/react_dark.svg' },
-    { name: 'nextjs', label: 'Next.js', icon: 'https://svgl.app/library/nextjs_icon_dark.svg' },
-    { name: 'vue', label: 'Vue', icon: 'https://svgl.app/library/vue.svg' },
-    { name: 'angular', label: 'Angular', icon: 'https://svgl.app/library/angular.svg' },
-  ]}
->
-  <div data-framework="astro" data-active="true">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-astro @atomchat.io/css
-```
-
-### Usage
-
-```astro
----
-import { Badge } from '@atomchat.io/components-astro';
-import '@atomchat.io/css';
----
-
-<Badge count={5} type="neutral" />
-
-<Badge count={45} type="inbox" context="inbox" state="focused" />
-
-<Badge count={150} type="info" context="default" />
-
-<Badge count={0} type="neutral" />
-```
-
-  </div>
-
-  <div data-framework="react">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-react @atomchat.io/css
-```
-
-### Usage
-
-```tsx
-import { Badge } from '@atomchat.io/components-react';
-import '@atomchat.io/css';
-import { useState } from 'react';
-
-function Example() {
-  const [unreadCount, setUnreadCount] = useState(45);
-
-  return (
-    <>
-      <Badge count={5} type="neutral" />
-
-      <Badge count={unreadCount} type="inbox" context="inbox" state="focused" />
-
-      <Badge count={150} type="info" context="default" />
-
-      <Badge count={0} type="neutral" />
-    </>
-  );
-}
-```
-
-  </div>
-
-  <div data-framework="nextjs">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-react @atomchat.io/css
-```
-
-### Usage
-
-```tsx
-'use client';
-
-import { Badge } from '@atomchat.io/components-react';
-import '@atomchat.io/css';
-import { useState } from 'react';
-
-export default function Example() {
-  const [unreadCount, setUnreadCount] = useState(45);
-
-  return (
-    <>
-      <Badge count={5} type="neutral" />
-
-      <Badge count={unreadCount} type="inbox" context="inbox" state="focused" />
-
-      <Badge count={150} type="info" context="default" />
-
-      <Badge count={0} type="neutral" />
-    </>
-  );
-}
-```
-
-  </div>
-
-  <div data-framework="vue">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-vue @atomchat.io/css
-```
-
-### Usage
-
-```vue
-<script setup>
-import { Badge } from '@atomchat.io/components-vue';
-import '@atomchat.io/css';
-import { ref } from 'vue';
-
-const unreadCount = ref(45);
-</script>
-
-<template>
-  <Badge :count="5" type="neutral" />
-
-  <Badge :count="unreadCount" type="inbox" context="inbox" state="focused" />
-
-  <Badge :count="150" type="info" context="default" />
-
-  <Badge :count="0" type="neutral" />
-</template>
-```
-
-  </div>
-
-  <div data-framework="angular">
-
-### Installation
-```bash
-pnpm add @atomchat.io/components-angular @atomchat.io/css
-```
-
-### Usage
-
-```typescript
-import { BadgeComponent } from '@atomchat.io/components-angular';
-import '@atomchat.io/css';
-import { Component, signal } from '@angular/core';
-
-@Component({
-  imports: [BadgeComponent],
-  template: `
-    <atom-badge [count]="5" type="neutral"></atom-badge>
-
-    <atom-badge
-      [count]="unreadCount()"
-      type="inbox"
-      context="inbox"
-      state="focused"
-    ></atom-badge>
-
-    <atom-badge [count]="150" type="info" context="default"></atom-badge>
-
-    <atom-badge [count]="0" type="neutral"></atom-badge>
-  `
-})
-export class ExampleComponent {
-  unreadCount = signal(45);
-}
-```
-
-  </div>
-</FrameworkSwitcher>
 
 ---
 

@@ -1,0 +1,125 @@
+---
+title: Logo Badge
+description: Adaptive logo component that switches between light and dark images based on the current navigation theme.
+---
+
+## Overview
+
+The LogoBadge component renders a product logo that automatically switches between a light and dark image variant based on the surrounding navigation theme (`data-nav-theme`). Ideal for navbars where the background changes between light and dark contexts.
+
+**Key Features:**
+- Automatic theme switching via `data-nav-theme` attribute
+- Separate `lightImage` and `darkImage` sources
+- Configurable height — width scales proportionally
+- Accessible `alt` text
+- Zero JS — pure CSS visibility toggle
+
+---
+
+## Playground
+
+import StoryPlayground from '../../../../components/StoryPlayground.astro';
+
+<StoryPlayground src="https://atom-ds-storybook.vercel.app/iframe.html?viewMode=story&id=components-logobadge--playground" height={300} title="LogoBadge interactive playground" />
+
+---
+
+## Installation
+
+```bash
+pnpm add @atomchat.io/components-astro @atomchat.io/css
+```
+
+---
+
+## Usage
+
+```astro
+---
+import { LogoBadge } from '@atomchat.io/components-astro';
+---
+
+<!-- Default (light) context -->
+<LogoBadge
+  lightImage="/logo-light.png"
+  darkImage="/logo-dark.webp"
+  alt="My Product"
+  height="32px"
+/>
+
+<!-- Inside an inverted navbar -->
+<nav data-nav-theme="inverted">
+  <LogoBadge
+    lightImage="/logo-light.png"
+    darkImage="/logo-dark.webp"
+    alt="My Product"
+    height="32px"
+  />
+</nav>
+```
+
+```tsx
+// React
+import { LogoBadge } from '@atomchat.io/components-react';
+
+<LogoBadge
+  lightImage="/logo-light.png"
+  darkImage="/logo-dark.webp"
+  alt="My Product"
+  height="32px"
+/>
+```
+
+---
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `lightImage` | `string` | — | URL of the logo for light backgrounds |
+| `darkImage` | `string` | — | URL of the logo for dark/inverted backgrounds |
+| `alt` | `string` | — | Accessible alt text for the logo image |
+| `height` | `string` | `"32px"` | Logo height — width scales proportionally |
+
+---
+
+## Theme Switching
+
+The component reacts to a `data-nav-theme` attribute on any ancestor element:
+
+| `data-nav-theme` | Image shown |
+|-----------------|-------------|
+| `"default"` (or absent) | `lightImage` |
+| `"inverted"` | `darkImage` |
+
+```html
+<!-- Light context — shows lightImage -->
+<nav data-nav-theme="default">
+  <logo-badge ...></logo-badge>
+</nav>
+
+<!-- Dark context — shows darkImage -->
+<nav data-nav-theme="inverted">
+  <logo-badge ...></logo-badge>
+</nav>
+```
+
+---
+
+## Sizes
+
+```astro
+<LogoBadge lightImage="..." darkImage="..." alt="Logo" height="24px" />
+<LogoBadge lightImage="..." darkImage="..." alt="Logo" height="32px" />
+<LogoBadge lightImage="..." darkImage="..." alt="Logo" height="40px" />
+<LogoBadge lightImage="..." darkImage="..." alt="Logo" height="48px" />
+```
+
+---
+
+## Accessibility
+
+- Always provide a descriptive `alt` — the logo is the primary brand identifier
+- If used alongside a visible brand name, use `alt=""` to avoid duplication
