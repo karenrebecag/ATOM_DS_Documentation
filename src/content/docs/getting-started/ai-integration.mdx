@@ -42,7 +42,7 @@ Once configured, Claude knows what components exist, how to import them, what pr
 
    <Tabs syncKey="client">
      <TabItem label="Claude Code">
-       Add to your project's `.claude/settings.json`:
+       Add to your project's `.mcp.json` (create it in the root of your project, next to `package.json`):
 
        ```json
        {
@@ -55,7 +55,11 @@ Once configured, Claude knows what components exist, how to import them, what pr
        }
        ```
 
-       Or configure globally at `~/.claude/settings.json` to have ATOM context in every project.
+       <Aside type="caution">
+       ⚠️ **Important:** Claude Code reads MCP servers from `.mcp.json` in the project root, not from `.claude/settings.json`. That file is for general settings, not MCPs.
+       </Aside>
+
+       To configure globally (available in all projects), add to `~/.claude.json` instead.
      </TabItem>
      <TabItem label="Claude Desktop">
        **macOS** — Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
