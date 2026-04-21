@@ -35,6 +35,7 @@ export default defineConfig({
 						{ label: 'Introduction', slug: 'getting-started/introduction' },
 						{ label: 'Installation', slug: 'getting-started/installation' },
 						{ label: 'Quick Start', slug: 'getting-started/quick-start' },
+						{ label: 'AI Integration (MCP)', slug: 'getting-started/ai-integration' },
 					],
 				},
 				{
@@ -43,14 +44,16 @@ export default defineConfig({
 						{ label: 'Overview', slug: 'architecture/overview' },
 						{ label: 'Packages', slug: 'architecture/packages' },
 						{ label: 'Token Layers', slug: 'architecture/token-layers' },
+						{ label: 'Figma Sync', slug: 'architecture/figma-sync' },
 					],
 				},
 				{
 					label: 'Foundations',
 					items: [
-						{ label: 'Design Tokens', slug: 'foundations/tokens' },
+					{ label: 'Design Tokens', slug: 'foundations/tokens' },
 						{ label: 'Colors', slug: 'foundations/colors' },
 						{ label: 'Semantic Colors', slug: 'foundations/semantic-colors' },
+						{ label: 'Dark Mode', slug: 'foundations/dark-mode' },
 						{ label: 'Borders', slug: 'foundations/borders' },
 						{ label: 'Breakpoints', slug: 'foundations/breakpoints' },
 						{ label: 'Elevations', slug: 'foundations/elevations' },

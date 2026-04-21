@@ -1,0 +1,227 @@
+---
+title: AI Integration (MCP)
+description: Install the ATOM MCP server to give Claude full context about all available components, tokens, and installation instructions.
+---
+
+import { Tabs, TabItem, Code, Steps, Aside } from '@astrojs/starlight/components';
+
+The **@atomchat.io/mcp** package is a Model Context Protocol (MCP) server that gives AI assistants (Claude Code, Claude Desktop) full context about the ATOM Design System — components, props, tokens, and installation instructions.
+
+Once installed, Claude knows what components exist, how to import them, what props they accept, and which tokens they use — without you having to explain it every time.
+
+## What it provides
+
+| Tool | What it does |
+|------|-------------|
+| `atom_list_components` | Lists all components with framework availability |
+| `atom_get_component` | Full docs: props, variants, imports, examples, related tokens |
+| `atom_get_tokens` | Browse tokens by tier (foundation, semantic, component) or category |
+| `atom_search` | Fuzzy search across components and tokens |
+
+---
+
+## Installation
+
+<Steps>
+
+1. **Install the package**
+
+   ```bash
+   npm install -D @atomchat.io/mcp
+   ```
+
+2. **Configure your AI client**
+
+   <Tabs syncKey="client">
+     <TabItem label="Claude Code">
+       Add to your project's `.claude/settings.json`:
+
+       ```json
+       {
+         "mcpServers": {
+           "atomchat": {
+             "command": "npx",
+             "args": ["-y", "@atomchat.io/mcp"]
+           }
+         }
+       }
+       ```
+     </TabItem>
+     <TabItem label="Claude Desktop">
+       Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS):
+
+       ```json
+       {
+         "mcpServers": {
+           "atomchat": {
+             "command": "npx",
+             "args": ["-y", "@atomchat.io/mcp"]
+           }
+         }
+       }
+       ```
+
+       On Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+     </TabItem>
+   </Tabs>
+
+3. **Restart Claude**
+
+   Claude Code: restart the session. Claude Desktop: quit and reopen the app.
+
+4. **Verify**
+
+   Ask Claude: *"What ATOM components are available for React?"*
+
+   Claude will use `atom_list_components` to answer with the full list.
+
+</Steps>
+
+---
+
+## How it works
+
+```
+Your project
+├── node_modules/@atomchat.io/mcp/    ← MCP server (local, no network)
+│   ├── dist/index.js                  ← Stdio server entry
+│   └── data/                          ← Static manifests
+│       ├── react.json                 ← Components + props
+│       ├── vue.json
+│       ├── angular.json
+│       ├── astro.json
+│       └── tokens.json                ← 1,800+ design tokens
+└── .claude/settings.json              ← Points Claude to the server
+```
+
+The MCP server runs **locally** via stdio — no API keys, no network requests, no data sent anywhere. It reads pre-generated JSON manifests that describe your design system.
+
+<Aside type="tip">
+  The manifests are generated at build-time from the actual source code of each package. Every time a new version of `@atomchat.io/mcp` is published, the manifests reflect the latest components and tokens.
+</Aside>
+
+---
+
+## Usage examples
+
+Once configured, you can ask Claude naturally:
+
+### Find components
+
+> "What layout components does ATOM have for Astro?"
+
+Claude calls `atom_list_components` with `framework: "astro"` and returns the full list with descriptions.
+
+### Get component docs
+
+> "How do I use the Button in Vue?"
+
+Claude calls `atom_get_component` with `name: "Button", framework: "vue"` and returns:
+- Install command
+- Import statement
+- Props table with types and defaults
+- Related tokens
+
+### Browse tokens
+
+> "Show me all spacing tokens"
+
+Claude calls `atom_get_tokens` with `category: "spacing"` and returns CSS variables, values, and tiers.
+
+### Search
+
+> "What components handle danger/error states?"
+
+Claude calls `atom_search` with `query: "danger"` and returns matching components and tokens ranked by relevance.
+
+---
+
+## Available tools reference
+
+### `atom_list_components`
+
+```typescript
+// Input
+{ framework?: "react" | "vue" | "angular" | "astro" }
+
+// Output: Markdown table with all components
+```
+
+Lists all components with name, category, available frameworks, and brief description.
+
+### `atom_get_component`
+
+```typescript
+// Input
+{ name: string, framework?: "react" | "vue" | "angular" | "astro" }
+
+// Output: Full markdown documentation
+```
+
+Returns installation, import, props table, related tokens, and cross-framework availability.
+
+### `atom_get_tokens`
+
+```typescript
+// Input
+{
+  category?: string,  // e.g. "colors", "spacing", "typography"
+  tier?: "foundation" | "semantic" | "component" | "figma",
+  component?: string  // e.g. "button", "checkbox"
+}
+
+// Output: Token table with CSS variables, types, values
+```
+
+### `atom_search`
+
+```typescript
+// Input
+{ query: string }
+
+// Output: Ranked results (components + tokens)
+```
+
+---
+
+## Keeping it up to date
+
+The MCP manifests update automatically when you update the `@atomchat.io/mcp` package:
+
+```bash
+npm update @atomchat.io/mcp
+```
+
+<Aside type="note">
+  If you're a contributor to the ATOM monorepo, running `pnpm build` in the monorepo root regenerates all manifests from source before compiling. Turborepo caches this — it only regenerates when component source files or token JSONs actually change.
+</Aside>
+
+---
+
+## Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| Claude doesn't see ATOM tools | Check `.claude/settings.json` path is correct, restart session |
+| "Server not found" error | Run `npx @atomchat.io/mcp` manually to verify it's installed |
+| Outdated component info | Run `npm update @atomchat.io/mcp` to get latest manifests |
+| Tools show but return errors | Ensure `data/` directory exists in the installed package |
+
+---
+
+## For monorepo contributors
+
+If you're developing ATOM DS and want the MCP to reflect your local changes:
+
+```bash
+# Regenerate manifests from source
+cd packages/mcp && pnpm generate
+
+# Test locally
+echo '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0.0"}}}' | node packages/mcp/dist/index.js
+```
+
+The generate script reads:
+- `packages/components-*/src/` → component names, props, exports
+- `packages/tokens/src/` → all token definitions
+- `packages/*/package.json` → versions and install commands

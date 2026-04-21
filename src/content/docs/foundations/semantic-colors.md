@@ -13,20 +13,20 @@ Background color tokens define surface colors for containers, panels, and page b
 
 | Purpose | Token | Value | Usage |
 |---------|-------|-------|-------|
-| Primary | `--color-bg-primary` | Neutral-0 (white) | Main page background |
-| Secondary | `--color-bg-secondary` | Zinc-50 | Secondary surfaces |
-| Tertiary | `--color-bg-tertiary` | Zinc-100 | Subtle surfaces |
-| Quaternary | `--color-bg-quaternary` | Zinc-200 | Faint backgrounds |
-| Disabled | `--color-bg-disabled` | Zinc-100 | Disabled state surfaces |
+| Primary | `--bg-primary` | Neutral-0 (white) | Main page background |
+| Secondary | `--bg-secondary` | Zinc-50 | Secondary surfaces |
+| Tertiary | `--bg-tertiary` | Zinc-100 | Subtle surfaces |
+| Quaternary | `--bg-quaternary` | Zinc-200 | Faint backgrounds |
+| Disabled | `--bg-disabled` | Zinc-100 | Disabled state surfaces |
 
 ### Inverse Backgrounds
 
 For dark contexts or inverted layouts:
 
 ```css
---color-bg-inverse-primary: Zinc-950 (darkest)
---color-bg-inverse-secondary: Zinc-800
---color-bg-inverse-tertiary: Zinc-600
+--bg-inverse-primary: Zinc-950 (darkest)
+--bg-inverse-secondary: Zinc-800
+--bg-inverse-tertiary: Zinc-600
 ```
 
 ### Soft Backgrounds
@@ -34,9 +34,9 @@ For dark contexts or inverted layouts:
 Semi-transparent backgrounds with alpha channel:
 
 ```css
---color-bg-soft-primary: Alpha-950 (most opaque)
---color-bg-soft-secondary: Alpha-800
---color-bg-soft-tertiary: Alpha-0 (transparent)
+--bg-soft-primary: Alpha-950 (most opaque)
+--bg-soft-secondary: Alpha-800
+--bg-soft-tertiary: Alpha-0 (transparent)
 ```
 
 ### Status Backgrounds
@@ -45,13 +45,13 @@ Semantic backgrounds for status messaging:
 
 | Status | Token | Color | Usage |
 |--------|-------|-------|-------|
-| Info | `--color-bg-status-info` | Blue-50 | Information messages |
-| Success | `--color-bg-status-success` | Emerald-50 | Success messages |
-| Warning | `--color-bg-status-warning` | Yellow-50 | Warning messages |
-| Error | `--color-bg-status-error` | Red-50 | Error messages |
-| Neutral | `--color-bg-status-neutral` | Zinc-200 | Neutral status |
-| Brand | `--color-bg-status-brand` | Orange-50 | Brand status |
-| AI | `--color-bg-status-ai` | Violet-100 | AI-related |
+| Info | `--bg-status-info` | Blue-50 | Information messages |
+| Success | `--bg-status-success` | Emerald-50 | Success messages |
+| Warning | `--bg-status-warning` | Yellow-50 | Warning messages |
+| Error | `--bg-status-error` | Red-50 | Error messages |
+| Neutral | `--bg-status-neutral` | Zinc-200 | Neutral status |
+| Brand | `--bg-status-brand` | Orange-50 | Brand status |
+| AI | `--bg-status-ai` | Violet-100 | AI-related |
 
 ### Interactive Backgrounds
 
@@ -59,22 +59,22 @@ Backgrounds for interactive components with state variants:
 
 ```css
 /* Primary interactive */
---color-bg-interactive-primary-default: Base
---color-bg-interactive-primary-hovered: Zinc-800
---color-bg-interactive-primary-pressed: Zinc-900
+--bg-interactive-primary-default: Base
+--bg-interactive-primary-hovered: Zinc-800
+--bg-interactive-primary-pressed: Zinc-900
 
 /* Secondary interactive */
---color-bg-interactive-secondary-default: Base
---color-bg-interactive-secondary-hovered: Zinc-50
---color-bg-interactive-secondary-pressed: Zinc-100
+--bg-interactive-secondary-default: Base
+--bg-interactive-secondary-hovered: Zinc-50
+--bg-interactive-secondary-pressed: Zinc-100
 
 /* Links */
---color-bg-interactive-link-hovered: Blue-50
---color-bg-interactive-link-pressed: Blue-100
+--bg-interactive-link-hovered: Blue-50
+--bg-interactive-link-pressed: Blue-100
 
 /* Danger states */
---color-bg-interactive-danger-primary-hovered: Red-400
---color-bg-interactive-danger-primary-pressed: Red-600
+--bg-interactive-danger-primary-hovered: Red-400
+--bg-interactive-danger-primary-pressed: Red-600
 ```
 
 ### Accent Backgrounds
@@ -83,22 +83,22 @@ Specialized backgrounds for specific contexts:
 
 ```css
 /* AI Features */
---color-bg-accent-ai-primary: Violet-600
---color-bg-accent-ai-secondary: Violet-100
---color-bg-accent-ai-tertiary: Pink-100
+--bg-accent-ai-primary: Violet-600
+--bg-accent-ai-secondary: Violet-100
+--bg-accent-ai-tertiary: Pink-100
 
 /* Inbox/Chat */
---color-bg-accent-inbox-new: Green-100
---color-bg-accent-inbox-active: Blue-100
---color-bg-accent-inbox-reassigned: Amber-50
---color-bg-accent-inbox-return: Cyan-50
---color-bg-accent-inbox-typification: Orange-100
---color-bg-accent-inbox-bubble-sent: Emerald-100
---color-bg-accent-inbox-bubble-received: Neutral-0
+--bg-accent-inbox-new: Green-100
+--bg-accent-inbox-active: Blue-100
+--bg-accent-inbox-reassigned: Amber-50
+--bg-accent-inbox-return: Cyan-50
+--bg-accent-inbox-typification: Orange-100
+--bg-accent-inbox-bubble-sent: Emerald-100
+--bg-accent-inbox-bubble-received: Neutral-0
 
 /* Notifications */
---color-bg-accent-notifications-primary: Red-500
---color-bg-accent-notifications-secondary: Red-100
+--bg-accent-notifications-primary: Red-500
+--bg-accent-notifications-secondary: Red-100
 ```
 
 ## Foreground Colors (FG)
@@ -109,34 +109,34 @@ Text and icon colors for various hierarchy levels and purposes.
 
 | Level | Token | Value | Usage |
 |-------|-------|-------|-------|
-| Primary | `--color-fg-primary` | Zinc-900 | Main body text |
-| Secondary | `--color-fg-secondary` | Zinc-800 | Secondary text |
-| Tertiary | `--color-fg-tertiary` | Zinc-600 | Tertiary text |
-| Quaternary | `--color-fg-quaternary` | Zinc-500 | Muted text |
-| Disabled | `--color-fg-disabled` | Zinc-400 | Disabled text |
+| Primary | `--fg-primary` | Zinc-900 | Main body text |
+| Secondary | `--fg-secondary` | Zinc-800 | Secondary text |
+| Tertiary | `--fg-tertiary` | Zinc-600 | Tertiary text |
+| Quaternary | `--fg-quaternary` | Zinc-500 | Muted text |
+| Disabled | `--fg-disabled` | Zinc-400 | Disabled text |
 
 ### Inverse Text Colors
 
 For dark backgrounds:
 
 ```css
---color-fg-inverse-primary: Zinc-50 (lightest)
---color-fg-inverse-secondary: Zinc-200
---color-fg-inverse-tertiary: Zinc-400
---color-fg-inverse-disabled: Zinc-300
+--fg-inverse-primary: Zinc-50 (lightest)
+--fg-inverse-secondary: Zinc-200
+--fg-inverse-tertiary: Zinc-400
+--fg-inverse-disabled: Zinc-300
 ```
 
 ### Status Text Colors
 
 ```css
---color-fg-status-info: Blue-800
---color-fg-status-success: Emerald-600
---color-fg-status-warning: Yellow-700
---color-fg-status-error: Red-600
---color-fg-status-informative: Blue-600
---color-fg-status-neutral: Zinc-600
---color-fg-status-brand: Orange-500
---color-fg-status-ai: Purple-600
+--fg-status-info: Blue-800
+--fg-status-success: Emerald-600
+--fg-status-warning: Yellow-700
+--fg-status-error: Red-600
+--fg-status-informative: Blue-600
+--fg-status-neutral: Zinc-600
+--fg-status-brand: Orange-500
+--fg-status-ai: Purple-600
 ```
 
 ### Interactive Text Colors
@@ -145,15 +145,15 @@ Text colors for interactive elements with state variants:
 
 ```css
 /* Links */
---color-fg-interactive-link-enabled: Blue-500
---color-fg-interactive-link-hovered: Blue-600
---color-fg-interactive-link-pressed: Blue-700
---color-fg-interactive-link-disabled: Blue-400
+--fg-interactive-link-enabled: Blue-500
+--fg-interactive-link-hovered: Blue-600
+--fg-interactive-link-pressed: Blue-700
+--fg-interactive-link-disabled: Blue-400
 
 /* Danger links */
---color-fg-interactive-danger-secondary-enabled: Red-500
---color-fg-interactive-danger-secondary-hovered: Red-600
---color-fg-interactive-danger-secondary-pressed: Red-700
+--fg-interactive-danger-secondary-enabled: Red-500
+--fg-interactive-danger-secondary-hovered: Red-600
+--fg-interactive-danger-secondary-pressed: Red-700
 ```
 
 ### Accent Text Colors
@@ -162,21 +162,21 @@ Specialized text colors for specific features:
 
 ```css
 /* AI */
---color-fg-accent-ai-primary: Zinc-50 (on dark backgrounds)
---color-fg-accent-ai-secondary: Violet-700
---color-fg-accent-ai-tertiary: Pink-700
+--fg-accent-ai-primary: Zinc-50 (on dark backgrounds)
+--fg-accent-ai-secondary: Violet-700
+--fg-accent-ai-tertiary: Pink-700
 
 /* Inbox/Chat */
---color-fg-accent-inbox-new: Green-800
---color-fg-accent-inbox-active: Blue-800
---color-fg-accent-inbox-reassigned: Amber-800
---color-fg-accent-inbox-return: Cyan-950
+--fg-accent-inbox-new: Green-800
+--fg-accent-inbox-active: Blue-800
+--fg-accent-inbox-reassigned: Amber-800
+--fg-accent-inbox-return: Cyan-950
 
 /* Status Indicators */
---color-fg-accent-indicators-online: Green-500
---color-fg-accent-indicators-offline: Red-500
---color-fg-accent-indicators-idle: Yellow-500
---color-fg-accent-indicators-inactive: Gray-500
+--fg-accent-indicators-online: Green-500
+--fg-accent-indicators-offline: Red-500
+--fg-accent-indicators-idle: Yellow-500
+--fg-accent-indicators-inactive: Gray-500
 ```
 
 ## Border Colors
@@ -187,18 +187,18 @@ Colors for borders, dividers, and outlines.
 
 | Level | Token | Value | Usage |
 |-------|-------|-------|-------|
-| Primary | `--color-border-primary` | Zinc-500 | Default borders |
-| Secondary | `--color-border-secondary` | Zinc-300 | Subtle borders |
-| Tertiary | `--color-border-tertiary` | Zinc-200 | Very subtle borders |
-| Disabled | `--color-border-disabled` | Zinc-100 | Disabled borders |
+| Primary | `--border-primary` | Zinc-500 | Default borders |
+| Secondary | `--border-secondary` | Zinc-300 | Subtle borders |
+| Tertiary | `--border-tertiary` | Zinc-200 | Very subtle borders |
+| Disabled | `--border-disabled` | Zinc-100 | Disabled borders |
 
 ### Status Borders
 
 ```css
---color-border-status-info: Blue-500
---color-border-status-success: Emerald-600
---color-border-status-warning: Yellow-600
---color-border-status-error: Red-600
+--border-status-info: Blue-500
+--border-status-success: Emerald-600
+--border-status-warning: Yellow-600
+--border-status-error: Red-600
 ```
 
 ### Interactive Borders
@@ -207,17 +207,17 @@ State-specific borders for interactive components:
 
 ```css
 /* Secondary buttons */
---color-border-interactive-secondary-hovered: Zinc-400
---color-border-interactive-secondary-pressed: Zinc-500
---color-border-interactive-secondary-focused: Zinc-900
+--border-interactive-secondary-hovered: Zinc-400
+--border-interactive-secondary-pressed: Zinc-500
+--border-interactive-secondary-focused: Zinc-900
 
 /* Links */
---color-border-interactive-link-focused: Blue-500
+--border-interactive-link-focused: Blue-500
 
 /* Danger */
---color-border-interactive-danger-secondary-enabled: Red-500
---color-border-interactive-danger-secondary-hovered: Red-600
---color-border-interactive-danger-secondary-focused: Red-500
+--border-interactive-danger-secondary-enabled: Red-500
+--border-interactive-danger-secondary-hovered: Red-600
+--border-interactive-danger-secondary-focused: Red-500
 ```
 
 ## Brand Colors
@@ -266,16 +266,16 @@ Overlay colors for modal backdrops:
 }
 
 .button-primary:hover {
-  background: var(--color-bg-interactive-primary-hovered);
+  background: var(--bg-interactive-primary-hovered);
 }
 
 .button-primary:active {
-  background: var(--color-bg-interactive-primary-pressed);
+  background: var(--bg-interactive-primary-pressed);
 }
 
 .button-primary:disabled {
-  background: var(--color-bg-disabled);
-  color: var(--color-fg-disabled);
+  background: var(--bg-disabled);
+  color: var(--fg-disabled);
 }
 ```
 
@@ -283,18 +283,18 @@ Overlay colors for modal backdrops:
 
 ```css
 .button-secondary {
-  background: var(--color-bg-secondary);
-  color: var(--color-fg-primary);
-  border: 1px solid var(--color-border-secondary);
+  background: var(--bg-secondary);
+  color: var(--fg-primary);
+  border: 1px solid var(--border-secondary);
 }
 
 .button-secondary:hover {
-  background: var(--color-bg-interactive-secondary-hovered);
-  border-color: var(--color-border-interactive-secondary-hovered);
+  background: var(--bg-interactive-secondary-hovered);
+  border-color: var(--border-interactive-secondary-hovered);
 }
 
 .button-secondary:active {
-  background: var(--color-bg-interactive-secondary-pressed);
+  background: var(--bg-interactive-secondary-pressed);
 }
 ```
 
@@ -302,15 +302,15 @@ Overlay colors for modal backdrops:
 
 ```css
 .alert-success {
-  background: var(--color-bg-status-success);
-  border-color: var(--color-border-status-success);
-  color: var(--color-fg-status-success);
+  background: var(--bg-status-success);
+  border-color: var(--border-status-success);
+  color: var(--fg-status-success);
 }
 
 .alert-error {
-  background: var(--color-bg-status-error);
-  border-color: var(--color-border-status-error);
-  color: var(--color-fg-status-error);
+  background: var(--bg-status-error);
+  border-color: var(--border-status-error);
+  color: var(--fg-status-error);
 }
 ```
 
@@ -318,21 +318,21 @@ Overlay colors for modal backdrops:
 
 ```css
 .link {
-  color: var(--color-fg-interactive-link-enabled);
+  color: var(--fg-interactive-link-enabled);
   text-decoration: none;
   border-bottom: 1px solid currentColor;
 }
 
 .link:hover {
-  color: var(--color-fg-interactive-link-hovered);
+  color: var(--fg-interactive-link-hovered);
 }
 
 .link:active {
-  color: var(--color-fg-interactive-link-pressed);
+  color: var(--fg-interactive-link-pressed);
 }
 
 .link:disabled {
-  color: var(--color-fg-interactive-link-disabled);
+  color: var(--fg-interactive-link-disabled);
 }
 ```
 
@@ -365,18 +365,18 @@ Overlay colors for modal backdrops:
 }
 
 .status-badge.online::before {
-  background: var(--color-fg-accent-indicators-online);
+  background: var(--fg-accent-indicators-online);
   width: 8px;
   height: 8px;
   border-radius: var(--border-radius-circle);
 }
 
 .status-badge.offline::before {
-  background: var(--color-fg-accent-indicators-offline);
+  background: var(--fg-accent-indicators-offline);
 }
 
 .status-badge.idle::before {
-  background: var(--color-fg-accent-indicators-idle);
+  background: var(--fg-accent-indicators-idle);
 }
 ```
 

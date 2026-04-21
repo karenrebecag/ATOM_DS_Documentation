@@ -1,386 +1,376 @@
 ---
 title: Token Layers
-description: Understanding the three-layer token architecture in AtomChat Design System.
+description: Understanding the four-layer token architecture in AtomChat Design System — from Figma sync to CSS output.
 ---
 
-AtomChat Design System uses a **three-layer hierarchical token architecture** to provide flexibility, consistency, and maintainability.
+AtomChat Design System uses a **four-layer hierarchical token architecture**. Each layer has a clear owner and purpose:
 
-## The Three Layers
+## The Four Layers
 
 ```
-┌─────────────────────────────────────┐
-│   Component Layer                   │  ← Specific overrides
-│   --buttons-bg-primary-enabled      │
-├─────────────────────────────────────┤
-│   Semantic Layer                    │  ← Intent-driven
-│   --bg-primary, --text-body-m       │
-├─────────────────────────────────────┤
-│   Primitive Layer                   │  ← Foundation values
-│   --primitive-blue-500, --spacing-4 │
-└─────────────────────────────────────┘
+┌─────────────────────────────────────────────────────┐
+│   Layer 4: Component                                │  ← Component-specific states
+│   buttons.bg.primary-enabled → {bg.inverse.primary} │
+├─────────────────────────────────────────────────────┤
+│   Layer 3: Semantic                                 │  ← Intent-driven aliases
+│   bg.primary → {figma.colors.primitive.neutral.0}   │
+├─────────────────────────────────────────────────────┤
+│   Layer 2: Foundation                               │  ← Manual bridges + primitives
+│   Primitive.Spacing.m → {figma.spacing.m}           │
+├─────────────────────────────────────────────────────┤
+│   Layer 1: Figma (read-only, auto-synced)           │  ← Source of truth from Figma
+│   figma.colors.primitive.blue.500 = #3B82F6         │
+└─────────────────────────────────────────────────────┘
 ```
 
-Each layer builds upon the previous one, creating a flexible system that scales from global design decisions down to component-specific needs.
-
----
-
-## Layer 1: Primitive (Foundation)
-
-**Purpose:** Raw foundation values with no semantic meaning.
-
-**Naming Pattern:** `--primitive-{category}-{value}`
-
-### Examples
-
-```css
-/* Colors */
---primitive-blue-50: #eff6ff;
---primitive-blue-100: #dbeafe;
---primitive-blue-500: #3b82f6;
---primitive-blue-900: #1e3a8a;
-
-/* Spacing */
---primitive-spacing-1: 0.25rem;   /* 4px */
---primitive-spacing-2: 0.5rem;    /* 8px */
---primitive-spacing-4: 1rem;      /* 16px */
---primitive-spacing-8: 2rem;      /* 32px */
-
-/* Typography */
---primitive-font-size-12: 0.75rem;
---primitive-font-size-14: 0.875rem;
---primitive-font-size-16: 1rem;
---primitive-font-size-24: 1.5rem;
-
-/* Radius */
---primitive-radius-2: 2px;
---primitive-radius-4: 4px;
---primitive-radius-8: 8px;
-```
-
-### When to Use
-
-**❌ Almost Never in Components**
-
-Primitive tokens should rarely be used directly in component styles. They exist as building blocks for semantic tokens.
-
-**✅ Only When:**
-- Creating new semantic tokens
-- Building the design system itself
-- Debugging token values
+| Layer | Owner | Location | Updates |
+|-------|-------|----------|---------|
+| Figma | Designers (via `/figma-pull`) | `src/figma/primitives/` | Automatic |
+| Foundation | Design System team | `src/foundation/` | Manual |
+| Semantic | Design System team | `src/semantic/` | Manual |
+| Component | Component developers | `src/components/` | Manual |
 
 ---
 
-## Layer 2: Semantic (Intent-Driven)
+## Layer 1: Figma (Auto-synced)
 
-**Purpose:** Tokens with meaning and intent. This is the **primary layer** for most component development.
+**Purpose:** Raw values extracted directly from Figma variable collections. This is the **source of truth** from the design tool.
 
-**Naming Pattern:** `--{category}-{intent}-{variant}`
+**Location:** `packages/tokens/src/figma/primitives/`
 
-### Color Semantics
+**Owner:** Designers — synced via `/figma-pull` skill
 
-```css
-/* Backgrounds */
---bg-primary: var(--primitive-blue-500);
---bg-secondary: var(--primitive-slate-500);
---bg-surface: var(--primitive-white);
---bg-hover: var(--primitive-slate-100);
---bg-disabled: var(--primitive-slate-200);
+**Format:**
 
-/* Text */
---text-primary: var(--primitive-slate-900);
---text-secondary: var(--primitive-slate-600);
---text-tertiary: var(--primitive-slate-400);
---text-inverse: var(--primitive-white);
---text-disabled: var(--primitive-slate-300);
-
-/* Borders */
---border-default: var(--primitive-slate-300);
---border-strong: var(--primitive-slate-500);
---border-light: var(--primitive-slate-200);
-
-/* States */
---success: var(--primitive-green-500);
---error: var(--primitive-red-500);
---warning: var(--primitive-yellow-500);
---info: var(--primitive-blue-500);
-```
-
-### Spacing Semantics
-
-```css
-/* Gap/Spacing */
---gap-xs: var(--primitive-spacing-1);   /* 4px */
---gap-s: var(--primitive-spacing-2);    /* 8px */
---gap-m: var(--primitive-spacing-4);    /* 16px */
---gap-l: var(--primitive-spacing-6);    /* 24px */
---gap-xl: var(--primitive-spacing-8);   /* 32px */
-```
-
-### Typography Semantics
-
-```css
-/* Font Sizes */
---text-caption: var(--primitive-font-size-12);
---text-body-s: var(--primitive-font-size-14);
---text-body-m: var(--primitive-font-size-16);
---text-body-l: var(--primitive-font-size-18);
---text-heading-s: var(--primitive-font-size-20);
---text-heading-m: var(--primitive-font-size-24);
---text-heading-l: var(--primitive-font-size-32);
-```
-
-### Radius Semantics
-
-```css
---radius-s: var(--primitive-radius-2);
---radius-m: var(--primitive-radius-4);
---radius-l: var(--primitive-radius-8);
---radius-full: 9999px;
-```
-
-### When to Use
-
-**✅ Primary Layer for Components**
-
-Use semantic tokens for 90% of your component styling:
-
-```css
-.card {
-  background: var(--bg-surface);
-  color: var(--text-primary);
-  padding: var(--gap-l);
-  border-radius: var(--radius-m);
-  border: 1px solid var(--border-default);
-}
-
-.card__title {
-  font-size: var(--text-heading-s);
-  color: var(--text-primary);
-  margin-bottom: var(--gap-m);
+```json
+{
+  "figma": {
+    "colors": {
+      "primitive": {
+        "blue": {
+          "500": { "$value": "#3B82F6", "$type": "color" }
+        },
+        "zinc": {
+          "950": { "$value": "#09090B", "$type": "color" }
+        }
+      }
+    }
+  }
 }
 ```
 
+```json
+{
+  "figma": {
+    "spacing": {
+      "xs": { "$value": 4, "$type": "number" },
+      "s":  { "$value": 8, "$type": "number" },
+      "m":  { "$value": 16, "$type": "number" },
+      "l":  { "$value": 24, "$type": "number" },
+      "xl": { "$value": 32, "$type": "number" }
+    }
+  }
+}
+```
+
+**Rules:**
+- Never edit these files manually
+- They are overwritten by `/figma-pull`
+- The `figma` namespace prefix enables downstream references like `{figma.colors.primitive.blue.500}`
+
+**CSS output:** `--figma-colors-primitive-blue-500: #3B82F6;`
+
 ---
 
-## Layer 3: Component (Specific)
+## Layer 2: Foundation
 
-**Purpose:** Component-specific tokens for granular control and variants.
+**Purpose:** Manual bridges that reference the Figma layer. Adds dimensions (px, rem) to raw Figma numbers and provides stable aliases.
 
-**Naming Pattern:** `--{component}-{property}-{variant}-{state}`
+**Location:** `packages/tokens/src/foundation/`
 
-### Button Examples
+**Format:**
 
-```css
-/* Button - Primary Variant */
---buttons-bg-primary-enabled: var(--bg-primary);
---buttons-bg-primary-hover: var(--primitive-blue-600);
---buttons-bg-primary-active: var(--primitive-blue-700);
---buttons-bg-primary-disabled: var(--bg-disabled);
-
---buttons-text-primary-enabled: var(--text-inverse);
---buttons-text-primary-disabled: var(--text-disabled);
-
-/* Button - Secondary Variant */
---buttons-bg-secondary-enabled: var(--bg-secondary);
---buttons-bg-secondary-hover: var(--primitive-slate-600);
---buttons-bg-secondary-active: var(--primitive-slate-700);
-
-/* Button - Ghost Variant */
---buttons-bg-ghost-enabled: transparent;
---buttons-bg-ghost-hover: var(--bg-hover);
---buttons-border-ghost: var(--border-default);
-
-/* Button Sizing */
---buttons-padding-s: var(--gap-xs) var(--gap-s);
---buttons-padding-m: var(--gap-s) var(--gap-m);
---buttons-padding-l: var(--gap-m) var(--gap-l);
-
---buttons-font-size-s: var(--text-body-s);
---buttons-font-size-m: var(--text-body-m);
---buttons-font-size-l: var(--text-body-l);
-
---buttons-radius: var(--radius-m);
+```json
+{
+  "Primitive": {
+    "Spacing": {
+      "$type": "dimension",
+      "xs":  { "$value": "4px" },
+      "s":   { "$value": "8px" },
+      "m":   { "$value": "16px" },
+      "l":   { "$value": "24px" },
+      "xl":  { "$value": "32px" },
+      "2xl": { "$value": "40px" }
+    },
+    "Radius": {
+      "$type": "dimension",
+      "none":   { "$value": "0px" },
+      "xs":     { "$value": "4px" },
+      "s":      { "$value": "8px" },
+      "m":      { "$value": "16px" },
+      "pill":   { "$value": "1000px" },
+      "circle": { "$value": "50%" }
+    },
+    "Stroke": {
+      "$type": "dimension",
+      "xs": { "$value": "1px" },
+      "s":  { "$value": "2px" }
+    }
+  }
+}
 ```
 
-### Input Examples
+**Why this layer exists:**
+- Figma spacing values are raw numbers (e.g., `16`) — Foundation adds units (`16px`)
+- Provides a stable naming layer that doesn't break if Figma collections are reorganized
+- Contains values that don't come from Figma (motion, z-index, glass effects)
 
-```css
-/* Input States */
---inputs-bg-enabled: var(--bg-surface);
---inputs-bg-disabled: var(--bg-disabled);
---inputs-bg-focus: var(--bg-surface);
+**Files:** `borders.json`, `breakpoints.json`, `elevations.json`, `glass.json`, `motion.json`, `opacity.json`, `spacing.json`, `typography.json`, `z-index.json`
 
---inputs-border-enabled: var(--border-default);
---inputs-border-focus: var(--bg-primary);
---inputs-border-error: var(--error);
+**CSS output:** `--primitive-spacing-m: 16px;`
 
---inputs-text: var(--text-primary);
---inputs-placeholder: var(--text-tertiary);
+---
 
-/* Input Sizing */
---inputs-padding: var(--gap-s) var(--gap-m);
---inputs-font-size: var(--text-body-m);
---inputs-radius: var(--radius-m);
+## Layer 3: Semantic
+
+**Purpose:** Intent-driven tokens that reference the Figma layer directly. This is where design decisions live — what "primary background" means.
+
+**Location:** `packages/tokens/src/semantic/`
+
+**Format:**
+
+```json
+{
+  "bg": {
+    "$type": "color",
+    "primary":   { "$value": "{figma.colors.primitive.neutral.0}" },
+    "secondary": { "$value": "{figma.colors.primitive.zinc.50}" },
+    "tertiary":  { "$value": "{figma.colors.primitive.zinc.100}" },
+    "disabled":  { "$value": "{figma.colors.primitive.zinc.100}" },
+    "inverse": {
+      "primary":   { "$value": "{figma.colors.primitive.zinc.950}" },
+      "secondary": { "$value": "{figma.colors.primitive.zinc.800}" }
+    },
+    "danger": {
+      "primary":   { "$value": "{figma.colors.primitive.red.500}" }
+    },
+    "status": {
+      "info":    { "$value": "{figma.colors.primitive.blue.50}" },
+      "success": { "$value": "{figma.colors.primitive.esmerald.50}" },
+      "warning": { "$value": "{figma.colors.primitive.yellow.50}" },
+      "error":   { "$value": "{figma.colors.primitive.red.50}" }
+    }
+  },
+  "fg": {
+    "$type": "color",
+    "primary":   { "$value": "{figma.colors.primitive.zinc.900}" },
+    "secondary": { "$value": "{figma.colors.primitive.zinc.800}" },
+    "tertiary":  { "$value": "{figma.colors.primitive.zinc.600}" },
+    "disabled":  { "$value": "{figma.colors.primitive.zinc.400}" },
+    "inverse": {
+      "primary": { "$value": "{figma.colors.primitive.zinc.50}" }
+    }
+  }
+}
 ```
 
-### When to Use
+**Key pattern:** Semantic tokens reference `{figma.colors.primitive.*}` — they point directly to the synced Figma layer.
 
-**✅ For Component Variants**
+**Files:** `colors.json` (bg, fg, border, brand, interactive states)
 
-Use component tokens when you need:
-- Multiple variants (primary, secondary, ghost)
-- Complex state management (enabled, hover, active, disabled)
-- Component-specific overrides
+**CSS output:** `--bg-primary: #FFFFFF;` (resolved through Figma reference)
+
+---
+
+## Layer 4: Component
+
+**Purpose:** Component-specific tokens for every variant and state. References semantic tokens.
+
+**Location:** `packages/tokens/src/components/`
+
+**Format:**
+
+```json
+{
+  "buttons": {
+    "bg": {
+      "$type": "color",
+      "primary-enabled":   { "$value": "{bg.inverse.primary}" },
+      "primary-hovered":   { "$value": "{bg.inverse.secondary}" },
+      "primary-disabled":  { "$value": "{bg.disabled}" },
+
+      "secondary-enabled": { "$value": "{bg.primary}" },
+      "secondary-hovered": { "$value": "{bg.tertiary}" },
+      "secondary-disabled": { "$value": "{bg.disabled}" },
+
+      "danger-primary-enabled": { "$value": "{bg.danger.primary}" },
+      "danger-primary-hovered": { "$value": "{bg.interactive.danger.primary.hovered}" }
+    }
+  }
+}
+```
+
+**Naming pattern:** `{component}.{property}.{variant}-{state}`
+
+**Files organized by category:**
+- `buttons/button.json`, `buttons/link-button.json`
+- `forms/checkbox.json`, `forms/radio.json`, `forms/toggle.json`, `forms/text-field.json`, `forms/textarea.json`
+- `indicators/badge.json`, `indicators/chip.json`, `indicators/tag.json`, `indicators/spinner.json`
+- `layout/divider.json`, `layout/navbar.json`
+- `navigation/pagination.json`, `navigation/segment-control.json`
+- `containers/card.json`
+- `media/avatar.json`
+- `effects/glass.json`
+- `feedback/tooltip.json`
+
+**CSS output:** `--buttons-bg-primary-enabled: #09090B;` (resolved through full chain)
+
+---
+
+## Reference chain
+
+When Style Dictionary builds, it resolves the full chain:
+
+```
+Component token:     {bg.inverse.primary}
+       ↓ resolves to
+Semantic token:      {figma.colors.primitive.zinc.950}
+       ↓ resolves to
+Figma token:         #09090B
+       ↓ outputs
+CSS variable:        --buttons-bg-primary-enabled: #09090B;
+```
+
+In your CSS, you consume the final variable:
 
 ```css
-.button {
-  /* Component tokens for variant control */
+.button--primary {
   background: var(--buttons-bg-primary-enabled);
-  color: var(--buttons-text-primary-enabled);
-  padding: var(--buttons-padding-m);
-  font-size: var(--buttons-font-size-m);
-  border-radius: var(--buttons-radius);
 }
 
-.button:hover {
-  background: var(--buttons-bg-primary-hover);
-}
-
-.button:disabled {
-  background: var(--buttons-bg-primary-disabled);
-  color: var(--buttons-text-primary-disabled);
-}
-
-.button--secondary {
-  background: var(--buttons-bg-secondary-enabled);
+.button--primary:hover {
+  background: var(--buttons-bg-primary-hovered);
 }
 ```
 
 ---
 
-## Decision Tree: Which Layer to Use?
+## Decision tree: Which layer to use?
 
 ```
 Are you building a component?
-├─ YES → Use Semantic tokens (Layer 2)
-│        Need variant/state control?
-│        ├─ YES → Use Component tokens (Layer 3)
-│        └─ NO  → Stick with Semantic tokens
+├─ YES → Does your component need variant/state tokens?
+│        ├─ YES → Use Component tokens (Layer 4)
+│        │        e.g. var(--buttons-bg-primary-enabled)
+│        └─ NO  → Use Semantic tokens (Layer 3)
+│                  e.g. var(--bg-primary), var(--fg-secondary)
 │
-└─ NO  → Are you defining new design tokens?
-         └─ YES → Start with Primitives (Layer 1)
-                  Then create Semantics (Layer 2)
+├─ Are you defining new design decisions?
+│  └─ YES → Create Semantic tokens (Layer 3)
+│           that reference Figma layer values
+│
+└─ Are you syncing from Figma?
+   └─ YES → Use /figma-pull (Layer 1, automatic)
 ```
 
 ---
 
-## Layer Comparison
+## Layer comparison
 
-| Aspect | Primitive | Semantic | Component |
-|--------|-----------|----------|-----------|
-| **Usage in components** | ❌ Avoid | ✅ Primary | ✅ For variants |
-| **Theming** | ❌ Don't change | ✅ Theme here | ✅ Optional overrides |
-| **Naming** | Generic | Intentional | Specific |
-| **Flexibility** | Low | High | Highest |
-| **Example** | `--primitive-blue-500` | `--bg-primary` | `--buttons-bg-primary-hover` |
+| Aspect | Figma | Foundation | Semantic | Component |
+|--------|-------|-----------|----------|-----------|
+| **Owner** | Designers | DS team | DS team | Dev team |
+| **Updates** | Auto (sync) | Manual | Manual | Manual |
+| **Editable** | Never | Yes | Yes | Yes |
+| **References** | None (raw values) | Figma layer | Figma layer | Semantic layer |
+| **Naming** | `figma.collection.path` | `Primitive.Category.size` | `bg.intent` | `component.property.variant-state` |
+| **Example** | `#3B82F6` | `16px` | `{figma.colors...}` | `{bg.inverse.primary}` |
+| **CSS prefix** | `--figma-*` | `--primitive-*` | `--bg-*`, `--fg-*` | `--buttons-*`, `--chip-*` |
 
 ---
 
-## Theme Switching
+## Theme switching
 
-Semantic and Component tokens make theming easy:
+Dark theme overrides live in a separate CSS file (`build/css/dark.css`) with the `[data-theme="dark"]` selector. Only semantic tokens are overridden — primitives stay constant:
 
 ```css
-/* Light theme (default) */
-:root,
-[data-theme="light"] {
-  --bg-primary: var(--primitive-blue-500);
-  --bg-surface: var(--primitive-white);
-  --text-primary: var(--primitive-slate-900);
-}
+/* Light (default in :root) */
+--bg-primary: #FFFFFF;          /* resolves from neutral.0 */
+--fg-primary: #09090B;          /* resolves from zinc.950 */
 
-/* Dark theme */
+/* Dark override */
 [data-theme="dark"] {
-  --bg-primary: var(--primitive-blue-400);
-  --bg-surface: var(--primitive-slate-900);
-  --text-primary: var(--primitive-slate-100);
+  --bg-primary: #09090B;        /* resolves from zinc.950 */
+  --fg-primary: #FAFAFA;        /* resolves from zinc.50 */
 }
 ```
 
-Components using semantic tokens automatically adapt:
-
-```css
-.card {
-  background: var(--bg-surface);      /* Adapts to theme */
-  color: var(--text-primary);         /* Adapts to theme */
-}
-```
+Components using semantic/component tokens adapt automatically — no per-component dark mode code needed.
 
 ---
 
-## Best Practices
+## Best practices
 
-### ✅ Do
+### Do
 
-1. **Use semantic tokens by default** in components
-2. **Use component tokens** for variants and states
-3. **Define primitives** as foundation values
-4. **Theme at semantic layer** for consistency
-5. **Document token purpose** in comments
+1. **Use component tokens** for component styles (they encode all states)
+2. **Use semantic tokens** for layout and general UI
+3. **Reference downward** — component → semantic → figma
+4. **Let `/figma-pull` manage Layer 1** — never edit `src/figma/` manually
+5. **Keep semantic layer thin** — it maps intent to primitives, nothing more
 
-### ❌ Don't
+### Don't
 
-1. **Don't use primitives** directly in components
-2. **Don't hardcode values** anywhere
-3. **Don't skip layers** (primitive → component)
-4. **Don't create semantic tokens** for every primitive
-5. **Don't theme primitives** (theme semantics instead)
+1. **Don't use `--figma-*` variables directly** in CSS — use semantic or component tokens
+2. **Don't hardcode hex values** — always reference a token
+3. **Don't skip layers** (e.g., component referencing figma directly)
+4. **Don't edit `src/figma/primitives/`** — it gets overwritten by sync
+5. **Don't create component tokens for one-off uses** — semantic is enough
 
 ---
 
-## Real-World Example
+## Real-world example
 
-### ❌ Bad: Using Primitives
+### The full chain for a button's primary background:
 
-```css
-.button {
-  background: var(--primitive-blue-500);
-  color: var(--primitive-white);
-  padding: var(--primitive-spacing-2) var(--primitive-spacing-4);
-  border-radius: var(--primitive-radius-4);
-}
+**Layer 1** — Figma delivers the raw color:
+```json
+// src/figma/primitives/colors.json
+{ "figma": { "colors": { "primitive": { "zinc": { "950": { "$value": "#09090B" } } } } } }
 ```
 
-### ✅ Good: Using Semantics
-
-```css
-.button {
-  background: var(--bg-primary);
-  color: var(--text-inverse);
-  padding: var(--gap-s) var(--gap-m);
-  border-radius: var(--radius-m);
-}
+**Layer 3** — Semantic gives it meaning:
+```json
+// src/semantic/colors.json
+{ "bg": { "inverse": { "primary": { "$value": "{figma.colors.primitive.zinc.950}" } } } }
 ```
 
-### ✅ Better: Using Component Tokens
+**Layer 4** — Component applies it to a specific state:
+```json
+// src/components/buttons/button.json
+{ "buttons": { "bg": { "primary-enabled": { "$value": "{bg.inverse.primary}" } } } }
+```
 
+**CSS output:**
 ```css
-.button {
+--figma-colors-primitive-zinc-950: #09090B;
+--bg-inverse-primary: #09090B;
+--buttons-bg-primary-enabled: #09090B;
+```
+
+**Usage:**
+```css
+.button--primary {
   background: var(--buttons-bg-primary-enabled);
-  color: var(--buttons-text-primary-enabled);
-  padding: var(--buttons-padding-m);
-  border-radius: var(--buttons-radius);
-}
-
-.button:hover {
-  background: var(--buttons-bg-primary-hover);
 }
 ```
 
+If the designer changes zinc.950 in Figma → run `/figma-pull` → the value propagates through all layers automatically.
+
 ---
 
-## Next Steps
+## Next steps
 
-- [Packages](/architecture/packages/) - Learn about each package
-- [Design Tokens](/foundations/tokens/) - Explore all available tokens
-- [Quick Start](/getting-started/quick-start/) - Build a component using layers
+- [Figma Sync](/architecture/figma-sync/) — How tokens are pulled from Figma
+- [Packages](/architecture/packages/) — Learn about each package
+- [Design Tokens](/foundations/tokens/) — Explore all available tokens

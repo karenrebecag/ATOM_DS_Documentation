@@ -1,0 +1,503 @@
+---
+title: Figma Sync
+description: How ATOM pulls design tokens from Figma into the token pipeline — from Plugin API extraction to Style Dictionary output.
+---
+
+import { Tabs, TabItem, Code, Steps, Aside } from '@astrojs/starlight/components';
+
+ATOM includes a **token sync pipeline** that pulls design variables directly from Figma into the monorepo's token layer. It works on all Figma plans (no Enterprise required) by using the Plugin API via MCP instead of the REST Variables endpoint.
+
+---
+
+## Architecture overview
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        FIGMA FILE                                │
+│  Collections: Colors, Spacing, Typography, Radius, Opacity...   │
+│  Variables:   primitive/blue/500 = #3B82F6                      │
+│               semantic/bg/primary → alias to primitive/neutral/0 │
+└──────────────────────────────┬──────────────────────────────────┘
+                               │
+                    ┌──────────▼──────────┐
+                    │   Figma Plugin API   │
+                    │   (via MCP Server)   │
+                    └──────────┬──────────┘
+                               │
+              /figma-pull skill orchestrates:
+                               │
+         ┌─────────────────────▼─────────────────────┐
+         │              PHASE 1: FETCH                │
+         │  use_figma → extracts all collections      │
+         │  Returns: McpData JSON                     │
+         └─────────────────────┬─────────────────────┘
+                               │
+         ┌─────────────────────▼─────────────────────┐
+         │              PHASE 2: STAGE                │
+         │  Writes JSON to /tmp/figma-pull-{key}.json │
+         └─────────────────────┬─────────────────────┘
+                               │
+         ┌─────────────────────▼─────────────────────┐
+         │              PHASE 3: DIFF                 │
+         │  pull.tsx --dry-run → shows what changes   │
+         │  Never writes, just compares               │
+         └─────────────────────┬─────────────────────┘
+                               │
+         ┌─────────────────────▼─────────────────────┐
+         │              PHASE 4: MERGE                │
+         │  pull.tsx --backup --yes → writes files    │
+         │  Creates .backup-{timestamp}/ first        │
+         └─────────────────────┬─────────────────────┘
+                               │
+         ┌─────────────────────▼─────────────────────┐
+         │              PHASE 5: STATUS               │
+         │  git diff --stat + next steps              │
+         └─────────────────────┬─────────────────────┘
+                               │
+                               ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  packages/tokens/src/figma/primitives/                          │
+│  ├── colors.json        (220+ tokens)                           │
+│  ├── typography.json    (35 tokens)                             │
+│  ├── spacing.json       (27 tokens)                             │
+│  ├── radius.json        (16 tokens)                             │
+│  ├── opacity.json       (9 tokens)                              │
+│  ├── stroke.json        (5 tokens)                              │
+│  └── breakpoints.json   (2 tokens)                              │
+└──────────────────────────────┬──────────────────────────────────┘
+                               │
+                    ┌──────────▼──────────┐
+                    │  Style Dictionary    │
+                    │  pnpm build          │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+              CSS / SCSS / JS / JSON outputs
+```
+
+---
+
+## The git analogy
+
+The sync pipeline is modeled after git's workflow:
+
+| git | figma-sync | What it does |
+|-----|-----------|-------------|
+| `git fetch` | FETCH | Extracts data from Figma without touching local files |
+| `git diff` | DIFF (dry-run) | Shows what would change before writing |
+| `git merge` | MERGE | Applies changes with automatic backup |
+| `git status` | STATUS | Shows final diff summary |
+| `git stash` | `--backup` | Timestamped copy of files before overwrite |
+
+**Key guarantee:** the merge **never deletes tokens**. It only adds new ones or updates existing values. If a token is removed in Figma, it stays in the local JSON (protection against accidental deletions).
+
+---
+
+## Using the skill
+
+The simplest way to sync tokens is through the Claude Code skill:
+
+```bash
+/figma-pull https://www.figma.com/design/ABC123/MyFile
+```
+
+This runs the full pipeline end-to-end:
+
+<Steps>
+
+1. **Extracts variables** from Figma via Plugin API (MCP)
+2. **Shows what was found** — collections and variable counts
+3. **Asks which collections** to import (or all)
+4. **Runs dry-run** — shows diff without writing
+5. **Asks confirmation** — "Apply changes?"
+6. **Writes with backup** — creates `.backup-{timestamp}/` + writes new files
+7. **Reports status** — git diff + next steps
+
+</Steps>
+
+<Aside type="tip">
+  The `/figma-pull` skill works on **all Figma plans** — Free, Professional, Organization, and Enterprise. It bypasses the REST Variables API entirely by using the Plugin API via MCP.
+</Aside>
+
+---
+
+## CLI usage (advanced)
+
+You can also run the pull tool directly without the skill:
+
+```bash
+# Preview changes (no write)
+pnpm figma:pull --data /tmp/figma-data.json --dry-run --yes
+
+# Apply with backup
+pnpm figma:pull --data /tmp/figma-data.json --backup --yes
+
+# Interactive mode (prompts for confirmation)
+pnpm figma:pull --data /tmp/figma-data.json --backup
+```
+
+| Flag | Effect |
+|------|--------|
+| `--data <path>` | Path to MCP-extracted JSON (required) |
+| `--dry-run` | Preview changes without writing |
+| `--yes` | Skip confirmation prompt |
+| `--backup` | Create timestamped backup before writing |
+
+<Aside type="note">
+  The `--data` flag expects a JSON file in McpData format. This is what the `/figma-pull` skill generates automatically. You normally don't create this file manually.
+</Aside>
+
+---
+
+## Data format
+
+The intermediate JSON that flows between the MCP extraction and the pull CLI:
+
+```json
+{
+  "fileName": "ATOM DS",
+  "collections": [
+    {
+      "name": "Colors",
+      "variables": [
+        {
+          "name": "Primitive/Blue/500",
+          "type": "COLOR",
+          "value": "#3B82F6"
+        },
+        {
+          "name": "Semantic/bg/primary",
+          "type": "COLOR",
+          "value": "#FFFFFF",
+          "alias": "{figma.colors.primitive.neutral.0}"
+        },
+        {
+          "name": "Spacing/2xl",
+          "type": "FLOAT",
+          "value": 48
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Field reference
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `fileName` | string | Figma file name (used to generate output folder) |
+| `collections[].name` | string | Variable collection name |
+| `variables[].name` | string | Variable path (slash-separated) |
+| `variables[].type` | `COLOR` \| `FLOAT` \| `STRING` \| `BOOLEAN` | Figma variable type |
+| `variables[].value` | string \| number \| boolean | Resolved value |
+| `variables[].alias` | string? | Reference in format `{figma.collection.path.to.token}` |
+
+---
+
+## Transform rules
+
+The pull tool transforms Figma data into W3C DTCG tokens:
+
+### Path flattening
+
+```
+Figma:  "Primitive/Blue/500"
+  ↓ split by "/"
+  ↓ lowercase
+  ↓ replace spaces with "-"
+Output: { "primitive": { "blue": { "500": { "$value": "#3B82F6", "$type": "color" } } } }
+```
+
+### Type mapping
+
+| Figma type | DTCG `$type` | Value transform |
+|-----------|-------------|----------------|
+| `COLOR` | `color` | RGBA 0-1 → hex (`#3B82F6` or `#3B82F680` with alpha) |
+| `FLOAT` | `number` | Pass-through |
+| `STRING` | `string` | Pass-through |
+| `BOOLEAN` | `boolean` | Pass-through |
+
+### Alias resolution
+
+When a Figma variable points to another variable (alias), it becomes a DTCG reference:
+
+```
+Figma alias:  "Semantic/bg/primary" → references "Primitive/Neutral/0"
+                                       (in collection "Colors")
+  ↓ sanitize collection name: "colors"
+  ↓ sanitize path: "primitive.neutral.0"
+
+Output: { "$value": "{figma.colors.primitive.neutral.0}", "$type": "color" }
+```
+
+The format `{figma.collection-name.path.segments}` is what Style Dictionary resolves at build time.
+
+---
+
+## Output structure
+
+Files are written to `packages/tokens/src/figma/{sanitized-file-name}/`:
+
+```
+packages/tokens/src/figma/
+└── atom-ds/                    ← sanitized from "ATOM DS"
+    ├── colors.json             ← from collection "Colors"
+    ├── spacing.json            ← from collection "Spacing"
+    ├── typography.json         ← from collection "Typography"
+    ├── radius.json
+    ├── opacity.json
+    ├── stroke.json
+    ├── breakpoints.json
+    └── .backup-2026-04-20T14-30-00/  ← auto-backup
+        ├── colors.json
+        └── spacing.json
+```
+
+Each JSON wraps tokens under a `figma` namespace:
+
+```json
+{
+  "figma": {
+    "colors": {
+      "primitive": {
+        "blue": {
+          "500": { "$value": "#3B82F6", "$type": "color" }
+        }
+      }
+    }
+  }
+}
+```
+
+This means downstream references use `{figma.colors.primitive.blue.500}`.
+
+---
+
+## Token lifecycle
+
+A token flows through 4 layers from Figma to your app:
+
+```
+Layer 1 — Figma (read-only, auto-synced)
+  src/figma/atom-ds/colors.json
+  { "figma": { "colors": { "primitive": { "blue": { "500": { "$value": "#3B82F6" } } } } } }
+        │
+        ▼
+Layer 2 — Foundation (manual, references figma)
+  src/foundation/colors.json
+  { "Primitive": { "blue": { "500": { "$value": "{figma.colors.primitive.blue.500}" } } } }
+        │
+        ▼
+Layer 3 — Semantic (manual, references foundation)
+  src/semantic/colors.json
+  { "bg": { "primary": { "$value": "{Primitive.neutral.0}" } } }
+        │
+        ▼
+Layer 4 — Component (manual, references semantic)
+  src/components/buttons/button.json
+  { "buttons": { "bg": { "primary-enabled": { "$value": "{bg.inverse.primary}" } } } }
+        │
+        ▼
+CSS Output:
+  --figma-colors-primitive-blue-500: #3B82F6;
+  --primitive-blue-500: var(--figma-colors-primitive-blue-500);
+  --bg-primary: var(--primitive-neutral-0);
+  --buttons-bg-primary-enabled: var(--bg-inverse-primary);
+```
+
+**Figma only feeds Layer 1.** The other layers are maintained manually and reference downward. This separation means Figma changes propagate automatically through the alias chain, but you control the mapping.
+
+---
+
+## Merge behavior
+
+The merge strategy is intentionally conservative:
+
+| Scenario | Action |
+|----------|--------|
+| Token exists, same value | No change |
+| Token exists, new value | Updated (old value overwritten) |
+| New token from Figma | Added |
+| Token removed in Figma | **NOT deleted** (stays in local JSON) |
+| Corrupted local JSON | Treated as new file |
+
+This means:
+- Running `/figma-pull` is always safe — worst case it adds tokens you can review
+- Manual edits to figma layer files won't be lost (tokens aren't removed)
+- Backups give you a recovery path if a bulk update goes wrong
+
+---
+
+## Protections
+
+| Protection | How it works |
+|-----------|-------------|
+| Never deletes | Merge only adds/updates, never removes |
+| Dry-run first | Always preview before writing |
+| Auto-backup | `--backup` copies modified files before overwrite |
+| Confirmation | Interactive prompt before writing (unless `--yes`) |
+| TTY detection | In non-interactive environments, skips prompt automatically |
+| Hidden variables | `hiddenFromPublishing` variables are skipped |
+| Mode selection | Prefers Light → Base → Default → first available mode |
+
+---
+
+## Preferred mode logic
+
+Figma variables can have different values per mode (Light, Dark, etc.). The pull tool picks **one mode** per collection using this priority:
+
+1. **Light** (exact match, case-insensitive)
+2. **Base** (exact match)
+3. **Default** (exact match)
+4. First available mode (fallback)
+
+<Aside type="caution">
+  Dark mode values are NOT synced automatically. Dark theme overrides live in `packages/tokens/src/semantic/` as manually maintained files with the `[data-theme="dark"]` selector.
+</Aside>
+
+---
+
+## Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| "No published variables found" | Check that variables in Figma are not hidden from publishing |
+| Truncated MCP response | Large files may need per-collection extraction (the skill handles this) |
+| Aliases showing `{alias:unresolved:id}` | The referenced variable doesn't exist — check for broken links in Figma |
+| Wrong mode values pulled | Check the mode names in Figma match "Light", "Base", or "Default" |
+| Pull overwrites manual edits | Don't edit files in `src/figma/` manually — they're Figma-owned. Edit foundation/semantic layers instead |
+
+---
+
+## Complete skill source
+
+The `/figma-pull` skill lives at `.claude/commands/figma-pull.md` in the monorepo.
+
+**Location:** `.claude/commands/figma-pull.md`
+
+**Invocation:** `/figma-pull <figma-url>`
+
+The skill orchestrates 5 phases:
+
+1. **FETCH** — Calls `mcp__claude_ai_Figma__use_figma` with Plugin API code that extracts all variable collections, resolves aliases, and converts colors to hex
+2. **STAGE** — Writes the extracted JSON to a temp file
+3. **DIFF** — Runs `pull.tsx --dry-run` to preview changes without writing
+4. **MERGE** — Runs `pull.tsx --backup --yes` to write with automatic backup
+5. **STATUS** — Shows git diff, cleans up temp file, suggests next steps
+
+### Plugin API extraction code
+
+The core of the skill is this JavaScript that runs inside Figma via MCP:
+
+````javascript
+const collections = await figma.variables.getLocalVariableCollectionsAsync();
+const allVars = await figma.variables.getLocalVariablesAsync();
+const varMap = new Map();
+for (const v of allVars) varMap.set(v.id, v);
+
+function sanitize(name) {
+  return name.toLowerCase().replace(/[\s/]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+}
+
+function rgbaToHex(c) {
+  const toHex = n => Math.round(n * 255).toString(16).toUpperCase().padStart(2, '0');
+  const hex = '#' + toHex(c.r) + toHex(c.g) + toHex(c.b);
+  return (c.a !== undefined && c.a < 1) ? hex + toHex(c.a) : hex;
+}
+
+function buildAlias(aliasVar) {
+  const col = collections.find(c => c.id === aliasVar.variableCollectionId);
+  const colKey = sanitize(col ? col.name : 'unknown');
+  const path = aliasVar.name.split('/')
+    .map(p => p.toLowerCase().replace(/\s+/g, '-')).join('.');
+  return '{figma.' + colKey + '.' + path + '}';
+}
+
+const PREFER = ['light', 'base', 'default'];
+function pickMode(col) {
+  for (const p of PREFER) {
+    const m = col.modes.find(m => m.name.toLowerCase() === p);
+    if (m) return m.modeId;
+  }
+  return col.defaultModeId;
+}
+
+const result = { fileName: figma.root.name, collections: [] };
+
+for (const col of collections) {
+  const modeId = pickMode(col);
+  const vars = [];
+
+  for (const varId of col.variableIds) {
+    const v = varMap.get(varId);
+    if (!v || v.hiddenFromPublishing) continue;
+
+    const raw = v.valuesByMode[modeId];
+    if (raw === undefined) continue;
+
+    const entry = { name: v.name, type: v.resolvedType };
+
+    if (raw && typeof raw === 'object' && 'type' in raw
+        && raw.type === 'VARIABLE_ALIAS') {
+      const aliasVar = varMap.get(raw.id);
+      if (aliasVar) {
+        entry.alias = buildAlias(aliasVar);
+        const aliasModes = Object.values(aliasVar.valuesByMode);
+        const aliasRaw = aliasModes[0];
+        if (aliasRaw && typeof aliasRaw === 'object' && 'r' in aliasRaw) {
+          entry.value = rgbaToHex(aliasRaw);
+        } else {
+          entry.value = aliasRaw ?? 0;
+        }
+      } else {
+        entry.value = 0;
+        entry.alias = '{alias:unresolved:' + raw.id + '}';
+      }
+    } else if (v.resolvedType === 'COLOR' && raw
+               && typeof raw === 'object' && 'r' in raw) {
+      entry.value = rgbaToHex(raw);
+    } else {
+      entry.value = raw;
+    }
+
+    vars.push(entry);
+  }
+
+  if (vars.length > 0) {
+    result.collections.push({ name: col.name, variables: vars });
+  }
+}
+
+return JSON.stringify(result);
+````
+
+### CLI commands used by the skill
+
+Preview (Phase 3):
+
+```bash
+npx tsx tools/figma-sync/src/pull.tsx --data /tmp/figma-pull-FILEKEY.json --dry-run --yes
+```
+
+Apply (Phase 4):
+
+```bash
+npx tsx tools/figma-sync/src/pull.tsx --data /tmp/figma-pull-FILEKEY.json --backup --yes
+```
+
+### Key guarantees
+
+- Never deletes tokens (merge-only strategy)
+- Auto-backup created before any write
+- Dry-run always shown before committing changes
+- Only published variables are synced
+- Preferred mode order: Light > Base > Default > first available
+
+---
+
+## Related pages
+
+- [Installation](/getting-started/installation) — Installing ATOM packages
+- [AI Integration (MCP)](/getting-started/ai-integration) — MCP server for component context
+- [Token Layers](/architecture/token-layers) — How the 4-layer token system works

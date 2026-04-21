@@ -1,99 +1,110 @@
 ---
 title: Design Tokens
-description: Understanding the token system in Atom Design System.
+description: Understanding the W3C DTCG token system in ATOM Design System — 1,800+ tokens across 4 layers.
 ---
 
-Design tokens are the foundation of Atom DS. They are named variables that store visual design attributes such as colors, spacing, typography, and more.
+Design tokens are the foundation of ATOM DS. They store visual design values (colors, spacing, typography, borders) as named variables that flow from Figma into CSS, SCSS, and JavaScript outputs.
 
-## What are Design Tokens?
+## Token format
 
-Design tokens are **named entities that store visual design values**. Instead of hardcoding values like `#3b82f6` or `16px`, you use semantic names like `--color-primary-default` or `--spacing-md`.
+ATOM uses the **W3C Design Token Community Group (DTCG)** specification. Source tokens are JSON:
 
-## Token Format
-
-Atom DS uses **CSS custom properties** (CSS variables) as the runtime format:
-
-```css
-/* ✅ Using tokens */
-.my-component {
-  color: var(--color-primary-default);
-  padding: var(--spacing-md);
-  border-radius: var(--radius-md);
-}
-
-/* ❌ Hardcoded values */
-.my-component {
-  color: #3b82f6;
-  padding: 1rem;
-  border-radius: 0.5rem;
+```json
+{
+  "bg": {
+    "$type": "color",
+    "primary": { "$value": "{figma.colors.primitive.neutral.0}" }
+  }
 }
 ```
 
-## Token Categories
+At build time, Style Dictionary resolves references and outputs:
 
-Atom DS organizes tokens into the following categories:
+```css
+/* CSS Custom Properties */
+--bg-primary: #FFFFFF;
+```
+
+```scss
+/* SCSS Variables */
+$bg-primary: #FFFFFF;
+```
+
+```javascript
+/* JavaScript (ESM) */
+export const bgPrimary = '#FFFFFF';
+```
+
+---
+
+## Token categories
 
 ### Colors
 
-Color tokens for backgrounds, text, borders, and semantic colors.
+Background, foreground, border, and brand tokens.
 
 ```css
---color-primary-default
---color-secondary-default
---color-success-default
---color-error-default
---color-text-primary
---color-background-surface
+--bg-primary              /* Main surface */
+--bg-inverse-primary      /* Inverted surface */
+--fg-primary              /* Primary text */
+--fg-secondary            /* Secondary text */
+--border-primary          /* Default border */
 ```
 
-[View all color tokens →](/foundations/colors/)
+[View semantic colors →](/foundations/semantic-colors/)
+
+### Spacing
+
+Dimension scale from xxs to 17xl.
+
+```css
+--primitive-spacing-xs    /* 4px */
+--primitive-spacing-s     /* 8px */
+--primitive-spacing-m     /* 16px */
+--primitive-spacing-l     /* 24px */
+--primitive-spacing-xl    /* 32px */
+```
+
+[View spacing tokens →](/foundations/spacing/)
 
 ### Typography
 
 Font families, sizes, weights, and line heights.
 
 ```css
---font-family-base
---font-size-base
---font-weight-medium
---line-height-normal
+--primitive-font-size-12   /* 0.75rem */
+--primitive-font-size-14   /* 0.875rem */
+--primitive-font-size-16   /* 1rem */
+--primitive-font-weight-regular
+--primitive-font-weight-medium
+--primitive-font-weight-bold
 ```
 
-[View all typography tokens →](/foundations/typography/)
-
-### Spacing
-
-Consistent spacing scale for margins, padding, and gaps.
-
-```css
---spacing-xs
---spacing-sm
---spacing-md
---spacing-lg
---spacing-xl
-```
-
-[View all spacing tokens →](/foundations/spacing/)
+[View typography tokens →](/foundations/typography/)
 
 ### Borders & Radius
 
-Border widths and border radius values.
+Stroke widths and corner radius values.
 
 ```css
---border-width-default
---radius-sm
---radius-md
---radius-lg
+--primitive-radius-xs      /* 4px */
+--primitive-radius-s       /* 8px */
+--primitive-radius-m       /* 16px */
+--primitive-radius-pill    /* 1000px */
+--primitive-stroke-xs      /* 1px */
 ```
 
-### Shadows
+[View borders →](/foundations/borders/)
 
-Elevation shadows for depth and hierarchy.
+### Opacity
+
+Transparency values for glass effects and overlays.
 
 ```css
---shadow-sm
---shadow-md
---shadow-lg
+--primitive-opacity-5      /* 5% */
+--primitive-opacity-10     /* 10% */
+--primitive-opacity-50     /* 50% */
+--primitive-opacity-90     /* 90% */
 ```
 
 ### Breakpoints
@@ -101,63 +112,139 @@ Elevation shadows for depth and hierarchy.
 Responsive breakpoint values.
 
 ```css
---breakpoint-sm
---breakpoint-md
---breakpoint-lg
+--primitive-breakpoint-sm   /* 640px */
+--primitive-breakpoint-md   /* 768px */
+--primitive-breakpoint-lg   /* 1024px */
 ```
 
-[View all breakpoint tokens →](/foundations/breakpoints/)
+[View breakpoints →](/foundations/breakpoints/)
 
-## Naming Convention
+### Elevations
 
-Atom DS follows a consistent naming pattern:
-
-```
---{category}-{property}-{variant}
-```
-
-**Examples:**
-- `--color-primary-default`
-- `--spacing-md`
-- `--font-size-lg`
-- `--radius-sm`
-
-## Using Tokens
-
-Tokens are accessed using the CSS `var()` function:
+Box shadow values for depth hierarchy.
 
 ```css
-.button {
-  background: var(--color-primary-default);
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--radius-md);
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-medium);
+--elevation-s
+--elevation-m
+--elevation-l
+```
+
+---
+
+## Naming convention
+
+Tokens follow a consistent pattern based on their layer:
+
+| Layer | Pattern | Example |
+|-------|---------|---------|
+| Figma | `--figma-{collection}-{path}` | `--figma-colors-primitive-blue-500` |
+| Foundation | `--primitive-{category}-{value}` | `--primitive-spacing-m` |
+| Semantic | `--{intent}-{variant}` | `--bg-primary`, `--fg-disabled` |
+| Component | `--{component}-{property}-{variant}-{state}` | `--buttons-bg-primary-enabled` |
+
+All names are **lowercase kebab-case**. No camelCase or PascalCase in CSS output.
+
+---
+
+## The four layers
+
+Tokens are organized in a hierarchy where each layer references the one below:
+
+```
+Component  →  references Semantic
+Semantic   →  references Figma primitives
+Foundation →  manual values with units (px, rem)
+Figma      →  raw values synced from Figma (read-only)
+```
+
+[Learn about the 4-layer architecture →](/architecture/token-layers/)
+
+---
+
+## Using tokens in CSS
+
+Always use `var()` to consume tokens:
+
+```css
+/* Semantic tokens for general UI */
+.card {
+  background: var(--bg-primary);
+  color: var(--fg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--primitive-radius-m);
+  padding: var(--primitive-spacing-l);
+}
+
+/* Component tokens for specific components */
+.button--primary {
+  background: var(--buttons-bg-primary-enabled);
+  color: var(--buttons-fg-primary-enabled);
+}
+
+.button--primary:hover {
+  background: var(--buttons-bg-primary-hovered);
 }
 ```
 
-## Benefits
+---
 
-Using design tokens provides several advantages:
+## Build outputs
 
-1. **Consistency**: Same values used everywhere
-2. **Maintainability**: Change once, update everywhere
-3. **Theming**: Easy to create dark mode or brand variations
-4. **Developer Experience**: Autocomplete in modern editors
-5. **Documentation**: Self-documenting code with semantic names
+Style Dictionary generates multiple formats from the same source:
 
-## Best Practices
+| File | Selector/Format | Use case |
+|------|----------------|----------|
+| `build/css/tokens.css` | `:root` | All 1,800+ tokens as CSS vars |
+| `build/css/dark.css` | `[data-theme="dark"]` | Dark theme overrides |
+| `build/css/foundation.css` | `:root` | Only foundation tokens |
+| `build/css/semantic.css` | `:root` | Only semantic tokens |
+| `build/css/components.css` | `:root` | Only component tokens |
+| `build/scss/_tokens.scss` | `$var-name` | SCSS variables |
+| `build/js/tokens.js` | ESM named exports | JavaScript (camelCase) |
+| `build/js/tokens.cjs` | CommonJS | Node.js require() |
+| `build/js/tokens.d.ts` | TypeScript | Type declarations |
+| `build/json/tokens.json` | Flat JSON | Tools and Figma |
 
-:::tip[Always Use Tokens]
-Never hardcode visual values. If a token doesn't exist for your use case, consider proposing a new token.
-:::
+---
 
-:::caution[Avoid Direct Values]
-Avoid using raw values like `#3b82f6` or `16px` in your styles. Always use the appropriate token.
-:::
+## Installing tokens
 
-## Next Steps
+```bash
+npm install @atomchat.io/tokens
+```
 
-- [Colors](/foundations/colors/) - Explore the color system
-- [Typography](/foundations/typography/) - Typography tokens and scales
-- [Spacing](/foundations/spacing/) - Spacing system and usage
+```css
+/* Import all tokens */
+@import '@atomchat.io/tokens/build/css/tokens.css';
+
+/* Or layer-specific */
+@import '@atomchat.io/tokens/build/css/foundation.css';
+@import '@atomchat.io/tokens/build/css/semantic.css';
+@import '@atomchat.io/tokens/build/css/components.css';
+```
+
+---
+
+## Best practices
+
+### Do
+
+1. **Use semantic or component tokens** in your styles
+2. **Reference the appropriate layer** — semantic for general UI, component for specific widgets
+3. **Let dark mode work automatically** by using semantic tokens (they flip in dark theme)
+
+### Don't
+
+1. **Don't hardcode values** — always use a token
+2. **Don't use `--figma-*` tokens directly** in components — use semantic/component layer
+3. **Don't use `--primitive-*` for colors** — use `--bg-*`, `--fg-*`, `--border-*` instead
+4. **Don't invent token names** — check what exists first with the MCP server or built CSS
+
+---
+
+## Next steps
+
+- [Colors](/foundations/colors/) — Full primitive color palette
+- [Semantic Colors](/foundations/semantic-colors/) — bg, fg, border token reference
+- [Dark Mode](/foundations/dark-mode/) — How theming works
+- [Token Layers](/architecture/token-layers/) — The 4-layer architecture explained
