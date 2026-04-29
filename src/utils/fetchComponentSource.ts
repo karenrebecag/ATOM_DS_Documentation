@@ -26,10 +26,10 @@ interface FetchConfig {
  * Update these when new versions are published.
  */
 const DEFAULT_VERSIONS: Record<Framework, string> = {
-  react:   '2.2.0',
-  vue:     '1.1.0',
-  angular: '2.1.0',
-  astro:   '5.3.0',
+  react:   '2.2.1',
+  vue:     '1.1.1',
+  angular: '2.1.1',
+  astro:   '5.3.1',
 };
 
 /**
@@ -79,6 +79,14 @@ const COMPONENT_PATHS: Record<string, Partial<Record<Framework, string>>> = {
 
   // Feedback
   Tooltip:      { astro: 'feedback/Tooltip.astro' },
+
+  // Integrations
+  WhatsAppButton: {
+    react:   'integrations/WhatsAppButton.tsx',
+    vue:     'integrations/WhatsAppButton.vue',
+    angular: 'integrations/whatsapp-button.component.ts',
+    astro:   'integrations/WhatsAppButton.astro',
+  },
 };
 
 /**

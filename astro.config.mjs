@@ -117,6 +117,10 @@ export default defineConfig({
 					],
 				},
 				{
+					label: 'Integrations',
+					autogenerate: { directory: 'integrations' },
+				},
+				{
 					label: 'Utilities',
 					autogenerate: { directory: 'utilities' },
 				},

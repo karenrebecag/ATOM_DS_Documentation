@@ -1,0 +1,187 @@
+---
+title: WhatsApp Button
+description: Native WhatsApp CTA integration powered by Slater — available across all ATOM frameworks.
+---
+
+## Overview
+
+The WhatsApp Button is a native ATOM integration that renders a styled WhatsApp CTA anchor. Unlike standard ATOM components, it does **not** consume design tokens or ATOM CSS — its styles and behavior are owned by [Slater](https://slater.app) and loaded at runtime.
+
+**Key Features:**
+- Localized messages by CTA type (`hablar_asesor`, `agendar_demo`, etc.)
+- Multilingual support — Spanish, English, Portuguese
+- Hover rotation animation (same pattern as ATOM buttons)
+- Click tracking via `dataLayer` (GTM-compatible)
+- Webflow-native detection — auto-switches CDN URLs
+- Available in React, Vue, Angular, and Astro
+
+---
+
+## Installation
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import FetchedCode from '../../../components/FetchedCode.astro';
+
+<Tabs syncKey="framework">
+  <TabItem label="Astro" icon="astro">
+    ### Install package
+    ```bash
+    pnpm add @atomchat.io/components-astro
+    ```
+
+    ### Usage
+    ```astro
+    ---
+    import { WhatsAppButton } from '@atomchat.io/components-astro';
+    ---
+
+    <WhatsAppButton phone="573142616335" cta="hablar_asesor" />
+    ```
+
+    ### Component source
+    <FetchedCode component="WhatsAppButton" framework="astro" />
+
+    **Dependencies:** [`@atomchat.io/components-astro`](https://npmjs.com/package/@atomchat.io/components-astro)
+  </TabItem>
+
+  <TabItem label="React" icon="seti:react">
+    ### Install package
+    ```bash
+    pnpm add @atomchat.io/components-react
+    ```
+
+    ### Usage
+    ```tsx
+    import { WhatsAppButton } from '@atomchat.io/components-react';
+
+    <WhatsAppButton phone="573142616335" cta="hablar_asesor" />
+    ```
+
+    ### Component source
+    <FetchedCode component="WhatsAppButton" framework="react" />
+
+    **Dependencies:** [`@atomchat.io/components-react`](https://npmjs.com/package/@atomchat.io/components-react) · [`react`](https://npmjs.com/package/react)
+  </TabItem>
+
+  <TabItem label="Vue" icon="seti:vue">
+    ### Install package
+    ```bash
+    pnpm add @atomchat.io/components-vue
+    ```
+
+    ### Usage
+    ```vue
+    <script setup>
+    import { WhatsAppButton } from '@atomchat.io/components-vue';
+    </script>
+
+    <template>
+      <WhatsAppButton phone="573142616335" cta="hablar_asesor" />
+    </template>
+    ```
+
+    ### Component source
+    <FetchedCode component="WhatsAppButton" framework="vue" />
+
+    **Dependencies:** [`@atomchat.io/components-vue`](https://npmjs.com/package/@atomchat.io/components-vue) · [`vue`](https://npmjs.com/package/vue)
+  </TabItem>
+
+  <TabItem label="Angular" icon="simple-icons:angular">
+    ### Install package
+    ```bash
+    pnpm add @atomchat.io/components-angular
+    ```
+
+    ### Usage
+    ```typescript
+    import { WhatsAppButtonComponent } from '@atomchat.io/components-angular';
+
+    @Component({
+      imports: [WhatsAppButtonComponent],
+      template: `<atom-whatsapp-button phone="573142616335" cta="hablar_asesor" />`
+    })
+    export class MyComponent {}
+    ```
+
+    ### Component source
+    <FetchedCode component="WhatsAppButton" framework="angular" />
+
+    **Dependencies:** [`@atomchat.io/components-angular`](https://npmjs.com/package/@atomchat.io/components-angular) · [`@angular/core`](https://npmjs.com/package/@angular/core)
+  </TabItem>
+</Tabs>
+
+---
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `phone` | `string` | — | **Required.** WhatsApp phone with country code (digits only). e.g. `"573142616335"` |
+| `cta` | `string` | `"hablar_asesor"` | CTA type. Slater resolves the localized message from this value. |
+| `label` | `string` | `"HABLAR CON ASESOR"` | Button label text rendered inside the component. |
+| `message` | `string?` | — | Custom WA message. Overrides Slater's localized default for the given `cta`. |
+| `lang` | `"es" \| "en" \| "pt"` | — | Language override for Slater message resolution. Auto-detected if omitted. |
+| `section` | `string?` | — | Analytics identifier for the page section where the button appears. |
+| `industry` | `string?` | — | Analytics industry classification. |
+| `class` / `className` | `string?` | — | Additional CSS classes to apply to the `<a>` element. |
+
+---
+
+## How It Works
+
+### Slater Assets
+
+The component injects two external assets from Slater on first mount:
+
+| Asset | Production URL | Webflow URL |
+|-------|---------------|-------------|
+| CSS   | `https://assets.slater.app/slater/19877/59763.css?v=1.0` | `https://slater.app/19877/59763.css` |
+| JS    | `https://assets.slater.app/slater/19877/59762.js?v=1.0`  | `https://slater.app/19877/59762.js`  |
+
+Assets are injected **once per page** (guarded by `data-slater-wa-css` / `data-slater-wa-js` attributes). If multiple `WhatsAppButton` instances exist, the scripts only load once.
+
+### Slater JS Behavior
+
+After the script loads, it scans for `[data-atom-button]` elements and:
+
+1. **Language detection** — reads `data-lang`, falls back to URL path or `<html lang>`
+2. **Message resolution** — looks up the localized message for the given `data-cta` value
+3. **href construction** — builds `https://wa.me/{phone}?text={encoded_message}` and sets it on the anchor
+4. **Hover animation** — activates the `.button__label` / `.button__label--clone` rotation effect
+5. **Click tracking** — pushes a `whatsapp_click` event to `window.dataLayer` (GTM-compatible)
+
+### DOM Structure
+
+```html
+<a
+  data-atom-button=""
+  data-cta="hablar_asesor"
+  data-phone="573142616335"
+  data-hover-rotate=""
+  href="https://wa.me/573142616335?text=Hola%2C%20quiero%20hablar%20con%20un%20asesor"
+>
+  <span class="button__label-wrap">
+    <span class="button__label" data-button-label="">
+      <!-- WhatsApp SVG icon -->
+      <span>HABLAR CON ASESOR</span>
+    </span>
+    <span class="button__label button__label--clone" data-button-label-clone="" aria-hidden="true">
+      <!-- WhatsApp SVG icon (clone for animation) -->
+      <span>HABLAR CON ASESOR</span>
+    </span>
+  </span>
+</a>
+```
+
+---
+
+## WordPress & Webflow
+
+This integration is also available as native plugins for:
+
+- **Elementor (WordPress)** — use the shortcode widget with `data-atom-button` and the Slater scripts enqueued.
+- **Webflow** — embed the Slater script snippet in your page head. The component auto-detects `.webflow.io` and switches to the Slater CDN URL.
+
+The component preserves full parity with the WordPress implementation — same data attributes, same animation contract, same tracking behavior.
