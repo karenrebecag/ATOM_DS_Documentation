@@ -152,8 +152,27 @@ After the script loads, it scans for `[data-atom-button]` elements and:
 1. **Language detection** — reads `data-lang`, falls back to URL path or `<html lang>`
 2. **Message resolution** — looks up the localized message for the given `data-cta` value
 3. **href construction** — builds `https://wa.me/{phone}?text={encoded_message}` and sets it on the anchor
-4. **Hover animation** — activates the `.button__label` / `.button__label--clone` rotation effect
+4. **Hover animation** — activates the `.button__label` / `.button__label--clone` rotation effect (requires GSAP — see prerequisites below)
 5. **Click tracking** — pushes a `whatsapp_click` event to `window.dataLayer` (GTM-compatible)
+
+### Prerequisites
+
+#### GSAP must be globally available
+
+The Slater JS hover animation requires `gsap` on `window`. If your project imports GSAP as an ES module (e.g. `import gsap from "gsap"`), it won't be visible to Slater. Expose it globally in your layout or entry point:
+
+```astro
+<script>
+  import gsap from "gsap";
+  window.gsap = gsap;
+</script>
+```
+
+Without this, the button renders and functions correctly but the hover rotation animation will not activate.
+
+#### Do not apply custom CSS classes to the button
+
+Slater owns all styles. Passing classes like `class="my-custom-btn"` will conflict with Slater's CSS. The component should be used without additional class overrides — let Slater handle the visual presentation.
 
 ### DOM Structure
 
