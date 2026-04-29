@@ -12,26 +12,26 @@ importers:
         specifier: ^0.38.2
         version: 0.38.2(astro@6.1.2(@types/node@24.12.0)(rollup@4.60.1)(yaml@2.8.3))
       '@atomchat.io/animations':
-        specifier: ^1.2.1
-        version: 1.2.1(gsap@3.14.2)
+        specifier: ^1.4.0
+        version: 1.4.0(gsap@3.14.2)
       '@atomchat.io/components-angular':
-        specifier: ^2.0.0
-        version: 2.0.1(@angular/common@21.2.6(@angular/core@21.2.6(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.6(rxjs@7.8.2))(@atomchat.io/css@0.2.3(@atomchat.io/tokens@1.0.3))
+        specifier: ^2.1.1
+        version: 2.1.1(@angular/common@21.2.6(@angular/core@21.2.6(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.6(rxjs@7.8.2))(@atomchat.io/css@1.2.0(@atomchat.io/tokens@2.2.0))
       '@atomchat.io/components-astro':
-        specifier: ^2.0.4
-        version: 2.0.4(@atomchat.io/css@0.2.3(@atomchat.io/tokens@1.0.3))(astro@6.1.2(@types/node@24.12.0)(rollup@4.60.1)(yaml@2.8.3))
+        specifier: ^5.3.1
+        version: 5.3.1(@atomchat.io/css@1.2.0(@atomchat.io/tokens@2.2.0))(astro@6.1.2(@types/node@24.12.0)(rollup@4.60.1)(yaml@2.8.3))
       '@atomchat.io/components-react':
-        specifier: ^2.0.0
-        version: 2.0.1(@atomchat.io/css@0.2.3(@atomchat.io/tokens@1.0.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        specifier: ^2.2.1
+        version: 2.2.1(@atomchat.io/css@1.2.0(@atomchat.io/tokens@2.2.0))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@atomchat.io/components-vue':
-        specifier: ^1.0.0
-        version: 1.0.1(@atomchat.io/css@0.2.3(@atomchat.io/tokens@1.0.3))(@atomchat.io/tokens@1.0.3)(vue@3.5.31)
+        specifier: ^1.1.1
+        version: 1.1.1(@atomchat.io/css@1.2.0(@atomchat.io/tokens@2.2.0))(@atomchat.io/tokens@2.2.0)(vue@3.5.31)
       '@atomchat.io/css':
-        specifier: ^0.2.3
-        version: 0.2.3(@atomchat.io/tokens@1.0.3)
+        specifier: ^1.2.0
+        version: 1.2.0(@atomchat.io/tokens@2.2.0)
       '@atomchat.io/tokens':
-        specifier: ^1.0.3
-        version: 1.0.3
+        specifier: ^2.2.0
+        version: 2.2.0
       '@lucide/astro':
         specifier: ^1.7.0
         version: 1.7.0(astro@6.1.2(@types/node@24.12.0)(rollup@4.60.1)(yaml@2.8.3))
@@ -114,8 +114,8 @@ packages:
     resolution: {integrity: sha512-UFBgfeldP06qu6khs/yY+q1cDAaArM2/7AEIqQ9Cuvf7B1hNLq0xDrZkct+QoIGyjq56y8IaE2I3CTvG99mlhQ==}
     engines: {node: 18.20.8 || ^20.3.0 || >=22.0.0}
 
-  '@atomchat.io/animations@1.2.1':
-    resolution: {integrity: sha512-PtZ9xhN/D95PMfMrev71opt9fOdOJSThQKdnDVgwZ/iu8rurfexHZixMixCpHGYgoiJi1P/ui8rdHAD6B51EaQ==}
+  '@atomchat.io/animations@1.4.0':
+    resolution: {integrity: sha512-KNqLyHcBisP0x2mpCmuiS+qHQlIiUtzPc4bLvHOui1Jup2T/O8EiUyJysx91U/Ez7Gl/VtdP4gVVIeD3X9PvkQ==}
     peerDependencies:
       '@barba/core': '*'
       '@barba/prefetch': '*'
@@ -129,43 +129,43 @@ packages:
       lenis:
         optional: true
 
-  '@atomchat.io/components-angular@2.0.1':
-    resolution: {integrity: sha512-eru+KWC5FBoY8yDRoYZ10J5mh0KHteNvumOc+wwm6lAr+Av1ET20Hmb12G2uQkikicv0VSOmFzRbaQUxKquO7A==}
+  '@atomchat.io/components-angular@2.1.1':
+    resolution: {integrity: sha512-xHOh9PFa9lLiCyfxfg6Q/WxP19FdwSqtgagciGV23pakbiJgYbLaxCslv/G0MMdWLO1eiCoP2gfkBxb6j4aHxQ==}
     peerDependencies:
       '@angular/common': ^21.0.0
       '@angular/core': ^21.0.0
       '@atomchat.io/css': workspace:*
 
-  '@atomchat.io/components-astro@2.0.4':
-    resolution: {integrity: sha512-WGiWVWZZdVnrYtNkOmF9quqtdYbifopF1SFC2usYxw2vIWevXhzoPQZEeVsKRK2KWHEVXqsfN6Edm7FABnfVFw==}
+  '@atomchat.io/components-astro@5.3.1':
+    resolution: {integrity: sha512-VTuTmMopde0wi2H8YOTrm8AD7i9qlyfySC/AcfWRkT2S8gJ8l4NAPj2SWvqDQ8vMyYomNTUbekWKYPpgj2BgDQ==}
     peerDependencies:
-      '@atomchat.io/css': 0.2.3
+      '@atomchat.io/css': ^1.0.0
       astro: '>=4.0.0'
 
-  '@atomchat.io/components-react@2.0.1':
-    resolution: {integrity: sha512-wFh5DdohevsAdl7K9zP6fM+g8J5/clkr59RPCOpaZbPb/8WwzAPyMP2Dr/o0Gk/h2Q5OWl07VlJbNrfoTPCiMw==}
+  '@atomchat.io/components-react@2.2.1':
+    resolution: {integrity: sha512-6g4Bug50OSTlumz8tyx9tne0O7w7CmEi1CDbWGUFYyhQIZ/tZuVTgmHXL/IhKScTAk24SjWEAihGIUswNv2VlQ==}
     peerDependencies:
-      '@atomchat.io/css': 0.2.3
+      '@atomchat.io/css': workspace:*
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
 
-  '@atomchat.io/components-vue@1.0.1':
-    resolution: {integrity: sha512-XBRnKRBTQRVek3WKqrcP6GWxp2WySxHNw7WbG1ArHJUHPoj6xC/8non+SuyLQLKN3qLfnTBJu1I5AHPQayvkoQ==}
+  '@atomchat.io/components-vue@1.1.1':
+    resolution: {integrity: sha512-PEiVUUDgUlm4BxblbopYOXlRMRm/SYzyL14CtBAYsMmTtGpwr/SpsPGtRkkvVbJZpI73fmwFqYuNMeiuy4d2yQ==}
     peerDependencies:
-      '@atomchat.io/css': 0.2.3
+      '@atomchat.io/css': workspace:*
       '@atomchat.io/tokens': '*'
       vue: ^3.4.0
     peerDependenciesMeta:
       '@atomchat.io/tokens':
         optional: true
 
-  '@atomchat.io/css@0.2.3':
-    resolution: {integrity: sha512-EG9ifB8j6+KaFUfqQg9jRTMdJWVFWA3/oetjOfEm3JCNUi5Oam99Wqnmqd8SFZd4R4wEZDjH6Mi4KApMgmf9fA==}
+  '@atomchat.io/css@1.2.0':
+    resolution: {integrity: sha512-9VMRRhZ5c6qN0AAHSs1XqxpIj98KdFrlkigJlmFG0h2XsXNSBqnuefOkhOcpl+tcNvd/Sl8Zat2BXqJhWpfXdw==}
     peerDependencies:
-      '@atomchat.io/tokens': 1.0.3
+      '@atomchat.io/tokens': workspace:*
 
-  '@atomchat.io/tokens@1.0.3':
-    resolution: {integrity: sha512-zE5GixuY/rM/wCt35hBsWyH/Wm+8EbTRSu6eU5gzkpU0h3SKYQ6XMZPk79CpZs+v4XPHoZAfMOI3PFV2AjqCfA==}
+  '@atomchat.io/tokens@2.2.0':
+    resolution: {integrity: sha512-C/KJWXEz4qeqFzZjOfSDjCtfLIfXXp6EAG5DPtjRDOiU+20GkSNUf/v4B1oIoVZr/JM09cP3gNNQRfhaC8scOg==}
 
   '@babel/helper-string-parser@7.27.1':
     resolution: {integrity: sha512-qMlSxKbpRlAridDExk92nSobyDdpPijUq2DW6oDnUqd0iOGxmQjyqhMIihI9+zv4LPyZdRje2cavWPbCbWm3eA==}
@@ -2163,40 +2163,39 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@atomchat.io/animations@1.2.1(gsap@3.14.2)':
+  '@atomchat.io/animations@1.4.0(gsap@3.14.2)':
     dependencies:
       gsap: 3.14.2
 
-  '@atomchat.io/components-angular@2.0.1(@angular/common@21.2.6(@angular/core@21.2.6(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.6(rxjs@7.8.2))(@atomchat.io/css@0.2.3(@atomchat.io/tokens@1.0.3))':
+  '@atomchat.io/components-angular@2.1.1(@angular/common@21.2.6(@angular/core@21.2.6(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.6(rxjs@7.8.2))(@atomchat.io/css@1.2.0(@atomchat.io/tokens@2.2.0))':
     dependencies:
       '@angular/common': 21.2.6(@angular/core@21.2.6(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/core': 21.2.6(rxjs@7.8.2)
-      '@atomchat.io/css': 0.2.3(@atomchat.io/tokens@1.0.3)
-      tslib: 2.8.1
+      '@atomchat.io/css': 1.2.0(@atomchat.io/tokens@2.2.0)
 
-  '@atomchat.io/components-astro@2.0.4(@atomchat.io/css@0.2.3(@atomchat.io/tokens@1.0.3))(astro@6.1.2(@types/node@24.12.0)(rollup@4.60.1)(yaml@2.8.3))':
+  '@atomchat.io/components-astro@5.3.1(@atomchat.io/css@1.2.0(@atomchat.io/tokens@2.2.0))(astro@6.1.2(@types/node@24.12.0)(rollup@4.60.1)(yaml@2.8.3))':
     dependencies:
-      '@atomchat.io/css': 0.2.3(@atomchat.io/tokens@1.0.3)
+      '@atomchat.io/css': 1.2.0(@atomchat.io/tokens@2.2.0)
       astro: 6.1.2(@types/node@24.12.0)(rollup@4.60.1)(yaml@2.8.3)
 
-  '@atomchat.io/components-react@2.0.1(@atomchat.io/css@0.2.3(@atomchat.io/tokens@1.0.3))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+  '@atomchat.io/components-react@2.2.1(@atomchat.io/css@1.2.0(@atomchat.io/tokens@2.2.0))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
-      '@atomchat.io/css': 0.2.3(@atomchat.io/tokens@1.0.3)
+      '@atomchat.io/css': 1.2.0(@atomchat.io/tokens@2.2.0)
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
 
-  '@atomchat.io/components-vue@1.0.1(@atomchat.io/css@0.2.3(@atomchat.io/tokens@1.0.3))(@atomchat.io/tokens@1.0.3)(vue@3.5.31)':
+  '@atomchat.io/components-vue@1.1.1(@atomchat.io/css@1.2.0(@atomchat.io/tokens@2.2.0))(@atomchat.io/tokens@2.2.0)(vue@3.5.31)':
     dependencies:
-      '@atomchat.io/css': 0.2.3(@atomchat.io/tokens@1.0.3)
+      '@atomchat.io/css': 1.2.0(@atomchat.io/tokens@2.2.0)
       vue: 3.5.31
     optionalDependencies:
-      '@atomchat.io/tokens': 1.0.3
+      '@atomchat.io/tokens': 2.2.0
 
-  '@atomchat.io/css@0.2.3(@atomchat.io/tokens@1.0.3)':
+  '@atomchat.io/css@1.2.0(@atomchat.io/tokens@2.2.0)':
     dependencies:
-      '@atomchat.io/tokens': 1.0.3
+      '@atomchat.io/tokens': 2.2.0
 
-  '@atomchat.io/tokens@1.0.3': {}
+  '@atomchat.io/tokens@2.2.0': {}
 
   '@babel/helper-string-parser@7.27.1': {}
 
