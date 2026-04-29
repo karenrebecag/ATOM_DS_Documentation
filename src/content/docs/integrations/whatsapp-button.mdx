@@ -121,11 +121,14 @@ import FetchedCode from '../../../components/FetchedCode.astro';
 | `phone` | `string` | — | **Required.** WhatsApp phone with country code (digits only). e.g. `"573142616335"` |
 | `cta` | `string` | `"hablar_asesor"` | CTA type. Slater resolves the localized message from this value. |
 | `label` | `string` | `"HABLAR CON ASESOR"` | Button label text rendered inside the component. |
-| `message` | `string?` | — | Custom WA message. Overrides Slater's localized default for the given `cta`. |
 | `lang` | `"es" \| "en" \| "pt"` | — | Language override for Slater message resolution. Auto-detected if omitted. |
 | `section` | `string?` | — | Analytics identifier for the page section where the button appears. |
 | `industry` | `string?` | — | Analytics industry classification. |
 | `class` / `className` | `string?` | — | Additional CSS classes to apply to the `<a>` element. |
+
+:::note
+**Do not pass a custom `message`.** Slater owns message resolution — it builds the localized WA message from `cta` + `lang` and appends the current page URL as a reference link automatically. Hardcoding a `message` prop produces duplicate reference links in the chat opener.
+:::
 
 ---
 
@@ -173,6 +176,43 @@ After the script loads, it scans for `[data-atom-button]` elements and:
     </span>
   </span>
 </a>
+```
+
+---
+
+## Common Patterns
+
+### Navbar CTA
+
+```astro
+<WhatsAppButton
+  phone="573142616335"
+  cta="hablar_asesor"
+  label="HABLAR CON EXPERTO"
+/>
+```
+
+### Demo request (Portuguese)
+
+```astro
+<WhatsAppButton
+  phone="573142616335"
+  cta="agendar_demo"
+  lang="pt"
+  label="SOLICITAR DEMO"
+/>
+```
+
+### With analytics tracking
+
+```astro
+<WhatsAppButton
+  phone="573142616335"
+  cta="hablar_asesor"
+  label="HABLAR CON EXPERTO"
+  section="hero"
+  industry="automotriz"
+/>
 ```
 
 ---
