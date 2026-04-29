@@ -29,7 +29,7 @@ const DEFAULT_VERSIONS: Record<Framework, string> = {
   react:   '2.2.1',
   vue:     '1.1.1',
   angular: '2.1.1',
-  astro:   '5.3.1',
+  astro:   '5.3.2',
 };
 
 /**
