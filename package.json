@@ -14,7 +14,7 @@
     "@astrojs/starlight": "^0.38.2",
     "@atomchat.io/animations": "^1.4.0",
     "@atomchat.io/components-angular": "^2.1.1",
-    "@atomchat.io/components-astro": "^5.3.2",
+    "@atomchat.io/components-astro": "^5.3.3",
     "@atomchat.io/components-react": "^2.2.1",
     "@atomchat.io/components-vue": "^1.1.1",
     "@atomchat.io/css": "^1.2.0",
